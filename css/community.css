@@ -1,181 +1,476 @@
-/* TEDUH DIGITAL PLATFORM - FORUM KOMUNITAS & MISI (css/community.css) - Sistem Desain Klien Murni Terinspirasi NutriNesia dengan Palet Teduh - Anti-AI Slop: Zero Card Shadow, Zero Card Border, Tipografi Bold 800 - Bebas Em Dash (R-02 Compliant) */
+/* TEDUH DIGITAL PLATFORM - FORUM KOMUNITAS WARGA (css/community.css)
+ * Desain Editorial Bersih & Interaktif - Linimasa Aksi Tanam & Diskusi Warga
+ * Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, Bebas Em Dash (R-02)
+ */
 
-/* Kanvas Utama Komunitas */
+/* Kanvas Utama Halaman Komunitas */
 .km-page-wrapper {
-  background-color: var(--color-background); /* #EFF2F0 - Zinc-Sage */
+  background-color: var(--color-background, #EFF2F0);
   min-height: 100vh;
   padding-bottom: 96px;
 }
 
 .km-container {
   width: 100%;
-  max-width: var(--container-max);
+  max-width: var(--container-max, 1200px);
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* Hero Highlight Section (Cerita Warga Populer) */
-.km-hero-section {
-  padding: 48px 0 36px 0;
+/* Header Komunitas & Metrik Nyata */
+.km-header-section {
+  padding: 48px 0 28px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.km-hero-header {
+.km-header-top {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
-.km-hero-title {
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 700;
+.km-header-title {
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: var(--color-slate);
+  color: var(--color-slate, #0E1116);
   margin: 0 0 8px 0;
 }
 
-.km-hero-subtitle {
+.km-header-subtitle {
   font-size: 15px;
   line-height: 1.55;
-  color: var(--color-text-body);
-  max-width: 58ch;
+  color: var(--color-text-body, #474E4A);
+  max-width: 62ch;
   margin: 0;
 }
 
-.km-carousel-nav {
+/* Bar Metrik Komunitas Nyata */
+.km-metrics-bar {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 4px;
 }
 
-.km-carousel-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  background: #FFFFFF;
-  color: var(--color-slate);
-  display: flex;
+.km-metric-pill {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8E5;
+  padding: 8px 16px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
 }
 
-.km-carousel-btn:hover {
-  background: var(--color-primary);
-  color: #FFFFFF;
+.km-metric-pill svg {
+  color: var(--color-primary, #1A382B);
+  flex-shrink: 0;
 }
 
-/* Grid Highlight Carousel Cards (3 Kolom) */
-.km-carousel-grid {
+.km-metric-pill.highlight {
+  background: #E2ECE7;
+  border-color: #D2DFD8;
+  color: var(--color-primary, #1A382B);
+}
+
+/* Layout 2 Kolom Komunitas (Feed Kiri, Sidebar Kanan) */
+.km-layout-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Kolom Feed Utama */
+.km-feed-stream {
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
-.km-slide-card {
-  position: relative;
-  height: 320px;
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
-  background: var(--color-slate);
+/* Composer Card di Atas Feed */
+.km-composer-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-2xl, 24px);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.km-composer-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  text-decoration: none;
-  transition: transform var(--transition-base);
-  border: none !important;
-  box-shadow: none !important;
+  gap: 4px;
 }
 
-.km-slide-card:hover {
-  transform: translateY(-4px);
-}
-
-.km-slide-card img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.65;
-  transition: transform 0.6s ease;
-}
-
-.km-slide-card:hover img {
-  transform: scale(1.05);
-}
-
-.km-slide-overlay {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.km-slide-tag {
-  align-self: flex-start;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--color-slate);
-}
-
-.km-slide-tag.mission {
-  background: var(--color-primary);
-  color: #FFFFFF;
-}
-
-.km-slide-title {
+.km-composer-title {
   font-size: 17px;
   font-weight: 700;
-  line-height: 1.25;
-  color: #FFFFFF;
+  color: var(--color-slate, #0E1116);
   margin: 0;
 }
 
-.km-slide-author {
-  display: flex;
+.km-composer-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-body, #474E4A);
+  margin: 0;
+}
+
+.km-composer-btn {
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast, 0.2s ease);
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
-.km-slide-author img {
-  position: static;
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-full);
+.km-composer-btn:hover {
+  background: var(--color-primary, #1A382B);
+  transform: translateY(-2px);
+}
+
+/* Daftar Kartu Postingan Komunitas */
+.km-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.km-post-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-2xl, 24px);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color var(--transition-fast, 0.2s ease);
+}
+
+.km-post-card:hover {
+  border-color: #CDD8D2;
+}
+
+/* Header Postingan: Penulis & Badge */
+.km-post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.km-post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.km-post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full, 9999px);
   object-fit: cover;
-  opacity: 1;
+  flex-shrink: 0;
+  border: 1px solid #E2E8E5;
 }
 
-.km-slide-author span {
+.km-post-author-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.km-post-author-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.km-post-author-meta {
+  font-size: 12px;
+  color: var(--color-text-muted, #6C7470);
+  margin: 3px 0 0 0;
+}
+
+.km-post-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--radius-full, 9999px);
+  background: #E2ECE7;
+  color: var(--color-primary, #1A382B);
+  white-space: nowrap;
+}
+
+.km-post-tag.experience {
+  background: #F4F6F5;
+  color: var(--color-slate, #0E1116);
+}
+
+/* Gambar Postingan */
+.km-post-image {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius-xl, 16px);
+  overflow: hidden;
+  background: #F4F6F5;
+}
+
+.km-post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Konten Postingan */
+.km-post-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.km-post-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.km-post-collab-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-primary, #1A382B);
+  background: #E2ECE7;
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  align-self: flex-start;
 }
 
-/* Tata Letak 2 Kolom Komunitas (.km-grid) */
-.km-main-grid {
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 32px;
-  align-items: start;
-  margin-top: 24px;
+.km-post-story {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #23262D;
+  margin: 0;
 }
 
-/* Sidebar Kiri */
+.km-post-safe-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F4F6F5;
+  border: 1px solid #E2E8E5;
+  color: var(--color-primary, #1A382B);
+  padding: 6px 14px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Bar Aksi Interaksi Postingan */
+.km-post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #ECEFEF;
+  border-bottom: 1px solid #ECEFEF;
+  padding: 12px 0;
+}
+
+.km-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: var(--radius-full, 9999px);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-action-btn:hover {
+  background: #F4F6F5;
+}
+
+.km-action-btn.liked {
+  color: #BA4E2A;
+}
+
+.km-action-btn.liked svg {
+  fill: #BA4E2A;
+}
+
+/* Thread Komentar Inline di Bawah Post */
+.km-comments-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.km-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.km-comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.km-comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full, 9999px);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #E2E8E5;
+}
+
+.km-comment-bubble {
+  background: #F8FAF9;
+  border: 1px solid #E8ECE9;
+  border-radius: 14px;
+  padding: 10px 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.km-comment-bubble-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.km-comment-author-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-comment-author-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: #E2ECE7;
+  color: var(--color-primary, #1A382B);
+  padding: 1px 6px;
+  border-radius: var(--radius-full, 9999px);
+  margin-left: 6px;
+}
+
+.km-comment-time {
+  font-size: 11px;
+  color: var(--color-text-muted, #6C7470);
+}
+
+.km-comment-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #23262D;
+  margin: 0;
+}
+
+/* Form Balas Komentar Langsung */
+.km-comment-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.km-comment-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full, 9999px);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.km-comment-input-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #F4F6F5;
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-full, 9999px);
+  padding: 4px 6px 4px 16px;
+  transition: border-color var(--transition-fast, 0.2s ease);
+}
+
+.km-comment-input-box:focus-within {
+  border-color: var(--color-primary, #1A382B);
+  background: #FFFFFF;
+}
+
+.km-comment-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--color-slate, #0E1116);
+  outline: none;
+}
+
+.km-comment-input::placeholder {
+  color: #8C9490;
+}
+
+.km-comment-send-btn {
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast, 0.2s ease);
+}
+
+.km-comment-send-btn:hover {
+  background: var(--color-primary, #1A382B);
+}
+
+/* Sidebar Kanan Komunitas */
 .km-sidebar {
   display: flex;
   flex-direction: column;
@@ -184,561 +479,203 @@
   top: 96px;
 }
 
-/* Card CTA Unggah Dokumentasi */
-.km-cta-card {
+/* Card Profil John Doe di Sidebar */
+.km-side-user-card {
   background: #FFFFFF;
-  border-radius: var(--radius-2xl);
-  padding: 28px 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.km-cta-title {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--color-slate);
-  margin: 0;
-}
-
-.km-cta-desc {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--color-text-body);
-  margin: 0;
-}
-
-.km-cta-btn {
-  background: var(--color-slate);
-  color: #FFFFFF;
-  padding: 14px 20px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-decoration: none;
-}
-
-.km-cta-btn:hover {
-  background: var(--color-primary);
-  transform: translateY(-2px);
-}
-
-/* Card Akun & Poin John Doe */
-.km-user-card {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl);
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-2xl, 24px);
   padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.km-user-header {
+.km-side-user-top {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.km-user-avatar-large {
+.km-side-user-avatar {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
-  color: #FFFFFF;
+  border-radius: var(--radius-full, 9999px);
+  object-fit: cover;
+  border: 1px solid #E2E8E5;
+}
+
+.km-side-user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.km-side-user-name {
   font-size: 15px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-side-user-handle {
+  font-size: 12px;
+  color: var(--color-text-muted, #6C7470);
+  margin-top: 2px;
+}
+
+.km-side-points-box {
+  background: #F4F6F5;
+  border-radius: var(--radius-lg, 12px);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.km-side-points-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-primary, #1A382B);
+}
+
+.km-side-level-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-side-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 8px);
+  background: #F4F6F5;
+  color: var(--color-slate, #0E1116);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transition-fast, 0.2s ease);
+}
+
+.km-side-link-btn:hover {
+  background: #E2ECE7;
+  color: var(--color-primary, #1A382B);
+}
+
+/* Card Misi Terbuka Terdekat */
+.km-side-missions-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-2xl, 24px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.km-side-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.km-mission-item {
+  background: #F8FAF9;
+  border: 1px solid #E8ECE9;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.km-mission-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.km-mission-item-tree {
+  font-size: 11px;
+  color: var(--color-text-body, #474E4A);
+  margin: 0;
+}
+
+.km-mission-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.km-mission-reward {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+  background: #E2ECE7;
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+.km-mission-cta {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  text-decoration: none;
+}
+
+.km-mission-cta:hover {
+  color: var(--color-primary, #1A382B);
+  text-decoration: underline;
+}
+
+/* Card Panduan Tanam Aman */
+.km-side-guide-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8E5;
+  border-radius: var(--radius-2xl, 24px);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.km-guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.km-guide-step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #23262D;
+}
+
+.km-guide-step-num {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+  font-size: 10px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.km-user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.km-user-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-slate);
-}
-
-.km-user-email {
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.km-points-container {
-  background: var(--color-surface-subtle);
-  border-radius: var(--radius-lg);
-  padding: 16px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.km-points-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-body);
-}
-
-.km-points-number {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-primary);
-  letter-spacing: -0.02em;
-}
-
-.km-user-btn-voucher {
-  background: var(--color-surface-subtle);
-  color: var(--color-slate);
-  padding: 10px 16px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-decoration: none;
-}
-
-.km-user-btn-voucher:hover {
-  background: var(--color-primary);
-  color: #FFFFFF;
-}
-
-/* Card Topik & Kawasan Populer */
-.km-trending-card {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl);
-  padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.km-trending-title {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-primary);
-  margin: 0;
-}
-
-.km-trending-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.km-trend-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-radius: var(--radius-md);
-  background: var(--color-surface-subtle);
-  text-decoration: none;
-  transition: background var(--transition-fast);
-}
-
-.km-trend-row:hover {
-  background: #DCE5E0;
-}
-
-.km-trend-tag {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-slate);
-}
-
-.km-trend-count {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-}
-
-/* Feed Utama Kanan (.km-feed) */
-.km-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* Filter Kategori Bar */
-.km-filters-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.km-filter-pill {
-  background: #FFFFFF;
-  color: var(--color-text-body);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 10px 18px;
-  border-radius: var(--radius-full);
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition-fast);
-}
-
-.km-filter-pill:hover {
-  background: var(--color-surface-subtle);
-  color: var(--color-slate);
-}
-
-.km-filter-pill.active {
-  background: var(--color-slate);
-  color: #FFFFFF;
-}
-
-/* Grid Kartu Dokumentasi Aksi Warga */
-.km-posts-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.km-post-card {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl);
-  padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  transition: transform var(--transition-fast);
-}
-
-.km-post-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.km-post-author-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.km-post-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-full);
-  object-fit: cover;
-}
-
-.km-post-author-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-slate);
-  margin: 0;
-}
-
-.km-post-time {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  margin: 2px 0 0 0;
-}
-
-.km-post-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary-container);
-  color: var(--color-primary);
-  white-space: nowrap;
-}
-
-.km-post-badge.experience {
-  background: var(--color-surface-subtle);
-  color: var(--color-slate);
-}
-
-/* Gambar Dokumentasi Postingan */
-.km-post-image-box {
-  width: 100%;
-  height: 240px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--color-surface-subtle);
-}
-
-.km-post-image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.km-post-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.km-post-title {
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--color-slate);
-  margin: 0;
-}
-
-.km-post-story {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--color-text-body);
-  margin: 0;
-}
-
-.km-post-safe-tag {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--color-surface-subtle);
-  color: var(--color-primary);
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.km-post-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 14px;
-}
-
-.km-post-location {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.km-post-likes-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-slate);
-  background: var(--color-surface-subtle);
-  border: none;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.km-post-likes-btn:hover {
-  background: #FDF3EF;
-  color: var(--color-secondary);
-}
-
-/* Seksi Penukaran Voucher Hadiah */
-.km-voucher-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.km-section-header {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.km-section-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-slate);
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-.km-section-desc {
-  font-size: 14px;
-  color: var(--color-text-body);
-  margin: 0;
-}
-
-.km-voucher-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.km-voucher-card {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl);
-  padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.km-voucher-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.km-voucher-provider {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-primary);
-  text-transform: uppercase;
-}
-
-.km-voucher-badge {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-  background: var(--color-surface-subtle);
-  color: var(--color-slate);
-}
-
-.km-voucher-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--color-slate);
-  margin: 4px 0 0 0;
-}
-
-.km-voucher-desc {
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--color-text-body);
-  margin: 0;
-}
-
-.km-voucher-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  border-top: 1px solid var(--color-border-subtle);
-  padding-top: 16px;
-}
-
-.km-voucher-cost {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--color-slate);
-}
-
-.km-voucher-cost span {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-}
-
-.btn-redeem-voucher {
-  background: var(--color-slate);
-  color: #FFFFFF;
-  border: none;
-  border-radius: var(--radius-full);
-  padding: 9px 18px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.btn-redeem-voucher:hover {
-  background: var(--color-primary);
-}
-
-/* Voucher Aktif Saya */
-.km-active-vouchers-box {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl);
-  padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.km-active-coupon-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--color-surface-subtle);
-  padding: 12px 18px;
-  border-radius: var(--radius-lg);
-}
-
-.km-coupon-meta h5 {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-slate);
-  margin: 0;
-}
-
-.km-coupon-meta p {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  margin: 2px 0 0 0;
-}
-
-.km-coupon-code-pill {
-  font-family: monospace;
-  font-size: 13px;
-  font-weight: 700;
-  background: #FFFFFF;
-  color: var(--color-primary);
-  padding: 6px 12px;
-  border-radius: var(--radius-md);
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-/* Modals (Unggah Dokumentasi & Sukses Tukar Poin) */
+/* Modals (Unggah Dokumentasi & Sukses) */
 .km-modal-overlay {
   position: fixed;
   top: 0;
@@ -764,14 +701,13 @@
 
 .km-modal-card {
   background: #FFFFFF;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-2xl, 24px);
   width: 100%;
   max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
   padding: 32px;
-  border: none !important;
-  box-shadow: none !important;
+  border: 1px solid #E2E8E5;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -793,23 +729,23 @@
 .km-modal-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-slate);
+  color: var(--color-slate, #0E1116);
   margin: 0;
   line-height: 1.25;
 }
 
 .km-modal-desc {
   font-size: 13px;
-  color: var(--color-text-body);
+  color: var(--color-text-body, #474E4A);
   margin: 4px 0 0 0;
 }
 
 .km-modal-close-btn {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-full);
-  background: var(--color-surface-subtle);
-  color: var(--color-slate);
+  border-radius: var(--radius-full, 9999px);
+  background: #F4F6F5;
+  color: var(--color-slate, #0E1116);
   border: none;
   cursor: pointer;
   display: flex;
@@ -818,15 +754,15 @@
   font-size: 16px;
   font-weight: 600;
   flex-shrink: 0;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-modal-close-btn:hover {
-  background: var(--color-primary);
+  background: var(--color-primary, #1A382B);
   color: #FFFFFF;
 }
 
-/* Formulir di Dalam Modal */
+/* Formulir Modal */
 .km-form-group {
   display: flex;
   flex-direction: column;
@@ -836,7 +772,7 @@
 .km-form-label {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-slate);
+  color: var(--color-slate, #0E1116);
 }
 
 .km-form-input,
@@ -844,12 +780,12 @@
 .km-form-textarea {
   width: 100%;
   padding: 12px 16px;
-  border-radius: var(--radius-md);
-  border: none;
-  background: var(--color-surface-subtle);
-  font-family: var(--font-family);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid #E2E8E5;
+  background: #F8FAF9;
+  font-family: inherit;
   font-size: 13px;
-  color: var(--color-slate);
+  color: var(--color-slate, #0E1116);
   outline: none;
   box-sizing: border-box;
 }
@@ -857,7 +793,8 @@
 .km-form-input:focus,
 .km-form-select:focus,
 .km-form-textarea:focus {
-  background: #E8EFEA;
+  border-color: var(--color-primary, #1A382B);
+  background: #FFFFFF;
 }
 
 .km-form-textarea {
@@ -866,8 +803,8 @@
 }
 
 .km-photo-picker-box {
-  background: var(--color-surface-subtle);
-  border-radius: var(--radius-lg);
+  background: #F4F6F5;
+  border-radius: var(--radius-lg, 12px);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -882,15 +819,15 @@
 .km-photo-thumb {
   width: 64px;
   height: 64px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-md, 8px);
   overflow: hidden;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-photo-thumb.selected {
-  border-color: var(--color-primary);
+  border-color: var(--color-primary, #1A382B);
   transform: scale(1.05);
 }
 
@@ -901,10 +838,10 @@
 }
 
 .btn-submit-post {
-  background: var(--color-slate);
+  background: var(--color-slate, #0E1116);
   color: #FFFFFF;
   padding: 14px 20px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 600;
   display: flex;
@@ -913,425 +850,48 @@
   gap: 8px;
   border: none;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-fast, 0.2s ease);
   margin-top: 8px;
 }
 
 .btn-submit-post:hover {
-  background: var(--color-primary);
+  background: var(--color-primary, #1A382B);
 }
 
-/* Sidebar Leaderboard Shortcut Button */
-.km-user-btn-leaderboard {
-  width: 100%;
-  background: var(--color-surface-subtle);
-  color: var(--color-primary);
-  padding: 10px 16px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
+/* Modal Teman Kolaborator */
+.km-collab-chips-box {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: none !important;
-  box-shadow: none !important;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.km-user-btn-leaderboard:hover {
-  background: #D4E2DC;
-  color: var(--color-slate);
-  transform: translateY(-1px);
-}
-
-/* Seksi Papan Peringkat Kesejukan Warga (Leaderboard & Diagram) - Zero Card Border & Zero Card Shadow */
-.km-leaderboard-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.km-diagram-card {
-  background: #FFFFFF;
-  border-radius: 24px;
-  padding: 28px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.km-diagram-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
   flex-wrap: wrap;
+  gap: 6px;
+  min-height: 28px;
 }
 
-.km-diagram-title {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-slate);
-  margin: 0 0 4px 0;
-}
-
-.km-diagram-subtitle {
-  font-size: 13px;
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
-.km-prize-highlight-badge {
+.km-collab-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: #E2ECE7;
-  color: var(--color-primary);
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.km-diagram-content-grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 24px;
-  align-items: start;
-}
-
-/* Diagram Kolom Vertikal 5 Besar (Bawah ke Atas) */
-.km-top5-diagram-bars {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(68px, 1fr));
-  gap: 12px;
-  align-items: stretch;
-  background: #F8FAF9;
-  border-radius: 20px;
-  padding: 24px 14px 18px;
-  border: none !important;
-  box-shadow: none !important;
-  overflow-x: auto;
-}
-
-.km-diagram-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  text-align: center;
-}
-
-.km-col-top-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.km-col-exp-badge {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-slate);
-  background: #FFFFFF;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-
-.km-col-rank-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-}
-
-.km-col-rank-badge.rank-1 {
-  background: var(--color-primary);
-  color: #FFFFFF;
-}
-
-.km-col-rank-badge.rank-other {
-  background: #E2ECE7;
-  color: var(--color-primary);
-}
-
-.km-col-bar-track {
-  width: 100%;
-  max-width: 46px;
-  height: 170px;
-  background: #EAEFEB;
-  border-radius: 14px 14px 6px 6px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.km-col-bar-fill {
-  width: 100%;
-  border-radius: 12px 12px 4px 4px;
-  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.km-col-bar-fill.rank-1 {
-  background: var(--color-primary);
-}
-
-.km-col-bar-fill.rank-2 {
-  background: rgba(14, 17, 22, 0.82);
-}
-
-.km-col-bar-fill.rank-3 {
-  background: rgba(14, 17, 22, 0.68);
-}
-
-.km-col-bar-fill.rank-4 {
-  background: rgba(14, 17, 22, 0.54);
-}
-
-.km-col-bar-fill.rank-5 {
-  background: rgba(14, 17, 22, 0.42);
-}
-
-.km-col-bar-fill.is-current-user {
-  background: #2E7D32 !important;
-}
-
-.km-col-bottom-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  width: 100%;
-}
-
-.km-col-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
-  color: #FFFFFF;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2px;
-}
-
-.km-col-avatar.avatar-crown {
-  background: #bc4800;
-  color: #FFFFFF;
-}
-
-.km-col-name {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-slate);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 82px;
-  display: block;
-}
-
-.km-col-user {
-  font-size: 9px;
-  color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 82px;
-  display: block;
-}
-
-/* Showcase Hadiah 5 Besar */
-.km-prizes-showcase-box {
-  background: #E2ECE7;
-  border-radius: 20px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.km-prize-item {
-  background: #FFFFFF;
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.km-prize-rank {
-  font-size: 12px;
-  font-weight: 600;
-  background: var(--color-primary-container);
-  color: var(--color-primary);
+  color: var(--color-primary, #1A382B);
   padding: 4px 10px;
-  border-radius: var(--radius-full);
-  white-space: nowrap;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.km-prize-item.gold .km-prize-rank {
-  background: var(--color-primary);
-  color: #FFFFFF;
-}
-
-.km-prize-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  line-height: 1.25;
-}
-
-.km-prize-info strong {
+.km-collab-chip-remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-slate);
-}
-
-.km-prize-info span {
-  font-size: 11px;
-  color: var(--color-text-muted);
-}
-
-/* Seksi Peringkat Kontributor Warga (#6 s.d. #20) */
-.km-rankings-secondary-box {
-  background: #FFFFFF;
-  border-radius: 24px;
-  padding: 24px;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.km-secondary-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.km-secondary-prize-tag {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-primary);
-  background: #E2ECE7;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-}
-
-.km-rankings-rows-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 8px;
-}
-
-.km-row-card {
-  background: #F8FAF9;
-  border-radius: 12px;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border: none !important;
-  box-shadow: none !important;
-  transition: all var(--transition-fast);
-}
-
-.km-row-card:hover {
-  background: #EEF3F0;
-}
-
-.km-row-card.is-current-user {
-  background: #E2ECE7;
-}
-
-.km-row-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.km-row-rank {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-slate);
-  min-width: 24px;
-}
-
-.km-row-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  background: var(--color-slate);
-  color: #FFFFFF;
-  font-size: 10px;
-  font-weight: 700;
+  color: var(--color-primary, #1A382B);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  line-height: 1;
 }
 
-.km-row-user-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-
-.km-row-name {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-slate);
-}
-
-.km-row-username {
-  font-size: 10px;
-  color: var(--color-text-muted);
-}
-
-.km-row-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.km-row-exp {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.km-row-prize-badge {
-  font-size: 10px;
-  font-weight: 700;
-  color: #2E7D32;
-  background: #FFFFFF;
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  white-space: nowrap;
-}
-
-/* Modal Pemilih Teman (Minimalis: Tanpa Level & Tanpa Poin) */
 .km-friends-list-container {
   display: flex;
   flex-direction: column;
@@ -1341,26 +901,16 @@
   padding-right: 4px;
 }
 
-.km-friends-list-container::-webkit-scrollbar {
-  width: 4px;
-}
-
-.km-friends-list-container::-webkit-scrollbar-thumb {
-  background: #D4DCD7;
-  border-radius: var(--radius-full);
-}
-
 .km-friend-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
   background: #F8FAF9;
+  border: 1px solid #E8ECE9;
   border-radius: 12px;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  border: none !important;
-  box-shadow: none !important;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-friend-item:hover {
@@ -1369,6 +919,7 @@
 
 .km-friend-item.is-selected {
   background: #E2ECE7;
+  border-color: #C0D6CB;
 }
 
 .km-friend-item-left {
@@ -1380,8 +931,8 @@
 .km-friend-avatar {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-full);
-  background: var(--color-primary);
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-primary, #1A382B);
   color: #FFFFFF;
   font-size: 11px;
   font-weight: 700;
@@ -1399,97 +950,40 @@
 .km-friend-name {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate);
+  color: var(--color-slate, #0E1116);
 }
 
 .km-friend-user {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6C7470);
 }
 
 .km-friend-check {
   font-size: 11px;
   font-weight: 700;
   padding: 4px 10px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
   background: #FFFFFF;
-  color: var(--color-slate);
-  transition: all var(--transition-fast);
+  color: var(--color-slate, #0E1116);
+  border: 1px solid #E2E8E5;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-friend-item.is-selected .km-friend-check {
-  background: var(--color-primary);
+  background: var(--color-primary, #1A382B);
   color: #FFFFFF;
+  border-color: var(--color-primary, #1A382B);
 }
 
 .km-bonus-summary-box {
   background: #E2ECE7;
   padding: 12px 14px;
   border-radius: 12px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
-/* Collaborator Chips Box */
-.km-collab-chips-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-height: 28px;
-}
-
-.km-collab-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #E2ECE7;
-  color: var(--color-primary);
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.km-collab-chip-remove {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-}
-
-.km-collab-chip-remove:hover {
-  color: var(--color-secondary);
-}
-
-/* Tanda Kolaborator pada Post Card */
-.km-post-collab-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-primary);
-  background: var(--color-surface-subtle);
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-  margin-top: 6px;
-}
-
-/* Responsivitas Mobile (< 992px) */
+/* Responsivitas Layar Ponsel & Tablet (< 992px) */
 @media (max-width: 992px) {
-  .km-carousel-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .km-main-grid {
+  .km-layout-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
@@ -1498,11 +992,17 @@
     position: static;
   }
 
-  .km-voucher-grid {
-    grid-template-columns: 1fr;
+  .km-composer-card {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .km-diagram-content-grid {
-    grid-template-columns: 1fr;
+  .km-composer-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .km-post-image {
+    height: 220px;
   }
 }

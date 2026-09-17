@@ -9,14 +9,14 @@ const TEDUH_DATA = {
   zones: [
     {
       id: "zone-teuku-umar",
-      name: "Kawasan Ruko Teuku Umar Barat",
+      name: "Jl. Teuku Umar Barat",
       address: "Jl. Teuku Umar Barat No. 88",
       village: "Pemecutan Klod",
       district: "Kec. Denpasar Barat",
       city: "Kota Denpasar",
       province: "Bali",
       fullAddress: "Jl. Teuku Umar Barat, Pemecutan Klod, Kec. Denpasar Barat, Kota Denpasar",
-      category: "Kawasan Padat Semen",
+      category: "Jl. Teuku Umar Barat",
       lat: -8.6750,
       lng: 115.2080,
       surfaceTemp: "38.8°C",
@@ -85,14 +85,14 @@ const TEDUH_DATA = {
     },
     {
       id: "zone-sesetan",
-      name: "Pemukiman Padat Sesetan",
+      name: "Jl. Raya Sesetan",
       address: "Jl. Raya Sesetan Gg. Taman Sari",
       village: "Sesetan",
       district: "Kec. Denpasar Selatan",
       city: "Kota Denpasar",
       province: "Bali",
       fullAddress: "Jl. Raya Sesetan Gg. Taman Sari, Sesetan, Kec. Denpasar Selatan, Kota Denpasar",
-      category: "Gang Sempit Pemukiman",
+      category: "Jl. Raya Sesetan",
       lat: -8.6890,
       lng: 115.2195,
       surfaceTemp: "37.4°C",
@@ -161,14 +161,14 @@ const TEDUH_DATA = {
     },
     {
       id: "zone-renon",
-      name: "Kawasan Hijau Renon",
+      name: "Jl. Raya Puputan, Renon",
       address: "Jl. Raya Puputan Renon",
       village: "Renon",
       district: "Kec. Denpasar Timur",
       city: "Kota Denpasar",
       province: "Bali",
       fullAddress: "Jl. Raya Puputan, Renon, Kec. Denpasar Timur, Kota Denpasar",
-      category: "Pemukiman Rimbun Berkanopi",
+      category: "Jl. Raya Puputan, Renon",
       lat: -8.6720,
       lng: 115.2340,
       surfaceTemp: "31.2°C",
@@ -233,14 +233,14 @@ const TEDUH_DATA = {
     },
     {
       id: "zone-gatot-subroto",
-      name: "Koridor Jalan Gatot Subroto Barat",
+      name: "Jl. Gatot Subroto Barat",
       address: "Jl. Gatot Subroto Barat No. 120",
       village: "Padangsambian Kaja",
       district: "Kec. Denpasar Barat",
       city: "Kota Denpasar",
       province: "Bali",
       fullAddress: "Jl. Gatot Subroto Barat, Padangsambian Kaja, Kec. Denpasar Barat, Kota Denpasar",
-      category: "Jalan Gersang & Radiasi Aspal",
+      category: "Jl. Gatot Subroto Barat",
       lat: -8.6410,
       lng: 115.1850,
       surfaceTemp: "39.2°C",
@@ -305,14 +305,14 @@ const TEDUH_DATA = {
     },
     {
       id: "zone-jimbaran",
-      name: "Pemukiman & Kampus Jimbaran",
+      name: "Jl. Kampus Unud, Jimbaran",
       address: "Jl. Kampus Unud Jimbaran",
       village: "Jimbaran",
       district: "Kec. Kuta Selatan",
       city: "Kab. Badung",
       province: "Bali",
       fullAddress: "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kab. Badung",
-      category: "Lahan Kering Berbatu",
+      category: "Jl. Kampus Unud, Jimbaran",
       lat: -8.7980,
       lng: 115.1630,
       surfaceTemp: "36.8°C",
@@ -796,33 +796,33 @@ const TEDUH_DATA = {
 
   // ============================================
   // DIREKTORI TEMAN WARGA (BERSIH & MINIMALIS)
-  // Sesuai instruksi: Tanpa Level & Tanpa Poin
+  // Dilengkapi titik koordinat lingkungan warga di Bali
   // ============================================
   friendsDirectory: [
-    { id: "friend-dewi", name: "Dewi Lestari", username: "@dewi_lestari", avatar: "DL" },
-    { id: "friend-siti", name: "Siti Rahma", username: "@sitirahma", avatar: "SR" },
-    { id: "friend-made", name: "Made Artha", username: "@made_artha", avatar: "MA" },
-    { id: "friend-agus", name: "Agus Pratama", username: "@agus_pratama", avatar: "AP" },
-    { id: "friend-ketut", name: "Ketut Raka", username: "@ketut_raka", avatar: "KR" },
-    { id: "friend-wayan", name: "Ni Wayan Sukma", username: "@wayan_sukma", avatar: "WS" },
-    { id: "friend-budi", name: "Budi Santoso", username: "@budi_santoso", avatar: "BS" },
-    { id: "friend-putu", name: "Putu Wijaya", username: "@putu_wijaya", avatar: "PW" },
-    { id: "friend-luh", name: "Luh Gede Ananta", username: "@gede_ananta", avatar: "GA" },
-    { id: "friend-darma", name: "Wayan Darmawan", username: "@wayan_darma", avatar: "WD" },
-    { id: "friend-kadek", name: "Kadek Bayu", username: "@kadek_bayu", avatar: "KB" },
-    { id: "friend-sintya", name: "Komang Sintya", username: "@komang_sintya", avatar: "KS" },
-    { id: "friend-wira", name: "Ketut Wirawan", username: "@ketut_wira", avatar: "KW" },
-    { id: "friend-suar", name: "Made Suardika", username: "@made_suar", avatar: "MS" },
-    { id: "friend-trisna", name: "Nyoman Trisna", username: "@nyoman_trisna", avatar: "NT" },
-    { id: "friend-ayu", name: "Ayu Maharani", username: "@ayu_maharani", avatar: "AM" },
-    { id: "friend-sudi", name: "Gede Sudiarta", username: "@gede_sudi", avatar: "GS" },
-    { id: "friend-ilham", name: "Ilham Ramadhan", username: "@ilham_rmd", avatar: "IR" },
-    { id: "friend-sarah", name: "Sarah Lestari", username: "@sarah_lstr", avatar: "SL" },
-    { id: "friend-hendra", name: "Hendra Gunawan", username: "@hendra_gnw", avatar: "HG" },
-    { id: "friend-cantika", name: "Cantika Putri", username: "@cantika_ptr", avatar: "CP" },
-    { id: "friend-rian", name: "Rian Hidayat", username: "@rian_hidayat", avatar: "RH" },
-    { id: "friend-ariani", name: "Ni Kadek Ariani", username: "@kadek_ariani", avatar: "KA" },
-    { id: "friend-dimas", name: "Dimas Wicaksono", username: "@dimas_wicak", avatar: "DW" }
+    { id: "friend-dewi", name: "Dewi Lestari", username: "@dewi_lestari", avatar: "DL", lat: -8.6790, lng: 115.2280, districtLocation: "Panjer, Denpasar Selatan, Bali" },
+    { id: "friend-made", name: "Made Artha", username: "@made_artha", avatar: "MA", lat: -8.6710, lng: 115.2050, districtLocation: "Dauh Puri Kauh, Denpasar Barat, Bali" },
+    { id: "friend-siti", name: "Siti Rahma", username: "@sitirahma", avatar: "SR", lat: -8.6380, lng: 115.1810, districtLocation: "Padangsambian Kaja, Denpasar Barat, Bali" },
+    { id: "friend-agus", name: "Agus Pratama", username: "@agus_pratama", avatar: "AP", lat: -8.6940, lng: 115.2220, districtLocation: "Sesetan, Denpasar Selatan, Bali" },
+    { id: "friend-ketut", name: "Ketut Raka", username: "@ketut_raka", avatar: "KR", lat: -8.8020, lng: 115.1660, districtLocation: "Jimbaran, Kuta Selatan, Badung" },
+    { id: "friend-wayan", name: "Ni Wayan Sukma", username: "@wayan_sukma", avatar: "WS", lat: -8.6920, lng: 115.2510, districtLocation: "Sanur Kauh, Denpasar Selatan, Bali" },
+    { id: "friend-budi", name: "Budi Santoso", username: "@budi_santoso", avatar: "BS", lat: -8.6650, lng: 115.2150, districtLocation: "Pemecutan Klod, Denpasar Barat, Bali" },
+    { id: "friend-putu", name: "Putu Wijaya", username: "@putu_wijaya", avatar: "PW", lat: -8.6830, lng: 115.2390, districtLocation: "Renon, Denpasar Timur, Bali" },
+    { id: "friend-luh", name: "Luh Gede Ananta", username: "@gede_ananta", avatar: "GA", lat: -8.6520, lng: 115.2210, districtLocation: "Dangin Puri, Denpasar Utara, Bali" },
+    { id: "friend-darma", name: "Wayan Darmawan", username: "@wayan_darma", avatar: "WD", lat: -8.7890, lng: 115.1720, districtLocation: "Kedonganan, Kuta, Badung" },
+    { id: "friend-kadek", name: "Kadek Bayu", username: "@kadek_bayu", avatar: "KB", lat: -8.6470, lng: 115.1950, districtLocation: "Ubung, Denpasar Utara, Bali" },
+    { id: "friend-sintya", name: "Komang Sintya", username: "@komang_sintya", avatar: "KS", lat: -8.7010, lng: 115.2130, districtLocation: "Pedungan, Denpasar Selatan, Bali" },
+    { id: "friend-wira", name: "Ketut Wirawan", username: "@ketut_wira", avatar: "KW", lat: -8.6870, lng: 115.2010, districtLocation: "Pemogan, Denpasar Selatan, Bali" },
+    { id: "friend-suar", name: "Made Suardika", username: "@made_suar", avatar: "MS", lat: -8.6610, lng: 115.1890, districtLocation: "Padangsambian, Denpasar Barat, Bali" },
+    { id: "friend-trisna", name: "Nyoman Trisna", username: "@nyoman_trisna", avatar: "NT", lat: -8.6740, lng: 115.2410, districtLocation: "Sumerta Kelod, Denpasar Timur, Bali" },
+    { id: "friend-ayu", name: "Ayu Maharani", username: "@ayu_maharani", avatar: "AM", lat: -8.6580, lng: 115.2330, districtLocation: "Kesiman, Denpasar Timur, Bali" },
+    { id: "friend-sudi", name: "Gede Sudiarta", username: "@gede_sudi", avatar: "GS", lat: -8.6440, lng: 115.1720, districtLocation: "Kerobokan Kaja, Kuta Utara, Badung" },
+    { id: "friend-ilham", name: "Ilham Ramadhan", username: "@ilham_rmd", avatar: "IR", lat: -8.6780, lng: 115.1950, districtLocation: "Marlboro Barat, Denpasar Barat, Bali" },
+    { id: "friend-sarah", name: "Sarah Lestari", username: "@sarah_lstr", avatar: "SL", lat: -8.6910, lng: 115.2310, districtLocation: "Sidakarya, Denpasar Selatan, Bali" },
+    { id: "friend-hendra", name: "Hendra Gunawan", username: "@hendra_gnw", avatar: "HG", lat: -8.6320, lng: 115.1880, districtLocation: "Gatsu Tengah, Denpasar Utara, Bali" },
+    { id: "friend-cantika", name: "Cantika Putri", username: "@cantika_ptr", avatar: "CP", lat: -8.6810, lng: 115.2140, districtLocation: "Dauh Puri, Denpasar Barat, Bali" },
+    { id: "friend-rian", name: "Rian Hidayat", username: "@rian_hidayat", avatar: "RH", lat: -8.6730, lng: 115.2180, districtLocation: "Dauh Puri Kangin, Denpasar Barat, Bali" },
+    { id: "friend-ariani", name: "Ni Kadek Ariani", username: "@kadek_ariani", avatar: "KA", lat: -8.6880, lng: 115.2260, districtLocation: "Sesetan Kaja, Denpasar Selatan, Bali" },
+    { id: "friend-dimas", name: "Dimas Wicaksono", username: "@dimas_wicak", avatar: "DW", lat: -8.7950, lng: 115.1610, districtLocation: "Kuta Selatan, Badung, Bali" }
   ],
 
   searchFriends: function(query) {
@@ -950,23 +950,25 @@ const TEDUH_DATA = {
   },
 
   // ============================================
-  // LAPISAN ZONA RADIASI PANAS SPASIAL (ORGANIC HEAT BLOBS)
-  // Menampilkan titik panas gersang/semen terik dengan kontur membulat alami
+  // LAPISAN ZONA RADIASI PANAS SPASIAL (LST THERMAL ANOMALY FIELD)
+  // Memodelkan radiasi panas permukaan satelit berbasis multi-node dispersi termal
   // ============================================
   pollutionZones: [
     {
       id: "poly-teuku-umar",
-      name: "Kawasan Komersial Teuku Umar",
+      name: "Jl. Teuku Umar Barat",
       zoneId: "zone-teuku-umar",
       type: "hotspot",
-      color: "#BA4E2A",
-      fillColor: "#BA4E2A",
-      fillOpacity: 0.28,
-      stroke: false,
-      weight: 0,
+      color: "#C84B20",
+      fillColor: "#C84B20",
       surfaceTemp: "38.8°C",
       aqi: 92,
       aqiLabel: "Polusi Kritis & Radiasi Semen",
+      thermalNodes: [
+        { lat: -8.6750, lng: 115.2080, radius: 950, weight: 0.42 },
+        { lat: -8.6732, lng: 115.2025, radius: 780, weight: 0.35 },
+        { lat: -8.6768, lng: 115.2135, radius: 820, weight: 0.38 }
+      ],
       coordinates: [
         [-8.675000, 115.222170],
         [-8.670747, 115.221510],
@@ -987,7 +989,7 @@ const TEDUH_DATA = {
       ],
       mission: {
         id: "mission-teuku-umar",
-        title: "Peneduh Ruko Koridor Teuku Umar",
+        title: "Peneduh Ruko Jl. Teuku Umar Barat",
         rewardPoints: 250,
         recommendedTree: "Pohon Tanjung (Mimusops elengi)",
         safeDistance: "1.5 meter dari bibir got tertutup",
@@ -996,17 +998,19 @@ const TEDUH_DATA = {
     },
     {
       id: "poly-gatot-subroto",
-      name: "Koridor Jalan Gatot Subroto Barat",
+      name: "Jl. Gatot Subroto Barat",
       zoneId: "zone-gatot-subroto",
       type: "hotspot",
-      color: "#BA4E2A",
-      fillColor: "#BA4E2A",
-      fillOpacity: 0.28,
-      stroke: false,
-      weight: 0,
+      color: "#C84B20",
+      fillColor: "#C84B20",
       surfaceTemp: "39.2°C",
       aqi: 110,
       aqiLabel: "Sangat Terik & Polusi Debu Jalan",
+      thermalNodes: [
+        { lat: -8.6410, lng: 115.1850, radius: 1050, weight: 0.45 },
+        { lat: -8.6402, lng: 115.1760, radius: 850, weight: 0.36 },
+        { lat: -8.6418, lng: 115.1940, radius: 900, weight: 0.38 }
+      ],
       coordinates: [
         [-8.641000, 115.200552],
         [-8.637698, 115.199070],
@@ -1027,7 +1031,7 @@ const TEDUH_DATA = {
       ],
       mission: {
         id: "mission-gatsu",
-        title: "Penghijauan Sempadan Aspal Gatsu Barat",
+        title: "Penghijauan Sempadan Aspal Jl. Gatot Subroto Barat",
         rewardPoints: 300,
         recommendedTree: "Kiara Payung (Filicium decipiens)",
         safeDistance: "2.0 meter dari trotoar got",
@@ -1036,17 +1040,19 @@ const TEDUH_DATA = {
     },
     {
       id: "poly-sesetan",
-      name: "Gang Pemukiman Padat Sesetan",
+      name: "Jl. Raya Sesetan",
       zoneId: "zone-sesetan",
       type: "hotspot",
-      color: "#BA4E2A",
-      fillColor: "#BA4E2A",
-      fillOpacity: 0.28,
-      stroke: false,
-      weight: 0,
+      color: "#C84B20",
+      fillColor: "#C84B20",
       surfaceTemp: "37.4°C",
       aqi: 84,
       aqiLabel: "Terik Menyengat & Lorong Semen",
+      thermalNodes: [
+        { lat: -8.6890, lng: 115.2195, radius: 880, weight: 0.40 },
+        { lat: -8.6855, lng: 115.2160, radius: 720, weight: 0.32 },
+        { lat: -8.6925, lng: 115.2235, radius: 760, weight: 0.34 }
+      ],
       coordinates: [
         [-8.689000, 115.232471],
         [-8.684726, 115.231992],
@@ -1067,7 +1073,7 @@ const TEDUH_DATA = {
       ],
       mission: {
         id: "mission-sesetan",
-        title: "Peneduh Ramping Gang Sesetan",
+        title: "Peneduh Ramping Jl. Raya Sesetan",
         rewardPoints: 250,
         recommendedTree: "Ketapang Kencana (Terminalia mantaly)",
         safeDistance: "1.0 meter dari tepi drainase",
@@ -1076,17 +1082,19 @@ const TEDUH_DATA = {
     },
     {
       id: "poly-jimbaran",
-      name: "Pemukiman Lahan Kering Jimbaran",
+      name: "Jl. Kampus Unud, Jimbaran",
       zoneId: "zone-jimbaran",
       type: "hotspot",
-      color: "#BA4E2A",
-      fillColor: "#BA4E2A",
-      fillOpacity: 0.28,
-      stroke: false,
-      weight: 0,
+      color: "#C84B20",
+      fillColor: "#C84B20",
       surfaceTemp: "36.8°C",
       aqi: 65,
       aqiLabel: "Kering Berbatu & Minim Hijau",
+      thermalNodes: [
+        { lat: -8.7980, lng: 115.1630, radius: 1050, weight: 0.40 },
+        { lat: -8.7942, lng: 115.1565, radius: 800, weight: 0.32 },
+        { lat: -8.8018, lng: 115.1695, radius: 850, weight: 0.34 }
+      ],
       coordinates: [
         [-8.798000, 115.175758],
         [-8.794219, 115.174202],
@@ -1107,7 +1115,7 @@ const TEDUH_DATA = {
       ],
       mission: {
         id: "mission-jimbaran",
-        title: "Penghijauan Tanah Kapur Jimbaran",
+        title: "Penghijauan Tanah Kapur Jl. Kampus Unud, Jimbaran",
         rewardPoints: 250,
         recommendedTree: "Tabebuia Emas (Handroanthus chrysotrichus)",
         safeDistance: "2.0 meter dari tandon air",
@@ -1123,7 +1131,7 @@ const TEDUH_DATA = {
     {
       id: "misi-teuku-umar-1",
       zoneId: "zone-teuku-umar",
-      zoneName: "Kawasan Komersial Teuku Umar",
+      zoneName: "Jl. Teuku Umar Barat",
       title: "Penanaman Pohon Tanjung di Pelataran Ruko",
       targetTree: "Pohon Tanjung (Mimusops elengi)",
       rewardPoints: 250,
@@ -1135,8 +1143,8 @@ const TEDUH_DATA = {
     {
       id: "misi-sesetan-1",
       zoneId: "zone-sesetan",
-      zoneName: "Gang Pemukiman Sesetan",
-      title: "Hijaukan Koridor Semen Gang Sesetan",
+      zoneName: "Jl. Raya Sesetan",
+      title: "Hijaukan Koridor Semen Jl. Raya Sesetan",
       targetTree: "Ketapang Kencana (Terminalia mantaly)",
       rewardPoints: 250,
       status: "Tersedia",
@@ -1185,9 +1193,33 @@ const TEDUH_DATA = {
       tagType: "mission",
       image: "images/map-popup.png",
       story: "Kemarin teras ruko terasa memanggang sampai 39 derajat. Hari ini kami selesaikan penanaman bibit Pohon Tanjung berjarak 1.8 meter dari pipa got utama. Akar tunggangnya aman dan tanah sudah diberi 2 lubang biopori!",
-      distanceInfo: "Aman jarak 1.8m dari got",
+      distanceInfo: "Aman jarak 1.8m dari saluran got",
       likes: 38,
-      comments: 6
+      comments: 3,
+      commentsList: [
+        {
+          id: "c1-1",
+          authorName: "Agus Pratama",
+          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          timeAgo: "1 jam yang lalu",
+          text: "Apakah semennya dibongkar manual atau pakai mesin jack hammer bli? Kedalaman galian berapa cm?"
+        },
+        {
+          id: "c1-2",
+          authorName: "Made Suantara",
+          authorAvatar: "images/testimonial/Bang Raka.webp",
+          isAuthor: true,
+          timeAgo: "45 menit yang lalu",
+          text: "Bongkar manual 80x80cm bli, gali sedalam 60cm lalu diberi campuran tanah humus dan sekam bakar sebelum bibit masuk."
+        },
+        {
+          id: "c1-3",
+          authorName: "Dewi Lestari",
+          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          timeAgo: "20 menit yang lalu",
+          text: "Rekomendasi bagus, akar tunggang tanjung memang terbukti tidak mengangkat keramik toko."
+        }
+      ]
     },
     {
       id: "post-2",
@@ -1202,7 +1234,31 @@ const TEDUH_DATA = {
       story: "Selesai membongkar 80x80cm semen teras depan gang dan langsung menanam Ketapang Kencana. Tajuknya ramping bertingkat, lorong gang langsung terasa adem tanpa menghalangi motor warga!",
       distanceInfo: "Aman jarak 1.2m dari saluran got",
       likes: 64,
-      comments: 11
+      comments: 3,
+      commentsList: [
+        {
+          id: "c2-1",
+          authorName: "Siti Rahma",
+          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          timeAgo: "4 jam yang lalu",
+          text: "Jarak tajuk ke kabel listrik PLN di atas gang aman gak mbak?"
+        },
+        {
+          id: "c2-2",
+          authorName: "Ayu Lestari",
+          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          isAuthor: true,
+          timeAgo: "3 jam yang lalu",
+          text: "Aman mbak, cabang bawah rutin dipangkas biar sirkulasi motor tetap plong dan tajuk melebar di atas 2.5 meter."
+        },
+        {
+          id: "c2-3",
+          authorName: "Budi Santoso",
+          authorAvatar: "images/testimonial/Mas Bima (1).webp",
+          timeAgo: "2 jam yang lalu",
+          text: "Sore kemarin lewat gang ini memang hawanya langsung adem beda dari gang sebelah."
+        }
+      ]
     },
     {
       id: "post-3",
@@ -1217,15 +1273,32 @@ const TEDUH_DATA = {
       story: "Menambah 1 bibit Tabebuia di pekarangan rumah sisi barat. Terik sore matahari Denpasar kini tertahan tajuk daun, AC kamar siang hari jadi jauh lebih hemat listrik.",
       distanceInfo: "Aman jarak 2.5m dari pagar",
       likes: 92,
-      comments: 14
+      comments: 2,
+      commentsList: [
+        {
+          id: "c3-1",
+          authorName: "Putu Wijaya",
+          authorAvatar: "images/testimonial/Bang Raka.webp",
+          timeAgo: "18 jam yang lalu",
+          text: "Penyiraman di awal butuh berapa liter sehari pak Ketut?"
+        },
+        {
+          id: "c3-2",
+          authorName: "Ketut Wiradana",
+          authorAvatar: "images/testimonial/Mas Bima (1).webp",
+          isAuthor: true,
+          timeAgo: "15 jam yang lalu",
+          text: "Sekitar 5-10 liter tiap sore pak, setelah 3 minggu akarnya sudah mandiri cari air bawah tanah."
+        }
+      ]
     }
   ],
 
   getCommunityPosts: function() {
     if (typeof localStorage === 'undefined') return this.communityPosts;
-    const saved = localStorage.getItem('teduh_community_posts');
+    const saved = localStorage.getItem('teduh_community_posts_v2');
     if (!saved) {
-      localStorage.setItem('teduh_community_posts', JSON.stringify(this.communityPosts));
+      localStorage.setItem('teduh_community_posts_v2', JSON.stringify(this.communityPosts));
       return this.communityPosts;
     }
     try {
@@ -1240,9 +1313,27 @@ const TEDUH_DATA = {
     if (!post.id) {
       post.id = "post-" + Date.now();
     }
+    if (!post.commentsList) {
+      post.commentsList = [];
+    }
     posts.unshift(post);
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('teduh_community_posts', JSON.stringify(posts));
+      localStorage.setItem('teduh_community_posts_v2', JSON.stringify(posts));
+    }
+    return post;
+  },
+
+  addCommentToPost: function(postId, commentObj) {
+    const posts = this.getCommunityPosts();
+    const post = posts.find(p => p.id === postId);
+    if (!post) return null;
+
+    if (!post.commentsList) post.commentsList = [];
+    post.commentsList.push(commentObj);
+    post.comments = post.commentsList.length;
+
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('teduh_community_posts_v2', JSON.stringify(posts));
     }
     return post;
   },

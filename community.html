@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teduh: Komunitas Warga, Misi Aksi Tanam & Katalog Reward</title>
-  <meta name="description" content="Forum komunitas warga Teduh untuk berbagi dokumentasi penanaman pohon peneduh pekarangan, menyelesaikan misi lingkungan, dan menukarkan poin hadiah.">
+  <title>Teduh: Komunitas Warga &amp; Linimasa Aksi Tanam</title>
+  <meta name="description" content="Forum komunitas warga Teduh untuk berbagi dokumentasi penanaman pohon peneduh pekarangan, panduan akar aman fondasi, dan diskusi lingkungan sejuk di Denpasar.">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Stylesheets Murni (Pure CSS) -->
+  <!-- Stylesheets Murni -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/community.css">
 </head>
@@ -33,7 +33,7 @@
       </div>
 
       <div class="navbar-actions">
-        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron (Hover & Klik) -->
+        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron -->
         <div class="nav-profile-wrapper">
           <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
             <div class="nav-profile-avatar">
@@ -61,7 +61,7 @@
               <div class="nav-popup-metrics-row">
                 <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
                 <div class="nav-popup-points-badge">
-                  <span class="nav-popup-points-value">850 Poin</span>
+                  <span class="nav-popup-points-value" id="navUserPointsValue">850 Poin</span>
                 </div>
               </div>
 
@@ -74,7 +74,7 @@
             <div class="nav-popup-menu">
               <a href="profile.html" class="nav-popup-item" role="menuitem">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
-                <span>Profile</span>
+                <span>Profil Saya</span>
               </a>
               <div class="nav-popup-divider"></div>
               <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
@@ -110,18 +110,18 @@
         <a href="map.html" class="mobile-nav-link">Konsol Peta</a>
         <a href="guide.html" class="mobile-nav-link">Direktori Bibit</a>
         <a href="community.html" class="mobile-nav-link active">Komunitas</a>
-        <a href="profile.html" class="mobile-nav-link">Profil & Pekarangan Saya</a>
+        <a href="profile.html" class="mobile-nav-link">Profil &amp; Pekarangan Saya</a>
       </div>
     </div>
 
     <div>
-      <div class="km-points-container" style="margin-bottom: 12px;">
+      <div class="km-side-points-box" style="margin-bottom: 12px;">
         <div>
-          <div class="km-points-label">Saldo Akun John Doe</div>
-          <div class="km-points-number" id="mobileUserPoints">850 Poin</div>
+          <div style="font-size: 11px; color: #6C7470; font-weight: 600;">Saldo Akun John Doe</div>
+          <div class="km-side-points-val" id="mobileUserPoints">850 Poin</div>
         </div>
       </div>
-      <a href="map.html" class="btn-primary" style="width: 100%;">Buka Konsol Peta</a>
+      <a href="map.html" class="btn-primary" style="width: 100%; justify-content: center;">Buka Konsol Peta</a>
     </div>
   </aside>
 
@@ -129,273 +129,146 @@
   <main class="km-page-wrapper">
     <div class="km-container">
 
-      <!-- Hero Highlight Section -->
-      <section class="km-hero-section">
-        <div class="km-hero-header">
+      <!-- Header Section & Metrik Nyata -->
+      <section class="km-header-section">
+        <div class="km-header-top">
           <div>
-            <h1 class="km-hero-title">Komunitas Warga Teduh</h1>
-            <p class="km-hero-subtitle">
-              Dokumentasi nyata aksi warga Denpasar mengubah pekarangan semen panas menjadi koridor rindang berakar aman fondasi.
+            <h1 class="km-header-title">Linimasa Komunitas Warga</h1>
+            <p class="km-header-subtitle">
+              Dokumentasi penanaman pohon peneduh pekarangan oleh warga Denpasar untuk meredam radiasi panas dan menjaga keamanan saluran pipa got.
             </p>
-          </div>
-          <div class="km-carousel-nav">
-            <button class="km-carousel-btn" id="heroPrevBtn" type="button" aria-label="Sebelumnya">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            </button>
-            <button class="km-carousel-btn" id="heroNextBtn" type="button" aria-label="Berikutnya">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            </button>
           </div>
         </div>
 
-        <!-- 3 Highlight Cards Grid -->
-        <div class="km-carousel-grid">
-          
-          <!-- Slide 1 -->
-          <div class="km-slide-card">
-            <img src="images/map-popup.png" alt="Aksi Penanaman Pohon Tanjung">
-            <div class="km-slide-overlay">
-              <span class="km-slide-tag mission">Misi Selesai (+250 Poin)</span>
-              <h2 class="km-slide-title">Penanaman Pohon Tanjung di Pelataran Ruko Teuku Umar</h2>
-              <div class="km-slide-author">
-                <img src="images/testimonial/Bang Raka.webp" alt="Made Suantara">
-                <span>Made Suantara • Teuku Umar</span>
-              </div>
-            </div>
+        <!-- Bar Metrik Komunitas Nyata -->
+        <div class="km-metrics-bar">
+          <div class="km-metric-pill">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>128 Pohon Tertanam</span>
           </div>
-
-          <!-- Slide 2 -->
-          <div class="km-slide-card">
-            <img src="images/masalah-pekarangan-semen.png" alt="Aksi Ketapang Kencana di Gang Sesetan">
-            <div class="km-slide-overlay">
-              <span class="km-slide-tag mission">Misi Selesai (+250 Poin)</span>
-              <h2 class="km-slide-title">Hijaukan Gang Padat Sesetan dengan Ketapang Kencana</h2>
-              <div class="km-slide-author">
-                <img src="images/testimonial/Kakak Putri.webp" alt="Ayu Lestari">
-                <span>Ayu Lestari • Sesetan</span>
-              </div>
-            </div>
+          <div class="km-metric-pill">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>42 Pekarangan Sejuk</span>
           </div>
-
-          <!-- Slide 3 -->
-          <div class="km-slide-card">
-            <img src="images/hero-thermal-comparison.png" alt="Penyejukan Teras Rumah Renon">
-            <div class="km-slide-overlay">
-              <span class="km-slide-tag">Aksi Swadaya Warga</span>
-              <h2 class="km-slide-title">Meredam Terik Sore Rumah Barat dengan Tabebuia</h2>
-              <div class="km-slide-author">
-                <img src="images/testimonial/Mas Bima (1).webp" alt="Ketut Wiradana">
-                <span>Ketut Wiradana • Renon</span>
-              </div>
-            </div>
+          <div class="km-metric-pill highlight">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"></circle><path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round"></path></svg>
+            <span>850 Poin Saldo Anda</span>
           </div>
-
         </div>
       </section>
 
-      <!-- Tata Letak 2 Kolom Komunitas -->
-      <div class="km-main-grid">
+      <!-- Layout 2 Kolom Komunitas -->
+      <div class="km-layout-grid">
 
-        <!-- Sidebar Kiri: CTA, Akun John Doe, dan Topik Populer -->
-        <aside class="km-sidebar">
-          
-          <!-- Card CTA Dokumentasikan Aksi -->
-          <div class="km-cta-card">
-            <h3 class="km-cta-title">Punya Cerita Tanam Pohon?</h3>
-            <p class="km-cta-desc">
-              Dokumentasikan pohon peneduh yang telah kamu tanam di pekarangan semen untuk memverifikasi misi dan klaim +250 poin hadiah.
-            </p>
-            <button type="button" class="km-cta-btn" onclick="openCreateModal()">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"></circle><line x1="12" y1="8" x2="12" y2="16" stroke-width="2"></line><line x1="8" y1="12" x2="16" y2="12" stroke-width="2"></line></svg>
-              <span>Unggah Dokumentasi Sekarang</span>
+        <!-- Kolom Feed Utama Kiri -->
+        <section class="km-feed-stream">
+
+          <!-- Card Composer Dokumentasi di Atas Feed -->
+          <div class="km-composer-card">
+            <div class="km-composer-info">
+              <h3 class="km-composer-title">Punya Cerita &amp; Foto Aksi Tanam Pohon?</h3>
+              <p class="km-composer-desc">
+                Bagikan pengalaman membongkar semen atau menanam bibit peneduh berakar aman fondasi untuk klaim +250 Poin Kesejukan.
+              </p>
+            </div>
+            <button type="button" class="km-composer-btn" onclick="openCreateModal()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"></circle><line x1="12" y1="8" x2="12" y2="16" stroke-width="2"></line><line x1="8" y1="12" x2="16" y2="12" stroke-width="2"></line></svg>
+              <span>+ Unggah Dokumentasi Aksi</span>
             </button>
           </div>
 
-          <!-- Card Akun & Saldo Poin John Doe -->
-          <div class="km-user-card">
-            <div class="km-user-header">
-              <div class="km-user-avatar-large">JD</div>
-              <div class="km-user-info">
-                <span class="km-user-name">John Doe</span>
-                <span class="km-user-email">johndoe@gmail.com</span>
-              </div>
-            </div>
-
-            <div class="km-points-container">
-              <div>
-                <div class="km-points-label">Saldo Poin Kesejukan</div>
-                <div class="km-points-number" id="sidebarPointsNumber">850 Poin</div>
-              </div>
-              <div style="text-align: right;">
-                <div class="km-points-label">Level Botani</div>
-                <div style="font-size: 14px; font-weight: 600; color: #1A382B;" id="sidebarExpNumber">Level 3: Perintis Teduh</div>
-              </div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-              <button type="button" class="km-user-btn-voucher" onclick="filterCategory('voucher')">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"></rect><path d="M7 15h10M7 9h4" stroke-width="2"></path></svg>
-                <span>Tukar Poin Jadi Voucher & Saldo</span>
-              </button>
-              <button type="button" class="km-user-btn-leaderboard" onclick="filterCategory('leaderboard')">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                <span>Lihat Diagram Peringkat (Top 20)</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Card Topik & Kawasan Populer -->
-          <div class="km-trending-card">
-            <h4 class="km-trending-title">Kawasan Penanaman Populer</h4>
-            <div class="km-trending-list">
-              <a href="map.html?zone=zone-teuku-umar" class="km-trend-row">
-                <span class="km-trend-tag">#TeukuUmar</span>
-                <span class="km-trend-count">24 Aksi Tanam</span>
-              </a>
-              <a href="map.html?zone=zone-sesetan" class="km-trend-row">
-                <span class="km-trend-tag">#GangSesetan</span>
-                <span class="km-trend-count">18 Aksi Tanam</span>
-              </a>
-              <a href="map.html?zone=zone-gatot-subroto" class="km-trend-row">
-                <span class="km-trend-tag">#GatsuBarat</span>
-                <span class="km-trend-count">15 Aksi Tanam</span>
-              </a>
-              <a href="map.html?zone=zone-renon" class="km-trend-row">
-                <span class="km-trend-tag">#RenonHijau</span>
-                <span class="km-trend-count">32 Aksi Tanam</span>
-              </a>
-            </div>
-          </div>
-
-        </aside>
-
-        <!-- Feed Utama Kanan -->
-        <section class="km-feed">
-          
-          <!-- Filter Tabs Bar -->
-          <div class="km-filters-bar">
-            <button class="km-filter-pill active" type="button" onclick="filterCategory('all', this)">Semua Aksi</button>
-            <button class="km-filter-pill" type="button" onclick="filterCategory('mission', this)">Misi Selesai (+Poin)</button>
-            <button class="km-filter-pill" type="button" onclick="filterCategory('tanjung', this)">Pohon Tanjung</button>
-            <button class="km-filter-pill" type="button" onclick="filterCategory('ketapang', this)">Ketapang Kencana</button>
-            <button class="km-filter-pill" type="button" onclick="filterCategory('voucher', this)">Katalog Voucher & Saldo</button>
-            <button class="km-filter-pill" type="button" onclick="filterCategory('leaderboard', this)">Papan Peringkat Warga</button>
-          </div>
-
-          <!-- Grid Postingan Komunitas -->
-          <div id="communityPostsContainer" class="km-posts-grid">
+          <!-- Feed Postingan Komunitas dengan Diskusi Inline -->
+          <div id="communityPostsContainer" class="km-posts-list">
             <!-- Kartu postingan dimuat dinamis oleh js/community.js -->
           </div>
 
-          <!-- Seksi Katalog Penukaran Voucher (Hidden by default, activated on filter) -->
-          <div id="voucherSection" class="km-voucher-section hidden">
-            
-            <div class="km-section-header">
-              <h3 class="km-section-title">Katalog Penukaran Poin Hadiah</h3>
-              <p class="km-section-desc">
-                Tukarkan poin aksi penanaman pohonmu dengan voucher diskon bibit lokal, saldo dompet digital, atau perlengkapan berkebun.
-              </p>
-            </div>
-
-            <!-- Grid Kartu Voucher -->
-            <div id="voucherCardsGrid" class="km-voucher-grid">
-              <!-- Item voucher dimuat dinamis oleh js/community.js -->
-            </div>
-
-            <!-- Seksi Voucher Aktif Saya -->
-            <div class="km-active-vouchers-box">
-              <div class="km-section-header">
-                <h4 style="font-size: 16px; font-weight: 700; color: #0E1116; margin: 0;">Voucher Aktif Saya</h4>
-                <p style="font-size: 12px; color: #6C7470; margin: 2px 0 0 0;">Kupon yang telah berhasil kamu tukarkan siap digunakan.</p>
-              </div>
-
-              <div id="activeCouponsList" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- Kupon aktif dimuat dinamis -->
-              </div>
-          </div>
-
-          <!-- SEKSI PAPAN PERINGKAT KESEJUKAN WARGA (TOP 20) - 5 Besar: Diagram Balok Komparatif - 6 - 20: List Card Ramping (+1.000 EXP Hadiah) -->
-          <div id="leaderboardSection" class="km-leaderboard-section hidden">
-            
-            <div class="km-section-header">
-              <div>
-                <h3 class="km-section-title">Papan Peringkat Kesejukan Warga</h3>
-                <p class="km-section-desc">
-                  Apresiasi gotong royong warga Denpasar dalam meredam terik semen dan memperluas rimbun kanopi pohon tropis.
-                </p>
-              </div>
-            </div>
-
-            <!-- Wadah Kartu Utama Diagram 5 Besar -->
-            <div class="km-diagram-card">
-              <div class="km-diagram-header">
-                <div>
-                  <h4 class="km-diagram-title">Diagram Kontribusi 5 Besar Warga</h4>
-                  <p class="km-diagram-subtitle">Grafik kolom vertikal perolehan EXP pohon peneduh musim ini.</p>
-                </div>
-                <div class="km-prize-highlight-badge">
-                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-width="2"></path></svg>
-                  <span>Hadiah Spesial 5 Besar</span>
-                </div>
-              </div>
-
-              <!-- Grid 2 Kolom: Diagram Balok di Kiri, Kotak Hadiah di Kanan -->
-              <div class="km-diagram-content-grid">
-                
-                <!-- Balok Diagram 5 Besar -->
-                <div id="top5DiagramContainer" class="km-top5-diagram-bars">
-                  <!-- Balok dirender dinamis oleh js/community.js -->
-                </div>
-
-                <!-- Showcase Hadiah 5 Besar -->
-                <div class="km-prizes-showcase-box">
-                  <div class="km-prize-item gold">
-                    <div class="km-prize-rank">#1</div>
-                    <div class="km-prize-info">
-                      <strong>Paket Bibit Tabebuia Emas</strong>
-                      <span>2 Unit Biopori & Sertifikat Kesejukan</span>
-                    </div>
-                  </div>
-
-                  <div class="km-prize-item silver">
-                    <div class="km-prize-rank">#2 - #3</div>
-                    <div class="km-prize-info">
-                      <strong>Voucher Bibit Rp 150.000</strong>
-                      <span>Bebas pilih di seluruh Mitra Nursery Renon</span>
-                    </div>
-                  </div>
-
-                  <div class="km-prize-item bronze">
-                    <div class="km-prize-rank">#4 - #5</div>
-                    <div class="km-prize-info">
-                      <strong>Voucher Belanja Rp 75.000</strong>
-                      <span>Perlengkapan berkebun dan kompos organik</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <!-- Seksi Peringkat Kontributor Warga (#6 s.d. #20) -->
-            <div class="km-rankings-secondary-box">
-              <div class="km-secondary-header">
-                <div>
-                  <h4 style="font-size: 16px; font-weight: 700; color: #0E1116; margin: 0;">Kontributor Warga (#6 - #20)</h4>
-                  <p style="font-size: 12px; color: #6C7470; margin: 2px 0 0 0;">Seluruh kontributor peringkat 6 s.d. 20 berhak mengklaim hadiah partisipasi.</p>
-                </div>
-                <span class="km-secondary-prize-tag">Hadiah Partisipasi: +1.000 EXP & Kompos</span>
-              </div>
-
-              <!-- Deretan List Card Ramping (Compact Rows) -->
-              <div id="rankingsRowsContainer" class="km-rankings-rows-list">
-                <!-- List card dirender dinamis oleh js/community.js -->
-              </div>
-            </div>
-
-          </div>
-
         </section>
+
+        <!-- Kolom Sidebar Kanan -->
+        <aside class="km-sidebar">
+
+          <!-- Card Profil John Doe -->
+          <div class="km-side-user-card">
+            <div class="km-side-user-top">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-side-user-avatar" onerror="this.style.display='none';">
+              <div class="km-side-user-meta">
+                <span class="km-side-user-name">John Doe</span>
+                <span class="km-side-user-handle">@johndoe</span>
+              </div>
+            </div>
+
+            <div class="km-side-points-box">
+              <div>
+                <div style="font-size: 11px; color: #6C7470; font-weight: 600;">Saldo Kesejukan</div>
+                <div class="km-side-points-val" id="sidebarPointsVal">850 Poin</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 11px; color: #6C7470; font-weight: 600;">Peringkat</div>
+                <div class="km-side-level-val" id="sidebarLevelVal">Level 3: Perintis Teduh</div>
+              </div>
+            </div>
+
+            <a href="profile.html" class="km-side-link-btn">
+              <span>Buka Profil &amp; Riwayat Misi</span>
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+          </div>
+
+          <!-- Card Misi Terbuka Terdekat -->
+          <div class="km-side-missions-card">
+            <h4 class="km-side-card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #1A382B;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-width="2"></polygon></svg>
+              <span>Misi Aksi Tanam Terbuka</span>
+            </h4>
+
+            <div class="km-mission-item">
+              <h5 class="km-mission-item-title">Ruko Koridor Teuku Umar</h5>
+              <p class="km-mission-item-tree">Bibit: Pohon Tanjung • Akar Tunggang</p>
+              <div class="km-mission-item-footer">
+                <span class="km-mission-reward">+250 Poin</span>
+                <a href="map.html?zone=zone-teuku-umar&action=new-post" class="km-mission-cta">Ambil Misi &rarr;</a>
+              </div>
+            </div>
+
+            <div class="km-mission-item">
+              <h5 class="km-mission-item-title">Gang Pemukiman Sesetan</h5>
+              <p class="km-mission-item-tree">Bibit: Ketapang Kencana • Tajuk Ramping</p>
+              <div class="km-mission-item-footer">
+                <span class="km-mission-reward">+250 Poin</span>
+                <a href="map.html?zone=zone-sesetan&action=new-post" class="km-mission-cta">Ambil Misi &rarr;</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Panduan Keamanan Tanam -->
+          <div class="km-side-guide-card">
+            <h4 class="km-side-card-title">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #1A382B;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"></path></svg>
+              <span>3 Aturan Aman Fondasi &amp; Got</span>
+            </h4>
+
+            <div class="km-guide-steps">
+              <div class="km-guide-step-row">
+                <span class="km-guide-step-num">1</span>
+                <span>Jarak Minimal 1.2 s.d. 1.5 meter dari bibir saluran got atau fondasi dinding.</span>
+              </div>
+              <div class="km-guide-step-row">
+                <span class="km-guide-step-num">2</span>
+                <span>Pilih bibit dengan sistem perakaran tunggang vertikal ke bawah, bukan akar banir.</span>
+              </div>
+              <div class="km-guide-step-row">
+                <span class="km-guide-step-num">3</span>
+                <span>Pasang 2 lubang biopori di sela lubang tanam untuk resapan air tanah maksimal.</span>
+              </div>
+            </div>
+
+            <a href="guide.html" class="km-side-link-btn" style="margin-top: 4px;">
+              <span>Direktori Bibit &amp; Panduan</span>
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+          </div>
+
+        </aside>
 
       </div>
 
@@ -411,7 +284,7 @@
           <a href="index.html" class="footer-logo-link" aria-label="Teduh Beranda">
             <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 44px; width: auto; display: block;">
           </a>
-          <p class="brand-bio">Solusi iklim mikro dan panduan pohon peneduh cerdas yang memadukan data satelit spasial dengan kearifan botani lokal untuk pekarangan sejuk bebas radiasi semen.</p>
+          <p class="brand-bio">Solusi iklim mikro dan panduan pohon peneduh cerdas yang memadukan data spasial dengan kearifan botani lokal untuk pekarangan sejuk bebas radiasi semen.</p>
           <div class="footer-social-wrapper">
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Instagram Teduh">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
@@ -510,7 +383,7 @@
             <option value="Gang Pemukiman Padat Sesetan">Gang Pemukiman Padat Sesetan</option>
             <option value="Koridor Jalan Gatot Subroto Barat">Koridor Jalan Gatot Subroto Barat</option>
             <option value="Pemukiman Lahan Kering Jimbaran">Pemukiman Lahan Kering Jimbaran</option>
-            <option value="Jalur Hijau Renon">Jalur Hijau & Taman Kota Renon</option>
+            <option value="Jalur Hijau Renon">Jalur Hijau &amp; Taman Kota Renon</option>
             <option value="Pekarangan Rumah Sendiri">Pekarangan Rumah Sendiri (Aksi Mandiri)</option>
           </select>
         </div>
@@ -535,7 +408,7 @@
 
         <!-- Cerita Penanaman -->
         <div class="km-form-group">
-          <label class="km-form-label" for="formStoryInput">Cerita & Pengalaman Penanaman</label>
+          <label class="km-form-label" for="formStoryInput">Cerita &amp; Pengalaman Penanaman</label>
           <textarea id="formStoryInput" class="km-form-textarea" placeholder="Tuliskan pengalaman membongkar semen, kondisi tanah, atau respons tetangga sekitar..." required></textarea>
         </div>
 
@@ -575,13 +448,13 @@
 
           <button type="button" class="btn-secondary" onclick="openInviteFriendModal()" style="width: 100%; padding: 10px 14px; font-size: 12px; margin-top: 6px; justify-content: center;">
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke-width="2"></path><circle cx="8.5" cy="7" r="4" stroke-width="2"></circle><line x1="20" y1="8" x2="20" y2="14" stroke-width="2"></line><line x1="23" y1="11" x2="17" y2="11" stroke-width="2"></line></svg>
-            <span>Cari & Ajak Teman Kolaborator</span>
+            <span>Cari &amp; Ajak Teman Kolaborator</span>
           </button>
         </div>
 
         <!-- Tombol Submit -->
         <button type="submit" class="btn-submit-post" id="submitDocBtn">
-          <span id="submitDocBtnText">Kirim Dokumentasi & Klaim +250 Poin</span>
+          <span id="submitDocBtnText">Kirim Dokumentasi &amp; Klaim +250 Poin</span>
           <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
         </button>
 
@@ -589,7 +462,7 @@
     </div>
   </div>
 
-  <!-- MODAL PEMILIH TEMAN (MINIMALIS & BERSIH) - Tanpa Level & Tanpa Poin Sesuai Permintaan -->
+  <!-- MODAL PEMILIH TEMAN (MINIMALIS & BERSIH) -->
   <div id="inviteFriendModal" class="km-modal-overlay" aria-hidden="true">
     <div class="km-modal-card" style="max-width: 460px;" role="dialog" aria-modal="true" aria-labelledby="inviteModalTitle">
       <div class="km-modal-header">
@@ -609,7 +482,7 @@
           <svg style="position: absolute; right: 12px; top: 12px; color: #71717A; pointer-events: none;" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line></svg>
         </div>
 
-        <!-- Daftar Teman Hasil Pencarian (Minimalis: Avatar, Nama, Username) -->
+        <!-- Daftar Teman Hasil Pencarian -->
         <div id="friendsListContainer" class="km-friends-list-container">
           <!-- Item teman dirender oleh js/community.js -->
         </div>
@@ -629,30 +502,6 @@
           Gunakan Teman Kolaborator
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- MODAL KODE VOUCHER BERHASIL DITUKARKAN -->
-  <div id="voucherSuccessModal" class="km-modal-overlay" aria-hidden="true">
-    <div class="km-modal-card" style="max-width: 440px; text-align: center; align-items: center;" role="dialog">
-      <div style="width: 56px; height: 56px; border-radius: 9999px; background: #EBF3EF; color: #1A382B; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-      <h3 style="font-size: 20px; font-weight: 700; color: #0E1116; margin: 0;">Penukaran Berhasil!</h3>
-      <p style="font-size: 13px; color: #474E4A; margin: 6px 0 16px 0;" id="voucherSuccessDesc">Voucher berhasil ditukarkan menggunakan poin kesejukan akun John Doe.</p>
-
-      <div style="background: #E2ECE7; padding: 16px 20px; border-radius: 16px; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;">
-        <span style="font-size: 11px; font-weight: 700; color: #6C7470; text-transform: uppercase;">Kode Kupon Voucher</span>
-        <div id="voucherSuccessCode" style="font-family: monospace; font-size: 18px; font-weight: 700; color: #1A382B; letter-spacing: 0.05em;">TEDUH-GOPAY-8491</div>
-      </div>
-
-      <button type="button" class="btn-primary" onclick="copyCouponCode()" style="width: 100%; margin-top: 18px;">
-        <span id="copyBtnText">Salin Kode Kupon</span>
-      </button>
-
-      <button type="button" style="background: transparent; border: none; font-size: 12px; font-weight: 700; color: #6C7470; cursor: pointer; margin-top: 8px;" onclick="closeSuccessModal()">
-        Tutup Jendela
-      </button>
     </div>
   </div>
 

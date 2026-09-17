@@ -1,8 +1,7 @@
 /**
  * TEDUH DIGITAL PLATFORM - COMMUNITY & MISSIONS CONTROLLER (js/community.js)
- * Mengelola Linimasa Feed Dokumentasi Warga, Pengunggahan Aksi Tanam, 
- * Gamifikasi Poin John Doe, dan Penukaran Katalog Voucher
- * Disiplin Desain: Zero Card Shadow, Zero Card Border, Bebas Em Dash (R-02)
+ * Linimasa Dokumentasi Aksi Warga & Thread Diskusi Komunitas Interaktif
+ * Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, Bebas Em Dash (R-02)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,18 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   checkCommunityUrlParams();
 });
 
-// Inisialisasi Komunitas
+// Inisialisasi Halaman Komunitas
 function initCommunity() {
   syncProfileData();
-  renderPosts('all');
-  renderVouchers();
-  renderActiveVouchers();
-  renderLeaderboard();
+  renderPosts();
   renderSelectedCollaboratorsChips();
-  initHeroCarouselNav();
 }
 
-// Sinkronisasi Tampilan Data Pengguna (John Doe) & Poin
+// Sinkronisasi Profil Pengguna (John Doe) & Poin
 function syncProfileData() {
   if (typeof TEDUH_DATA === 'undefined' || !TEDUH_DATA.getUserData) return;
   const user = TEDUH_DATA.getUserData();
@@ -29,222 +24,183 @@ function syncProfileData() {
 
   const navPoints = document.getElementById('navUserPointsValue');
   const mobilePoints = document.getElementById('mobileUserPoints');
-  const sidebarPoints = document.getElementById('sidebarPointsNumber');
-  const sidebarExp = document.getElementById('sidebarExpNumber');
+  const sidePoints = document.getElementById('sidebarPointsVal');
+  const sideLevel = document.getElementById('sidebarLevelVal');
 
   if (navPoints) navPoints.textContent = `${user.points} Poin`;
   if (mobilePoints) mobilePoints.textContent = `${user.points} Poin`;
-  if (sidebarPoints) sidebarPoints.textContent = `${user.points} Poin`;
-  if (sidebarExp) sidebarExp.textContent = `Level ${level.number}: ${level.title}`;
+  if (sidePoints) sidePoints.textContent = `${user.points} Poin`;
+  if (sideLevel) sideLevel.textContent = `Level ${level.number}: ${level.title}`;
 
   if (typeof syncNavProfileData === 'function') {
     syncNavProfileData();
   }
 }
 
-// Render Linimasa Postingan Dokumentasi Warga
-function renderPosts(filter = 'all') {
+// Render Linimasa Postingan Komunitas beserta Thread Komentar Inline
+function renderPosts() {
   const container = document.getElementById('communityPostsContainer');
   if (!container) return;
 
   const allPosts = TEDUH_DATA.getCommunityPosts();
-  let filtered = allPosts;
-
-  if (filter === 'mission') {
-    filtered = allPosts.filter(p => p.tagType === 'mission');
-  } else if (filter === 'tanjung') {
-    filtered = allPosts.filter(p => p.treeName.toLowerCase().includes('tanjung'));
-  } else if (filter === 'ketapang') {
-    filtered = allPosts.filter(p => p.treeName.toLowerCase().includes('ketapang'));
-  }
-
   container.innerHTML = '';
 
-  if (filtered.length === 0) {
+  if (allPosts.length === 0) {
     container.innerHTML = `
-      <div style="background: #FFFFFF; padding: 40px 24px; border-radius: 24px; text-align: center;">
-        <h4 style="font-size: 16px; font-weight: 700; color: #0E1116; margin: 0;">Belum Ada Dokumentasi</h4>
-        <p style="font-size: 13px; color: #6C7470; margin: 6px 0 0 0;">Jadilah yang pertama mendokumentasikan aksi tanam pohon pada kategori ini!</p>
+      <div style="background: #FFFFFF; border: 1px solid #E2E8E5; padding: 48px 24px; border-radius: 24px; text-align: center;">
+        <h4 style="font-size: 16px; font-weight: 700; color: #0E1116; margin: 0;">Belum Ada Dokumentasi Tanam</h4>
+        <p style="font-size: 13px; color: #6C7470; margin: 6px 0 0 0;">Jadilah warga pertama yang membagikan aksi tanam pohon peneduh!</p>
       </div>
     `;
     return;
   }
 
-  filtered.forEach(post => {
+  allPosts.forEach(post => {
     const isMission = post.tagType === 'mission';
+    const commentsCount = (post.commentsList && post.commentsList.length) || post.comments || 0;
     const postEl = document.createElement('article');
     postEl.className = 'km-post-card';
-    postEl.innerHTML = `
-      <div class="km-post-header">
-        <div class="km-post-author-meta">
-          <img src="${post.authorAvatar || 'images/testimonial/Mas Bima (1).webp'}" alt="${post.authorName}" class="km-post-avatar">
-          <div>
-            <h4 class="km-post-author-name">${post.authorName}</h4>
-            <p class="km-post-time">${post.timeAgo}</p>
+    postEl.id = `post-card-${post.id}`;
+
+    // Render daftar komentar inline
+    let commentsHtml = '';
+    if (post.commentsList && post.commentsList.length > 0) {
+      commentsHtml = post.commentsList.map(c => `
+        <div class="km-comment-item">
+          <img src="${c.authorAvatar || 'images/testimonial/Mas Bima (1).webp'}" alt="${c.authorName}" class="km-comment-avatar">
+          <div class="km-comment-bubble">
+            <div class="km-comment-bubble-header">
+              <span class="km-comment-author-name">
+                ${c.authorName}
+                ${c.isAuthor ? '<span class="km-comment-author-badge">Penulis</span>' : ''}
+              </span>
+              <span class="km-comment-time">${c.timeAgo || 'Baru saja'}</span>
+            </div>
+            <p class="km-comment-text">${c.text}</p>
           </div>
         </div>
-        <span class="km-post-badge ${isMission ? '' : 'experience'}">${post.tag}</span>
+      `).join('');
+    }
+
+    postEl.innerHTML = `
+      <!-- Header Post: Author & Badge -->
+      <div class="km-post-header">
+        <div class="km-post-author">
+          <img src="${post.authorAvatar || 'images/testimonial/Mas Bima (1).webp'}" alt="${post.authorName}" class="km-post-avatar">
+          <div class="km-post-author-info">
+            <h4 class="km-post-author-name">${post.authorName}</h4>
+            <p class="km-post-author-meta">${post.zoneName} • ${post.timeAgo}</p>
+          </div>
+        </div>
+        <span class="km-post-tag ${isMission ? '' : 'experience'}">${post.tag}</span>
       </div>
 
-      <div class="km-post-image-box">
-        <img src="${post.image}" alt="${post.treeName}">
+      <!-- Foto Dokumentasi Lapangan -->
+      <div class="km-post-image">
+        <img src="${post.image}" alt="${post.treeName}" loading="lazy">
       </div>
 
-      <div class="km-post-content">
-        <h3 class="km-post-title">${post.treeName} • ${post.zoneName}</h3>
+      <!-- Konten Post: Judul Pohon, Cerita & Tag Keamanan -->
+      <div class="km-post-body">
+        <h3 class="km-post-title">${post.treeName}</h3>
         ${post.collaborators && post.collaborators.length > 0 ? `
-          <div class="km-post-collab-note">
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke-width="2"></path><circle cx="9" cy="7" r="4" stroke-width="2"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-width="2"></path></svg>
+          <div class="km-post-collab-badge">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke-width="2"></path><circle cx="9" cy="7" r="4" stroke-width="2"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-width="2"></path></svg>
             <span>Ditanam bersama ${post.collaborators.join(', ')}</span>
           </div>
         ` : ''}
         <p class="km-post-story">${post.story}</p>
-        <div class="km-post-safe-tag">
-          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <span>${post.distanceInfo || 'Aman jarak saluran got'}</span>
+        <div class="km-post-safe-badge">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>${post.distanceInfo || 'Aman jarak saluran got & fondasi'}</span>
         </div>
       </div>
 
-      <div class="km-post-footer">
-        <div class="km-post-location">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="11" r="2" stroke-width="2"></circle></svg>
-          <span>${post.zoneName}</span>
+      <!-- Bar Aksi Suka & Komentar -->
+      <div class="km-post-actions">
+        <button type="button" class="km-action-btn" onclick="toggleLike(this, ${post.likes})">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span class="like-counter">${post.likes}</span> Suka
+        </button>
+
+        <div class="km-action-btn" style="cursor: default;">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span id="comment-count-${post.id}">${commentsCount}</span> Diskusi Warga
         </div>
-        <button type="button" class="km-post-likes-btn" onclick="toggleLike(this, ${post.likes})">
-          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <span>${post.likes}</span>
+
+        <button type="button" class="km-action-btn" onclick="copyPostLink('${post.id}')" title="Bagikan Cerita Tanam">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" stroke-width="2"></circle><circle cx="6" cy="12" r="3" stroke-width="2"></circle><circle cx="18" cy="19" r="3" stroke-width="2"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke-width="2"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke-width="2"></line></svg>
+          <span>Bagikan</span>
         </button>
       </div>
+
+      <!-- Thread Komentar Inline -->
+      <div class="km-comments-thread">
+        <div class="km-comments-list" id="comments-list-${post.id}">
+          ${commentsHtml}
+        </div>
+
+        <!-- Form Tambah Komentar Cepat -->
+        <form class="km-comment-form" onsubmit="handleCommentSubmit(event, '${post.id}')">
+          <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-user-avatar">
+          <div class="km-comment-input-box">
+            <input type="text" class="km-comment-input" placeholder="Tulis tanggapan atau tanya tips tanam..." required autocomplete="off" id="input-comment-${post.id}">
+            <button type="submit" class="km-comment-send-btn">Kirim</button>
+          </div>
+        </form>
+      </div>
     `;
+
     container.appendChild(postEl);
   });
 }
 
-// Mengelola Tab Filter
-function filterCategory(cat, btnEl) {
-  const allButtons = document.querySelectorAll('.km-filter-pill');
-  allButtons.forEach(b => b.classList.remove('active'));
+// Handler Kirim Komentar Langsung di Bawah Postingan
+function handleCommentSubmit(e, postId) {
+  e.preventDefault();
+  const input = document.getElementById(`input-comment-${postId}`);
+  if (!input || !input.value.trim()) return;
 
-  if (btnEl) {
-    btnEl.classList.add('active');
-  } else {
-    const targetBtn = document.querySelector(`.km-filter-pill[onclick*="${cat}"]`);
-    if (targetBtn) targetBtn.classList.add('active');
-  }
+  const text = input.value.trim();
+  const commentObj = {
+    id: `c-${Date.now()}`,
+    authorName: "John Doe",
+    authorAvatar: "images/testimonial/Mas Bima (1).webp",
+    isAuthor: false,
+    timeAgo: "Baru saja",
+    text: text
+  };
 
-  const postsContainer = document.getElementById('communityPostsContainer');
-  const voucherSection = document.getElementById('voucherSection');
-  const leaderboardSection = document.getElementById('leaderboardSection');
+  // Simpan komentar di data
+  const updatedPost = TEDUH_DATA.addCommentToPost(postId, commentObj);
 
-  if (cat === 'voucher') {
-    if (postsContainer) postsContainer.style.display = 'none';
-    if (voucherSection) voucherSection.classList.remove('hidden');
-    if (leaderboardSection) leaderboardSection.classList.add('hidden');
-    renderVouchers();
-    renderActiveVouchers();
-  } else if (cat === 'leaderboard') {
-    if (postsContainer) postsContainer.style.display = 'none';
-    if (voucherSection) voucherSection.classList.add('hidden');
-    if (leaderboardSection) leaderboardSection.classList.remove('hidden');
-    renderLeaderboard();
-  } else {
-    if (postsContainer) postsContainer.style.display = 'grid';
-    if (voucherSection) voucherSection.classList.add('hidden');
-    if (leaderboardSection) leaderboardSection.classList.add('hidden');
-    renderPosts(cat);
-  }
-}
-
-// Render Katalog Penukaran Poin
-function renderVouchers() {
-  const grid = document.getElementById('voucherCardsGrid');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-  TEDUH_DATA.vouchers.forEach(v => {
-    const card = document.createElement('div');
-    card.className = 'km-voucher-card';
-    card.innerHTML = `
-      <div class="km-voucher-top">
-        <div>
-          <span class="km-voucher-provider">${v.provider}</span>
-          <h4 class="km-voucher-title">${v.title}</h4>
+  // Perbarui UI secara instan
+  const list = document.getElementById(`comments-list-${postId}`);
+  if (list) {
+    const commentEl = document.createElement('div');
+    commentEl.className = 'km-comment-item';
+    commentEl.innerHTML = `
+      <img src="${commentObj.authorAvatar}" alt="${commentObj.authorName}" class="km-comment-avatar">
+      <div class="km-comment-bubble">
+        <div class="km-comment-bubble-header">
+          <span class="km-comment-author-name">${commentObj.authorName}</span>
+          <span class="km-comment-time">Baru saja</span>
         </div>
-        <span class="km-voucher-badge">${v.badge}</span>
-      </div>
-
-      <p class="km-voucher-desc">${v.description}</p>
-
-      <div class="km-voucher-bottom">
-        <div class="km-voucher-cost">
-          ${v.pointsRequired} <span>Poin Kesejukan</span>
-        </div>
-        <button type="button" class="btn-redeem-voucher" onclick="handleRedeem('${v.id}')">
-          Tukarkan Voucher
-        </button>
+        <p class="km-comment-text">${commentObj.text}</p>
       </div>
     `;
-    grid.appendChild(card);
-  });
-}
-
-// Render Daftar Kupon Aktif yang Sudah Ditukarkan
-function renderActiveVouchers() {
-  const list = document.getElementById('activeCouponsList');
-  if (!list) return;
-
-  const myVouchers = TEDUH_DATA.getUserVouchers();
-  list.innerHTML = '';
-
-  if (myVouchers.length === 0) {
-    list.innerHTML = `
-      <div style="padding: 16px; text-align: center; font-size: 12px; color: #6C7470; background: #E2ECE7; border-radius: 12px;">
-        Belum ada voucher yang ditukarkan. Selesaikan aksi tanam pohon peneduh untuk mengumpulkan poin hadiah!
-      </div>
-    `;
-    return;
+    list.appendChild(commentEl);
   }
 
-  myVouchers.forEach(v => {
-    const row = document.createElement('div');
-    row.className = 'km-active-coupon-row';
-    row.innerHTML = `
-      <div class="km-coupon-meta">
-        <h5>${v.title} (${v.provider})</h5>
-        <p>Ditukarkan pada: ${v.redeemedAt} • Berlaku hingga 31 Des 2026</p>
-      </div>
-      <div class="km-coupon-code-pill" title="Klik untuk salin kode" onclick="copySpecificCode('${v.couponCode}')">
-        <span>${v.couponCode}</span>
-        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </div>
-    `;
-    list.appendChild(row);
-  });
-}
-
-// Tangani Penukaran Voucher
-function handleRedeem(voucherId) {
-  const result = TEDUH_DATA.redeemVoucher(voucherId);
-
-  if (result.success) {
-    syncProfileData();
-    renderActiveVouchers();
-
-    // Tampilkan Modal Sukses
-    const modal = document.getElementById('voucherSuccessModal');
-    const codeEl = document.getElementById('voucherSuccessCode');
-    const descEl = document.getElementById('voucherSuccessDesc');
-    const copyText = document.getElementById('copyBtnText');
-
-    if (codeEl) codeEl.textContent = result.couponCode;
-    if (descEl) descEl.textContent = `Selamat! ${result.voucher.title} berhasil ditukarkan. Saldo tersisa: ${result.remainingPoints} Poin.`;
-    if (copyText) copyText.textContent = 'Salin Kode Kupon';
-    if (modal) modal.classList.add('is-active');
-
-    showToast(`Penukaran berhasil! Kupon ${result.couponCode} siap digunakan.`);
-  } else {
-    showToast(result.message);
+  // Perbarui counter
+  const countEl = document.getElementById(`comment-count-${postId}`);
+  if (countEl && updatedPost) {
+    countEl.textContent = updatedPost.comments || updatedPost.commentsList.length;
   }
+
+  // Reset input
+  input.value = '';
+  showToast("Tanggapan berhasil dikirim ke diskusi warga.");
 }
 
 // Buka & Tutup Modal Unggah Dokumentasi
@@ -258,11 +214,6 @@ function closeCreateModal() {
   if (modal) modal.classList.remove('is-active');
 }
 
-function closeSuccessModal() {
-  const modal = document.getElementById('voucherSuccessModal');
-  if (modal) modal.classList.remove('is-active');
-}
-
 // Memilih Sampel Foto Thumbnail
 function selectPhotoThumb(el, src) {
   document.querySelectorAll('.km-photo-thumb').forEach(t => t.classList.remove('selected'));
@@ -271,9 +222,88 @@ function selectPhotoThumb(el, src) {
   if (hiddenInput) hiddenInput.value = src;
 }
 
+// Tangani Kirim Formulir Dokumentasi Aksi Tanam
+function handlePostSubmit(e) {
+  e.preventDefault();
+
+  const zoneSelect = document.getElementById('formZoneSelect');
+  const treeSelect = document.getElementById('formTreeSelect');
+  const distanceInput = document.getElementById('formDistanceInput');
+  const storyInput = document.getElementById('formStoryInput');
+  const photoInput = document.getElementById('selectedPhotoSrc');
+
+  const basePoints = 250;
+  const friendBonus = selectedFriends.length * 50;
+  const totalPoints = basePoints + friendBonus;
+  const tagText = selectedFriends.length > 0 
+    ? `Aksi Bersama (+${totalPoints} Poin)` 
+    : "Misi Selesai (+250 Poin)";
+
+  const postPayload = {
+    authorName: "John Doe",
+    authorAvatar: "images/testimonial/Mas Bima (1).webp",
+    timeAgo: "Baru saja",
+    zoneName: zoneSelect ? zoneSelect.value : "Denpasar",
+    treeName: treeSelect ? treeSelect.value : "Pohon Tanjung (Mimusops elengi)",
+    tag: tagText,
+    tagType: "mission",
+    image: photoInput ? photoInput.value : "images/map-popup.png",
+    story: storyInput ? storyInput.value : "Berhasil menanam bibit pohon peneduh di pekarangan rumah.",
+    distanceInfo: distanceInput ? distanceInput.value : "Aman jarak 1.5 meter dari got",
+    likes: 1,
+    comments: 0,
+    commentsList: []
+  };
+
+  // 1. Jalankan penyelesaian misi kolaboratif
+  const result = TEDUH_DATA.completeCollaborativeMission(postPayload, [...selectedFriends]);
+
+  // 2. Sinkronkan profil saldo poin dan EXP di UI
+  syncProfileData();
+
+  // 3. Render ulang linimasa
+  renderPosts();
+
+  // 4. Tutup modal & bersihkan formulir
+  closeCreateModal();
+  if (storyInput) storyInput.value = '';
+  selectedFriends = [];
+  renderSelectedCollaboratorsChips();
+  updateSubmitDocBtn();
+
+  // 5. Notifikasi ramah pengguna
+  const friendMsg = result.friendCount > 0 
+    ? ` Bersama ${result.friendCount} teman kolaborator!` 
+    : '';
+  showToast(`Dokumentasi tanam berhasil diunggah! +${result.earnedPoints} Poin ditambahkan ke akun Anda.${friendMsg}`);
+}
+
+// Like Button Toggle
+function toggleLike(btn, currentLikes) {
+  const span = btn.querySelector('.like-counter');
+  const isLiked = btn.classList.contains('liked');
+
+  if (isLiked) {
+    btn.classList.remove('liked');
+    if (span) span.textContent = currentLikes;
+  } else {
+    btn.classList.add('liked');
+    if (span) span.textContent = currentLikes + 1;
+  }
+}
+
+// Salin Tautan Postingan
+function copyPostLink(postId) {
+  const url = `${window.location.origin}${window.location.pathname}#post-card-${postId}`;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast("Tautan cerita tanam disalin ke papan klip.");
+  }).catch(() => {
+    showToast("Tautan berhasil disalin.");
+  });
+}
+
 // ============================================
 // SISTEM PERTEMANAN & KOLABORASI MISI TANAM
-// Sesuai instruksi: Tanpa Level & Tanpa Poin di Teman
 // ============================================
 let selectedFriends = [];
 
@@ -401,181 +431,6 @@ function updateSubmitDocBtn() {
   }
 }
 
-// ============================================
-// PAPAN PERINGKAT KESEJUKAN WARGA (TOP 20)
-// Diagram 5 Besar & List Card 6 s.d. 20
-// ============================================
-function renderLeaderboard() {
-  const top5Container = document.getElementById('top5DiagramContainer');
-  const rowsContainer = document.getElementById('rankingsRowsContainer');
-  if (!top5Container || !rowsContainer) return;
-
-  const data = TEDUH_DATA.getLeaderboardData();
-  const top5 = data.slice(0, 5);
-  const others = data.slice(5, 20);
-  const maxExp = Math.max(1, top5[0].exp);
-
-  // Render Diagram Kolom Vertikal 5 Besar (Bawah ke Atas)
-  top5Container.innerHTML = '';
-  top5.forEach((item, idx) => {
-    const rankNum = idx + 1;
-    const isFirst = rankNum === 1;
-    const barHeightPercent = Math.max(28, Math.round((item.exp / maxExp) * 100));
-    const isUser = item.isCurrentUser;
-
-    const col = document.createElement('div');
-    col.className = `km-diagram-col ${isFirst ? 'is-rank-1' : ''} ${isUser ? 'is-current-user' : ''}`;
-    col.innerHTML = `
-      <div class="km-col-top-meta">
-        <span class="km-col-exp-badge">${item.exp} EXP</span>
-        <div class="km-col-rank-badge ${isFirst ? 'rank-1' : 'rank-other'}">
-          ${isFirst ? '★ #1' : '#' + rankNum}
-        </div>
-      </div>
-      
-      <div class="km-col-bar-track">
-        <div class="km-col-bar-fill rank-${rankNum} ${isUser ? 'is-current-user' : ''}" style="height: ${barHeightPercent}%;"></div>
-      </div>
-
-      <div class="km-col-bottom-meta">
-        <div class="km-col-avatar ${isFirst ? 'avatar-crown' : ''}">${item.avatar}</div>
-        <span class="km-col-name" title="${item.name}">${item.name}${isUser ? ' (Anda)' : ''}</span>
-        <span class="km-col-user">${item.username}</span>
-      </div>
-    `;
-    top5Container.appendChild(col);
-  });
-
-  // Render Peringkat 6 s.d. 20 (List Card Ramping)
-  rowsContainer.innerHTML = '';
-  others.forEach(item => {
-    const isUser = item.isCurrentUser;
-    const card = document.createElement('div');
-    card.className = `km-row-card ${isUser ? 'is-current-user' : ''}`;
-    card.innerHTML = `
-      <div class="km-row-left">
-        <span class="km-row-rank">#${item.rank}</span>
-        <div class="km-row-avatar">${item.avatar}</div>
-        <div class="km-row-user-info">
-          <span class="km-row-name">${item.name} ${isUser ? '<strong style="color: #1A382B; font-size: 10px;">(Anda)</strong>' : ''}</span>
-          <span class="km-row-username">${item.username}</span>
-        </div>
-      </div>
-      <div class="km-row-right">
-        <span class="km-row-exp">${item.exp} EXP</span>
-        <span class="km-row-prize-badge">+1.000 EXP</span>
-      </div>
-    `;
-    rowsContainer.appendChild(card);
-  });
-}
-
-// Tangani Kirim Formulir Dokumentasi Tanam Kolaboratif
-function handlePostSubmit(e) {
-  e.preventDefault();
-
-  const zoneSelect = document.getElementById('formZoneSelect');
-  const treeSelect = document.getElementById('formTreeSelect');
-  const distanceInput = document.getElementById('formDistanceInput');
-  const storyInput = document.getElementById('formStoryInput');
-  const photoInput = document.getElementById('selectedPhotoSrc');
-
-  const basePoints = 250;
-  const friendBonus = selectedFriends.length * 50;
-  const totalPoints = basePoints + friendBonus;
-  const tagText = selectedFriends.length > 0 
-    ? `Aksi Bersama (+${totalPoints} Poin)` 
-    : "Misi Selesai (+250 Poin)";
-
-  const postPayload = {
-    authorName: "John Doe",
-    authorAvatar: "images/testimonial/Mas Bima (1).webp",
-    timeAgo: "Baru saja",
-    zoneName: zoneSelect.value,
-    treeName: treeSelect.value,
-    tag: tagText,
-    tagType: "mission",
-    image: photoInput ? photoInput.value : "images/map-popup.png",
-    story: storyInput.value,
-    distanceInfo: distanceInput.value,
-    likes: 1,
-    comments: 0
-  };
-
-  // 1. Jalankan penyelesaian misi kolaboratif
-  const result = TEDUH_DATA.completeCollaborativeMission(postPayload, [...selectedFriends]);
-
-  // 2. Sinkronkan profil saldo poin dan EXP di UI
-  syncProfileData();
-
-  // 3. Render ulang linimasa dan papan peringkat
-  renderPosts('all');
-  renderLeaderboard();
-
-  // 4. Tutup modal & bersihkan formulir
-  closeCreateModal();
-  storyInput.value = '';
-  selectedFriends = [];
-  renderSelectedCollaboratorsChips();
-  updateSubmitDocBtn();
-
-  // 5. Notifikasi ramah pengguna
-  const friendMsg = result.friendCount > 0 
-    ? ` Bersama ${result.friendCount} teman kolaborator!` 
-    : '';
-  showToast(`Dokumentasi tanam berhasil diunggah! +${result.earnedPoints} Poin ditambahkan ke akun John Doe.${friendMsg}`);
-}
-
-// Salin Kode Kupon ke Clipboard
-function copyCouponCode() {
-  const codeEl = document.getElementById('voucherSuccessCode');
-  const copyBtn = document.getElementById('copyBtnText');
-  if (!codeEl) return;
-
-  navigator.clipboard.writeText(codeEl.textContent).then(() => {
-    if (copyBtn) copyBtn.textContent = "Kode Berhasil Disalin!";
-    showToast(`Kode voucher ${codeEl.textContent} berhasil disalin ke papan klip.`);
-  });
-}
-
-function copySpecificCode(code) {
-  navigator.clipboard.writeText(code).then(() => {
-    showToast(`Kode kupon ${code} berhasil disalin.`);
-  });
-}
-
-// Like Button Toggle
-function toggleLike(btn, currentLikes) {
-  const span = btn.querySelector('span');
-  const isLiked = btn.classList.contains('liked');
-
-  if (isLiked) {
-    btn.classList.remove('liked');
-    btn.style.color = 'var(--color-slate)';
-    if (span) span.textContent = currentLikes;
-  } else {
-    btn.classList.add('liked');
-    btn.style.color = 'var(--color-secondary)';
-    if (span) span.textContent = currentLikes + 1;
-  }
-}
-
-// Hero Carousel Navigation (Interaksi Bersih)
-function initHeroCarouselNav() {
-  const prevBtn = document.getElementById('heroPrevBtn');
-  const nextBtn = document.getElementById('heroNextBtn');
-  const grid = document.querySelector('.km-carousel-grid');
-  if (!prevBtn || !nextBtn || !grid) return;
-
-  prevBtn.addEventListener('click', () => {
-    grid.scrollBy({ left: -340, behavior: 'smooth' });
-  });
-
-  nextBtn.addEventListener('click', () => {
-    grid.scrollBy({ left: 340, behavior: 'smooth' });
-  });
-}
-
 // Periksa Parameter URL saat navigasi dari Peta
 function checkCommunityUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -584,7 +439,6 @@ function checkCommunityUrlParams() {
   const tree = urlParams.get('tree');
   const invite = urlParams.get('invite');
 
-  // Jika dipicu dari tombol Ambil Misi di map.html
   if (action === 'new-post') {
     setTimeout(() => {
       openCreateModal();
@@ -611,7 +465,6 @@ function checkCommunityUrlParams() {
         }
       }
 
-      // Jika diawali dengan parameter ajak teman
       if (invite === '1') {
         setTimeout(() => {
           openInviteFriendModal();
@@ -619,20 +472,9 @@ function checkCommunityUrlParams() {
       }
     }, 400);
   }
-
-  // Jika hash adalah #voucher
-  if (window.location.hash === '#voucher') {
-    setTimeout(() => {
-      filterCategory('voucher');
-    }, 300);
-  } else if (window.location.hash === '#leaderboard') {
-    setTimeout(() => {
-      filterCategory('leaderboard');
-    }, 300);
-  }
 }
 
-// Toast Notifikasi
+// Toast Notifikasi Ringan
 function showToast(message) {
   let toast = document.getElementById('teduhToast');
   if (!toast) {
@@ -671,21 +513,18 @@ function showToast(message) {
   }, 3400);
 }
 
-// Global Exports untuk Handler HTML
+// Global Exports
 window.openCreateModal = openCreateModal;
 window.closeCreateModal = closeCreateModal;
-window.closeSuccessModal = closeSuccessModal;
-window.filterCategory = filterCategory;
 window.selectPhotoThumb = selectPhotoThumb;
 window.handlePostSubmit = handlePostSubmit;
-window.handleRedeem = handleRedeem;
-window.copyCouponCode = copyCouponCode;
-window.copySpecificCode = copySpecificCode;
+window.handleCommentSubmit = handleCommentSubmit;
 window.toggleLike = toggleLike;
+window.copyPostLink = copyPostLink;
 window.openInviteFriendModal = openInviteFriendModal;
 window.closeInviteFriendModal = closeInviteFriendModal;
 window.handleFriendSearch = handleFriendSearch;
 window.toggleFriendSelection = toggleFriendSelection;
 window.confirmSelectedFriends = confirmSelectedFriends;
 window.removeCollaborator = removeCollaborator;
-window.renderLeaderboard = renderLeaderboard;
+
