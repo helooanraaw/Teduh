@@ -1,0 +1,175 @@
+/* ==========================================================================
+   TEDUH DIGITAL PLATFORM - CORE STYLESHEET
+   Sistem Desain: Editorial Swiss-Modern & Spatial Console (Anti-AI Slop)
+   3 Warna Utama:
+     1. Deep Laurel Pine (#1A382B) - Identitas Vegetasi & Kesejukan
+     2. Obsidian Slate (#0E1116) - Fondasi & Teks di atas Zinc Paper (#F4F4F5)
+     3. Sunbaked Terracotta (#BA4E2A) - Aksen Terik & Peringatan Kritis
+   ========================================================================== */
+
+:root {
+  --color-pine: #1A382B;
+  --color-pine-hover: #142C22;
+  --color-pine-light: #2D5A47;
+  --color-pine-tint: #EBF3EF;
+  --color-obsidian: #0E1116;
+  --color-obsidian-muted: #272B33;
+  --color-zinc-paper: #F4F4F5;
+  --color-white: #FFFFFF;
+  --color-hairline: #E4E4E7;
+  --color-terracotta: #bc4800;
+  --color-terracotta-tint: #fdf0e8;
+  --color-dark-surface: #12151B;
+  --color-dark-panel: #181B22;
+  --color-dark-border: #23262D;
+}
+
+/* Base Reset & Smooth Rendering */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-obsidian);
+  background-color: var(--color-zinc-paper);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A1A1AA;
+}
+
+.dark-console ::-webkit-scrollbar-thumb {
+  background: #2D3139;
+}
+
+.dark-console ::-webkit-scrollbar-thumb:hover {
+  background: #3F444E;
+}
+
+/* Spatial Grid & Elevation Utilities */
+.hairline-border {
+  border: 1px solid var(--color-hairline);
+}
+
+.dark-hairline-border {
+  border: 1px solid var(--color-dark-border);
+}
+
+/* Leaflet Console Clean Overrides */
+.leaflet-container {
+  background-color: #0E1116 !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid var(--color-dark-border) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-dark-panel) !important;
+  color: #F4F4F5 !important;
+  border-bottom: 1px solid var(--color-dark-border) !important;
+  line-height: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  transition: background-color 0.15s ease;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #23262D !important;
+  color: #FFFFFF !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(14, 17, 22, 0.85) !important;
+  color: #8E929B !important;
+  font-size: 10px !important;
+  backdrop-filter: blur(8px);
+  border-top-left-radius: 6px;
+  padding: 3px 8px !important;
+  border-left: 1px solid var(--color-dark-border);
+  border-top: 1px solid var(--color-dark-border);
+}
+
+.leaflet-control-attribution a {
+  color: #C5C8D0 !important;
+  text-decoration: underline;
+}
+
+/* Marker Animations for Spatial Inspection */
+@keyframes ring-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  70%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.marker-pulse-ring {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  left: -14px;
+  top: -14px;
+  border-radius: 50%;
+  background: rgba(186, 78, 42, 0.3);
+  animation: ring-pulse 2.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+.canopy-pulse-ring {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  left: -36px;
+  top: -36px;
+  border-radius: 50%;
+  background: rgba(26, 56, 43, 0.25);
+  border: 1.5px solid rgba(26, 56, 43, 0.6);
+  animation: ring-pulse 2.8s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+/* Drawer Transitions */
+.spatial-drawer {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+@media (max-width: 768px) {
+  .spatial-drawer {
+    max-height: 82vh;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+  }
+}
+
+/* Focus indicator for keyboard accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-pine);
+  outline-offset: 2px;
+}

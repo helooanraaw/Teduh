@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teduh: Profil & Dashboard Kesejukan Pekarangan John Doe</title>
+  <meta name="description" content="Dashboard profil pengguna John Doe: pantau suhu mikro pekarangan rumah, status pohon peneduh aman fondasi, saldo poin, dan riwayat aksi penanaman.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS via CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Stylesheets Murni (Pure CSS) -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+  <!-- TOP FLOATING CAPSULE NAVIGATION -->
+  <nav class="navbar" aria-label="Navigasi Utama">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+        <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
+        <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
+      </a>
+
+      <div class="navbar-links">
+        <a href="index.html" class="navbar-link">Beranda</a>
+        <a href="map.html" class="navbar-link">Konsol Peta</a>
+        <a href="guide.html" class="navbar-link">Direktori Bibit</a>
+        <a href="community.html" class="navbar-link">Komunitas</a>
+      </div>
+
+      <div class="navbar-actions">
+        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron (Hover & Klik) -->
+        <div class="nav-profile-wrapper">
+          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
+            <div class="nav-profile-avatar">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            </div>
+            <div class="nav-profile-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+          </button>
+
+          <!-- Pop-up Menu Profil John Doe -->
+          <div class="nav-profile-popup" role="menu">
+            <div class="nav-popup-header">
+              <div class="nav-popup-avatar">
+                <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+              </div>
+              <div class="nav-popup-user-meta">
+                <span class="nav-popup-name">John Doe</span>
+                <span class="nav-popup-username">@johndoe</span>
+              </div>
+            </div>
+
+            <!-- Metrik Level & Poin Sederhana -->
+            <div class="nav-popup-metrics">
+              <div class="nav-popup-metrics-row">
+                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
+                <div class="nav-popup-points-badge">
+                  <span class="nav-popup-points-value">850 Poin</span>
+                </div>
+              </div>
+
+              <div class="nav-popup-progress-track">
+                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <!-- Menu Tautan Profil -->
+            <div class="nav-popup-menu">
+              <a href="profile.html" class="nav-popup-item" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2"></path><circle cx="12" cy="7" r="4" stroke-width="2"></circle></svg>
+                <span>Profile</span>
+              </a>
+              <div class="nav-popup-divider"></div>
+              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="navbarHamburger" class="navbar-hamburger" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Overlay & Menu -->
+  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
+  <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
+    <div>
+      <div class="mobile-nav-header">
+        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 28px; width: auto;">
+        </a>
+        <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav-list">
+        <a href="index.html" class="mobile-nav-item">Beranda</a>
+        <a href="map.html" class="mobile-nav-item">Konsol Peta</a>
+        <a href="guide.html" class="mobile-nav-item">Direktori Bibit</a>
+        <a href="community.html" class="mobile-nav-item">Komunitas</a>
+        <a href="profile.html" class="mobile-nav-item active">Profil Saya</a>
+        <a href="community.html#voucher" class="mobile-nav-item">Tukar Poin Hadiah</a>
+      </nav>
+    </div>
+
+    <div>
+      <a href="map.html" class="btn-primary" style="width: 100%; text-align: center; justify-content: center;">Pindai Peta Wilayah</a>
+    </div>
+  </aside>
+
+  <!-- KONTEN UTAMA: DASHBOARD PROFIL (3 KOLOM) -->
+  <main class="pf-main">
+    
+    <!-- Breadcrumb Navigasi -->
+    <nav class="pf-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Beranda</a>
+      <span class="pf-breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
+      <span class="pf-breadcrumb-curr">Profil & Pekarangan John Doe</span>
+    </nav>
+
+    <!-- Grid 3 Kolom ala NutriNesia -->
+    <div class="pf-grid">
+
+      <!-- KOLOM 1 (KIRI): IDENTITAS & PREFERENSI -->
+      <div class="pf-col">
+        
+        <!-- Kartu Identitas Pengguna -->
+        <section class="pf-card pf-identity-card">
+          <div class="pf-identity-header">
+            <div class="pf-avatar-container">
+              <div class="pf-avatar-circle">
+                <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+              </div>
+              <div class="pf-level-ring-badge" id="pfLevelRingBadge" title="Tingkat Kontribusi Kesejukan">L3</div>
+            </div>
+
+            <div class="pf-identity-info">
+              <div class="pf-identity-name-row">
+                <h1 class="pf-identity-name" id="pfUserName">John Doe</h1>
+                <span class="pf-identity-user" id="pfUserTag">@johndoe</span>
+              </div>
+              <span class="pf-identity-email" id="pfUserEmail">johndoe@gmail.com</span>
+
+              <div class="pf-level-pill-box" id="pfLevelBadge">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #1A382B; display: inline-block;"></span>
+                <span>Level 3: Perintis Teduh</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Metrik Ringkas Pengguna (NutriNesia Style) -->
+          <div class="pf-user-quick-stats">
+            <div class="pf-user-stat-col">
+              <span class="pf-user-stat-val" id="pfUserQuickPoints">850</span>
+              <span class="pf-user-stat-lbl">Poin</span>
+            </div>
+            <div class="pf-user-stat-divider"></div>
+            <div class="pf-user-stat-col">
+              <span class="pf-user-stat-val" id="pfUserQuickTrees">4</span>
+              <span class="pf-user-stat-lbl">Pohon</span>
+            </div>
+            <div class="pf-user-stat-divider"></div>
+            <div class="pf-user-stat-col">
+              <span class="pf-user-stat-val" id="pfUserQuickMissions">3</span>
+              <span class="pf-user-stat-lbl">Misi</span>
+            </div>
+          </div>
+
+          <!-- Parameter Info Pekarangan (Layout Horisontal / Grid 2-Kolom) -->
+          <div class="pf-info-summary-list">
+            <div class="pf-info-summary-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span id="pfLocationText">Denpasar Selatan, Bali</span>
+            </div>
+            <div class="pf-info-summary-item">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Halaman 45 m² Semen</span>
+            </div>
+            <div class="pf-info-summary-item pf-info-summary-full">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Status: Terverifikasi Teduh</span>
+            </div>
+          </div>
+
+          <div class="pf-target-box">
+            <strong>Target Utama</strong>
+            <p id="pfTargetText">Bikin teras lebih sejuk dan jaga pipa air tetap aman.</p>
+          </div>
+
+          <a href="guide.html" class="pf-edit-profile-btn">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Ubah Data Pekarangan</span>
+          </a>
+        </section>
+
+        <!-- Kartu Jadwal & Agenda Aksi Pekarangan -->
+        <section class="pf-card pf-schedule-card">
+          <div class="pf-section-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2"></rect><path d="M16 2v4M8 2v4M3 10h18" stroke-width="2"></path></svg>
+              </span>
+              <h3 class="pf-card-title">Agenda Pekarangan</h3>
+            </div>
+            <a href="community.html#misi" class="pf-schedule-all-link">Semua &rsaquo;</a>
+          </div>
+          
+          <div class="pf-schedule-list" id="pfScheduleContainer">
+            <!-- Diisi secara dinamis oleh js/profile.js -->
+          </div>
+
+          <div class="pf-schedule-footer">
+            <button type="button" class="pf-logout-inline-btn" onclick="handleNavLogout()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span>Keluar Akun</span>
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- KOLOM 2 (TENGAH): STATISTIK & LINIMASA AKSI -->
+      <div class="pf-col">
+        
+        <!-- Kartu Ringkasan Kesejukan Rumah -->
+        <section class="pf-card pf-shape-asym-card">
+          <div class="pf-section-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <h2 class="pf-card-title">Ringkasan Kesejukan</h2>
+            </div>
+            <div class="pf-card-time">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"></circle><path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round"></path></svg>
+              <span>Hari ini, 08:30</span>
+            </div>
+          </div>
+
+          <!-- Kubah Kesejukan -->
+          <div class="pf-climate-dome">
+            <div class="pf-ring-meter">
+              <svg viewBox="0 0 140 140">
+                <circle class="bg-circle" cx="70" cy="70" r="60"></circle>
+                <circle id="pfRingFg" class="fg-circle" cx="70" cy="70" r="60"></circle>
+              </svg>
+              <div class="pf-ring-center">
+                <span class="pf-ring-val" id="pfCoolingScore">86</span>
+                <span class="pf-ring-unit">Skor Sejuk</span>
+              </div>
+            </div>
+
+            <div class="pf-dome-content">
+              <div class="pf-dome-headline">Pekarangan Lebih Sejuk & Aman</div>
+              <p class="pf-dome-sub">
+                Pohon peneduh berhasil menurunkan panas lantai teras dan saluran pipa air tetap aman.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tile Metrik Mikro Sederhana -->
+          <div class="pf-metrics-grid">
+            <div class="pf-metric-tile">
+              <span class="pf-metric-lbl">Suhu Lebih Adem</span>
+              <span class="pf-metric-val" id="pfMetricTempDrop">-4.4°C</span>
+            </div>
+
+            <div class="pf-metric-tile">
+              <span class="pf-metric-lbl">Pohon Ditanam</span>
+              <span class="pf-metric-val" id="pfMetricTreesCount">4 Pohon</span>
+            </div>
+
+            <div class="pf-metric-tile">
+              <span class="pf-metric-lbl">Area Teduh</span>
+              <span class="pf-metric-val" id="pfMetricShadeArea">28.5 m²</span>
+            </div>
+
+            <div class="pf-metric-tile">
+              <span class="pf-metric-lbl">Teman Ikut</span>
+              <span class="pf-metric-val" id="pfMetricFriendsCount">2 Orang</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kartu Linimasa Riwayat Aktivitas -->
+        <section class="pf-card pf-timeline-card">
+          <div class="pf-section-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"></circle><path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round"></path></svg>
+              </span>
+              <h3 class="pf-card-title">Aktivitas Terbaru</h3>
+            </div>
+            <a href="community.html" class="pf-schedule-all-link">Lihat Semua &rsaquo;</a>
+          </div>
+
+          <div id="pfTimelineContainer" class="pf-timeline-list">
+            <!-- Linimasa aktivitas dirender dinamis oleh js/profile.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- KOLOM 3 (KANAN): PETA RUMAH & DOMPET VOUCHER -->
+      <div class="pf-col">
+        
+        <!-- Kartu Peta Spasial Rumah -->
+        <section class="pf-card pf-home-map-card">
+          <div class="pf-section-header pf-home-map-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2"></path></svg>
+              </span>
+              <h3 class="pf-card-title">Peta Rumah</h3>
+            </div>
+          </div>
+
+          <!-- Peta Mini Satelit Leaflet -->
+          <div class="pf-home-map-container">
+            <div class="pf-map-overlay-badge">
+              <span class="pf-map-dot-pulse"></span>
+              <span>34.4°C Pekarangan Terlindungi</span>
+            </div>
+            <div id="profileHomeMap"></div>
+          </div>
+
+          <div class="pf-home-map-footer">
+            <div class="pf-map-detail-row">
+              <span>Suhu Tanpa Pohon:</span>
+              <strong style="color: #bc4800;" id="pfMapBeforeTemp">38.8°C</strong>
+            </div>
+            <div class="pf-map-detail-row">
+              <span>Suhu Sekarang:</span>
+              <strong style="color: #1A382B;" id="pfMapCurrentTemp">34.4°C</strong>
+            </div>
+            <div class="pf-map-detail-row">
+              <span>Jarak Aman Pipa:</span>
+              <strong id="pfMapPipeDist">2.1 meter (Aman Fondasi)</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Kartu Dompet Poin & Kupon Diskon -->
+        <section class="pf-card pf-wallet-card">
+          <div class="pf-section-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"></rect><path d="M7 15h10M7 9h4" stroke-width="2"></path></svg>
+              </span>
+              <h3 class="pf-card-title">Dompet Poin</h3>
+            </div>
+            <a href="community.html#voucher" class="pf-schedule-all-link">
+              Tukar &rsaquo;
+            </a>
+          </div>
+
+          <div class="pf-points-balance-box">
+            <div>
+              <span class="pf-balance-label">Saldo Poin Aktif</span>
+              <div class="pf-balance-number" id="pfWalletPointsNumber">850 Poin</div>
+            </div>
+            <a href="community.html#voucher" class="btn-primary" style="padding: 8px 14px; font-size: 11px;">
+              Katalog
+            </a>
+          </div>
+
+          <div>
+            <span style="font-size: 11px; font-weight: 600; color: #6C7470; display: block; margin-bottom: 6px;">Kupon Voucher Saya</span>
+            <div id="pfCouponsContainer" class="pf-claimed-coupons-list">
+              <!-- Kupon aktif dirender oleh js/profile.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Kartu Pohon Peneduh Tertanam -->
+        <section class="pf-card pf-trees-card">
+          <div class="pf-section-header">
+            <div class="pf-card-title-group">
+              <span class="pf-card-title-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 14h5v8h6v-8h5L12 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </span>
+              <h3 class="pf-card-title">Pohon Pekarangan</h3>
+            </div>
+          </div>
+          <div id="pfPlantedTreesContainer" class="pf-trees-list">
+            <!-- Daftar pohon dirender oleh js/profile.js -->
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer Universal -->
+  <footer class="footer-new">
+    <div class="footer-main-inner">
+      <div class="footer-row-top">
+        <!-- Kolom Brand & Bio -->
+        <div class="footer-brand-col">
+          <a href="index.html" class="footer-logo-link" aria-label="Teduh Beranda">
+            <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 44px; width: auto; display: block;">
+          </a>
+          <p class="brand-bio">Solusi iklim mikro dan panduan pohon peneduh cerdas yang memadukan data satelit spasial dengan kearifan botani lokal untuk pekarangan sejuk bebas radiasi semen.</p>
+          <div class="footer-social-wrapper">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Instagram Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="TikTok Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="YouTube Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><polygon points="10 15 15 12 10 9 10 15"/></svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Facebook Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 Grup Kolom Navigasi -->
+        <div class="footer-links-grid">
+          <!-- Kolom Layanan -->
+          <div class="footer-nav-group">
+            <h5>Layanan</h5>
+            <ul>
+              <li><a href="map.html">Konsol Peta</a></li>
+              <li><a href="guide.html">Direktori Bibit Pohon</a></li>
+              <li><a href="map.html">Simulasi Radiasi Kalor</a></li>
+              <li><a href="guide.html#panduan">Kalkulator Jarak Tanam</a></li>
+            </ul>
+          </div>
+
+          <!-- Kolom Dukungan -->
+          <div class="footer-nav-group">
+            <h5>Dukungan</h5>
+            <ul>
+              <li><a href="index.html#faq">Pusat Bantuan</a></li>
+              <li><a href="community.html">Komunitas Warga</a></li>
+              <li><a href="guide.html#panduan">Panduan Got &amp; Fondasi</a></li>
+              <li><a href="index.html#faq">Ketentuan Layanan</a></li>
+            </ul>
+          </div>
+
+          <!-- Kolom Hubungi Kami -->
+          <div class="footer-nav-group">
+            <h5>Hubungi Kami</h5>
+            <ul>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>halo@teduh.id</span>
+              </li>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+62 361 234-5678</span>
+              </li>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Renon, Denpasar Selatan</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Garis & Tautan Bawah -->
+      <div class="footer-bottom-line">
+        <div class="footer-copyright-text">
+          &copy; 2026 Teduh.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Terms &amp; Conditions</a>
+          <span class="dot-sep" aria-hidden="true"></span>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notifikasi Ringan -->
+  <div id="teduhToast" style="display: none;"></div>
+
+  <!-- Leaflet JS via CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Controller Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

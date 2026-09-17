@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teduh: Platform Kesejukan & Rekayasa Lingkungan Pemukiman</title>
+  <meta name="description" content="Teduh memandu warga mendeteksi suhu semen pekarangan dan memilih bibit pohon peneduh berakar aman fondasi serta pipa sanitasi.">
+
+  <!-- Stylesheets Murni (Pure CSS, Tanpa Tailwind) -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+  <!-- TOP FLOATING CAPSULE NAVIGATION -->
+  <nav class="navbar" aria-label="Navigasi Utama">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+        <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
+        <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
+      </a>
+
+      <div class="navbar-links">
+        <a href="index.html" class="navbar-link active">Beranda</a>
+        <a href="map.html" class="navbar-link">Konsol Peta</a>
+        <a href="guide.html" class="navbar-link">Direktori Bibit</a>
+        <a href="community.html" class="navbar-link">Komunitas</a>
+      </div>
+
+      <div class="navbar-actions">
+        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron (Hover & Klik) -->
+        <div class="nav-profile-wrapper">
+          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
+            <div class="nav-profile-avatar">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            </div>
+            <div class="nav-profile-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+          </button>
+
+          <!-- Pop-up Menu Profil John Doe -->
+          <div class="nav-profile-popup" role="menu">
+            <div class="nav-popup-header">
+              <div class="nav-popup-avatar">
+                <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+              </div>
+              <div class="nav-popup-user-meta">
+                <span class="nav-popup-name">John Doe</span>
+                <span class="nav-popup-username">@johndoe</span>
+              </div>
+            </div>
+
+            <!-- Metrik Level & Poin Sederhana -->
+            <div class="nav-popup-metrics">
+              <div class="nav-popup-metrics-row">
+                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
+                <div class="nav-popup-points-badge">
+                  <span class="nav-popup-points-value">850 Poin</span>
+                </div>
+              </div>
+
+              <div class="nav-popup-progress-track">
+                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <!-- Menu Tautan Profil -->
+            <div class="nav-popup-menu">
+              <a href="profile.html" class="nav-popup-item" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+                <span>Profile</span>
+              </a>
+              <div class="nav-popup-divider"></div>
+              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="navbarHamburger" class="navbar-hamburger" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Overlay & Menu -->
+  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
+  <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
+    <div>
+      <div class="mobile-nav-header">
+        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 28px; width: auto;">
+        </a>
+        <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav-list">
+        <a href="index.html" class="mobile-nav-item">Beranda</a>
+        <a href="map.html" class="mobile-nav-item">Konsol Peta</a>
+        <a href="guide.html" class="mobile-nav-item">Direktori Bibit</a>
+        <a href="community.html" class="mobile-nav-item">Komunitas</a>
+        <a href="profile.html" class="mobile-nav-item">Profil & Pekarangan Saya</a>
+        <a href="community.html#voucher" class="mobile-nav-item">Tukar Poin Hadiah</a>
+      </nav>
+    </div>
+
+    <div>
+      <a href="map.html" class="btn-primary" style="width: 100%; text-align: center; justify-content: center;">Pindai Peta Wilayah</a>
+    </div>
+  </aside>
+
+  <main class="container">
+
+    <!-- 1 · HERO SECTION (NutriNesia 3-Column Masonry) -->
+    <section class="hero">
+      <div class="hero-left" data-reveal="up">
+        <div>
+          <h1 class="hd xxl hero-title">
+            <span style="white-space: nowrap;">Wujudkan Kawasan</span><br>
+            <span style="white-space: nowrap;">yang  <img src="assets/logo/teduh-only.svg" alt="Teduh Icon" class="hero-title-icon" aria-hidden="true"> Sejuk</span><br>
+            <span style="white-space: nowrap;">Bebas dari Gerah.</span>
+          </h1>
+        </div>
+
+        <div class="hero-left-bottom">
+          <p class="sub hero-desc">
+            Teduh hadir untuk membantu Anda memetakan suhu lingkungan, memilih pohon peneduh yang aman, dan mewujudkan kawasan yang lebih sejuk setiap hari.
+          </p>
+
+          <div class="hero-action-row">
+            <a href="map.html" class="btn-hero-black">
+              <span>Cek Suhu Lingkungan</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+
+            <div class="hero-avatars">
+              <img src="images/testimonial/Kakak Putri.webp" alt="Warga 1">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Warga 2">
+              <img src="images/testimonial/Bu Maya.webp" alt="Warga 3">
+              <span class="avatar-count"><strong style="color: var(--color-primary); font-weight: 700;">+2.4K</strong> Kawasan Terpetakan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sisi Kanan: 1:1 Citra Kesejukan Lahan -->
+      <div class="hero-right" data-reveal="fade-scale" data-delay="100">
+        <div class="hero-img-card">
+          <img src="assets/landing/hero-landing.png" alt="Simulasi Kesejukan Pekarangan Teduh" class="hero-img-1to1">
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · PROBLEM SECTION (NutriNesia Staggered Grid) -->
+    <section id="masalah" class="problem-section">
+      <div class="problem-container">
+        <div class="problem-left" data-reveal="up">
+          <div class="problem-title">
+            <h2 class="hd xl">Mengapa Halaman Semen <br>Bikin Rumah Makin Panas?</h2>
+            <p>Semen dan aspal menyerap panas sepanjang siang, lalu memantulkan hawa gerah langsung ke dinding dan ruangan rumah Anda.</p>
+          </div>
+          <div class="problem-img-wrapper">
+            <img src="assets/landing/problem-section.png" alt="Pekarangan Semen Tanpa Peneduh" class="problem-img-1to1">
+          </div>
+        </div>
+
+        <div class="problem-right">
+          <div class="prob-list">
+            <div class="prob-list-item" data-reveal="up" data-delay="80">
+              <div class="pli-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              </div>
+              <div class="pli-text">
+                <h3>Panas Tersimpan Sampai Malam</h3>
+                <p>Lantai semen menyerap terik hingga <span class="temp-accent">39.4°C</span> dan terus memancarkan hawa gerah ke dalam rumah sampai malam hari.</p>
+              </div>
+            </div>
+
+            <div class="prob-list-item-2" data-reveal="up" data-delay="160">
+              <div class="pli-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              </div>
+              <div class="pli-text">
+                <h3>Khawatir Akar Merusak Pipa & Keramik</h3>
+                <p>Banyak warga ragu menanam pohon karena takut akarnya membongkar lantai teras atau menyumbat saluran pipa got.</p>
+              </div>
+            </div>
+
+            <div class="prob-list-item" data-reveal="up" data-delay="240">
+              <div class="pli-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+              </div>
+              <div class="pli-text">
+                <h3>Tagihan Listrik AC Membengkak</h3>
+                <p>Dinding rumah yang panas membuat pendingin ruangan (AC) harus bekerja lebih keras dan boros daya listrik.</p>
+              </div>
+            </div>
+
+            <div class="prob-list-item-2" data-reveal="up" data-delay="320">
+              <div class="pli-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              </div>
+              <div class="pli-text">
+                <h3>Bingung Memilih Bibit yang Pas</h3>
+                <p>Belum ada panduan praktis untuk memilih jenis pohon rindang yang tetap aman ditanam di lahan teras sempit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · FEATURES ACCORDION SECTION (NutriNesia Style) -->
+    <section id="fitur" class="features-accordion">
+      <div class="fa-container">
+        <!-- Kiri: Preview Gambar Dinamis -->
+        <div class="fa-left" data-reveal="up">
+          <h2 class="hd xl">Langkah Mudah Bikin <br>Rumah Lebih Adem</h2>
+
+          <div class="fa-main-carousel-wrapper">
+            <div class="fa-carousel-cell">
+              <img id="featureImagePreview" src="assets/landing/feature-section.png" alt="Konsol Peta Teduh" class="feature-img-1to1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanan: Accordion Interaktif -->
+        <div class="fa-right">
+          <div class="accordion-list">
+            <!-- Item 1 -->
+            <div class="acc-item active" data-img="assets/landing/feature-section.png" data-reveal="up" data-delay="60">
+              <div class="acc-header">
+                <h3>Peta Titik Panas & Satelit</h3>
+                <div class="acc-toggle" aria-hidden="true"></div>
+              </div>
+              <div class="acc-content">
+                <div class="acc-inner">
+                  <p>Lihat titik panas atap dan halaman sekitar rumah Anda lewat peta satelit yang jelas dan mudah dipahami.</p>
+                  <div class="acc-bottom">
+                    <a href="map.html" class="btn-link">
+                      <span>Buka Peta</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="acc-item" data-img="assets/landing/feature-section.png" data-reveal="up" data-delay="120">
+              <div class="acc-header">
+                <h3>Pilihan Pohon Berakar Aman</h3>
+                <div class="acc-toggle" aria-hidden="true"></div>
+              </div>
+              <div class="acc-content">
+                <div class="acc-inner">
+                  <p>Rekomendasi bibit pohon berakar lurus ke bawah yang aman dari pipa got dan tidak merusak keramik teras.</p>
+                  <div class="acc-bottom">
+                    <a href="guide.html" class="btn-link">
+                      <span>Lihat Pohon</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="acc-item" data-img="assets/landing/feature-section.png" data-reveal="up" data-delay="180">
+              <div class="acc-header">
+                <h3>Simulasi Penurunan Suhu</h3>
+                <div class="acc-toggle" aria-hidden="true"></div>
+              </div>
+              <div class="acc-content">
+                <div class="acc-inner">
+                  <p>Hitung perkiraan suhu yang turun hingga 6.8°C saat pohon mulai rimbun menaungi teras rumah Anda.</p>
+                  <div class="acc-bottom">
+                    <a href="map.html" class="btn-link">
+                      <span>Coba Simulasi Suhu</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="acc-item" data-img="assets/landing/feature-section.png" data-reveal="up" data-delay="240">
+              <div class="acc-header">
+                <h3>Panduan Jarak Tanam Aman</h3>
+                <div class="acc-toggle" aria-hidden="true"></div>
+              </div>
+              <div class="acc-content">
+                <div class="acc-inner">
+                  <p>Ketahui jarak tanam yang pas (1.5 sampai 3 meter) dari tembok rumah, saluran got, dan kabel listrik.</p>
+                  <div class="acc-bottom">
+                    <a href="guide.html#panduan" class="btn-link">
+                      <span>Lihat Jarak Aman</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · 3D LAYERED TESTIMONIAL GALLERY (nut-lens-master) -->
+    <section id="ulasan" class="testimonial">
+      <h2 class="hd xl" data-reveal="up">Cerita Warga yang <br>Pekarangannya Jadi Sejuk</h2>
+
+      <div class="testimonial__layout">
+        <!-- Galeri Potret 3D Layered Carousel -->
+        <div class="testimonial__gallery" data-testimonial-gallery aria-label="Galeri Ulasan Warga" data-reveal="up" data-delay="80">
+          <!-- Item 0: Putri Ayu -->
+          <button class="testimonial__portrait" type="button" data-testimonial-item data-testimonial-index="0" data-testimonial-slot="previous" aria-pressed="false" data-name="Putri Ayu" data-role="Warga Gang Sesetan, Denpasar Selatan" data-quote="Teras rumah saya lebarnya cuma dua setengah meter dan dulunya semen semua. Setelah pakai Teduh, saya tanam Tabebuia Kuning di pot besar. Sekarang teras rindang dan lantainya tidak panas lagi pas diinjak siang hari.">
+            <img src="images/testimonial/Kakak Putri.webp" alt="Putri Ayu">
+          </button>
+
+          <!-- Item 1: Bima Wicaksono (Active Awal) -->
+          <button class="testimonial__portrait" type="button" data-testimonial-item data-testimonial-index="1" data-testimonial-slot="active" aria-pressed="true" data-name="Bima Wicaksono" data-role="Warga Perumahan Teuku Umar Barat, Denpasar" data-quote="Dulu teras depan panasnya bisa tembus 38 derajat di siang hari. Setelah cek peta Teduh dan tanam bibit Tanjung berakar tunggang, teras jadi adem dan pipa got tetap aman tanpa retak.">
+            <img src="images/testimonial/Mas Bima (1).webp" alt="Bima Wicaksono">
+          </button>
+
+          <!-- Item 2: Maya Indrayani -->
+          <button class="testimonial__portrait" type="button" data-testimonial-item data-testimonial-index="2" data-testimonial-slot="next" aria-pressed="false" data-name="Maya Indrayani" data-role="Pengurus Komunitas Hijau Renon, Denpasar" data-quote="Peta satelit Teduh sangat membantu kegiatan warga. Kami bisa langsung tahu gang mana yang paling gersang dan perlu ditanami pohon peneduh bersama-sama.">
+            <img src="images/testimonial/Bu Maya.webp" alt="Maya Indrayani">
+          </button>
+
+          <!-- Item 3: Raka Pratama -->
+          <button class="testimonial__portrait" type="button" data-testimonial-item data-testimonial-index="3" data-testimonial-slot="hidden-after" aria-pressed="false" data-name="Raka Pratama" data-role="Pemilik Rumah Jl. Gatot Subroto Timur, Denpasar" data-quote="Panduan akarnya sangat jelas. Saya pilih Ketapang Kencana karena tajuknya rapi seperti payung. Rumah jadi sejuk dan pemakaian AC siang hari berkurang banyak.">
+            <img src="images/testimonial/Bang Raka.webp" alt="Raka Pratama">
+          </button>
+        </div>
+
+        <!-- Kartu Kutipan Ulasan Interaktif -->
+        <article class="testimonial__quote-card" aria-live="polite" data-reveal="up" data-delay="160">
+          <div class="testimonial__navigation">
+            <button class="testimonial__navigation-button" type="button" data-testimonial-previous aria-label="Ulasan Sebelumnya">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="testimonial__navigation-button" type="button" data-testimonial-next aria-label="Ulasan Berikutnya">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+
+          <span class="testimonial__quote-mark" aria-hidden="true">&ldquo;</span>
+
+          <div class="testimonial__quote-content" data-testimonial-quote-content>
+            <blockquote class="testimonial__quote" data-testimonial-quote>
+              Dulu teras depan panasnya bisa tembus 38 derajat di siang hari. Setelah cek peta Teduh dan tanam bibit Tanjung berakar tunggang, teras jadi adem dan pipa got tetap aman tanpa retak.
+            </blockquote>
+            <footer class="testimonial__author">
+              <cite class="testimonial__name" data-testimonial-name>Bima Wicaksono</cite>
+              <span class="testimonial__role" data-testimonial-role>Warga Perumahan Teuku Umar Barat, Denpasar</span>
+            </footer>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5 · FAQ SECTION (NutriNesia 2 Columns) -->
+    <section id="faq" class="faq-section">
+      <div class="faq-container">
+        <!-- Kolom Kiri: Ilustrasi 1:1 -->
+        <div class="faq-left" data-reveal="up">
+          <h2 class="hd xl">Pertanyaan yang <br>Sering Ditanyakan</h2>
+          <div class="faq-img-wrapper">
+            <img src="assets/landing/question-section.png" alt="Konsultasi Kesejukan Lahan Teduh" class="faq-img-1to1">
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Daftar Accordion -->
+        <div class="faq-right">
+          <div class="faq-list">
+            <!-- 01 -->
+            <div class="faq-item active" data-reveal="up" data-delay="60">
+              <div class="faq-header">
+                <span class="faq-num">01</span>
+                <h3>Kenapa pohon berakar tunggang aman untuk fondasi rumah?</h3>
+                <div class="faq-toggle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="faq-content">
+                <div class="faq-inner">
+                  <p>Akar tunggang tumbuh lurus ke bawah ke dalam tanah untuk mencari air, bukan merambat ke samping seperti akar serabut yang sering membongkar keramik teras.</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 02 -->
+            <div class="faq-item" data-reveal="up" data-delay="120">
+              <div class="faq-header">
+                <span class="faq-num">02</span>
+                <h3>Bagaimana cara Teduh menghitung suhu pekarangan?</h3>
+                <div class="faq-toggle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="faq-content">
+                <div class="faq-inner">
+                  <p>Teduh menghitung pantulan panas dari semen, aspal, dan atap, lalu memadukannya dengan rimbunnya pohon pada peta satelit.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="faq-item" data-reveal="up" data-delay="180">
+              <div class="faq-header">
+                <span class="faq-num">03</span>
+                <h3>Apakah pohon peneduh ini sulit dirawat?</h3>
+                <div class="faq-toggle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="faq-content">
+                <div class="faq-inner">
+                  <p>Tidak. Pohon pilihan Teduh seperti Tanjung dan Tabebuia tahan panas terik, tidak mudah rontok, dan tidak perlu disiram tiap hari setelah tumbuh kuat.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 04 -->
+            <div class="faq-item" data-reveal="up" data-delay="240">
+              <div class="faq-header">
+                <span class="faq-num">04</span>
+                <h3>Berapa jarak tanam yang aman dari pipa got dan tembok?</h3>
+                <div class="faq-toggle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="faq-content">
+                <div class="faq-inner">
+                  <p>Beri jarak minimal 1.5 meter untuk pohon bertajuk sedang (seperti Tabebuia), dan 2.5 sampai 3 meter untuk pohon berdaun lebar (seperti Tanjung atau Ketapang Kencana).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 05 -->
+            <div class="faq-item" data-reveal="up" data-delay="300">
+              <div class="faq-header">
+                <span class="faq-num">05</span>
+                <h3>Apakah platform ini bisa dipakai gratis?</h3>
+                <div class="faq-toggle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+              <div class="faq-content">
+                <div class="faq-inner">
+                  <p>Ya, semua fitur peta suhu, simulasi peneduh, dan panduan bibit pohon bisa langsung dipakai gratis tanpa perlu daftar akun.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · PARTNERS & ACTION BANNER (NutriNesia Style) -->
+    <section class="hero-partners-new" data-reveal="scale">
+      <div class="hp-header">
+        <div class="hp-left">
+          <h2 class="hd">Siap Bikin Rumah <br>Anda Lebih Adem?</h2>
+          <div class="hp-trust">
+            <div class="hp-avatars">
+              <img src="images/testimonial/Kakak Putri.webp" alt="Warga 1">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Warga 2">
+              <img src="images/testimonial/Bu Maya.webp" alt="Warga 3">
+              <div class="hp-avatar-plus">+</div>
+            </div>
+            <div class="hp-rating">
+              <strong>+2,400 Pekarangan</strong>
+              <span>Telah Terpetakan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hp-center">
+          <svg class="asterisk" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line><line x1="22" y1="12" x2="2" y2="12"></line><line x1="19.07" y1="19.07" x2="4.93" y2="4.93"></line></svg>
+        </div>
+
+        <div class="hp-right">
+          <p>Pindai titik panas halaman rumah Anda dan temukan pohon peneduh yang ramah fondasi untuk hunian yang asri dan hemat listrik.</p>
+          <div class="hp-actions">
+            <a href="map.html" class="btn-black">
+              <span>Buka Peta Sekarang</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 7 · FOOTER (NutriNesia Outer Canvas Layout) -->
+  <footer class="footer-new">
+    <div class="footer-main-inner">
+      <div class="footer-row-top">
+        <!-- Kolom Brand & Bio -->
+        <div class="footer-brand-col">
+          <a href="index.html" class="footer-logo-link" aria-label="Teduh Beranda">
+            <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 44px; width: auto; display: block;">
+          </a>
+          <p class="brand-bio">Solusi iklim mikro dan panduan pohon peneduh cerdas yang memadukan data satelit spasial dengan kearifan botani lokal untuk pekarangan sejuk bebas radiasi semen.</p>
+          <div class="footer-social-wrapper">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Instagram Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="TikTok Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="YouTube Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><polygon points="10 15 15 12 10 9 10 15"/></svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Facebook Teduh">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 Grup Kolom Navigasi -->
+        <div class="footer-links-grid">
+          <!-- Kolom Layanan -->
+          <div class="footer-nav-group">
+            <h5>Layanan</h5>
+            <ul>
+              <li><a href="map.html">Konsol Peta</a></li>
+              <li><a href="guide.html">Direktori Bibit Pohon</a></li>
+              <li><a href="map.html">Simulasi Radiasi Kalor</a></li>
+              <li><a href="guide.html#panduan">Kalkulator Jarak Tanam</a></li>
+            </ul>
+          </div>
+
+          <!-- Kolom Dukungan -->
+          <div class="footer-nav-group">
+            <h5>Dukungan</h5>
+            <ul>
+              <li><a href="index.html#faq">Pusat Bantuan</a></li>
+              <li><a href="community.html">Komunitas Warga</a></li>
+              <li><a href="guide.html#panduan">Panduan Got &amp; Fondasi</a></li>
+              <li><a href="index.html#faq">Ketentuan Layanan</a></li>
+            </ul>
+          </div>
+
+          <!-- Kolom Hubungi Kami -->
+          <div class="footer-nav-group">
+            <h5>Hubungi Kami</h5>
+            <ul>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>halo@teduh.id</span>
+              </li>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+62 361 234-5678</span>
+              </li>
+              <li class="contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="contact-icon" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Renon, Denpasar Selatan</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Garis & Tautan Bawah -->
+      <div class="footer-bottom-line">
+        <div class="footer-copyright-text">
+          &copy; 2026 Teduh.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Terms &amp; Conditions</a>
+          <span class="dot-sep" aria-hidden="true"></span>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactivity Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

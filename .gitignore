@@ -1,0 +1,18 @@
+﻿# Project Exclusions
+docs/
+AGENTS.md
+PRD.md
+*.pdf
+NutriNesia/
+nut-lens-master/
+.superpowers/
+map-popup.html
+screen.html
+map-popup.png
+map.png
+screenshot.png
+.gemini/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

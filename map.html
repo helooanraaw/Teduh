@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teduh: Analisis Peta & Titik Tanam</title>
+  <meta name="description" content="Konsol interaktif Teduh untuk mendeteksi suhu permukaan pekarangan semen, koridor jalan, dan memilih pohon peneduh berakar aman fondasi.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS via CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Stylesheets Murni (Pure CSS) -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/map.css">
+</head>
+<body>
+
+  <div class="map-viewport">
+
+    <!-- TOP FLOATING CAPSULE NAVIGATION -->
+    <header class="map-topbar" aria-label="Navigasi Peta">
+      
+      <!-- Kiri: Brand & Tombol Kembali -->
+      <div class="map-topbar-left">
+        <div class="map-brand-capsule">
+          <a href="index.html" class="map-back-btn" title="Kembali ke Beranda" aria-label="Kembali ke Beranda">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path></svg>
+          </a>
+          <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+            <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
+            <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
+          </a>
+        </div>
+      </div>
+
+      <!-- Tengah: Kolom Pencarian Cepat dengan Autocomplete -->
+      <div class="map-topbar-center map-search-wrapper">
+        <div class="map-search-box">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke-width="2"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line></svg>
+          <input 
+            id="zoneSearchInput" 
+            type="text" 
+            placeholder="Cari kawasan atau jalan..." 
+            class="map-search-input"
+            autocomplete="off"
+            aria-label="Cari nama kawasan pemukiman atau jalan"
+          >
+        </div>
+
+        <!-- Autocomplete Dropdown List -->
+        <div id="searchResultsDropdown" class="map-search-dropdown hidden" role="listbox">
+          <!-- Item hasil pencarian dimuat oleh map.js -->
+        </div>
+      </div>
+
+      <!-- Kanan: Navigasi Terpadu & Profil John Doe -->
+      <div class="map-topbar-right">
+        
+        <!-- Kapsul Navigasi Komunitas & Direktori -->
+        <nav class="map-nav-group" aria-label="Navigasi Pelengkap">
+          <a href="community.html" class="map-nav-item" title="Buka Forum Komunitas & Misi Warga">
+            <span>Komunitas</span>
+          </a>
+          <a href="guide.html" class="map-nav-item" title="Direktori Bibit Aman Fondasi">
+            <span>Direktori</span>
+          </a>
+        </nav>
+
+        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron (Hover & Klik) -->
+        <div class="nav-profile-wrapper">
+          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
+            <div class="nav-profile-avatar">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            </div>
+            <div class="nav-profile-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+          </button>
+
+          <!-- Pop-up Menu Profil John Doe -->
+          <div class="nav-profile-popup" role="menu">
+            <div class="nav-popup-header">
+              <div class="nav-popup-avatar">
+                <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+              </div>
+              <div class="nav-popup-user-meta">
+                <span class="nav-popup-name">John Doe</span>
+                <span class="nav-popup-username">@johndoe</span>
+              </div>
+            </div>
+
+            <!-- Metrik Level & Poin Sederhana -->
+            <div class="nav-popup-metrics">
+              <div class="nav-popup-metrics-row">
+                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
+                <div class="nav-popup-points-badge">
+                  <span class="nav-popup-points-value">850 Poin</span>
+                </div>
+              </div>
+
+              <div class="nav-popup-progress-track">
+                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <!-- Menu Tautan Profil -->
+            <div class="nav-popup-menu">
+              <a href="profile.html" class="nav-popup-item" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+                <span>Profile</span>
+              </a>
+              <div class="nav-popup-divider"></div>
+              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </header>
+
+    <!-- ONBOARDING HINT BANNER -->
+    <div id="onboardingBanner" class="map-onboarding" role="region" aria-label="Petunjuk Penggunaan Peta">
+      <div class="map-onboarding-content">
+        <div class="map-onboarding-icon" aria-hidden="true">i</div>
+        <div class="map-onboarding-text">
+          <h4>Petunjuk Navigasi Peta</h4>
+          <p>
+            Ketik nama jalan di bilah pencarian atas atau klik sembarang area pekarangan pada peta satelit untuk memindai suhu dan kualitas iklim mikro.
+          </p>
+        </div>
+        <button id="dismissOnboardingBtn" type="button" class="map-onboarding-close" title="Tutup Petunjuk" aria-label="Tutup Petunjuk">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- KANVAS PETA LEAFLET -->
+    <div id="map" aria-label="Peta Interaktif Satelit"></div>
+
+    <!-- STATUS BAR KOORDINAT BAWAH -->
+    <div class="map-statusbar" aria-hidden="true">
+      <div class="map-status-pill coords">
+        <span class="map-brand-dot"></span>
+        <span id="mapCoordinates">-8.6750, 115.2150</span>
+      </div>
+    </div>
+
+    <!-- SPATIAL ANALYSIS DRAWER / PANEL ANALISIS LENGKAP -->
+    <aside id="spatialDrawer" class="spatial-drawer" aria-label="Panel Hasil Analisis">
+      
+      <!-- Drawer Header -->
+      <div class="drawer-header">
+        <div>
+          <button id="drawerBackBtn" onclick="backToAnalysis()" type="button" class="drawer-back-btn hidden" aria-label="Kembali ke Analisa Inti">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Kembali ke Analisa Inti</span>
+          </button>
+          <h2 id="zoneName" class="drawer-title">Nama Kawasan</h2>
+          <div id="zoneCoords" class="drawer-coords">Koordinat: -8.6750, 115.2080</div>
+        </div>
+
+        <button id="closeDrawerBtn" onclick="closeDrawer()" type="button" class="drawer-close-btn" title="Tutup Panel" aria-label="Tutup Panel Analisis">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Drawer Body (Scrollable) -->
+      <div class="drawer-body">
+        
+        <!-- STAGE 1: ANALISA INTI KAWASAN (Kohesif & Terstruktur) -->
+        <div id="drawerStageAnalysis" class="drawer-stage">
+          
+          <!-- KARTU 1: KONDISI IKLIM MIKRO & FAKTOR PEMICU -->
+          <div class="drawer-analysis-card">
+            <div class="drawer-section-title">Kondisi Iklim Mikro & Pemicu Panas</div>
+            
+            <!-- Spektrum Suhu Termal -->
+            <div class="thermal-spectrum-box">
+              <div class="spectrum-header">
+                <span class="spectrum-title">Radiasi Permukaan</span>
+                <span id="metricSurfaceTemp" class="spectrum-curr-val">38.8°C</span>
+              </div>
+              <div class="spectrum-bar-wrap">
+                <div class="spectrum-bar"></div>
+                <div id="spectrumPin" class="spectrum-line-pin" style="left: 85%;"></div>
+              </div>
+              <div class="spectrum-labels">
+                <span class="cold">24°C Sejuk</span>
+                <span>30°C Nyaman</span>
+                <span id="spectrumCurrentLabel" class="hot">38.8°C Sangat Terik</span>
+              </div>
+            </div>
+
+            <!-- Garis Pemisah Halus -->
+            <div class="drawer-card-divider"></div>
+
+            <!-- Diagram Donut Faktor Pemicu -->
+            <div class="donut-layout">
+              <div class="donut-chart-box">
+                <svg id="donutSvgChart" viewBox="0 0 42 42" aria-hidden="true">
+                  <!-- Lingkaran dasar / track -->
+                  <circle cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#F4F4F5" stroke-width="3.6"></circle>
+                  <!-- Segmen Dinamis oleh map.js -->
+                  <g id="donutSegmentsGroup"></g>
+                </svg>
+                <div class="donut-center-info">
+                  <span id="donutCenterScore" class="donut-score">40%</span>
+                  <span id="donutCenterLabel" class="donut-score-lbl">Minim Pohon</span>
+                </div>
+              </div>
+
+              <!-- Legend 4 Faktor Pemicu -->
+              <div id="donutLegendList" class="donut-legend">
+                <!-- Legend items diisi oleh map.js -->
+              </div>
+            </div>
+
+            <!-- Diagnosa Dampak Lapangan -->
+            <div class="narrative-box">
+              <div class="narrative-title">Dampak ke Pemukiman:</div>
+              <p id="zoneDiagnosisText" class="narrative-text">
+                Memuat diagnosa kawasan...
+              </p>
+            </div>
+          </div>
+
+          <!-- KARTU 2: REKOMENDASI POHON PENEDUH UTAMA -->
+          <div class="drawer-tree-card">
+            <div class="drawer-section-title">Rekomendasi Pohon Peneduh</div>
+            
+            <div class="tree-img-wrap">
+              <img id="treeImage" src="assets/trees/pohon-tanjung.jpg" alt="Foto Bibit Pohon Peneduh">
+            </div>
+
+            <div class="tree-text-wrap">
+              <h4 id="treeName" class="tree-clean-title">Pohon Tanjung (Mimusops elengi)</h4>
+              <p id="treeBenefit" class="tree-clean-desc">
+                Pohon peneduh dengan tajuk bulat rapat yang mampu memotong radiasi panas hingga 4.3°C dan menyaring partikel debu kendaraan. Memiliki sistem akar tunggang yang menghujam lurus ke bawah sehingga aman bagi pondasi bangunan dan saluran air di pekarangan.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tombol Aksi Utama Menuju Stage 2 -->
+          <div class="drawer-actions-group">
+            <button id="btnViewZoneActions" onclick="showZoneActions()" type="button" class="btn-primary-action">
+              <span>Lihat Rencana Aksi Kawasan Ini</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+
+            <a href="guide.html" class="btn-secondary-action">
+              <span>Buka Direktori Bibit Lengkap</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- STAGE 2: RENCANA AKSI BERTAHAP & SIMULASI -->
+        <div id="drawerStageActions" class="drawer-stage hidden">
+          <!-- Urutan Rencana Aksi Bertahap -->
+          <div>
+            <div class="drawer-section-title">Urutan Tindakan Pemulihan Kawasan</div>
+            <div class="phased-action-list">
+              <!-- Tahap 1: Sekarang -->
+              <div class="phased-action-card">
+                <span class="phased-step-badge now">Tahap 1: Sekarang</span>
+                <h4 id="actionNowTitle" class="phased-action-title">Siram Lantai Semen Saat Jam Terik</h4>
+                <p id="actionNowDesc" class="phased-action-desc">Siram pelataran semen pada pukul 11:30 dan 14:00 untuk memotong pantulan radiasi panas ke dinding rumah.</p>
+              </div>
+
+              <!-- Tahap 2: Minggu Ini -->
+              <div class="phased-action-card">
+                <span class="phased-step-badge this-week">Tahap 2: Minggu Ini</span>
+                <h4 id="actionWeekTitle" class="phased-action-title">Buat Lubang Biopori Resapan</h4>
+                <p id="actionWeekDesc" class="phased-action-desc">Pasang lubang biopori sedalam 80-100cm di sela batas semen untuk membantu resapan air dan mendinginkan tanah dasar.</p>
+              </div>
+
+              <!-- Tahap 3: Jangka Panjang -->
+              <div class="phased-action-card">
+                <span class="phased-step-badge long-term">Tahap 3: Jangka Panjang</span>
+                <h4 id="actionLongTitle" class="phased-action-title">Tanam Pohon Peneduh Berakar Tunggang</h4>
+                <p id="actionLongDesc" class="phased-action-desc">Tanam 1 bibit pohon Tanjung berjarak aman minimal 1.5 meter dari got untuk kanopi peneduh permanen.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulasi Penurunan Suhu (Model Teduh) -->
+          <div class="simulation-section">
+            <div class="drawer-section-title">Proyeksi Penurunan Suhu (Simulasi Model Teduh)</div>
+            
+            <button id="runSimulationBtn" onclick="runThermalSimulation()" type="button" class="btn-simulation">
+              <span>Uji Simulasi Penanaman Peneduh</span>
+              <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path></svg>
+            </button>
+
+            <!-- Kotak Hasil Dampak Simulasi -->
+            <div id="simulationImpactBox" class="simulation-impact-box hidden">
+              <div class="impact-box-header">
+                <span class="impact-header-title">Proyeksi Penyejukan</span>
+                <span id="impactScore" class="impact-score-badge">86/100</span>
+              </div>
+
+              <div class="impact-drop-row">
+                <div class="impact-temp-drop" id="impactTempDrop">-4.3°C</div>
+                <div class="impact-drop-desc">
+                  Potensi penurunan suhu permukaan termal di bawah tajuk kanopi baru.
+                </div>
+              </div>
+
+              <p id="impactSummaryText" class="impact-summary-text">
+                Simulasi memperlihatkan penurunan suhu signifikan dan peningkatan retensi air tanah.
+              </p>
+            </div>
+          </div>
+
+          <!-- Misi Aksi Penanaman Warga -->
+          <div>
+            <div class="drawer-section-title">Aksi Penanaman & Kolaborasi Warga</div>
+            <div class="mission-action-card">
+              <div class="mission-action-header">
+                <span class="mission-reward-badge" id="missionRewardBadge">+250 Poin Kesejukan</span>
+                <span class="mission-zone-pill" id="missionZonePill">Aksi Lingkungan</span>
+              </div>
+
+              <h4 id="missionActionTitle" class="mission-action-title">Ambil Misi Tanam di Kawasan Ini</h4>
+              <p id="missionActionDesc" class="mission-action-desc">
+                Tanam 1 bibit pohon berakar tunggang aman fondasi untuk meredam suhu radiasi semen dan dapatkan poin hadiah untuk ditukar saldo voucher.
+              </p>
+
+              <div class="mission-safe-spot-box">
+                <div class="mission-safe-spot-row">
+                  <span>Rekomendasi Bibit:</span>
+                  <strong id="missionTreeName">Pohon Tanjung</strong>
+                </div>
+                <div class="mission-safe-spot-row">
+                  <span>Titik Aman Saluran Got:</span>
+                  <strong id="missionSafeDistance">Minimal 1.5 meter</strong>
+                </div>
+              </div>
+
+              <div class="mission-btn-group">
+                <button id="takeMissionBtn" onclick="takeZoneMission()" type="button" class="btn-take-mission">
+                  <span>Ambil Misi Tanam Sendiri (+250 Poin)</span>
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <a id="inviteFriendsBtn" href="community.html?action=new-post&invite=1" class="btn-invite-friends" title="Ajak tetangga ikut aksi tanam bersama untuk dapat bonus poin">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="9" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span>Ajak Tetangga Tanam Bersama (+50 Poin)</span>
+                </a>
+                <a id="goToDocBtn" href="community.html?action=new-post" class="btn-doc-link hidden">
+                  <span>Unggah Dokumentasi & Klaim Poin</span>
+                  <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16m8-8H4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Leaflet JS via CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Data Engine & Map Controller -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>
