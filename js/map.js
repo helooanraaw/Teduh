@@ -58,12 +58,11 @@ function initMap() {
     }
   });
 
-  // Tampilkan otomatis titik pantau nyata dan lapisan poligon termal organik
-  renderPresetMarkers();
+  // Tampilkan otomatis lapisan poligon termal organik
   renderPollutionLayers();
 }
 
-// Menampilkan Marker Kawasan Pantau Nyata
+// Menampilkan Marker Kawasan Pantau Nyata (Tersedia untuk modul pelengkap)
 function renderPresetMarkers() {
   presetMarkers.forEach(m => mapInstance.removeLayer(m));
   presetMarkers = [];
@@ -92,7 +91,7 @@ function renderPresetMarkers() {
     const marker = L.marker([zone.lat, zone.lng], { icon: customIcon }).addTo(mapInstance);
     marker.on('click', (e) => {
       L.DomEvent.stopPropagation(e);
-      selectZone(zone, false);
+      selectZone(zone, false, e.latlng);
     });
 
     presetMarkers.push(marker);
@@ -103,11 +102,11 @@ function renderPresetMarkers() {
 function handleMapFreeClick(lat, lng) {
   // Hitung data mikroklimat dinamis berdasarkan koordinat klik
   const simulatedZone = TEDUH_DATA.generateDynamicAnalysis(lat, lng);
-  selectZone(simulatedZone, true);
+  selectZone(simulatedZone, true, { lat, lng });
 }
 
-// Memilih Zona, Memunculkan Pin Aktif, Popup Kustom, dan Membuka Drawer Analisis
-function selectZone(zone, isDynamic = false) {
+// Memilih Zona, Memunculkan Pin Aktif Kustom, dan Membuka Drawer Analisis
+function selectZone(zone, isDynamic = false, clickedLatLng = null) {
   activeZone = zone;
 
   // Hapus lingkaran simulasi atau lingkaran misi sebelumnya jika berpindah zona
@@ -120,68 +119,42 @@ function selectZone(zone, isDynamic = false) {
     activeMissionCircle = null;
   }
 
-  // Pusatkan peta ke lokasi zona terpilih dengan transisi halus
-  mapInstance.flyTo([zone.lat, zone.lng], 16, {
-    duration: 1.1,
+  const targetLat = clickedLatLng ? clickedLatLng.lat : zone.lat;
+  const targetLng = clickedLatLng ? clickedLatLng.lng : zone.lng;
+
+  // Pusatkan peta ke lokasi terpilih dengan gerakan halus
+  mapInstance.panTo([targetLat, targetLng], {
+    animate: true,
+    duration: 0.6,
     easeLinearity: 0.25
   });
 
   // Hapus Active Pin Marker sebelumnya jika ada
   if (activeMarker) {
     mapInstance.removeLayer(activeMarker);
+    activeMarker = null;
   }
 
   const isHot = zone.isHotspot;
-  const dotColor = isHot ? '#bc4800' : '#1A382B';
+  const dotClass = isHot ? 'hot' : 'cool';
 
   const activeIcon = L.divIcon({
     className: 'active-inspect-marker',
     html: `
-      <div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
-        <div style="position: absolute; width: 34px; height: 34px; border-radius: 50%; background: ${dotColor}; opacity: 0.25; animation: pulse-ring 2s infinite;"></div>
-        <div style="width: 24px; height: 24px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center;">
-          <div style="width: 12px; height: 12px; border-radius: 50%; background: ${dotColor};"></div>
+      <div class="active-pin-container">
+        <div class="active-pin-pulse ${dotClass}"></div>
+        <div class="active-pin-core">
+          <div class="active-pin-dot ${dotClass}"></div>
         </div>
       </div>
     `,
-    iconSize: [34, 34],
-    iconAnchor: [17, 17]
+    iconSize: [36, 36],
+    iconAnchor: [18, 18]
   });
 
-  activeMarker = L.marker([zone.lat, zone.lng], { icon: activeIcon }).addTo(mapInstance);
+  activeMarker = L.marker([targetLat, targetLng], { icon: activeIcon }).addTo(mapInstance);
 
-  // Pasang Leaflet Popup Kustom di Titik Terpilih
-  const popupContent = `
-    <div class="map-popup-card">
-      <div class="map-popup-header">
-        <span class="map-popup-badge ${isHot ? 'hot' : 'cool'}">${zone.surfaceTemp}</span>
-        <span class="map-popup-category">${zone.category}</span>
-      </div>
-      <h4 class="map-popup-title">${zone.name}</h4>
-      <div class="map-popup-grid">
-        <div class="map-popup-mini-stat">
-          <span>Kualitas Udara</span>
-          <strong>AQI ${zone.aqi}</strong>
-        </div>
-        <div class="map-popup-mini-stat">
-          <span>Tutupan Hijau</span>
-          <strong>${zone.canopyCover}</strong>
-        </div>
-      </div>
-      <button type="button" class="map-popup-btn" onclick="openDrawer()">
-        <span>Rincian & Misi Tanam</span>
-        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-      </button>
-    </div>
-  `;
-
-  activeMarker.bindPopup(popupContent, {
-    offset: [0, -12],
-    closeButton: false,
-    className: 'custom-leaflet-popup'
-  }).openPopup();
-
-  // Hubungkan klik pin untuk membuka drawer kembali
+  // Hubungkan klik pin untuk membuka drawer kembali jika tertutup
   activeMarker.on('click', (e) => {
     L.DomEvent.stopPropagation(e);
     openDrawer();
@@ -485,7 +458,7 @@ function renderPollutionLayers() {
       L.DomEvent.stopPropagation(e);
       const targetZone = TEDUH_DATA.zones.find(z => z.id === pZone.zoneId);
       if (targetZone) {
-        selectZone(targetZone, false);
+        selectZone(targetZone, false, e.latlng);
         showToast(`Menganalisis area: ${pZone.name}`);
       }
     });

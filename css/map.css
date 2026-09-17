@@ -784,11 +784,11 @@ html, body {
   color: #FFFFFF;
 }
 
-/* Custom Marker Pins */
+/* Custom Spatial Markers & Active Inspection Pin */
 .custom-spatial-marker,
 .active-inspect-marker {
-  background: none;
-  border: none;
+  background: none !important;
+  border: none !important;
 }
 
 .marker-inner-circle {
@@ -842,7 +842,82 @@ html, body {
   opacity: 1;
 }
 
-/* Animasi Pulse Marker */
+/* Active Inspection Marker Pin (Clean Spatial Inspector) */
+.active-pin-container {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pin-drop-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pin-drop-pop {
+  0% {
+    transform: translateY(-14px) scale(0.6);
+    opacity: 0;
+  }
+  65% {
+    transform: translateY(2px) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.active-pin-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  animation: pulse-ring 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+.active-pin-pulse.hot {
+  background: rgba(186, 78, 42, 0.35);
+}
+
+.active-pin-pulse.cool {
+  background: rgba(26, 56, 43, 0.35);
+}
+
+.active-pin-core {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(14, 17, 22, 0.25);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.active-pin-core:hover {
+  transform: scale(1.12);
+}
+
+.active-pin-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  transition: background 0.25s ease;
+}
+
+.active-pin-dot.hot {
+  background: var(--color-secondary);
+}
+
+.active-pin-dot.cool {
+  background: var(--color-primary);
+}
+
+/* Animasi Pulse Marker & Kanopi */
 @keyframes pulse-ring {
   0% {
     transform: scale(0.6);
@@ -1787,5 +1862,17 @@ html, body {
 
   .drawer-body {
     padding: 0 20px 24px 20px;
+  }
+}
+
+/* Aksesibilitas Preferensi Gerakan Berkurang (Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+  .active-pin-container,
+  .marker-pulse-ring,
+  .canopy-pulse-ring,
+  .active-pin-pulse,
+  .spatial-drawer {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
   }
 }
