@@ -462,16 +462,6 @@ function renderPollutionLayers() {
     `;
     polygon.bindTooltip(tooltipContent, { sticky: true, opacity: 0.95 });
 
-    // Efek hover mikro untuk kedalaman visual
-    polygon.on('mouseover', () => {
-      polygon.setStyle({ fillOpacity: 0.42 });
-      midAura.setStyle({ fillOpacity: 0.24 });
-    });
-    polygon.on('mouseout', () => {
-      polygon.setStyle({ fillOpacity: pZone.fillOpacity || 0.28 });
-      midAura.setStyle({ fillOpacity: 0.15 });
-    });
-
     // Klik polygon untuk memusatkan peta dan membuka analisis
     polygon.on('click', (e) => {
       L.DomEvent.stopPropagation(e);

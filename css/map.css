@@ -1808,10 +1808,5 @@ html, body {
 .thermal-organic-zone {
   cursor: pointer;
   filter: blur(0.5px);
-  transition: fill-opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s ease;
-}
-
-.thermal-organic-zone:hover {
-  filter: blur(0.2px) drop-shadow(0 0 8px rgba(186, 78, 42, 0.35));
 }
 
