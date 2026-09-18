@@ -1,0 +1,625 @@
+/* ==========================================================================
+   TEDUH DIGITAL PLATFORM - REWARD & LEADERBOARD STYLESHEET (css/reward.css)
+   Papan Peringkat Warga (Leaderboard) & Katalog Penukaran Voucher Bibit.
+   Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, 0 Em-Dash (R-02)
+   ========================================================================== */
+
+/* Kanvas Halaman Reward */
+.rw-page-wrapper {
+  background-color: var(--color-background, #EFF2F0);
+  min-height: 100vh;
+  padding-bottom: 96px;
+}
+
+.rw-container {
+  width: 100%;
+  max-width: var(--container-max, 1200px);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header Section */
+.rw-header-section {
+  padding: 36px 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rw-header-title {
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.rw-header-subtitle {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-text-body, #474E4A);
+  margin: 0;
+  max-width: 62ch;
+}
+
+/* User Sticky Metric Card */
+.rw-user-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-2xl, 24px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+}
+
+.rw-user-info-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rw-user-avatar-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary, #1A382B);
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.rw-user-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.rw-user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rw-user-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rw-user-name {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.rw-user-level-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full, 9999px);
+  background: #EFF3F0;
+  color: var(--color-primary, #1A382B);
+}
+
+.rw-user-progress-bar {
+  width: 180px;
+  height: 6px;
+  background: #EAEFEA;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.rw-user-progress-fill {
+  height: 100%;
+  background: var(--color-primary, #1A382B);
+  border-radius: 9999px;
+}
+
+.rw-user-stats-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rw-user-points-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.rw-user-points-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rw-user-points-val {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-primary, #1A382B);
+  line-height: 1.2;
+}
+
+.rw-btn-get-points {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-btn-get-points:hover {
+  background: var(--color-primary, #1A382B);
+}
+
+/* SEGMENTED TAB SWITCHER */
+.rw-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #E2E8E4;
+  padding: 4px;
+  border-radius: var(--radius-full, 9999px);
+  width: fit-content;
+  margin-bottom: 28px;
+}
+
+.rw-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: var(--radius-full, 9999px);
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: #52525B;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-tab-btn.is-active {
+  background: #FFFFFF;
+  color: var(--color-slate, #0E1116);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   TAB 1: PAPAN PERINGKAT WARGA (LEADERBOARD)
+   ========================================================================== */
+.rw-tab-content {
+  display: none;
+}
+
+.rw-tab-content.is-active {
+  display: block;
+}
+
+/* TOP 3 PODIUM */
+.rw-podium-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+  .rw-podium-grid {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: end;
+  }
+}
+
+.rw-podium-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.rw-podium-card.first {
+  border-color: var(--color-primary, #1A382B);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F6 100%);
+  padding: 32px 20px;
+}
+
+.rw-rank-badge {
+  position: absolute;
+  top: -12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #FFFFFF;
+}
+
+.rw-podium-card.first .rw-rank-badge {
+  background: #BA4E2A;
+}
+
+.rw-podium-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #E2E8E5;
+}
+
+.rw-podium-card.first .rw-podium-avatar {
+  width: 72px;
+  height: 72px;
+  border-color: var(--color-primary, #1A382B);
+}
+
+.rw-podium-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.rw-podium-loc {
+  font-size: 12px;
+  color: #71717A;
+}
+
+.rw-podium-points {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-primary, #1A382B);
+  background: #EFF3F0;
+  padding: 4px 14px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* LEADERBOARD TABLE LIST */
+.rw-table-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.rw-table-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #F1F4F2;
+  gap: 16px;
+  transition: background var(--transition-fast, 0.2s ease);
+}
+
+.rw-table-row:last-child {
+  border-bottom: none;
+}
+
+.rw-table-row.is-current-user {
+  background: #F2F7F4;
+}
+
+.rw-table-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rw-table-rank-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: #71717A;
+  width: 24px;
+  text-align: center;
+}
+
+.rw-table-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #E2E8E5;
+}
+
+.rw-table-user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rw-table-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rw-badge-you {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+}
+
+.rw-table-loc {
+  font-size: 11.5px;
+  color: #71717A;
+}
+
+.rw-table-points {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-primary, #1A382B);
+}
+
+/* ==========================================================================
+   TAB 2: KATALOG VOUCHER & BIBIT GRATIS
+   ========================================================================== */
+.rw-vouchers-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .rw-vouchers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.rw-voucher-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-voucher-card:hover {
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+}
+
+.rw-voucher-top {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rw-voucher-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rw-voucher-cost-pill {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  background: #EFF3F0;
+  color: var(--color-primary, #1A382B);
+}
+
+.rw-voucher-stock-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+}
+
+.rw-voucher-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.rw-voucher-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-text-body, #474E4A);
+  margin: 0;
+}
+
+.rw-voucher-loc-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #71717A;
+  padding-top: 4px;
+}
+
+.rw-voucher-loc-strip svg {
+  color: var(--color-primary, #1A382B);
+  flex-shrink: 0;
+}
+
+.rw-btn-claim-voucher {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 11px 18px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-btn-claim-voucher:hover {
+  background: var(--color-primary, #1A382B);
+}
+
+/* ==========================================================================
+   MODAL KLAIM VOUCHER
+   ========================================================================== */
+.rw-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 17, 22, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.rw-modal-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.rw-modal-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-2xl, 24px);
+  max-width: 440px;
+  width: 100%;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rw-modal-backdrop.is-visible .rw-modal-card {
+  transform: translateY(0);
+}
+
+.rw-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #EFF3F0;
+  color: var(--color-primary, #1A382B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rw-modal-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+}
+
+.rw-modal-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #52525B;
+  margin: 0;
+}
+
+.rw-modal-code-box {
+  background: #F4F4F5;
+  border: 1px dashed #CBD5E1;
+  border-radius: 12px;
+  padding: 12px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rw-modal-code {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--color-primary, #1A382B);
+}
+
+.rw-modal-btn-close {
+  width: 100%;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast, 0.2s ease);
+}
+
+.rw-modal-btn-close:hover {
+  background: var(--color-primary, #1A382B);
+}
+
+/* Toast Notifikasi Reward */
+#rwToast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  z-index: 2100;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+#rwToast.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}

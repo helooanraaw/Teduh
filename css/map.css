@@ -48,7 +48,9 @@ html, body {
   gap: 10px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
-  padding: 6px 14px 6px 14px;
+  padding: 5px 16px 5px 14px;
+  min-height: 52px;
+  box-sizing: border-box;
   border-radius: var(--radius-full);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(228, 231, 229, 0.85);
@@ -71,16 +73,16 @@ html, body {
 }
 
 .map-brand-logo-desktop {
-  height: 24px;
+  height: 40px;
   width: auto;
   display: block;
 }
 
 .map-topbar-divider {
   width: 1px;
-  height: 18px;
+  height: 24px;
   background: #E2E8F0;
-  margin: 0 2px;
+  margin: 0 4px;
   flex-shrink: 0;
 }
 
@@ -127,7 +129,9 @@ html, body {
   gap: 4px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
-  padding: 5px 8px 5px 8px;
+  padding: 5px 10px 5px 8px;
+  min-height: 52px;
+  box-sizing: border-box;
   border-radius: var(--radius-full);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(228, 231, 229, 0.85);
@@ -147,8 +151,8 @@ html, body {
   padding: 7px 14px;
   border-radius: var(--radius-full);
   font-size: 12.5px;
-  font-weight: 500;
-  color: #52525B;
+  font-weight: 600;
+  color: #3F3F46;
   text-decoration: none;
   transition: all var(--transition-fast);
 }
@@ -161,7 +165,7 @@ html, body {
 .map-nav-link.is-active {
   background: var(--color-primary);
   color: #FFFFFF;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* Dropdown Hasil Pencarian */
@@ -2431,16 +2435,16 @@ html, body {
   }
 
   .map-mobile-brand-logo {
-    height: 22px;
+    height: 36px;
     width: auto;
     display: block;
   }
 
   .map-mobile-search-divider {
     width: 1px;
-    height: 18px;
+    height: 24px;
     background: #E2E8F0;
-    margin: 0 2px;
+    margin: 0 4px;
     flex-shrink: 0;
   }
 
@@ -2484,8 +2488,8 @@ html, body {
     gap: 4px;
     padding: 6px 9px;
     font-size: 11px;
-    font-weight: 500;
-    color: #52525B;
+    font-weight: 600;
+    color: #3F3F46;
     border-radius: var(--radius-full);
     text-decoration: none;
     transition: all var(--transition-fast);
@@ -2504,7 +2508,7 @@ html, body {
   .map-dock-item.is-active {
     background: var(--color-primary);
     color: #FFFFFF;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .map-dock-divider {

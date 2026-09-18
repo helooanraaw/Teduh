@@ -1,9 +1,12 @@
-/* TEDUH DIGITAL PLATFORM - FORUM KOMUNITAS WARGA (css/community.css)
- * Desain Editorial Bersih & Interaktif - Linimasa Aksi Tanam & Diskusi Warga
- * Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, Bebas Em Dash (R-02)
- */
+/* ==========================================================================
+   TEDUH DIGITAL PLATFORM - COMMUNITY STYLESHEET (css/community.css)
+   Layout 2 Kolom Modular Ala NutriNesia: Hero Carousel Persegi Panjang,
+   Inline Thread Composer, Card Stream dengan Komentar Dummy Interaktif,
+   dan Sidebar Panduan Lingkungan.
+   Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, 0 Em-Dash (R-02)
+   ========================================================================== */
 
-/* Kanvas Utama Halaman Komunitas */
+/* Kanvas Utama Komunitas */
 .km-page-wrapper {
   background-color: var(--color-background, #EFF2F0);
   min-height: 100vh;
@@ -17,304 +20,497 @@
   padding: 0 24px;
 }
 
-/* Header Komunitas & Metrik Nyata */
-.km-header-section {
-  padding: 48px 0 28px 0;
+/* ==========================================================================
+   1. HERO CAROUSEL PERSEGI PANJANG (4 CERITA WARGA)
+   ========================================================================== */
+.km-hero-section {
+  padding: 36px 0 28px 0;
+}
+
+.km-hero-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.km-hero-title-wrap {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 6px;
 }
 
-.km-header-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.km-header-title {
-  font-size: clamp(28px, 4vw, 38px);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+.km-hero-title {
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--color-slate, #0E1116);
-  margin: 0 0 8px 0;
-}
-
-.km-header-subtitle {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--color-text-body, #474E4A);
-  max-width: 62ch;
   margin: 0;
 }
 
-/* Bar Metrik Komunitas Nyata */
-.km-metrics-bar {
+.km-hero-subtitle {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-text-body, #474E4A);
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* Navigasi Panah Carousel */
+.km-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.km-carousel-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full, 9999px);
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E2E8E5);
+  color: var(--color-slate, #0E1116);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-carousel-btn:hover {
+  background: var(--color-primary, #1A382B);
+  border-color: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+}
+
+.km-carousel-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Track & Container Carousel Persegi Panjang */
+.km-carousel-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl, 24px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  background: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.km-carousel-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.km-carousel-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  position: relative;
+  height: 280px;
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .km-carousel-slide {
+    height: 320px;
+  }
+}
+
+.km-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.km-carousel-slide:hover .km-slide-img {
+  transform: scale(1.03);
+}
+
+/* Overlay Gelap Elegan untuk Teks */
+.km-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 17, 22, 0.15) 0%, rgba(14, 17, 22, 0.85) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 32px;
+  color: #FFFFFF;
+}
+
+.km-slide-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.km-slide-title {
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 12px 0;
+  color: #FFFFFF;
+  max-width: 48ch;
+}
+
+.km-slide-author {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
-  padding-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.km-metric-pill {
-  display: inline-flex;
+.km-slide-author-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #FFFFFF;
+  object-fit: cover;
+}
+
+/* Dots Indikator Carousel */
+.km-carousel-dots {
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  padding: 8px 16px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  margin-top: 14px;
 }
 
-.km-metric-pill svg {
-  color: var(--color-primary, #1A382B);
-  flex-shrink: 0;
+.km-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #CBD5E1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
-.km-metric-pill.highlight {
-  background: #E2ECE7;
-  border-color: #D2DFD8;
-  color: var(--color-primary, #1A382B);
+.km-dot.is-active {
+  width: 28px;
+  background: var(--color-primary, #1A382B);
 }
 
-/* Layout 2 Kolom Komunitas (Feed Kiri, Sidebar Kanan) */
+/* ==========================================================================
+   2. GRID 2 KOLOM (FEED THREAD KIRI, SIDEBAR KANAN)
+   ========================================================================== */
 .km-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: 28px;
   align-items: start;
+  margin-top: 14px;
 }
 
-/* Kolom Feed Utama */
+@media (min-width: 900px) {
+  .km-layout-grid {
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+  }
+}
+
+/* ==========================================================================
+   3. FEED THREAD UTAMA (KOLOM KIRI)
+   ========================================================================== */
 .km-feed-stream {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-
-/* Composer Card di Atas Feed */
-.km-composer-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  border-radius: var(--radius-2xl, 24px);
-  padding: 24px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 20px;
 }
 
-.km-composer-info {
+/* INLINE QUICK POST COMPOSER BOX */
+.km-quick-post-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
 
-.km-composer-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
+.km-quick-post-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.km-composer-desc {
-  font-size: 13px;
+.km-composer-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid #E2E8E5;
+}
+
+.km-composer-textarea {
+  width: 100%;
+  min-height: 76px;
+  border: 1px solid #E2E8E5;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 13.5px;
   line-height: 1.5;
-  color: var(--color-text-body, #474E4A);
-  margin: 0;
+  color: var(--color-slate, #0E1116);
+  background: #F9FAF9;
+  resize: vertical;
+  outline: none;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
-.km-composer-btn {
-  background: var(--color-slate, #0E1116);
-  color: #FFFFFF;
-  padding: 12px 22px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-flex;
+.km-composer-textarea:focus {
+  background: #FFFFFF;
+  border-color: var(--color-primary, #1A382B);
+  box-shadow: 0 0 0 3px rgba(26, 56, 43, 0.1);
+}
+
+.km-composer-textarea::placeholder {
+  color: #71717A;
+}
+
+/* Tag Pilihan Cepat Composer */
+.km-composer-tags-row {
+  display: flex;
   align-items: center;
   gap: 8px;
-  border: none;
+  flex-wrap: wrap;
+}
+
+.km-composer-tag-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  background: #EFF3F0;
+  color: var(--color-primary, #1A382B);
+  border: 1px solid transparent;
   cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--transition-fast, 0.2s ease);
-  text-decoration: none;
-  flex-shrink: 0;
+  transition: all 0.15s ease;
 }
 
-.km-composer-btn:hover {
+.km-composer-tag-pill:hover,
+.km-composer-tag-pill.is-selected {
   background: var(--color-primary, #1A382B);
-  transform: translateY(-2px);
+  color: #FFFFFF;
 }
 
-/* Daftar Kartu Postingan Komunitas */
-.km-posts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.km-post-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  border-radius: var(--radius-2xl, 24px);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transition: border-color var(--transition-fast, 0.2s ease);
-}
-
-.km-post-card:hover {
-  border-color: #CDD8D2;
-}
-
-/* Header Postingan: Penulis & Badge */
-.km-post-header {
+.km-quick-post-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  padding-top: 6px;
+  border-top: 1px solid #F1F4F2;
+  gap: 12px;
 }
 
-.km-post-author {
+.km-btn-upload-fake {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #52525B;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-btn-upload-fake:hover {
+  background: #EFF3F0;
+  color: var(--color-primary, #1A382B);
+}
+
+.km-btn-submit-post {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-btn-submit-post:hover {
+  background: var(--color-primary, #1A382B);
+}
+
+/* FEED THREAD UNIFIED STREAM CONTAINER */
+#kmFeedContainer,
+.km-feed-unified-container {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* THREAD POST STREAM ROW (Unified Continuous Feed, No Individual Card BG) */
+.km-thread-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: none;
+  border-bottom: 1px solid #EEF2EF;
+  transition: background var(--transition-fast, 0.2s ease);
+}
+
+.km-thread-card:last-child {
+  border-bottom: none;
+}
+
+.km-thread-card:hover {
+  background: rgba(26, 56, 43, 0.015);
+}
+
+@media (max-width: 640px) {
+  .km-thread-card {
+    padding: 20px 16px;
+  }
+}
+
+/* Header Thread (Author, Meta, Tag) */
+.km-thread-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.km-thread-author-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.km-post-avatar {
+.km-thread-avatar {
   width: 42px;
   height: 42px;
-  border-radius: var(--radius-full, 9999px);
+  border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
-  border: 1px solid #E2E8E5;
+  border: 1.5px solid #E2E8E5;
 }
 
-.km-post-author-info {
+.km-thread-meta {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
+
+.km-thread-author-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
   line-height: 1.25;
 }
 
-.km-post-author-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
-}
-
-.km-post-author-meta {
+.km-thread-location-time {
   font-size: 12px;
-  color: var(--color-text-muted, #6C7470);
-  margin: 3px 0 0 0;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.km-post-tag {
+.km-thread-tag-badge {
   font-size: 11px;
-  font-weight: 700;
-  padding: 5px 12px;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: var(--radius-full, 9999px);
-  background: #E2ECE7;
+  background: rgba(26, 56, 43, 0.07);
   color: var(--color-primary, #1A382B);
   white-space: nowrap;
 }
 
-.km-post-tag.experience {
-  background: #F4F6F5;
-  color: var(--color-slate, #0E1116);
-}
-
-/* Gambar Postingan */
-.km-post-image {
-  width: 100%;
-  height: 280px;
-  border-radius: var(--radius-xl, 16px);
-  overflow: hidden;
-  background: #F4F6F5;
-}
-
-.km-post-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Konten Postingan */
-.km-post-body {
+/* Body Thread (Teks Lembut & Foto Aksi) */
+.km-thread-body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
-.km-post-title {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
-}
-
-.km-post-collab-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  background: #E2ECE7;
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
-  align-self: flex-start;
-}
-
-.km-post-story {
-  font-size: 14px;
+.km-thread-text {
+  font-size: 14.5px;
   line-height: 1.65;
-  color: #23262D;
+  color: #374151; /* Warna teks charcoal lembut, tidak hitam pekat */
   margin: 0;
+  white-space: pre-line;
 }
 
-.km-post-safe-badge {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #F4F6F5;
+.km-thread-image-container {
+  border-radius: 14px;
+  overflow: hidden;
+  max-height: 340px;
+  background: #F4F4F5;
   border: 1px solid #E2E8E5;
-  color: var(--color-primary, #1A382B);
-  padding: 6px 14px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 12px;
-  font-weight: 700;
 }
 
-/* Bar Aksi Interaksi Postingan */
-.km-post-actions {
+.km-thread-image {
+  width: 100%;
+  height: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Bar Aksi Thread (Like, Comment) */
+.km-thread-actions-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #ECEFEF;
-  border-bottom: 1px solid #ECEFEF;
-  padding: 12px 0;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid #EEF2EF;
 }
 
 .km-action-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: transparent;
+  background: rgba(26, 56, 43, 0.04);
   border: none;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: #4B5563;
+  font-size: 12.5px;
+  font-weight: 500;
   cursor: pointer;
   padding: 6px 12px;
   border-radius: var(--radius-full, 9999px);
@@ -322,687 +518,591 @@
 }
 
 .km-action-btn:hover {
-  background: #F4F6F5;
+  background: rgba(26, 56, 43, 0.09);
+  color: var(--color-primary, #1A382B);
 }
 
-.km-action-btn.liked {
+.km-action-btn.is-liked {
   color: #BA4E2A;
+  background: #FDF2EE;
 }
 
-.km-action-btn.liked svg {
+.km-action-btn.is-liked svg {
   fill: #BA4E2A;
+  stroke: #BA4E2A;
 }
 
-/* Thread Komentar Inline di Bawah Post */
-.km-comments-thread {
+/* SECTION KOMENTAR INLINE PADA THREAD (Branch Graph / Tree Connector ala GitHub/VSCode) */
+.km-thread-comments-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-top: 4px;
+  background: rgba(26, 56, 43, 0.03);
+  border: 1px solid rgba(26, 56, 43, 0.06);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .km-thread-comments-section {
+    padding: 14px 14px;
+  }
 }
 
 .km-comments-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
+  position: relative;
+  padding-left: 20px;
+}
+
+/* Garis Utama Batang Pohon / Branch Line */
+.km-comments-list::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  bottom: 20px;
+  width: 2px;
+  background: #CBDAD2;
+  border-radius: 2px;
 }
 
 .km-comment-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
+  position: relative;
+}
+
+/* Garis Cabang Lengkung L-Shape ke Tiap Balon Komentar */
+.km-comment-item::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 16px;
+  width: 12px;
+  height: 14px;
+  border-bottom: 2px solid #CBDAD2;
+  border-left: 2px solid #CBDAD2;
+  border-bottom-left-radius: 8px;
 }
 
 .km-comment-avatar {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-full, 9999px);
+  border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border: 1px solid #E2E8E5;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  z-index: 1;
 }
 
 .km-comment-bubble {
-  background: #F8FAF9;
-  border: 1px solid #E8ECE9;
+  background: #FFFFFF;
+  border: 1px solid #E2ECE6;
   border-radius: 14px;
-  padding: 10px 14px;
+  padding: 10px 16px;
   flex: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
-.km-comment-bubble-header {
+.km-comment-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-bottom: 2px;
 }
 
-.km-comment-author-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-}
-
-.km-comment-author-badge {
-  font-size: 10px;
-  font-weight: 700;
-  background: #E2ECE7;
+.km-comment-author {
+  font-size: 12.5px;
+  font-weight: 600;
   color: var(--color-primary, #1A382B);
-  padding: 1px 6px;
-  border-radius: var(--radius-full, 9999px);
-  margin-left: 6px;
 }
 
 .km-comment-time {
   font-size: 11px;
-  color: var(--color-text-muted, #6C7470);
+  color: #71717A;
 }
 
 .km-comment-text {
   font-size: 13px;
-  line-height: 1.5;
-  color: #23262D;
-  margin: 0;
+  line-height: 1.55;
+  color: #374151;
+  margin: 0 0 4px 0;
 }
 
-/* Form Balas Komentar Langsung */
-.km-comment-form {
+/* Tombol Balas Komentar */
+.km-comment-reply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: #52635B;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  align-self: flex-start;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-comment-reply-btn:hover {
+  color: var(--color-primary, #1A382B);
+  background: rgba(26, 56, 43, 0.08);
+}
+
+/* Input Balas Komentar Langsung (Branch Node Terakhir) */
+.km-comment-input-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 4px;
+  padding-left: 20px;
+  position: relative;
 }
 
-.km-comment-user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full, 9999px);
-  object-fit: cover;
-  flex-shrink: 0;
+.km-comment-input-row::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  background: #CBDAD2;
 }
 
-.km-comment-input-box {
+.km-inline-comment-input {
   flex: 1;
-  display: flex;
-  align-items: center;
-  background: #F4F6F5;
-  border: 1px solid #E2E8E5;
+  border: 1px solid #D2DFD8;
   border-radius: var(--radius-full, 9999px);
-  padding: 4px 6px 4px 16px;
-  transition: border-color var(--transition-fast, 0.2s ease);
-}
-
-.km-comment-input-box:focus-within {
-  border-color: var(--color-primary, #1A382B);
+  padding: 9px 18px;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12.5px;
+  color: #333C37;
   background: #FFFFFF;
-}
-
-.km-comment-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 13px;
-  color: var(--color-slate, #0E1116);
   outline: none;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
-.km-comment-input::placeholder {
-  color: #8C9490;
+.km-inline-comment-input:focus {
+  border-color: var(--color-primary, #1A382B);
+  box-shadow: 0 0 0 3px rgba(26, 56, 43, 0.08);
 }
 
-.km-comment-send-btn {
-  background: var(--color-slate, #0E1116);
+.km-btn-send-comment {
+  padding: 9px 18px;
+  background: var(--color-primary, #1A382B);
   color: #FFFFFF;
-  border: none;
   border-radius: var(--radius-full, 9999px);
-  padding: 8px 16px;
+  border: none;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast, 0.2s ease);
+  transition: opacity var(--transition-fast, 0.2s ease);
 }
 
-.km-comment-send-btn:hover {
-  background: var(--color-primary, #1A382B);
+.km-btn-send-comment:hover {
+  opacity: 0.9;
 }
 
-/* Sidebar Kanan Komunitas */
+/* ==========================================================================
+   4. SIDEBAR KOMUNITAS (KOLOM KANAN - STICKY & TOP 3 DIAGRAM)
+   ========================================================================== */
 .km-sidebar {
   display: flex;
   flex-direction: column;
   gap: 20px;
   position: sticky;
   top: 96px;
+  align-self: start;
 }
 
-/* Card Profil John Doe di Sidebar */
-.km-side-user-card {
+.km-sidebar-card {
   background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  border-radius: var(--radius-2xl, 24px);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.km-side-user-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.km-side-user-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full, 9999px);
-  object-fit: cover;
-  border: 1px solid #E2E8E5;
-}
-
-.km-side-user-meta {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-
-.km-side-user-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-}
-
-.km-side-user-handle {
-  font-size: 12px;
-  color: var(--color-text-muted, #6C7470);
-  margin-top: 2px;
-}
-
-.km-side-points-box {
-  background: #F4F6F5;
-  border-radius: var(--radius-lg, 12px);
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.km-side-points-val {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
-}
-
-.km-side-level-val {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-}
-
-.km-side-link-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  border-radius: var(--radius-md, 8px);
-  background: #F4F6F5;
-  color: var(--color-slate, #0E1116);
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background var(--transition-fast, 0.2s ease);
-}
-
-.km-side-link-btn:hover {
-  background: #E2ECE7;
-  color: var(--color-primary, #1A382B);
-}
-
-/* Card Misi Terbuka Terdekat */
-.km-side-missions-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  border-radius: var(--radius-2xl, 24px);
-  padding: 24px;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+  padding: 22px 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
 
-.km-side-card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.km-mission-item {
-  background: #F8FAF9;
-  border: 1px solid #E8ECE9;
-  border-radius: 12px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.km-mission-item-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
-}
-
-.km-mission-item-tree {
-  font-size: 11px;
-  color: var(--color-text-body, #474E4A);
-  margin: 0;
-}
-
-.km-mission-item-footer {
+.km-sidebar-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 4px;
+  gap: 8px;
 }
 
-.km-mission-reward {
-  font-size: 11px;
-  font-weight: 700;
+.km-sidebar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.km-tag-reset-btn {
+  background: transparent;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #71717A;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.km-tag-reset-btn:hover {
   color: var(--color-primary, #1A382B);
-  background: #E2ECE7;
+  background: rgba(26, 56, 43, 0.08);
+}
+
+.km-sidebar-badge {
+  font-size: 10.5px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(26, 56, 43, 0.08);
+  color: var(--color-primary, #1A382B);
+  border: none;
+}
+
+/* 4.1 Card Topik Populer (Sederhana, Transparan Hijau Terang, Bebas Border & Tidak Bold) */
+.km-trending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.km-trend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: rgba(26, 56, 43, 0.06);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-trend-item:hover {
+  background: rgba(26, 56, 43, 0.12);
+}
+
+.km-trend-item.is-active {
+  background: var(--color-primary, #1A382B);
+}
+
+.km-trend-item.is-active .km-trend-name {
+  color: #FFFFFF;
+}
+
+.km-trend-item.is-active .km-trend-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.km-trend-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary, #1A382B);
+  transition: color 0.15s ease;
+}
+
+.km-trend-count {
+  font-size: 11px;
+  font-weight: 500;
   padding: 2px 8px;
   border-radius: var(--radius-full, 9999px);
+  background: rgba(26, 56, 43, 0.08);
+  color: #4A5D54;
+  transition: all 0.15s ease;
 }
 
-.km-mission-cta {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  text-decoration: none;
+/* 4.2 Card Mini Diagram Papan Peringkat (Solid Hijau Gelap & Bebas Border) */
+.km-mini-podium-diagram {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: flex-end;
+  gap: 8px;
+  padding-top: 10px;
 }
 
-.km-mission-cta:hover {
-  color: var(--color-primary, #1A382B);
-  text-decoration: underline;
-}
-
-/* Card Panduan Tanam Aman */
-.km-side-guide-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8E5;
-  border-radius: var(--radius-2xl, 24px);
-  padding: 24px;
+.km-podium-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
 }
 
-.km-guide-steps {
+.km-podium-avatar-wrap {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: center;
 }
 
-.km-guide-step-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 12px;
-  line-height: 1.45;
-  color: #23262D;
+.km-podium-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.km-guide-step-num {
-  width: 18px;
-  height: 18px;
-  border-radius: var(--radius-full, 9999px);
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+.km-podium-avatar.first {
+  width: 46px;
+  height: 46px;
+  border-color: #F59E0B;
+}
+
+.km-podium-crown {
+  position: absolute;
+  top: -13px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.km-podium-rank-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -2px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
   font-size: 10px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
+  color: #FFFFFF;
+  border: none;
 }
 
-/* Modals (Unggah Dokumentasi & Sukses) */
-.km-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(14, 17, 22, 0.65);
-  backdrop-filter: blur(6px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+.km-podium-rank-badge.rank-1 {
+  background: #F59E0B;
 }
 
-.km-modal-overlay.is-active {
-  opacity: 1;
-  pointer-events: auto;
+.km-podium-rank-badge.rank-2 {
+  background: #71717A;
 }
 
-.km-modal-card {
-  background: #FFFFFF;
-  border-radius: var(--radius-2xl, 24px);
+.km-podium-rank-badge.rank-3 {
+  background: #BA4E2A;
+}
+
+.km-podium-bar {
   width: 100%;
-  max-width: 520px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 32px;
-  border: 1px solid #E2E8E5;
+  border-radius: 12px 12px 6px 6px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  transform: translateY(20px);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.km-modal-overlay.is-active .km-modal-card {
-  transform: translateY(0);
-}
-
-.km-modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.km-modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-slate, #0E1116);
-  margin: 0;
-  line-height: 1.25;
-}
-
-.km-modal-desc {
-  font-size: 13px;
-  color: var(--color-text-body, #474E4A);
-  margin: 4px 0 0 0;
-}
-
-.km-modal-close-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full, 9999px);
-  background: #F4F6F5;
-  color: var(--color-slate, #0E1116);
-  border: none;
-  cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  padding: 8px 4px;
+  gap: 2px;
+  background: var(--color-primary, #1A382B);
+  border: none;
+}
+
+.km-podium-bar.bar-1 {
+  height: 78px;
+  background: var(--color-primary, #1A382B);
+}
+
+.km-podium-bar.bar-2 {
+  height: 62px;
+  background: var(--color-primary, #1A382B);
+}
+
+.km-podium-bar.bar-3 {
+  height: 50px;
+  background: var(--color-primary, #1A382B);
+}
+
+.km-podium-user-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.km-podium-points {
+  font-size: 10.5px;
   font-weight: 600;
-  flex-shrink: 0;
+  color: #A7F3D0;
+}
+
+.km-sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-primary, #1A382B);
+  text-decoration: none;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: rgba(26, 56, 43, 0.06);
+  border: none;
   transition: all var(--transition-fast, 0.2s ease);
 }
 
-.km-modal-close-btn:hover {
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+.km-sidebar-link:hover {
+  background: rgba(26, 56, 43, 0.12);
 }
 
-/* Formulir Modal */
-.km-form-group {
+/* 4.3 Card Target Bersama Kesejukan Denpasar */
+.km-goal-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl, 20px);
+  border: 1px solid var(--color-border, #E2E8E5);
+}
+
+.km-goal-header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.km-goal-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-primary, #1A382B);
+  background: rgba(26, 56, 43, 0.07);
+  padding: 3px 10px;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+}
+
+.km-goal-percent {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+}
+
+.km-goal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.km-goal-desc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #71717A;
+  margin: 0;
+}
+
+.km-goal-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #F1F4F2;
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+  border: none;
+}
+
+.km-goal-progress-fill {
+  height: 100%;
+  background: var(--color-primary, #1A382B);
+  border-radius: var(--radius-full, 9999px);
+  transition: width 0.6s ease;
+}
+
+.km-goal-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 
-.km-form-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-slate, #0E1116);
-}
-
-.km-form-input,
-.km-form-select,
-.km-form-textarea {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: var(--radius-md, 8px);
-  border: 1px solid #E2E8E5;
-  background: #F8FAF9;
-  font-family: inherit;
-  font-size: 13px;
-  color: var(--color-slate, #0E1116);
-  outline: none;
-  box-sizing: border-box;
-}
-
-.km-form-input:focus,
-.km-form-select:focus,
-.km-form-textarea:focus {
-  border-color: var(--color-primary, #1A382B);
-  background: #FFFFFF;
-}
-
-.km-form-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.km-photo-picker-box {
-  background: #F4F6F5;
-  border-radius: var(--radius-lg, 12px);
-  padding: 16px;
+.km-goal-metric-item {
+  background: rgba(26, 56, 43, 0.04);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 6px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
 }
 
-.km-photo-thumbnails {
-  display: flex;
-  gap: 10px;
-}
-
-.km-photo-thumb {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-md, 8px);
-  overflow: hidden;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all var(--transition-fast, 0.2s ease);
-}
-
-.km-photo-thumb.selected {
-  border-color: var(--color-primary, #1A382B);
-  transform: scale(1.05);
-}
-
-.km-photo-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.btn-submit-post {
-  background: var(--color-slate, #0E1116);
-  color: #FFFFFF;
-  padding: 14px 20px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 13px;
+.km-goal-metric-val {
+  font-size: 12.5px;
   font-weight: 600;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-goal-metric-lbl {
+  font-size: 10px;
+  font-weight: 400;
+  color: #71717A;
+}
+
+.km-goal-cta-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition-fast, 0.2s ease);
-  margin-top: 8px;
-}
-
-.btn-submit-post:hover {
-  background: var(--color-primary, #1A382B);
-}
-
-/* Modal Teman Kolaborator */
-.km-collab-chips-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-height: 28px;
-}
-
-.km-collab-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #E2ECE7;
-  color: var(--color-primary, #1A382B);
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.km-collab-chip-remove {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-}
-
-.km-friends-list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 290px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.km-friend-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
-  background: #F8FAF9;
-  border: 1px solid #E8ECE9;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all var(--transition-fast, 0.2s ease);
-}
-
-.km-friend-item:hover {
-  background: #EEF3F0;
-}
-
-.km-friend-item.is-selected {
-  background: #E2ECE7;
-  border-color: #C0D6CB;
-}
-
-.km-friend-item-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.km-friend-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full, 9999px);
   background: var(--color-primary, #1A382B);
   color: #FFFFFF;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px 16px;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity var(--transition-fast, 0.2s ease);
 }
 
-.km-friend-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
+.km-goal-cta-btn:hover {
+  opacity: 0.9;
 }
 
-.km-friend-name {
+/* Toast Notifikasi Komunitas */
+#kmToast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
-.km-friend-user {
-  font-size: 11px;
-  color: var(--color-text-muted, #6C7470);
-}
-
-.km-friend-check {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
-  background: #FFFFFF;
-  color: var(--color-slate, #0E1116);
-  border: 1px solid #E2E8E5;
-  transition: all var(--transition-fast, 0.2s ease);
-}
-
-.km-friend-item.is-selected .km-friend-check {
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
-  border-color: var(--color-primary, #1A382B);
-}
-
-.km-bonus-summary-box {
-  background: #E2ECE7;
-  padding: 12px 14px;
-  border-radius: 12px;
-}
-
-/* Responsivitas Layar Ponsel & Tablet (< 992px) */
-@media (max-width: 992px) {
-  .km-layout-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .km-sidebar {
-    position: static;
-  }
-
-  .km-composer-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .km-composer-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .km-post-image {
-    height: 220px;
-  }
+#kmToast.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }

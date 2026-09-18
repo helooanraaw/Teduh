@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teduh: Peringkat Warga &amp; Penukaran Hadiah</title>
+  <meta name="description" content="Papan peringkat aksi tanam kesejukan warga dan katalog penukaran poin misi menjadi bibit pohon gratis serta kompos organik lokal.">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets Murni -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/reward.css">
+</head>
+<body>
+
+  <!-- TOP FLOATING CAPSULE NAVIGATION -->
+  <nav class="navbar" aria-label="Navigasi Utama">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+        <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
+        <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
+      </a>
+
+      <div class="navbar-links">
+        <a href="index.html" class="navbar-link">Beranda</a>
+        <a href="map.html" class="navbar-link">Konsol Peta</a>
+        <a href="community.html" class="navbar-link">Komunitas</a>
+        <a href="reward.html" class="navbar-link active" aria-current="page">Peringkat &amp; Hadiah</a>
+      </div>
+
+      <div class="navbar-actions">
+        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron -->
+        <div class="nav-profile-wrapper">
+          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
+            <div class="nav-profile-avatar">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            </div>
+            <div class="nav-profile-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+          </button>
+
+          <!-- Pop-up Menu Profil John Doe -->
+          <div class="nav-profile-popup" role="menu">
+            <div class="nav-popup-header">
+              <div class="nav-popup-avatar">
+                <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+              </div>
+              <div class="nav-popup-user-meta">
+                <span class="nav-popup-name">John Doe</span>
+                <span class="nav-popup-username">@johndoe</span>
+              </div>
+            </div>
+
+            <!-- Metrik Level & Poin Sederhana -->
+            <div class="nav-popup-metrics">
+              <div class="nav-popup-metrics-row">
+                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
+                <div class="nav-popup-points-badge">
+                  <span class="nav-popup-points-value" id="navUserPointsValue">850 Poin</span>
+                </div>
+              </div>
+
+              <div class="nav-popup-progress-track">
+                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <!-- Menu Tautan Profil -->
+            <div class="nav-popup-menu">
+              <a href="profile.html" class="nav-popup-item" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+                <span>Profil Saya</span>
+              </a>
+              <div class="nav-popup-divider"></div>
+              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="navbarHamburger" class="navbar-hamburger" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer Overlay & Menu -->
+  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
+  <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
+    <div>
+      <div class="mobile-nav-header">
+        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
+        </a>
+        <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="mobile-nav-profile">
+        <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+        <div class="mobile-nav-profile-info">
+          <strong>John Doe</strong>
+          <span id="mobileUserPoints">Level 3: Perintis Teduh (850 Poin)</span>
+        </div>
+      </div>
+
+      <nav class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Beranda</span>
+        </a>
+        <a href="map.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+          <span>Konsol Peta</span>
+        </a>
+        <a href="community.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Komunitas</span>
+        </a>
+        <a href="reward.html" class="mobile-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <span>Peringkat &amp; Hadiah</span>
+        </a>
+        <a href="profile.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Profil Saya</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="mobile-nav-footer">
+      <button type="button" class="mobile-nav-logout" onclick="handleNavLogout()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span>Keluar dari Akun</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN REWARD WRAPPER -->
+  <main class="rw-page-wrapper">
+    <div class="rw-container">
+
+      <!-- HEADER SECTION -->
+      <section class="rw-header-section" aria-label="Informasi Peringkat dan Hadiah">
+        <h1 class="rw-header-title">Peringkat &amp; Hadiah Warga</h1>
+      </section>
+
+      <!-- USER STICKY METRIC CARD -->
+      <div class="rw-user-card">
+        <div class="rw-user-info-left">
+          <div class="rw-user-avatar-wrap">
+            <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="rw-user-avatar">
+          </div>
+          <div class="rw-user-meta">
+            <div class="rw-user-name-row">
+              <span class="rw-user-name">John Doe</span>
+              <span class="rw-user-level-badge">Level 3: Perintis Teduh</span>
+            </div>
+            <div class="rw-user-progress-bar">
+              <div class="rw-user-progress-fill" style="width: 70%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rw-user-stats-right">
+          <div class="rw-user-points-box">
+            <span class="rw-user-points-lbl">Saldo Poin Kesejukan</span>
+            <span class="rw-user-points-val" id="rwUserPointsDisplay">850 Poin</span>
+          </div>
+
+          <a href="map.html" class="rw-btn-get-points">
+            <span>Dapatkan Poin di Peta</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- SEGMENTED TABS NAVIGATOR -->
+      <div class="rw-tabs-nav" role="tablist" aria-label="Navigasi Peringkat dan Voucher">
+        <button id="tabLeaderboardBtn" type="button" class="rw-tab-btn is-active" onclick="switchRewardTab('leaderboard')" role="tab" aria-selected="true" aria-controls="tabContentLeaderboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <span>Peringkat Warga</span>
+        </button>
+        <button id="tabVouchersBtn" type="button" class="rw-tab-btn" onclick="switchRewardTab('vouchers')" role="tab" aria-selected="false" aria-controls="tabContentVouchers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="13" y2="16"></line></svg>
+          <span>Katalog Voucher &amp; Bibit</span>
+        </button>
+      </div>
+
+      <!-- TAB CONTENT 1: PAPAN PERINGKAT WARGA (LEADERBOARD) -->
+      <div id="tabContentLeaderboard" class="rw-tab-content is-active" role="tabpanel" aria-labelledby="tabLeaderboardBtn">
+        
+        <!-- TOP 3 PODIUM -->
+        <div class="rw-podium-grid">
+
+          <!-- Juara 2: Desak Made -->
+          <div class="rw-podium-card">
+            <div class="rw-rank-badge">2</div>
+            <img src="images/testimonial/Bu Maya.webp" alt="Desak Made" class="rw-podium-avatar">
+            <h3 class="rw-podium-name">Desak Made</h3>
+            <span class="rw-podium-loc">Sesetan, Denpasar Selatan</span>
+            <span class="rw-podium-points">1,220 Poin</span>
+          </div>
+
+          <!-- Juara 1: Bima Arya (Paling Menonjol) -->
+          <div class="rw-podium-card first">
+            <div class="rw-rank-badge">1</div>
+            <img src="images/testimonial/Mas Bima (1).webp" alt="Bima Arya" class="rw-podium-avatar">
+            <h3 class="rw-podium-name">Bima Arya</h3>
+            <span class="rw-podium-loc">Renon, Denpasar Selatan</span>
+            <span class="rw-podium-points">1,450 Poin</span>
+          </div>
+
+          <!-- Juara 3: Wayan Gede -->
+          <div class="rw-podium-card">
+            <div class="rw-rank-badge">3</div>
+            <img src="images/testimonial/Bang Raka.webp" alt="Wayan Gede" class="rw-podium-avatar">
+            <h3 class="rw-podium-name">Wayan Gede</h3>
+            <span class="rw-podium-loc">Teuku Umar Barat</span>
+            <span class="rw-podium-points">980 Poin</span>
+          </div>
+
+        </div>
+
+        <!-- TABEL PERINGKAT #4 SAMPAI #8 -->
+        <div class="rw-table-card">
+
+          <!-- Row #4 -->
+          <div class="rw-table-row">
+            <div class="rw-table-left">
+              <span class="rw-table-rank-num">#4</span>
+              <img src="images/testimonial/Kakak Putri.webp" alt="dr. Made Ary" class="rw-table-avatar">
+              <div class="rw-table-user-meta">
+                <span class="rw-table-name">dr. Made Ary</span>
+                <span class="rw-table-loc">Jl. Gatot Subroto Barat</span>
+              </div>
+            </div>
+            <span class="rw-table-points">910 Poin</span>
+          </div>
+
+          <!-- Row #5: John Doe (Akun Anda) -->
+          <div class="rw-table-row is-current-user">
+            <div class="rw-table-left">
+              <span class="rw-table-rank-num">#5</span>
+              <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="rw-table-avatar">
+              <div class="rw-table-user-meta">
+                <span class="rw-table-name">
+                  <span>John Doe</span>
+                  <span class="rw-badge-you">Akun Anda</span>
+                </span>
+                <span class="rw-table-loc">Denpasar Barat</span>
+              </div>
+            </div>
+            <span class="rw-table-points" id="rwTableUserPoints">850 Poin</span>
+          </div>
+
+          <!-- Row #6 -->
+          <div class="rw-table-row">
+            <div class="rw-table-left">
+              <span class="rw-table-rank-num">#6</span>
+              <img src="images/testimonial/Bu Maya.webp" alt="Ni Kadek Sari" class="rw-table-avatar">
+              <div class="rw-table-user-meta">
+                <span class="rw-table-name">Ni Kadek Sari</span>
+                <span class="rw-table-loc">Sanur Kauh</span>
+              </div>
+            </div>
+            <span class="rw-table-points">740 Poin</span>
+          </div>
+
+          <!-- Row #7 -->
+          <div class="rw-table-row">
+            <div class="rw-table-left">
+              <span class="rw-table-rank-num">#7</span>
+              <img src="images/testimonial/Bang Raka.webp" alt="Ketut Agus" class="rw-table-avatar">
+              <div class="rw-table-user-meta">
+                <span class="rw-table-name">Ketut Agus</span>
+                <span class="rw-table-loc">Panjer</span>
+              </div>
+            </div>
+            <span class="rw-table-points">690 Poin</span>
+          </div>
+
+          <!-- Row #8 -->
+          <div class="rw-table-row">
+            <div class="rw-table-left">
+              <span class="rw-table-rank-num">#8</span>
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Putu Hendra" class="rw-table-avatar">
+              <div class="rw-table-user-meta">
+                <span class="rw-table-name">Putu Hendra</span>
+                <span class="rw-table-loc">Pemogan</span>
+              </div>
+            </div>
+            <span class="rw-table-points">610 Poin</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB CONTENT 2: KATALOG VOUCHER & BIBIT GRATIS -->
+      <div id="tabContentVouchers" class="rw-tab-content" role="tabpanel" aria-labelledby="tabVouchersBtn">
+        <div class="rw-vouchers-grid">
+
+          <!-- Voucher 1: Bibit Pohon Tanjung -->
+          <div class="rw-voucher-card">
+            <div class="rw-voucher-top">
+              <div class="rw-voucher-badge-row">
+                <span class="rw-voucher-cost-pill">500 Poin</span>
+                <span class="rw-voucher-stock-tag">Tersedia 15 Bibit</span>
+              </div>
+              <h3 class="rw-voucher-title">Bibit Pohon Tanjung (1.5 Meter)</h3>
+              <p class="rw-voucher-desc">Bibit peneduh siap tanam berakar tunggang dalam. Mampu memotong radiasi panas semen hingga 4.3°C dan aman dari pipa got.</p>
+              <div class="rw-voucher-loc-strip">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Posko Tani Renon, Denpasar Selatan</span>
+              </div>
+            </div>
+            <button type="button" class="rw-btn-claim-voucher" onclick="claimRewardVoucher('Bibit Pohon Tanjung (1.5m)', 500, 'TEDUH-TANJUNG')">
+              <span>Klaim Bibit (500 Poin)</span>
+            </button>
+          </div>
+
+          <!-- Voucher 2: Bibit Ketapang Kencana -->
+          <div class="rw-voucher-card">
+            <div class="rw-voucher-top">
+              <div class="rw-voucher-badge-row">
+                <span class="rw-voucher-cost-pill">400 Poin</span>
+                <span class="rw-voucher-stock-tag">Tersedia 22 Bibit</span>
+              </div>
+              <h3 class="rw-voucher-title">Bibit Ketapang Kencana Polybag</h3>
+              <p class="rw-voucher-desc">Cocok untuk lorong ruko atau pekarangan sempit 3 meter. Tajuk bertingkat rapi dan mudah dirawat tanpa merusak paving semen.</p>
+              <div class="rw-voucher-loc-strip">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Toko Bibit Hijau Sesetan</span>
+              </div>
+            </div>
+            <button type="button" class="rw-btn-claim-voucher" onclick="claimRewardVoucher('Bibit Ketapang Kencana', 400, 'TEDUH-KETAPANG')">
+              <span>Klaim Bibit (400 Poin)</span>
+            </button>
+          </div>
+
+          <!-- Voucher 3: Kompos Organik -->
+          <div class="rw-voucher-card">
+            <div class="rw-voucher-top">
+              <div class="rw-voucher-badge-row">
+                <span class="rw-voucher-cost-pill">250 Poin</span>
+                <span class="rw-voucher-stock-tag">Tersedia 40 Paket</span>
+              </div>
+              <h3 class="rw-voucher-title">Paket 2 Karung Kompos Subak (20kg)</h3>
+              <p class="rw-voucher-desc">Pupuk kompos organik hasil olahan limbah dedaunan subak Denpasar. Sangat baik untuk mempercepat pertumbuhan akar baru.</p>
+              <div class="rw-voucher-loc-strip">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Rumah Kompos Sanur Kauh</span>
+              </div>
+            </div>
+            <button type="button" class="rw-btn-claim-voucher" onclick="claimRewardVoucher('Paket 2 Karung Kompos (20kg)', 250, 'TEDUH-KOMPOS')">
+              <span>Klaim Kompos (250 Poin)</span>
+            </button>
+          </div>
+
+          <!-- Voucher 4: Diskon Jasa Bor Biopori -->
+          <div class="rw-voucher-card">
+            <div class="rw-voucher-top">
+              <div class="rw-voucher-badge-row">
+                <span class="rw-voucher-cost-pill">300 Poin</span>
+                <span class="rw-voucher-stock-tag">Tersedia 10 Kuota</span>
+              </div>
+              <h3 class="rw-voucher-title">Diskon 50% Jasa Bor Biopori Resapan</h3>
+              <p class="rw-voucher-desc">Jasa pembuatan 2 lubang biopori resapan vertikal untuk pekarangan semen agar air hujan meresap dan memelihara akar pohon.</p>
+              <div class="rw-voucher-loc-strip">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Mitra Tukang Lingkungan Teduh</span>
+              </div>
+            </div>
+            <button type="button" class="rw-btn-claim-voucher" onclick="claimRewardVoucher('Diskon 50% Bor Biopori', 300, 'TEDUH-BIOPORI')">
+              <span>Klaim Diskon (300 Poin)</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL KODE VOUCHER KLAIM -->
+  <div id="rwModalBackdrop" class="rw-modal-backdrop" onclick="closeRewardModal(event)" role="dialog" aria-modal="true" aria-labelledby="rwModalTitle">
+    <div class="rw-modal-card" onclick="event.stopPropagation()">
+      <div class="rw-modal-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3 id="rwModalTitle" class="rw-modal-title">Voucher Berhasil Diklaim!</h3>
+      <p id="rwModalDesc" class="rw-modal-desc">
+        Tunjukkan kode voucher berikut kepada petugas posko mitra untuk mengambil bibit atau kompos gratis.
+      </p>
+
+      <div class="rw-modal-code-box">
+        <span id="rwModalVoucherCode" class="rw-modal-code">TEDUH-TANJUNG-8492</span>
+      </div>
+
+      <button type="button" class="rw-modal-btn-close" onclick="closeRewardModal()">Tutup &amp; Simpan</button>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI -->
+  <div id="rwToast" role="status" aria-live="polite"></div>
+
+  <!-- SCRIPT ENGINE -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/reward.js"></script>
+</body>
+</html>

@@ -312,7 +312,7 @@ button {
 .navbar-link {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: #3F3F46;
   transition: color var(--transition-fast);
   padding: 8px 0;
   position: relative;
@@ -341,7 +341,7 @@ button {
 
 .navbar-link.active {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .navbar-actions {

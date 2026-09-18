@@ -31,7 +31,7 @@ function initMobileNavigation() {
     });
   }
 
-  // Pola 2: Drawer Samping dengan Overlay (index.html, community.html, profile.html)
+  // Drawer Samping dengan Overlay (index.html, community.html, reward.html, profile.html)
   const hamburger = document.getElementById('navbarHamburger');
   const overlay = document.getElementById('mobileNavOverlay');
   const menu = document.getElementById('mobileNavMenu');
