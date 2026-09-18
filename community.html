@@ -279,7 +279,7 @@
           </div>
 
           <!-- DAFTAR THREAD FEED (Diisi Dinamis & Default 3 Thread) -->
-          <div id="kmFeedContainer" class="km-feed-unified-container">
+          <div id="kmFeedContainer" class="km-feed-stream">
             
             <!-- Thread 1: Mas Bima -->
             <article class="km-thread-card" id="thread-1" data-tag="#AksiTanam">
@@ -291,13 +291,15 @@
                     <span class="km-thread-location-time">Renon, Denpasar Selatan &bull; 2 jam yang lalu</span>
                   </div>
                 </div>
-                <span class="km-thread-tag-badge">#AksiTanam</span>
               </div>
 
               <div class="km-thread-body">
                 <p class="km-thread-text">Pagi tadi selesai menanam 1 bibit Pohon Tanjung di sudut barat pekarangan rumah. Teras depan yang dulunya kena radiasi pantulan semen 38°C sekarang mulai teduh. Jarak ke pagar 2.2 meter, aman dari saluran got.</p>
                 <div class="km-thread-image-container">
                   <img src="assets/trees/pohon-tanjung.jpg" alt="Dokumentasi Pohon Tanjung" class="km-thread-image">
+                </div>
+                <div class="km-thread-tags-row">
+                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#AksiTanam')">#AksiTanam</a>
                 </div>
               </div>
 
@@ -312,44 +314,66 @@
                 </button>
               </div>
 
-              <!-- Inline Comments List -->
+              <!-- Inline Comments Section -->
               <div class="km-thread-comments-section">
-                <div class="km-comments-list" id="comments-list-thread-1">
-                  <div class="km-comment-item">
-                    <img src="images/testimonial/Bu Maya.webp" alt="Ibu Desak" class="km-comment-avatar">
-                    <div class="km-comment-bubble">
-                      <div class="km-comment-header">
-                        <span class="km-comment-author">Ibu Desak</span>
-                        <span class="km-comment-time">1 jam lalu</span>
-                      </div>
-                      <p class="km-comment-text">Bagus sekali Mas Bima. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?</p>
-                      <button type="button" class="km-comment-reply-btn" onclick="replyToComment('thread-1', 'Ibu Desak')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                        <span>Balas</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="km-comment-item">
-                    <img src="images/testimonial/Mas Bima (1).webp" alt="Mas Bima" class="km-comment-avatar">
-                    <div class="km-comment-bubble">
-                      <div class="km-comment-header">
-                        <span class="km-comment-author">Mas Bima</span>
-                        <span class="km-comment-time">45 menit lalu</span>
-                      </div>
-                      <p class="km-comment-text">Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.</p>
-                      <button type="button" class="km-comment-reply-btn" onclick="replyToComment('thread-1', 'Mas Bima')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                        <span>Balas</span>
-                      </button>
-                    </div>
-                  </div>
+                <!-- Input Balas Komentar di ATAS (Langsung di bawah Bar Suka/Komentar) -->
+                <div class="km-comment-input-row">
+                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan Mas Bima..." onkeydown="handleCommentKey(event, 'thread-1')">
+                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-1')">Kirim</button>
                 </div>
 
-                <!-- Input Balas Komentar -->
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk Mas Bima..." onkeydown="handleCommentKey(event, 'thread-1')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-1')">Kirim</button>
+                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <div class="km-comments-tree" id="comments-list-thread-1">
+                  <!-- Parent Comment Node (Level 1) -->
+                  <div class="km-comment-branch" id="branch-thread-1-comment-1">
+                    <div class="km-comment-node">
+                      <img src="images/testimonial/Bu Maya.webp" alt="Ibu Desak" class="km-comment-avatar">
+                      <div class="km-comment-content">
+                        <div class="km-comment-header">
+                          <span class="km-comment-author">Ibu Desak</span>
+                          <span class="km-comment-time">1 jam lalu</span>
+                        </div>
+                        <p class="km-comment-text">Bagus sekali Mas Bima. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?</p>
+                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-1-comment-1', 'Ibu Desak')">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                          <span>Balas</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Sub-Branch Replies (Level 2 - Terhubung langsung dari Foto Profil Ibu Desak) -->
+                    <div class="km-comment-replies" id="replies-thread-1-comment-1">
+                      <div class="km-comment-node is-reply">
+                        <img src="images/testimonial/Mas Bima (1).webp" alt="Mas Bima" class="km-comment-avatar">
+                        <div class="km-comment-content">
+                          <div class="km-comment-header">
+                            <span class="km-comment-author">Mas Bima</span>
+                            <span class="km-comment-time">45 menit lalu</span>
+                          </div>
+                          <p class="km-comment-text">Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.</p>
+                          <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-1-comment-1', 'Mas Bima')">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                            <span>Balas</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Wadah Container Form Balas Komentar Bersarang -->
+                      <div class="km-reply-composer-box" id="reply-box-thread-1-comment-1" style="display: none;">
+                        <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar Anda" class="km-reply-user-avatar">
+                        <div class="km-reply-composer-content">
+                          <div class="km-reply-composer-header">
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-1-comment-1">@Ibu Desak</strong></span>
+                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-1-comment-1')">Batal</button>
+                          </div>
+                          <div class="km-reply-input-group">
+                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-1-comment-1" placeholder="Tulis balasan untuk Ibu Desak..." onkeydown="handleNestedReplyKey(event, 'thread-1', 'thread-1-comment-1')">
+                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-1', 'thread-1-comment-1')">Balas</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </article>
@@ -364,13 +388,15 @@
                     <span class="km-thread-location-time">Sesetan, Denpasar Selatan &bull; 5 jam yang lalu</span>
                   </div>
                 </div>
-                <span class="km-thread-tag-badge">#PekaranganSemen</span>
               </div>
 
               <div class="km-thread-body">
                 <p class="km-thread-text">Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga.</p>
                 <div class="km-thread-image-container">
                   <img src="assets/trees/ketapang-kencana.jpg" alt="Ketapang Kencana di Pekarangan" class="km-thread-image">
+                </div>
+                <div class="km-thread-tags-row">
+                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#PekaranganSemen')">#PekaranganSemen</a>
                 </div>
               </div>
 
@@ -385,28 +411,49 @@
                 </button>
               </div>
 
-              <!-- Inline Comments List -->
+              <!-- Inline Comments Section -->
               <div class="km-thread-comments-section">
-                <div class="km-comments-list" id="comments-list-thread-2">
-                  <div class="km-comment-item">
-                    <img src="images/testimonial/Bang Raka.webp" alt="Pak Wayan" class="km-comment-avatar">
-                    <div class="km-comment-bubble">
-                      <div class="km-comment-header">
-                        <span class="km-comment-author">Pak Wayan</span>
-                        <span class="km-comment-time">3 jam lalu</span>
-                      </div>
-                      <p class="km-comment-text">Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.</p>
-                      <button type="button" class="km-comment-reply-btn" onclick="replyToComment('thread-2', 'Pak Wayan')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                        <span>Balas</span>
-                      </button>
-                    </div>
-                  </div>
+                <!-- Input Balas Komentar di ATAS -->
+                <div class="km-comment-input-row">
+                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan Ibu Desak..." onkeydown="handleCommentKey(event, 'thread-2')">
+                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-2')">Kirim</button>
                 </div>
 
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk Ibu Desak..." onkeydown="handleCommentKey(event, 'thread-2')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-2')">Kirim</button>
+                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <div class="km-comments-tree" id="comments-list-thread-2">
+                  <div class="km-comment-branch" id="branch-thread-2-comment-1">
+                    <div class="km-comment-node">
+                      <img src="images/testimonial/Bang Raka.webp" alt="Pak Wayan" class="km-comment-avatar">
+                      <div class="km-comment-content">
+                        <div class="km-comment-header">
+                          <span class="km-comment-author">Pak Wayan</span>
+                          <span class="km-comment-time">3 jam lalu</span>
+                        </div>
+                        <p class="km-comment-text">Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.</p>
+                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-2-comment-1', 'Pak Wayan')">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                          <span>Balas</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Sub-Branch Replies -->
+                    <div class="km-comment-replies" id="replies-thread-2-comment-1">
+                      <div class="km-reply-composer-box" id="reply-box-thread-2-comment-1" style="display: none;">
+                        <img src="images/testimonial/Bu Maya.webp" alt="Avatar Anda" class="km-reply-user-avatar">
+                        <div class="km-reply-composer-content">
+                          <div class="km-reply-composer-header">
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-2-comment-1">@Pak Wayan</strong></span>
+                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-2-comment-1')">Batal</button>
+                          </div>
+                          <div class="km-reply-input-group">
+                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-2-comment-1" placeholder="Tulis balasan untuk Pak Wayan..." onkeydown="handleNestedReplyKey(event, 'thread-2', 'thread-2-comment-1')">
+                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-2', 'thread-2-comment-1')">Balas</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </article>
@@ -421,11 +468,13 @@
                     <span class="km-thread-location-time">Gatot Subroto Barat &bull; 1 hari yang lalu</span>
                   </div>
                 </div>
-                <span class="km-thread-tag-badge">#AmanFondasi</span>
               </div>
 
               <div class="km-thread-body">
                 <p class="km-thread-text">Banyak tetangga ragu menanam pohon karena takut tembok pagar retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang (seperti Tanjung atau Tabebuia), bukan akar serabut liar seperti Beringin. Tambahkan pipa biopori vertikal agar air mengalir ke bawah.</p>
+                <div class="km-thread-tags-row">
+                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#AmanFondasi')">#AmanFondasi</a>
+                </div>
               </div>
 
               <div class="km-thread-actions-bar">
@@ -439,28 +488,49 @@
                 </button>
               </div>
 
-              <!-- Inline Comments List -->
+              <!-- Inline Comments Section -->
               <div class="km-thread-comments-section">
-                <div class="km-comments-list" id="comments-list-thread-3">
-                  <div class="km-comment-item">
-                    <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-avatar">
-                    <div class="km-comment-bubble">
-                      <div class="km-comment-header">
-                        <span class="km-comment-author">John Doe</span>
-                        <span class="km-comment-time">12 jam lalu</span>
-                      </div>
-                      <p class="km-comment-text">Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.</p>
-                      <button type="button" class="km-comment-reply-btn" onclick="replyToComment('thread-3', 'John Doe')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                        <span>Balas</span>
-                      </button>
-                    </div>
-                  </div>
+                <!-- Input Balas Komentar di ATAS -->
+                <div class="km-comment-input-row">
+                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan dr. Made Ary..." onkeydown="handleCommentKey(event, 'thread-3')">
+                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-3')">Kirim</button>
                 </div>
 
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk dr. Made Ary..." onkeydown="handleCommentKey(event, 'thread-3')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-3')">Kirim</button>
+                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <div class="km-comments-tree" id="comments-list-thread-3">
+                  <div class="km-comment-branch" id="branch-thread-3-comment-1">
+                    <div class="km-comment-node">
+                      <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-avatar">
+                      <div class="km-comment-content">
+                        <div class="km-comment-header">
+                          <span class="km-comment-author">John Doe</span>
+                          <span class="km-comment-time">12 jam lalu</span>
+                        </div>
+                        <p class="km-comment-text">Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.</p>
+                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-3-comment-1', 'John Doe')">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                          <span>Balas</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Sub-Branch Replies -->
+                    <div class="km-comment-replies" id="replies-thread-3-comment-1">
+                      <div class="km-reply-composer-box" id="reply-box-thread-3-comment-1" style="display: none;">
+                        <img src="images/testimonial/Kakak Putri.webp" alt="Avatar Anda" class="km-reply-user-avatar">
+                        <div class="km-reply-composer-content">
+                          <div class="km-reply-composer-header">
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-3-comment-1">@John Doe</strong></span>
+                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-3-comment-1')">Batal</button>
+                          </div>
+                          <div class="km-reply-input-group">
+                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-3-comment-1" placeholder="Tulis balasan untuk John Doe..." onkeydown="handleNestedReplyKey(event, 'thread-3', 'thread-3-comment-1')">
+                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-3', 'thread-3-comment-1')">Balas</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </article>

@@ -172,12 +172,14 @@ function submitNewPost() {
           <span class="km-thread-location-time">Denpasar Barat &bull; Baru saja</span>
         </div>
       </div>
-      <span class="km-thread-tag-badge">${escapeHtml(tag)}</span>
     </div>
 
     <div class="km-thread-body">
       <p class="km-thread-text">${safeText}</p>
       ${imageHtml}
+      <div class="km-thread-tags-row">
+        <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('${escapeHtml(tag)}')">${escapeHtml(tag)}</a>
+      </div>
     </div>
 
     <div class="km-thread-actions-bar">
@@ -192,11 +194,11 @@ function submitNewPost() {
     </div>
 
     <div class="km-thread-comments-section">
-      <div class="km-comments-list" id="comments-list-${newThreadId}">
-      </div>
       <div class="km-comment-input-row">
         <input type="text" class="km-inline-comment-input" placeholder="Tulis tanggapan untuk John Doe..." onkeydown="handleCommentKey(event, '${newThreadId}')">
         <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('${newThreadId}')">Kirim</button>
+      </div>
+      <div class="km-comments-tree" id="comments-list-${newThreadId}">
       </div>
     </div>
   `;
@@ -259,32 +261,53 @@ function submitInlineComment(threadId) {
   if (!card) return;
 
   const input = card.querySelector('.km-inline-comment-input');
-  const list = card.querySelector(`#comments-list-${threadId}`) || card.querySelector('.km-comments-list');
+  const tree = card.querySelector(`#comments-list-${threadId}`) || card.querySelector('.km-comments-tree');
   const countEl = card.querySelector('.comment-count');
 
-  if (!input || !list) return;
+  if (!input || !tree) return;
 
   const text = input.value.trim();
   if (!text) return;
 
-  const item = document.createElement('div');
-  item.className = 'km-comment-item';
-  item.innerHTML = `
-    <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-avatar">
-    <div class="km-comment-bubble">
-      <div class="km-comment-header">
-        <span class="km-comment-author">John Doe</span>
-        <span class="km-comment-time">Baru saja</span>
+  const branchId = `${threadId}-c-${Date.now()}`;
+  const branch = document.createElement('div');
+  branch.className = 'km-comment-branch';
+  branch.id = `branch-${branchId}`;
+  branch.innerHTML = `
+    <div class="km-comment-node">
+      <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-avatar">
+      <div class="km-comment-content">
+        <div class="km-comment-header">
+          <span class="km-comment-author">John Doe</span>
+          <span class="km-comment-time">Baru saja</span>
+        </div>
+        <p class="km-comment-text">${escapeHtml(text)}</p>
+        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('${branchId}', 'John Doe')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+          <span>Balas</span>
+        </button>
       </div>
-      <p class="km-comment-text">${escapeHtml(text)}</p>
-      <button type="button" class="km-comment-reply-btn" onclick="replyToComment('${threadId}', 'John Doe')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-        <span>Balas</span>
-      </button>
+    </div>
+
+    <!-- Sub-Branch Replies -->
+    <div class="km-comment-replies" id="replies-${branchId}">
+      <div class="km-reply-composer-box" id="reply-box-${branchId}" style="display: none;">
+        <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar Anda" class="km-reply-user-avatar">
+        <div class="km-reply-composer-content">
+          <div class="km-reply-composer-header">
+            <span class="km-replying-to-label">Membalas <strong id="reply-target-${branchId}">@John Doe</strong></span>
+            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('${branchId}')">Batal</button>
+          </div>
+          <div class="km-reply-input-group">
+            <input type="text" class="km-nested-reply-input" id="reply-input-${branchId}" placeholder="Tulis balasan untuk John Doe..." onkeydown="handleNestedReplyKey(event, '${threadId}', '${branchId}')">
+            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('${threadId}', '${branchId}')">Balas</button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 
-  list.appendChild(item);
+  tree.appendChild(branch);
   input.value = '';
 
   if (countEl) {
@@ -295,15 +318,89 @@ function submitInlineComment(threadId) {
   showKmToast('Komentar berhasil dikirim');
 }
 
-function replyToComment(threadId, authorName) {
-  const card = document.getElementById(threadId);
-  if (!card) return;
-  const input = card.querySelector('.km-inline-comment-input');
-  if (input) {
-    input.value = `@${authorName} `;
-    input.focus();
-    showKmToast(`Membalas komentar @${authorName}`);
+/* FUNGSI BALAS KOMENTAR INLINE BERSARANG (AVATAR TO AVATAR SUB-BRANCH) */
+function toggleInlineReplyForm(branchId, authorName) {
+  const box = document.getElementById(`reply-box-${branchId}`);
+  const targetLabel = document.getElementById(`reply-target-${branchId}`);
+  const input = document.getElementById(`reply-input-${branchId}`);
+
+  if (!box) return;
+
+  if (box.style.display === 'none' || box.style.display === '') {
+    box.style.display = 'flex';
+    if (targetLabel) targetLabel.textContent = `@${authorName}`;
+    if (input) {
+      input.placeholder = `Tulis balasan untuk ${authorName}...`;
+      input.focus();
+    }
+  } else {
+    box.style.display = 'none';
   }
+}
+
+function closeInlineReplyForm(branchId) {
+  const box = document.getElementById(`reply-box-${branchId}`);
+  if (box) box.style.display = 'none';
+}
+
+function handleNestedReplyKey(e, threadId, branchId) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    submitNestedReply(threadId, branchId);
+  }
+}
+
+function submitNestedReply(threadId, branchId) {
+  const input = document.getElementById(`reply-input-${branchId}`);
+  const repliesContainer = document.getElementById(`replies-${branchId}`);
+  const composerBox = document.getElementById(`reply-box-${branchId}`);
+  const card = document.getElementById(threadId);
+
+  if (!input || !repliesContainer) return;
+
+  const text = input.value.trim();
+  if (!text) {
+    showKmToast('Tuliskan balasan terlebih dahulu');
+    input.focus();
+    return;
+  }
+
+  const replyNode = document.createElement('div');
+  replyNode.className = 'km-comment-node is-reply';
+  replyNode.innerHTML = `
+    <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-comment-avatar">
+    <div class="km-comment-content">
+      <div class="km-comment-header">
+        <span class="km-comment-author">John Doe</span>
+        <span class="km-comment-time">Baru saja</span>
+      </div>
+      <p class="km-comment-text">${escapeHtml(text)}</p>
+      <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('${branchId}', 'John Doe')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+        <span>Balas</span>
+      </button>
+    </div>
+  `;
+
+  // Sisipkan balasan baru sebelum composer box
+  if (composerBox) {
+    repliesContainer.insertBefore(replyNode, composerBox);
+  } else {
+    repliesContainer.appendChild(replyNode);
+  }
+
+  input.value = '';
+  if (composerBox) composerBox.style.display = 'none';
+
+  if (card) {
+    const countEl = card.querySelector('.comment-count');
+    if (countEl) {
+      const currentCount = parseInt(countEl.textContent, 10) || 0;
+      countEl.textContent = currentCount + 1;
+    }
+  }
+
+  showKmToast('Balasan komentar berhasil dikirim');
 }
 
 /* ==========================================================================
@@ -326,8 +423,9 @@ function filterByTag(tag) {
   });
 
   cards.forEach(card => {
+    const link = card.querySelector('.km-thread-tag-link');
     const badge = card.querySelector('.km-thread-tag-badge');
-    const cardTag = card.getAttribute('data-tag') || (badge ? badge.textContent.trim() : '');
+    const cardTag = card.getAttribute('data-tag') || (link ? link.textContent.trim() : (badge ? badge.textContent.trim() : ''));
 
     if (isAll) {
       card.style.display = 'flex';

@@ -368,48 +368,29 @@
   background: var(--color-primary, #1A382B);
 }
 
-/* FEED THREAD UNIFIED STREAM CONTAINER */
-#kmFeedContainer,
-.km-feed-unified-container {
+/* ==========================================================================
+   3. FEED THREAD UTAMA (KOLOM KIRI - ELEGANTE CARD POST STREAM)
+   ========================================================================== */
+
+/* THREAD POST CARD ITEM */
+.km-thread-card {
   background: #FFFFFF;
   border-radius: var(--radius-xl, 20px);
-  border: 1px solid var(--color-border, #E2E8E5);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* THREAD POST STREAM ROW (Unified Continuous Feed, No Individual Card BG) */
-.km-thread-card {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 24px 28px;
+  border: 1px solid #E2EAE5;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: none;
-  border-bottom: 1px solid #EEF2EF;
-  transition: background var(--transition-fast, 0.2s ease);
-}
-
-.km-thread-card:last-child {
-  border-bottom: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  transition: border-color var(--transition-fast, 0.2s ease), box-shadow var(--transition-fast, 0.2s ease);
 }
 
 .km-thread-card:hover {
-  background: rgba(26, 56, 43, 0.015);
+  border-color: #CBDAD2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
-@media (max-width: 640px) {
-  .km-thread-card {
-    padding: 20px 16px;
-  }
-}
-
-/* Header Thread (Author, Meta, Tag) */
+/* Header Thread (Author & Stacked Meta) */
 .km-thread-header {
   display: flex;
   align-items: flex-start;
@@ -429,6 +410,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid #E2E8E5;
+  flex-shrink: 0;
 }
 
 .km-thread-meta {
@@ -452,27 +434,17 @@
   gap: 6px;
 }
 
-.km-thread-tag-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: var(--radius-full, 9999px);
-  background: rgba(26, 56, 43, 0.07);
-  color: var(--color-primary, #1A382B);
-  white-space: nowrap;
-}
-
-/* Body Thread (Teks Lembut & Foto Aksi) */
+/* Body Thread (Teks Lembut, Foto Aksi & Hashtag Rapi) */
 .km-thread-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .km-thread-text {
   font-size: 14.5px;
   line-height: 1.65;
-  color: #374151; /* Warna teks charcoal lembut, tidak hitam pekat */
+  color: #374151; /* Charcoal lembut, nyaman dibaca */
   margin: 0;
   white-space: pre-line;
 }
@@ -483,6 +455,7 @@
   max-height: 340px;
   background: #F4F4F5;
   border: 1px solid #E2E8E5;
+  margin-top: 4px;
 }
 
 .km-thread-image {
@@ -491,6 +464,27 @@
   max-height: 340px;
   object-fit: cover;
   display: block;
+}
+
+.km-thread-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.km-thread-tag-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary, #1A382B);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-thread-tag-link:hover {
+  color: #265541;
+  text-decoration: underline;
 }
 
 /* Bar Aksi Thread (Like, Comment) */
@@ -532,62 +526,83 @@
   stroke: #BA4E2A;
 }
 
-/* SECTION KOMENTAR INLINE PADA THREAD (Branch Graph / Tree Connector ala GitHub/VSCode) */
+/* SECTION KOMENTAR INLINE PADA THREAD (Input di Atas & Branch Tree Graph Rapi) */
 .km-thread-comments-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: rgba(26, 56, 43, 0.03);
-  border: 1px solid rgba(26, 56, 43, 0.06);
-  border-radius: 16px;
-  padding: 16px 20px;
-  margin-top: 4px;
+  gap: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #F1F4F2;
 }
 
-@media (max-width: 640px) {
-  .km-thread-comments-section {
-    padding: 14px 14px;
-  }
+/* Input Balas Komentar di ATAS (Langsung di bawah Bar Suka/Komentar) */
+.km-comment-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
 }
 
-.km-comments-list {
+.km-inline-comment-input {
+  flex: 1;
+  height: 38px;
+  border: 1px solid #D2DFD8;
+  border-radius: var(--radius-full, 9999px);
+  padding: 0 16px;
+  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-size: 12.5px;
+  color: #333C37;
+  background: #F9FAF9;
+  outline: none;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-inline-comment-input:focus {
+  background: #FFFFFF;
+  border-color: var(--color-primary, #1A382B);
+  box-shadow: 0 0 0 3px rgba(26, 56, 43, 0.08);
+}
+
+.km-btn-send-comment {
+  height: 38px;
+  padding: 0 18px;
+  background: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast, 0.2s ease);
+  flex-shrink: 0;
+}
+
+.km-btn-send-comment:hover {
+  background: var(--color-slate, #0E1116);
+}
+
+/* Wadah Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) */
+.km-comments-tree {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
   position: relative;
-  padding-left: 20px;
+  margin-top: 6px;
 }
 
-/* Garis Utama Batang Pohon / Branch Line */
-.km-comments-list::before {
-  content: '';
-  position: absolute;
-  left: 6px;
-  top: 16px;
-  bottom: 20px;
-  width: 2px;
-  background: #CBDAD2;
-  border-radius: 2px;
+.km-comment-branch {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
 }
 
-.km-comment-item {
+/* Node Komentar Induk (Level 1) */
+.km-comment-node {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   position: relative;
-}
-
-/* Garis Cabang Lengkung L-Shape ke Tiap Balon Komentar */
-.km-comment-item::before {
-  content: '';
-  position: absolute;
-  left: -14px;
-  top: 16px;
-  width: 12px;
-  height: 14px;
-  border-bottom: 2px solid #CBDAD2;
-  border-left: 2px solid #CBDAD2;
-  border-bottom-left-radius: 8px;
 }
 
 .km-comment-avatar {
@@ -597,46 +612,45 @@
   object-fit: cover;
   flex-shrink: 0;
   border: 1.5px solid #FFFFFF;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  z-index: 1;
+  background: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+  position: relative;
 }
 
-.km-comment-bubble {
-  background: #FFFFFF;
-  border: 1px solid #E2ECE6;
-  border-radius: 14px;
-  padding: 10px 16px;
-  flex: 1;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+.km-comment-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .km-comment-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  margin-bottom: 2px;
 }
 
 .km-comment-author {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-primary, #1A382B);
+  line-height: 1.25;
 }
 
 .km-comment-time {
-  font-size: 11px;
+  font-size: 11.5px;
   color: #71717A;
 }
 
 .km-comment-text {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.55;
   color: #374151;
-  margin: 0 0 4px 0;
+  margin: 0;
 }
 
 /* Tombol Balas Komentar */
@@ -646,73 +660,189 @@
   gap: 4px;
   background: transparent;
   border: none;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 11.5px;
+  font-weight: 600;
   color: #52635B;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 6px;
+  padding: 2px 0;
+  margin-top: 2px;
   align-self: flex-start;
-  transition: all var(--transition-fast, 0.2s ease);
+  transition: color var(--transition-fast, 0.2s ease);
 }
 
 .km-comment-reply-btn:hover {
   color: var(--color-primary, #1A382B);
-  background: rgba(26, 56, 43, 0.08);
+  text-decoration: underline;
 }
 
-/* Input Balas Komentar Langsung (Branch Node Terakhir) */
-.km-comment-input-row {
+/* ==========================================================================
+   SUB-BRANCH BALASAN DARI FOTO PROFIL KE FOTO PROFIL (AVATAR TO AVATAR)
+   ========================================================================== */
+.km-comment-replies {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 4px;
-  padding-left: 20px;
+  flex-direction: column;
+  gap: 14px;
+  margin-left: 0;
+  padding-left: 44px; /* Offset dari tepi kiri agar anak menjorok rapi */
   position: relative;
 }
 
-.km-comment-input-row::before {
+/* Garis Vertikal Batang Cabang: Dimulai PERSIS dari bawah tengah foto profil Induk (x = 16px) */
+.km-comment-replies::before {
   content: '';
   position: absolute;
-  left: 6px;
-  top: 50%;
-  width: 12px;
-  height: 2px;
+  left: 15px; /* Sumbu tengah avatar induk 32px */
+  top: -12px; /* Nyambung dari bagian bawah avatar induk */
+  bottom: 16px; /* Berakhir di avatar balasan terakhir */
+  width: 2px;
   background: #CBDAD2;
+  border-radius: 2px;
 }
 
-.km-inline-comment-input {
+/* Node Balasan Komentar (Level 2) */
+.km-comment-node.is-reply {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+/* Garis Lengkung L-Shape: Menghubungkan batang vertikal (left: 15px) langsung ke Foto Profil Balasan */
+.km-comment-node.is-reply::before {
+  content: '';
+  position: absolute;
+  left: -29px; /* Jarak dari x=44px ke x=15px adalah 29px */
+  top: 0;
+  width: 28px;
+  height: 14px; /* Setengah tinggi avatar balasan (28px / 2 = 14px) */
+  border-bottom: 2px solid #CBDAD2;
+  border-left: 2px solid #CBDAD2;
+  border-bottom-left-radius: 10px;
+}
+
+.km-comment-node.is-reply .km-comment-avatar {
+  width: 28px;
+  height: 28px;
+}
+
+/* ==========================================================================
+   CONTAINER BALAS KOMENTAR BERSARANG (INLINE REPLY COMPOSER BOX)
+   ========================================================================== */
+.km-reply-composer-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+  background: #F9FAF9;
+  border: 1px solid #E2EAE5;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: 4px;
+  z-index: 2;
+}
+
+/* Garis Kait L-Shape ke Container Balas Komentar */
+.km-reply-composer-box::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 0;
+  width: 28px;
+  height: 20px;
+  border-bottom: 2px solid #CBDAD2;
+  border-left: 2px solid #CBDAD2;
+  border-bottom-left-radius: 10px;
+}
+
+.km-reply-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #E2E8E5;
+}
+
+.km-reply-composer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   flex: 1;
+}
+
+.km-reply-composer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.km-replying-to-label {
+  font-size: 11.5px;
+  color: #71717A;
+}
+
+.km-replying-to-label strong {
+  color: var(--color-primary, #1A382B);
+  font-weight: 600;
+}
+
+.km-reply-cancel-btn {
+  background: transparent;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #71717A;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast, 0.2s ease);
+}
+
+.km-reply-cancel-btn:hover {
+  color: #BA4E2A;
+}
+
+.km-reply-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.km-nested-reply-input {
+  flex: 1;
+  height: 34px;
   border: 1px solid #D2DFD8;
   border-radius: var(--radius-full, 9999px);
-  padding: 9px 18px;
+  padding: 0 14px;
   font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
-  font-size: 12.5px;
+  font-size: 12px;
   color: #333C37;
   background: #FFFFFF;
   outline: none;
   transition: all var(--transition-fast, 0.2s ease);
 }
 
-.km-inline-comment-input:focus {
+.km-nested-reply-input:focus {
   border-color: var(--color-primary, #1A382B);
-  box-shadow: 0 0 0 3px rgba(26, 56, 43, 0.08);
+  box-shadow: 0 0 0 2px rgba(26, 56, 43, 0.08);
 }
 
-.km-btn-send-comment {
-  padding: 9px 18px;
+.km-btn-send-nested-reply {
+  height: 34px;
+  padding: 0 14px;
   background: var(--color-primary, #1A382B);
   color: #FFFFFF;
   border-radius: var(--radius-full, 9999px);
   border: none;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity var(--transition-fast, 0.2s ease);
+  transition: background var(--transition-fast, 0.2s ease);
+  flex-shrink: 0;
 }
 
-.km-btn-send-comment:hover {
-  opacity: 0.9;
+.km-btn-send-nested-reply:hover {
+  background: var(--color-slate, #0E1116);
 }
 
 /* ==========================================================================
