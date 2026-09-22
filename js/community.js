@@ -33,14 +33,14 @@ function initStoryRail() {
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-      const scrollStep = window.innerWidth < 768 ? 270 : 330;
+      const scrollStep = window.innerWidth < 768 ? 326 : 406;
       rail.scrollBy({ left: -scrollStep, behavior: 'smooth' });
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      const scrollStep = window.innerWidth < 768 ? 270 : 330;
+      const scrollStep = window.innerWidth < 768 ? 326 : 406;
       rail.scrollBy({ left: scrollStep, behavior: 'smooth' });
     });
   }
