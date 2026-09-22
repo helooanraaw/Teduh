@@ -21,179 +21,376 @@
 }
 
 /* ==========================================================================
-   1. HERO HORIZONTAL STORY RAIL (PERSEGI PANJANG FULL-BLEED)
+   1. SOCIAL MEDIA FEED TABS & GRID LAYOUT
    ========================================================================== */
-.km-hero-section {
-  padding: 24px 0 20px 0;
+.km-layout-grid-top {
+  padding-top: 32px;
 }
 
-.km-hero-controls-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 12px;
-}
-
-/* Navigasi Panah Kapsul Rel */
-.km-rail-controls {
+/* Feed Filter Tabs (Threads / LinkedIn Style) */
+.km-feed-tabs {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.km-rail-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full, 9999px);
-  background: #FFFFFF;
-  border: 1px solid var(--color-border, #E2E8E5);
-  color: var(--color-slate, #0E1116);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-fast, 0.2s cubic-bezier(0.16, 1, 0.3, 1));
-}
-
-.km-rail-btn:hover:not(:disabled) {
-  background: var(--color-primary, #1A382B);
-  border-color: var(--color-primary, #1A382B);
-  color: #FFFFFF;
-  transform: translateY(-1px);
-}
-
-.km-rail-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.km-rail-btn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* Wadah & Rel Horizontal */
-.km-story-rail-wrap {
-  position: relative;
-  width: 100%;
-}
-
-.km-story-rail {
-  display: flex;
-  gap: 16px;
+  margin-bottom: 20px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 4px 2px 10px 2px;
-  cursor: grab;
-  user-select: none;
+  padding-bottom: 4px;
 }
 
-.km-story-rail::-webkit-scrollbar {
+.km-feed-tabs::-webkit-scrollbar {
   display: none;
 }
 
-.km-story-rail.is-dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-
-/* Kartu Cerita Persegi Panjang Full-Bleed (Widescreen Landscape Ratio) */
-.km-story-card {
-  flex: 0 0 310px;
-  width: 310px;
-  height: 185px;
-  border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  position: relative;
-  overflow: hidden;
-  scroll-snap-align: start;
-  background: var(--color-slate, #0E1116);
+.km-feed-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--radius-full, 9999px);
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E2E8E5);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-body, #474E4A);
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all var(--transition-fast, 0.2s cubic-bezier(0.16, 1, 0.3, 1));
+  white-space: nowrap;
 }
 
-@media (min-width: 640px) {
-  .km-story-card {
-    flex: 0 0 360px;
-    width: 360px;
-    height: 200px;
-  }
+.km-feed-tab:hover {
+  border-color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1A382B);
+  background: #F9FAF9;
 }
 
-@media (min-width: 1024px) {
-  .km-story-card {
-    flex: 0 0 390px;
-    width: 390px;
-    height: 215px;
-  }
+.km-feed-tab.is-active {
+  background: var(--color-slate, #0E1116);
+  border-color: var(--color-slate, #0E1116);
+  color: #FFFFFF;
 }
 
-.km-story-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(14, 17, 22, 0.12);
+.km-feed-tab .km-tab-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #EAF2ED;
+  color: var(--color-primary, #1A382B);
 }
 
-.km-story-card:focus-visible {
-  outline: 2px solid var(--color-primary, #1A382B);
-  outline-offset: 2px;
+.km-feed-tab.is-active .km-tab-pill {
+  background: var(--color-primary, #1A382B);
+  color: #FFFFFF;
 }
 
-/* Gambar Penuh 100% */
-.km-story-card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  pointer-events: none;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.km-story-card:hover .km-story-card-img {
-  transform: scale(1.04);
-}
-
-/* Scrim Bayangan Halus Transparan */
-.km-story-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(14, 17, 22, 0) 24%, rgba(14, 17, 22, 0.88) 100%);
+/* ==========================================================================
+   2. INLINE COMPOSER WITH MISSION LINKER
+   ========================================================================== */
+.km-composer-input-wrap {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 16px 20px;
-  color: #FFFFFF;
-  pointer-events: none;
+  gap: 10px;
 }
 
-/* Judul Cerita Ditimpa */
-.km-story-card-title {
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  color: #FFFFFF;
-  margin: 0 0 4px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+.km-composer-mission-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #F8FAFA;
+  border: 1px solid var(--color-border, #E2E8E5);
+  border-radius: 12px;
+  padding: 8px 12px;
 }
 
-/* Metadata Penulis */
-.km-story-card-author {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
+.km-mission-label-wrap {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+}
+
+.km-mission-select {
+  flex: 1;
+  min-width: 220px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #D9E2DE;
+  background: #FFFFFF;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.km-mission-select:focus {
+  border-color: var(--color-primary, #1A382B);
+}
+
+/* Header Penulis & Badge Level pada Postingan */
+.km-author-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.km-author-level-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+  background: #EAF2ED;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(26, 56, 43, 0.15);
+}
+
+.km-post-points-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+  background: #EAF2ED;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(26, 56, 43, 0.2);
+  align-self: flex-start;
+}
+
+.km-thread-mission-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F4F8F5;
+  border: 1px solid rgba(26, 56, 43, 0.15);
+  color: var(--color-primary, #1A382B);
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 4px 0 12px 0;
+}
+
+/* ==========================================================================
+   3. SIDEBAR: KARTU PROFIL PENGGUNA & MISI BERPOIN (CIVIC QUESTS)
+   ========================================================================== */
+.km-sidebar-profile-card {
+  background: #FFFFFF;
+}
+
+.km-side-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.km-side-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary, #1A382B);
+  object-fit: cover;
+}
+
+.km-side-profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.km-side-profile-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-side-profile-handle {
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.km-side-profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background: #F8FAFA;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border, #E2E8E5);
+  margin-bottom: 14px;
+}
+
+.km-side-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.km-side-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.km-side-stat-value {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-side-stat-value.km-points-accent {
+  color: var(--color-primary, #1A382B);
+}
+
+.km-side-level-progress {
+  margin-bottom: 16px;
+}
+
+.km-side-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.km-side-progress-track {
+  height: 8px;
+  background: #E2E8E5;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.km-side-progress-fill {
+  height: 100%;
+  background: var(--color-primary, #1A382B);
+  border-radius: 9999px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.km-side-reward-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-slate, #0E1116);
+  color: #FFFFFF;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.km-side-reward-btn:hover {
+  background: var(--color-primary, #1A382B);
+  transform: translateY(-1px);
+}
+
+/* Sidebar Quests Card */
+.km-sidebar-desc {
+  font-size: 12.5px;
+  color: #64748b;
+  line-height: 1.45;
+  margin: 0 0 14px 0;
+}
+
+.km-quest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.km-quest-item {
+  background: #F9FAFA;
+  border: 1px solid var(--color-border, #E2E8E5);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.km-quest-item:hover {
+  border-color: var(--color-primary, #1A382B);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(26, 56, 43, 0.05);
+}
+
+.km-quest-item.is-completed {
+  background: #F4F8F5;
+  border-color: rgba(26, 56, 43, 0.25);
+}
+
+.km-quest-info {
+  flex: 1;
+}
+
+.km-quest-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+
+.km-quest-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-slate, #0E1116);
+}
+
+.km-quest-points {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary, #1A382B);
+  background: #EAF2ED;
+  padding: 1px 6px;
+  border-radius: 9999px;
+}
+
+.km-quest-desc {
+  font-size: 11.5px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.km-btn-quest-action {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border, #E2E8E5);
+  color: var(--color-slate, #0E1116);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.km-btn-quest-action:hover {
+  background: var(--color-primary, #1A382B);
+  border-color: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+}
+
+.km-quest-item.is-completed .km-btn-quest-action {
+  background: #EAF2ED;
+  color: var(--color-primary, #1A382B);
+  border-color: rgba(26, 56, 43, 0.2);
+  cursor: default;
 }
 
 /* ==========================================================================

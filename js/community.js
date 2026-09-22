@@ -1,134 +1,170 @@
 /**
  * TEDUH DIGITAL PLATFORM - COMMUNITY JAVASCRIPT (js/community.js)
- * Mengelola Horizontal Story Rail (Multi-Card Full-Bleed), Inline Quick Post Composer,
- * Sistem Thread Warga, Komentar Dummy Interaktif, dan Filter Topik Populer.
+ * Mengelola Linimasa Sosial Media Warga (Threads/LinkedIn Style), Post Composer
+ * dengan Tautan Misi Berpoin (Civic Quests), Sistem Thread Bersarang, dan
+ * Integrasi Sinkronisasi Poin & Level Akun secara Real-Time.
  * Bebas Em-Dash (R-02 Compliant) & Disiplin 3 Warna Esensial.
  */
 
 let selectedComposerTag = '#AksiTanam';
 let attachedPhotoUrl = null;
 
+// Kunci penyimpanan lokal untuk simulasi poin warga
+const STORAGE_KEY_POINTS = 'teduh_user_points';
+const DEFAULT_POINTS = 850;
+
 document.addEventListener('DOMContentLoaded', () => {
-  initStoryRail();
+  initCommunityPoints();
   initMobileNav();
-  syncNavUserPoints();
 });
 
 /* ==========================================================================
-   1. HERO HORIZONTAL STORY RAIL
+   1. SISTEM POIN & LEVEL WARGA (REAL-TIME GAMIFICATION)
    ========================================================================== */
-function initStoryRail() {
-  const rail = document.getElementById('kmStoryRail');
-  const prevBtn = document.getElementById('kmRailPrev');
-  const nextBtn = document.getElementById('kmRailNext');
-
-  if (!rail) return;
-
-  function updateButtonStates() {
-    if (!prevBtn || !nextBtn) return;
-    const maxScrollLeft = rail.scrollWidth - rail.clientWidth - 2;
-    prevBtn.disabled = rail.scrollLeft <= 4;
-    nextBtn.disabled = rail.scrollLeft >= maxScrollLeft;
+function getUserPoints() {
+  const saved = localStorage.getItem(STORAGE_KEY_POINTS);
+  if (saved !== null) {
+    const num = parseInt(saved, 10);
+    return isNaN(num) ? DEFAULT_POINTS : num;
   }
+  return DEFAULT_POINTS;
+}
 
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      const scrollStep = window.innerWidth < 768 ? 326 : 406;
-      rail.scrollBy({ left: -scrollStep, behavior: 'smooth' });
-    });
-  }
+function setUserPoints(points) {
+  localStorage.setItem(STORAGE_KEY_POINTS, points.toString());
+  syncPointsDisplay(points);
+}
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      const scrollStep = window.innerWidth < 768 ? 326 : 406;
-      rail.scrollBy({ left: scrollStep, behavior: 'smooth' });
-    });
-  }
+function addPointsWithAnimation(amount) {
+  const current = getUserPoints();
+  const next = current + amount;
+  setUserPoints(next);
 
-  rail.addEventListener('scroll', () => {
-    updateButtonStates();
-  }, { passive: true });
+  // Efek pulse pada elemen poin di navbar dan sidebar
+  const navPoints = document.getElementById('navUserPointsValue');
+  const sidePoints = document.getElementById('sidebarUserPointsValue');
 
-  // Mouse Drag to Scroll Interactivity
-  let isDown = false;
-  let startX = 0;
-  let scrollLeftPos = 0;
-  let isDragging = false;
-
-  rail.addEventListener('mousedown', (e) => {
-    isDown = true;
-    isDragging = false;
-    startX = e.pageX - rail.offsetLeft;
-    scrollLeftPos = rail.scrollLeft;
-  });
-
-  rail.addEventListener('mouseleave', () => {
-    isDown = false;
-    rail.classList.remove('is-dragging');
-  });
-
-  rail.addEventListener('mouseup', () => {
-    isDown = false;
-    setTimeout(() => {
-      rail.classList.remove('is-dragging');
-      isDragging = false;
-    }, 50);
-  });
-
-  rail.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    const x = e.pageX - rail.offsetLeft;
-    const walk = (x - startX) * 1.4;
-    if (Math.abs(walk) > 6) {
-      isDragging = true;
-      rail.classList.add('is-dragging');
-      e.preventDefault();
-      rail.scrollLeft = scrollLeftPos - walk;
+  [navPoints, sidePoints].forEach(el => {
+    if (el) {
+      el.style.transform = 'scale(1.2)';
+      el.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      setTimeout(() => {
+        el.style.transform = 'scale(1)';
+      }, 400);
     }
   });
 
-  // Cegah pemicu klik kartu jika pengguna sedang men-drag
-  rail.querySelectorAll('.km-story-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (isDragging) {
-        e.stopImmediatePropagation();
-        e.preventDefault();
+  return next;
+}
+
+function syncPointsDisplay(points) {
+  const navPoints = document.getElementById('navUserPointsValue');
+  const sidePoints = document.getElementById('sidebarUserPointsValue');
+  const progressLabel = document.getElementById('sidebarProgressPointsLabel');
+  const progressFill = document.getElementById('sidebarProgressFill');
+
+  const text = `${points.toLocaleString('id-ID')} Poin`;
+  if (navPoints) navPoints.textContent = text;
+  if (sidePoints) sidePoints.textContent = text;
+
+  // Target level 4 adalah 1000 poin
+  const targetPoints = 1000;
+  if (progressLabel) {
+    progressLabel.textContent = `${points.toLocaleString('id-ID')} / ${targetPoints.toLocaleString('id-ID')} Poin`;
+  }
+  if (progressFill) {
+    const pct = Math.min(100, Math.round((points / targetPoints) * 100));
+    progressFill.style.width = `${pct}%`;
+  }
+}
+
+function initCommunityPoints() {
+  const points = getUserPoints();
+  syncPointsDisplay(points);
+}
+
+/* ==========================================================================
+   2. FEED TABS & FILTER LINIMASA
+   ========================================================================== */
+function switchFeedTab(tabEl, filterType) {
+  const tabs = document.querySelectorAll('.km-feed-tab');
+  tabs.forEach(t => t.classList.remove('is-active'));
+  if (tabEl) tabEl.classList.add('is-active');
+
+  const cards = document.querySelectorAll('#kmFeedContainer .km-thread-card');
+  let count = 0;
+
+  cards.forEach(card => {
+    const cardTag = card.getAttribute('data-tag') || '';
+    const hasMission = card.hasAttribute('data-mission');
+
+    if (filterType === 'all') {
+      card.style.display = 'flex';
+      count++;
+    } else if (filterType === 'mission') {
+      if (hasMission) {
+        card.style.display = 'flex';
+        count++;
+      } else {
+        card.style.display = 'none';
       }
-    });
+    } else if (filterType.startsWith('#')) {
+      if (cardTag.toLowerCase() === filterType.toLowerCase()) {
+        card.style.display = 'flex';
+        count++;
+      } else {
+        card.style.display = 'none';
+      }
+    }
   });
 
-  updateButtonStates();
-}
-
-function handleStoryCardClick(threadId) {
-  const target = document.getElementById(threadId);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    target.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
-    target.style.boxShadow = '0 0 0 3px rgba(26, 56, 43, 0.25)';
-    target.style.borderColor = 'var(--color-primary, #1A382B)';
-    setTimeout(() => {
-      target.style.boxShadow = '';
-      target.style.borderColor = '';
-    }, 1800);
+  if (filterType === 'all') {
+    showKmToast(`Menampilkan seluruh postingan warga (${count} cerita)`);
+  } else if (filterType === 'mission') {
+    showKmToast(`Menampilkan ${count} aksi tanam berpoin misi`);
   } else {
-    showKmToast('Cerita penanaman warga berhasil dipilih');
-  }
-}
-
-function handleStoryCardFilter(tag) {
-  if (typeof filterByTag === 'function') {
-    filterByTag(tag);
-  }
-  const feedWrap = document.getElementById('kmFeedContainer');
-  if (feedWrap) {
-    feedWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showKmToast(`Menampilkan ${count} postingan dengan topik ${filterType}`);
   }
 }
 
 /* ==========================================================================
-   2. INLINE QUICK POST COMPOSER
+   3. INLINE POST COMPOSER & TAUTAN MISI BERPOIN
    ========================================================================== */
+function handleComposerMissionChange(selectEl) {
+  if (!selectEl) return;
+  const opt = selectEl.options[selectEl.selectedIndex];
+  const pts = opt ? (opt.getAttribute('data-points') || '15') : '15';
+  const submitText = document.getElementById('composerSubmitPointsText');
+  if (submitText) {
+    submitText.textContent = `Kirim & Klaim +${pts} Poin`;
+  }
+}
+
+function applyMissionToComposer(missionId) {
+  const select = document.getElementById('composerMissionSelect');
+  const composer = document.getElementById('composerTextInput');
+  const composerBox = document.getElementById('kmComposerBox');
+
+  if (select) {
+    select.value = missionId;
+    handleComposerMissionChange(select);
+  }
+
+  if (composerBox) {
+    composerBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  if (composer) {
+    setTimeout(() => {
+      composer.focus();
+    }, 350);
+  }
+
+  const opt = select ? select.options[select.selectedIndex] : null;
+  const missionName = opt ? opt.text.split('(')[0].replace(/[🎯🌡️🌿💬]/g, '').trim() : 'Misi Tanam';
+  showKmToast(`Misi dipilih: ${missionName}. Selesaikan cerita untuk klaim poin.`);
+}
+
 function selectComposerTag(el, tag) {
   selectedComposerTag = tag;
   const pills = document.querySelectorAll('.km-composer-tag-pill');
@@ -141,7 +177,7 @@ function handleFakePhotoUpload() {
   if (!attachedPhotoUrl) {
     attachedPhotoUrl = 'assets/trees/pohon-tanjung.jpg';
     if (label) label.textContent = 'Foto Tersemat (Pohon Tanjung)';
-    showKmToast('Foto pekarangan berhasil dilampirkan');
+    showKmToast('Foto dokumentasi pohon pekarangan berhasil dilampirkan');
   } else {
     attachedPhotoUrl = null;
     if (label) label.textContent = 'Sematkan Foto';
@@ -155,13 +191,40 @@ function submitNewPost() {
 
   const content = input.value.trim();
   if (!content) {
-    showKmToast('Tuliskan cerita atau pertanyaan terlebih dahulu.');
+    showKmToast('Tuliskan cerita aksi atau pertanyaan terlebih dahulu.');
     input.focus();
     return;
   }
 
   const container = document.getElementById('kmFeedContainer');
   if (!container) return;
+
+  const select = document.getElementById('composerMissionSelect');
+  const opt = select ? select.options[select.selectedIndex] : null;
+  const missionVal = select ? select.value : 'none';
+  const missionPoints = opt ? parseInt(opt.getAttribute('data-points') || '15', 10) : 15;
+
+  let missionBarHtml = '';
+  if (missionVal !== 'none' && opt) {
+    const rawTitle = opt.text.split('(')[0].replace(/[🎯🌡️🌿💬]/g, '').trim();
+    missionBarHtml = `
+      <div class="km-thread-mission-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Misi Tanam Selesai: ${escapeHtml(rawTitle)}</span>
+      </div>
+    `;
+
+    // Tandai misi terkait di sidebar sebagai selesai
+    const questItem = document.getElementById(`quest-item-${missionVal}`);
+    if (questItem) {
+      questItem.classList.add('is-completed');
+      const btn = questItem.querySelector('.km-btn-quest-action');
+      if (btn) {
+        btn.textContent = '✓ Selesai';
+        btn.disabled = true;
+      }
+    }
+  }
 
   const newThreadId = `thread-user-${Date.now()}`;
   const safeText = escapeHtml(content);
@@ -180,16 +243,26 @@ function submitNewPost() {
   newCard.className = 'km-thread-card';
   newCard.id = newThreadId;
   newCard.setAttribute('data-tag', tag);
+  if (missionVal !== 'none') {
+    newCard.setAttribute('data-mission', missionVal);
+  }
+
   newCard.innerHTML = `
     <div class="km-thread-header">
       <div class="km-thread-author-wrap">
         <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-thread-avatar">
         <div class="km-thread-meta">
-          <span class="km-thread-author-name">John Doe</span>
+          <div class="km-author-title-row">
+            <span class="km-thread-author-name">John Doe</span>
+            <span class="km-author-level-tag">Perintis Teduh (Anda)</span>
+          </div>
           <span class="km-thread-location-time">Denpasar Barat &bull; Baru saja</span>
         </div>
       </div>
+      <div class="km-post-points-badge">+${missionPoints} Poin</div>
     </div>
+
+    ${missionBarHtml}
 
     <div class="km-thread-body">
       <p class="km-thread-text">${safeText}</p>
@@ -220,26 +293,27 @@ function submitNewPost() {
     </div>
   `;
 
-  // Sisipkan di baris paling atas feed
+  // Sisipkan di paling atas feed
   container.insertBefore(newCard, container.firstChild);
 
-  // Reset Form
+  // Animasi & pertambahan poin nyata
+  addPointsWithAnimation(missionPoints);
+
+  // Reset input form
   input.value = '';
   attachedPhotoUrl = null;
-  const label = document.getElementById('composerUploadLabel');
-  if (label) label.textContent = 'Sematkan Foto';
-
-  // Tambah poin pengguna di TEDUH_DATA jika ada
-  if (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.addPoints) {
-    TEDUH_DATA.addPoints(50);
-    syncNavUserPoints();
+  const uploadLbl = document.getElementById('composerUploadLabel');
+  if (uploadLbl) uploadLbl.textContent = 'Sematkan Foto';
+  if (select) {
+    select.value = 'none';
+    handleComposerMissionChange(select);
   }
 
-  showKmToast('Cerita aksi berhasil dibagikan (+50 Poin Kesejukan)');
+  showKmToast(`🎉 Postingan terkirim! Anda mendapatkan +${missionPoints} Poin Teduh`);
 }
 
 /* ==========================================================================
-   3. INTERAKSI THREAD (LIKE & KOMENTAR INLINE)
+   4. INTERAKSI THREAD (LIKE & KOMENTAR BERSARANG)
    ========================================================================== */
 function toggleThreadLike(threadId, btn) {
   if (!btn) return;
@@ -253,7 +327,7 @@ function toggleThreadLike(threadId, btn) {
   } else {
     btn.classList.add('is-liked');
     countEl.textContent = currentCount + 1;
-    showKmToast('Menyukai postingan');
+    showKmToast('Menyukai postingan warga');
   }
 }
 
@@ -332,10 +406,12 @@ function submitInlineComment(threadId) {
     countEl.textContent = currentCount + 1;
   }
 
-  showKmToast('Komentar berhasil dikirim');
+  // Tambahkan bonus poin komentar
+  addPointsWithAnimation(10);
+  showKmToast('Komentar terkirim (+10 Poin Diskusi Warga)');
 }
 
-/* FUNGSI BALAS KOMENTAR INLINE BERSARANG (AVATAR TO AVATAR SUB-BRANCH) */
+/* FUNGSI BALAS KOMENTAR INLINE BERSARANG */
 function toggleInlineReplyForm(branchId, authorName) {
   const box = document.getElementById(`reply-box-${branchId}`);
   const targetLabel = document.getElementById(`reply-target-${branchId}`);
@@ -368,19 +444,14 @@ function handleNestedReplyKey(e, threadId, branchId) {
 }
 
 function submitNestedReply(threadId, branchId) {
+  const box = document.getElementById(`reply-box-${branchId}`);
   const input = document.getElementById(`reply-input-${branchId}`);
   const repliesContainer = document.getElementById(`replies-${branchId}`);
-  const composerBox = document.getElementById(`reply-box-${branchId}`);
-  const card = document.getElementById(threadId);
 
   if (!input || !repliesContainer) return;
 
   const text = input.value.trim();
-  if (!text) {
-    showKmToast('Tuliskan balasan terlebih dahulu');
-    input.focus();
-    return;
-  }
+  if (!text) return;
 
   const replyNode = document.createElement('div');
   replyNode.className = 'km-comment-node is-reply';
@@ -392,23 +463,16 @@ function submitNestedReply(threadId, branchId) {
         <span class="km-comment-time">Baru saja</span>
       </div>
       <p class="km-comment-text">${escapeHtml(text)}</p>
-      <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('${branchId}', 'John Doe')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-        <span>Balas</span>
-      </button>
     </div>
   `;
 
-  // Sisipkan balasan baru sebelum composer box
-  if (composerBox) {
-    repliesContainer.insertBefore(replyNode, composerBox);
-  } else {
-    repliesContainer.appendChild(replyNode);
-  }
-
+  // Sisipkan balasan di atas kotak form reply
+  repliesContainer.insertBefore(replyNode, box);
   input.value = '';
-  if (composerBox) composerBox.style.display = 'none';
+  if (box) box.style.display = 'none';
 
+  // Update total komentar di kartu thread induk
+  const card = document.getElementById(threadId);
   if (card) {
     const countEl = card.querySelector('.comment-count');
     if (countEl) {
@@ -417,33 +481,30 @@ function submitNestedReply(threadId, branchId) {
     }
   }
 
-  showKmToast('Balasan komentar berhasil dikirim');
+  addPointsWithAnimation(10);
+  showKmToast('Balasan terkirim (+10 Poin Diskusi Warga)');
 }
 
 /* ==========================================================================
-   4. FILTER TOPIK POPULER & FOCUS COMPOSER
+   5. FILTER TAG SIDEBAR
    ========================================================================== */
 function filterByTag(tag) {
-  const cards = document.querySelectorAll('.km-thread-card');
-  const tagButtons = document.querySelectorAll('#kmTagFilterList .km-trend-item');
-  let matched = 0;
-  const isAll = !tag || tag === 'all' || tag === '#Semua';
+  const cards = document.querySelectorAll('#kmFeedContainer .km-thread-card');
+  const items = document.querySelectorAll('.km-trend-item');
 
-  // Perbarui status aktif tombol tag di sidebar
-  tagButtons.forEach(btn => {
-    const btnTag = btn.getAttribute('data-tag');
-    if ((isAll && btnTag === 'all') || btnTag === tag) {
-      btn.classList.add('is-active');
+  items.forEach(item => {
+    if (item.getAttribute('data-tag') === tag) {
+      item.classList.add('is-active');
     } else {
-      btn.classList.remove('is-active');
+      item.classList.remove('is-active');
     }
   });
 
-  cards.forEach(card => {
-    const link = card.querySelector('.km-thread-tag-link');
-    const badge = card.querySelector('.km-thread-tag-badge');
-    const cardTag = card.getAttribute('data-tag') || (link ? link.textContent.trim() : (badge ? badge.textContent.trim() : ''));
+  const isAll = tag === 'all';
+  let matched = 0;
 
+  cards.forEach(card => {
+    const cardTag = card.getAttribute('data-tag') || '';
     if (isAll) {
       card.style.display = 'flex';
       matched++;
@@ -462,29 +523,9 @@ function filterByTag(tag) {
   }
 }
 
-function focusComposer() {
-  const composer = document.getElementById('composerTextInput');
-  if (composer) {
-    composer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(() => {
-      composer.focus();
-    }, 350);
-    showKmToast('Silakan tulis cerita atau aksi pekarangan Anda');
-  }
-}
-
 /* ==========================================================================
-   5. UTILITIES & TOAST
+   6. UTILITIES & TOAST
    ========================================================================== */
-function syncNavUserPoints() {
-  if (typeof TEDUH_DATA === 'undefined' || !TEDUH_DATA.getUserData) return;
-  const user = TEDUH_DATA.getUserData();
-  const pointsEl = document.getElementById('navUserPointsValue');
-  if (pointsEl) {
-    pointsEl.textContent = `${user.points} Poin`;
-  }
-}
-
 function showKmToast(msg) {
   const toast = document.getElementById('kmToast');
   if (!toast) return;
@@ -526,6 +567,9 @@ function initMobileNav() {
 }
 
 // Global Exports
+window.switchFeedTab = switchFeedTab;
+window.handleComposerMissionChange = handleComposerMissionChange;
+window.applyMissionToComposer = applyMissionToComposer;
 window.selectComposerTag = selectComposerTag;
 window.handleFakePhotoUpload = handleFakePhotoUpload;
 window.submitNewPost = submitNewPost;
@@ -533,7 +577,9 @@ window.toggleThreadLike = toggleThreadLike;
 window.focusCommentInput = focusCommentInput;
 window.handleCommentKey = handleCommentKey;
 window.submitInlineComment = submitInlineComment;
-window.replyToComment = replyToComment;
+window.toggleInlineReplyForm = toggleInlineReplyForm;
+window.closeInlineReplyForm = closeInlineReplyForm;
+window.handleNestedReplyKey = handleNestedReplyKey;
+window.submitNestedReply = submitNestedReply;
 window.filterByTag = filterByTag;
-window.focusComposer = focusComposer;
 window.showKmToast = showKmToast;
