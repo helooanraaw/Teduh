@@ -14,6 +14,7 @@
   <!-- Stylesheets Murni -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/community.css">
+  <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 
@@ -150,89 +151,96 @@
     <div class="km-container">
 
       <!-- ====================================================================
-           1. HERO SECTION: 4 CERITA CAROUSEL PERSEGI PANJANG
+           1. HERO SECTION: HORIZONTAL STORY RAIL (MULTI-CARD FULL-BLEED)
            ==================================================================== -->
-      <section class="km-hero-section" aria-label="Cerita Aksi Warga Pilihan">
-        <div class="km-hero-header">
-          <div class="km-hero-title-wrap">
-            <h1 class="km-hero-title">Cerita Trending Warga</h1>
+      <section class="km-hero-section" aria-label="Cerita Aksi Tanam Warga">
+        <div class="km-hero-header-minimal">
+          <div class="km-hero-meta-left">
+            <span class="km-hero-meta-title">Aksi Tanam Pekarangan Warga</span>
+            <span class="km-hero-meta-sub">Dokumentasi nyata penurunan suhu teras dan pohon aman fondasi</span>
           </div>
 
-          <div class="km-carousel-nav" aria-label="Navigasi Cerita">
-            <button id="kmCarouselPrev" type="button" class="km-carousel-btn" aria-label="Cerita Sebelumnya">
+          <div class="km-rail-controls" aria-label="Navigasi Geser Cerita">
+            <button id="kmRailPrev" type="button" class="km-rail-btn" aria-label="Geser Cerita ke Kiri">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
-            <button id="kmCarouselNext" type="button" class="km-carousel-btn" aria-label="Cerita Berikutnya">
+            <button id="kmRailNext" type="button" class="km-rail-btn" aria-label="Geser Cerita ke Kanan">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
           </div>
         </div>
 
-        <!-- Wadah Carousel Persegi Panjang -->
-        <div class="km-carousel-container" id="kmCarouselWrap">
-          <div class="km-carousel-track" id="kmCarouselTrack">
+        <!-- Wadah Rel Cerita Horizontal -->
+        <div class="km-story-rail-wrap" id="kmStoryRailWrap">
+          <div class="km-story-rail" id="kmStoryRail">
 
-            <!-- Slide 1: Pohon Tanjung Renon -->
-            <div class="km-carousel-slide">
-              <img src="assets/trees/pohon-tanjung.jpg" alt="Pohon Tanjung di Renon" class="km-slide-img">
-              <div class="km-slide-overlay">
-                <span class="km-slide-tag">Aksi Renon</span>
-                <h2 class="km-slide-title">Pohon Tanjung di Pekarangan: Suhu Teras Turun 4.3°C</h2>
-                <div class="km-slide-author">
-                  <img src="images/testimonial/Mas Bima (1).webp" alt="Mas Bima" class="km-slide-author-avatar">
-                  <span>Mas Bima &bull; Jl. Raya Puputan, Renon</span>
+            <!-- Card 1: Pohon Tanjung Renon -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-thread="thread-1" onclick="handleStoryCardClick('thread-1')">
+              <img src="assets/trees/pohon-tanjung.jpg" alt="Pohon Tanjung di Renon" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Pohon Tanjung di Pekarangan: Teras Jadi Rindang Sejuk</h3>
+                <div class="km-story-card-author">
+                  <span>Mas Bima &bull; Renon</span>
                 </div>
               </div>
             </div>
 
-            <!-- Slide 2: Ketapang Kencana Sesetan -->
-            <div class="km-carousel-slide">
-              <img src="assets/trees/ketapang-kencana.jpg" alt="Ketapang Kencana di Sesetan" class="km-slide-img">
-              <div class="km-slide-overlay">
-                <span class="km-slide-tag">Pekarangan Sempit</span>
-                <h2 class="km-slide-title">Trik Memilih Ketapang Kencana untuk Koridor Ruko 3 Meter</h2>
-                <div class="km-slide-author">
-                  <img src="images/testimonial/Bu Maya.webp" alt="Ibu Desak" class="km-slide-author-avatar">
-                  <span>Ibu Desak &bull; Jl. Raya Sesetan</span>
+            <!-- Card 2: Ketapang Kencana Sesetan -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-thread="thread-2" onclick="handleStoryCardClick('thread-2')">
+              <img src="assets/trees/ketapang-kencana.jpg" alt="Ketapang Kencana di Sesetan" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Trik Ketapang Kencana untuk Koridor Ruko Lebar 3 Meter</h3>
+                <div class="km-story-card-author">
+                  <span>Ibu Desak &bull; Sesetan</span>
                 </div>
               </div>
             </div>
 
-            <!-- Slide 3: Tabebuia Pink Teuku Umar -->
-            <div class="km-carousel-slide">
-              <img src="assets/trees/tabebuia-pink.jpg" alt="Tabebuia Pink Teuku Umar" class="km-slide-img">
-              <div class="km-slide-overlay">
-                <span class="km-slide-tag">Bebas Semen Panas</span>
-                <h2 class="km-slide-title">Bongkar Semen Teras Jadi Biopori &amp; Tanam Tabebuia Pink</h2>
-                <div class="km-slide-author">
-                  <img src="images/testimonial/Bang Raka.webp" alt="Pak Wayan" class="km-slide-author-avatar">
-                  <span>Pak Wayan &bull; Jl. Teuku Umar Barat</span>
+            <!-- Card 3: Tabebuia Pink Teuku Umar -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-thread="thread-3" onclick="handleStoryCardClick('thread-3')">
+              <img src="assets/trees/tabebuia-pink.jpg" alt="Tabebuia Pink Teuku Umar" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Bongkar Semen Teras Jadi Biopori &amp; Tanam Tabebuia Pink</h3>
+                <div class="km-story-card-author">
+                  <span>Pak Wayan &bull; Teuku Umar Barat</span>
                 </div>
               </div>
             </div>
 
-            <!-- Slide 4: Akar Tunggang Gatsu -->
-            <div class="km-carousel-slide">
-              <img src="images/hero-thermal-comparison.png" alt="Akar Aman Sanitasi Gatsu" class="km-slide-img">
-              <div class="km-slide-overlay">
-                <span class="km-slide-tag">Aman Sanitasi</span>
-                <h2 class="km-slide-title">Akar Tunggang vs Pipa Got: Rahasia Bebas Saluran Retak</h2>
-                <div class="km-slide-author">
-                  <img src="images/testimonial/Kakak Putri.webp" alt="dr. Made Ary" class="km-slide-author-avatar">
-                  <span>dr. Made Ary &bull; Jl. Gatot Subroto Barat</span>
+            <!-- Card 4: Akar Tunggang Sanitasi Gatsu -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-tag="#AmanFondasi" onclick="handleStoryCardFilter('#AmanFondasi')">
+              <img src="images/hero-thermal-comparison.png" alt="Akar Aman Sanitasi Gatsu" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Akar Tunggang vs Pipa Got: Rahasia Bebas Saluran Retak</h3>
+                <div class="km-story-card-author">
+                  <span>dr. Made Ary &bull; Gatsu Barat</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5: Tabebuia Kuning Panjer -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-tag="#PekaranganSemen" onclick="handleStoryCardFilter('#PekaranganSemen')">
+              <img src="assets/landing/feature-1.jpg" alt="Peneduh Kanopi Tabebuia Panjer" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Peneduh Kanopi Tabebuia Kuning di Sudut Gang Padat</h3>
+                <div class="km-story-card-author">
+                  <span>Bu Maya &bull; Panjer</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6: Pohon Pule Wangi Sanur -->
+            <div class="km-story-card" role="button" tabindex="0" data-target-tag="#AksiTanam" onclick="handleStoryCardFilter('#AksiTanam')">
+              <img src="assets/landing/about-canopy.jpg" alt="Pohon Pule Wangi Sanur" class="km-story-card-img" loading="lazy">
+              <div class="km-story-card-overlay">
+                <h3 class="km-story-card-title">Pohon Pule Wangi Penyejuk Pekarangan Belakang Rumah</h3>
+                <div class="km-story-card-author">
+                  <span>Bang Raka &bull; Sanur</span>
                 </div>
               </div>
             </div>
 
           </div>
-        </div>
-
-        <!-- Indikator Dots -->
-        <div class="km-carousel-dots" id="kmCarouselDots" role="tablist" aria-label="Pilih Slide Cerita">
-          <button type="button" class="km-dot is-active" data-index="0" role="tab" aria-label="Slide 1"></button>
-          <button type="button" class="km-dot" data-index="1" role="tab" aria-label="Slide 2"></button>
-          <button type="button" class="km-dot" data-index="2" role="tab" aria-label="Slide 3"></button>
-          <button type="button" class="km-dot" data-index="3" role="tab" aria-label="Slide 4"></button>
         </div>
       </section>
 
@@ -670,9 +678,78 @@
   <!-- TOAST NOTIFIKASI -->
   <div id="kmToast" role="status" aria-live="polite"></div>
 
+  <!-- FLOATING CHATBOT ASISTEN TEDUH -->
+  <div class="td-chatbot-wrapper">
+    <!-- Tooltip Sambutan Otomatis -->
+    <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
+      Tanya Asisten Teduh 👋
+    </div>
+
+    <!-- Tombol FAB Bulat -->
+    <button id="tdChatFab" class="td-chatbot-fab" type="button" aria-label="Buka Chatbot Asisten Teduh" aria-expanded="false">
+      <img src="assets/landing/question-section.png" alt="Avatar Asisten Teduh" class="td-chatbot-fab-img">
+      <svg class="td-chatbot-fab-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Jendela Chat Pop-up -->
+    <div id="tdChatWindow" class="td-chatbot-window" role="dialog" aria-label="Percakapan Asisten Teduh">
+      <!-- Header -->
+      <div class="td-chat-header">
+        <div class="td-chat-header-profile">
+          <div class="td-chat-header-avatar">
+            <img src="assets/landing/question-section.png" alt="Robot Asisten Teduh">
+            <span class="td-chat-status-dot" aria-hidden="true"></span>
+          </div>
+          <div class="td-chat-header-info">
+            <span class="td-chat-header-name">Asisten Teduh</span>
+            <span class="td-chat-header-status">Siap bantu seputar wilayah &amp; pohon</span>
+          </div>
+        </div>
+        <button id="tdChatClose" class="td-chat-close-btn" type="button" aria-label="Tutup Obrolan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Isi Pesan Chat -->
+      <div id="tdChatBody" class="td-chat-body">
+        <div class="td-msg-row bot">
+          <div class="td-bubble">
+            <p style="margin: 0 0 8px 0;">Halo! Butuh bantuan seputar cek suhu lingkungan atau memilih pohon yang pas? Pilih topik cepat di bawah atau ketik pertanyaan Anda.</p>
+            <div class="td-chat-chips">
+              <button type="button" class="td-chip-btn" data-topic-id="suhu_peta">Cek Suhu di Peta</button>
+              <button type="button" class="td-chip-btn" data-topic-id="pohon_fondasi">Pohon Aman Fondasi</button>
+              <button type="button" class="td-chip-btn" data-topic-id="jarak_tanam">Jarak Tanam Rumah</button>
+              <button type="button" class="td-chip-btn" data-topic-id="bibit_gratis">Klaim Bibit Gratis</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Form Input -->
+      <div class="td-chat-footer">
+        <form id="tdChatForm" class="td-chat-form">
+          <input type="text" id="tdChatInput" class="td-chat-input" placeholder="Tanyakan seputar suhu atau bibit..." autocomplete="off" aria-label="Ketik pesan pertanyaan">
+          <button type="submit" class="td-chat-send-btn" aria-label="Kirim Pesan">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPT ENGINE -->
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/community.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>

@@ -1,112 +1,129 @@
 /**
  * TEDUH DIGITAL PLATFORM - COMMUNITY JAVASCRIPT (js/community.js)
- * Mengelola Hero Carousel Persegi Panjang 4 Slide, Inline Quick Post Composer,
+ * Mengelola Horizontal Story Rail (Multi-Card Full-Bleed), Inline Quick Post Composer,
  * Sistem Thread Warga, Komentar Dummy Interaktif, dan Filter Topik Populer.
  * Bebas Em-Dash (R-02 Compliant) & Disiplin 3 Warna Esensial.
  */
 
-let currentSlideIndex = 0;
-const totalSlides = 4;
-let carouselTimer = null;
 let selectedComposerTag = '#AksiTanam';
 let attachedPhotoUrl = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initHeroCarousel();
+  initStoryRail();
   initMobileNav();
   syncNavUserPoints();
 });
 
 /* ==========================================================================
-   1. HERO CAROUSEL 4 CERITA WARGA
+   1. HERO HORIZONTAL STORY RAIL
    ========================================================================== */
-function initHeroCarousel() {
-  const track = document.getElementById('kmCarouselTrack');
-  const dots = document.querySelectorAll('.km-dot');
-  const prevBtn = document.getElementById('kmCarouselPrev');
-  const nextBtn = document.getElementById('kmCarouselNext');
-  const wrap = document.getElementById('kmCarouselWrap');
+function initStoryRail() {
+  const rail = document.getElementById('kmStoryRail');
+  const prevBtn = document.getElementById('kmRailPrev');
+  const nextBtn = document.getElementById('kmRailNext');
 
-  if (!track) return;
+  if (!rail) return;
 
-  function goToSlide(index) {
-    if (index < 0) index = totalSlides - 1;
-    if (index >= totalSlides) index = 0;
-    currentSlideIndex = index;
-
-    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-
-    dots.forEach((dot, i) => {
-      if (i === currentSlideIndex) {
-        dot.classList.add('is-active');
-      } else {
-        dot.classList.remove('is-active');
-      }
-    });
-  }
-
-  function startAutoPlay() {
-    stopAutoPlay();
-    carouselTimer = setInterval(() => {
-      goToSlide(currentSlideIndex + 1);
-    }, 5500);
-  }
-
-  function stopAutoPlay() {
-    if (carouselTimer) {
-      clearInterval(carouselTimer);
-      carouselTimer = null;
-    }
+  function updateButtonStates() {
+    if (!prevBtn || !nextBtn) return;
+    const maxScrollLeft = rail.scrollWidth - rail.clientWidth - 2;
+    prevBtn.disabled = rail.scrollLeft <= 4;
+    nextBtn.disabled = rail.scrollLeft >= maxScrollLeft;
   }
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
-      goToSlide(currentSlideIndex - 1);
-      startAutoPlay();
+      const scrollStep = window.innerWidth < 768 ? 270 : 330;
+      rail.scrollBy({ left: -scrollStep, behavior: 'smooth' });
     });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
-      goToSlide(currentSlideIndex + 1);
-      startAutoPlay();
+      const scrollStep = window.innerWidth < 768 ? 270 : 330;
+      rail.scrollBy({ left: scrollStep, behavior: 'smooth' });
     });
   }
 
-  dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-      const idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
-      if (!isNaN(idx)) {
-        goToSlide(idx);
-        startAutoPlay();
+  rail.addEventListener('scroll', () => {
+    updateButtonStates();
+  }, { passive: true });
+
+  // Mouse Drag to Scroll Interactivity
+  let isDown = false;
+  let startX = 0;
+  let scrollLeftPos = 0;
+  let isDragging = false;
+
+  rail.addEventListener('mousedown', (e) => {
+    isDown = true;
+    isDragging = false;
+    startX = e.pageX - rail.offsetLeft;
+    scrollLeftPos = rail.scrollLeft;
+  });
+
+  rail.addEventListener('mouseleave', () => {
+    isDown = false;
+    rail.classList.remove('is-dragging');
+  });
+
+  rail.addEventListener('mouseup', () => {
+    isDown = false;
+    setTimeout(() => {
+      rail.classList.remove('is-dragging');
+      isDragging = false;
+    }, 50);
+  });
+
+  rail.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    const x = e.pageX - rail.offsetLeft;
+    const walk = (x - startX) * 1.4;
+    if (Math.abs(walk) > 6) {
+      isDragging = true;
+      rail.classList.add('is-dragging');
+      e.preventDefault();
+      rail.scrollLeft = scrollLeftPos - walk;
+    }
+  });
+
+  // Cegah pemicu klik kartu jika pengguna sedang men-drag
+  rail.querySelectorAll('.km-story-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (isDragging) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
       }
     });
   });
 
-  if (wrap) {
-    wrap.addEventListener('mouseenter', stopAutoPlay);
-    wrap.addEventListener('mouseleave', startAutoPlay);
+  updateButtonStates();
+}
 
-    // Gestur Swipe pada Mobile
-    let startX = 0;
-    wrap.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      stopAutoPlay();
-    }, { passive: true });
-
-    wrap.addEventListener('touchend', (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const diffX = endX - startX;
-      if (diffX > 40) {
-        goToSlide(currentSlideIndex - 1);
-      } else if (diffX < -40) {
-        goToSlide(currentSlideIndex + 1);
-      }
-      startAutoPlay();
-    }, { passive: true });
+function handleStoryCardClick(threadId) {
+  const target = document.getElementById(threadId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    target.style.boxShadow = '0 0 0 3px rgba(26, 56, 43, 0.25)';
+    target.style.borderColor = 'var(--color-primary, #1A382B)';
+    setTimeout(() => {
+      target.style.boxShadow = '';
+      target.style.borderColor = '';
+    }, 1800);
+  } else {
+    showKmToast('Cerita penanaman warga berhasil dipilih');
   }
+}
 
-  startAutoPlay();
+function handleStoryCardFilter(tag) {
+  if (typeof filterByTag === 'function') {
+    filterByTag(tag);
+  }
+  const feedWrap = document.getElementById('kmFeedContainer');
+  if (feedWrap) {
+    feedWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 /* ==========================================================================
