@@ -600,6 +600,40 @@ function populateDrawer(zone) {
     if (safetyBadge) safetyBadge.textContent = tree.pipeSafety ? 'Aman Saluran Got' : 'Aman Pipa & Fondasi';
   }
 
+  // 4.1 Kelola Tampilan Jadwal Tanam di Bawah Card Pohon
+  const treeScheduleBox = document.getElementById('drawerTreeScheduleBox');
+  const treeScheduleDateEl = document.getElementById('drawerTreeScheduleDate');
+
+  if (treeScheduleBox && treeScheduleDateEl) {
+    if (activeCitizenMission && activeCitizenMission.scheduledDate) {
+      const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
+        ? TEDUH_DATA.formatDateIndo(activeCitizenMission.scheduledDate)
+        : activeCitizenMission.scheduledDate;
+      treeScheduleDateEl.textContent = formattedDate;
+      treeScheduleBox.classList.remove('hidden');
+    } else {
+      let activeMissionDate = null;
+      if (typeof localStorage !== 'undefined') {
+        try {
+          const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
+          if (saved && saved.zoneId === zone.id && !saved.isCompleted && saved.scheduledDate) {
+            activeMissionDate = saved.scheduledDate;
+          }
+        } catch(e) {}
+      }
+
+      if (activeMissionDate) {
+        const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
+          ? TEDUH_DATA.formatDateIndo(activeMissionDate)
+          : activeMissionDate;
+        treeScheduleDateEl.textContent = formattedDate;
+        treeScheduleBox.classList.remove('hidden');
+      } else {
+        treeScheduleBox.classList.add('hidden');
+      }
+    }
+  }
+
   // 5. Rencana Langkah Aksi (Stage 2 - Panduan Praktis 1 Kali Tanam)
   const actionPlan = zone.actionPlan || {
     now: { title: "Tentukan Titik Tanam Aman", desc: "Pilih pekarangan berjarak minimal 1.5 meter dari dinding rumah dan saluran air." },
@@ -720,7 +754,7 @@ function renderDrawerVolunteers(mission) {
   if (mission && mission.volunteers && mission.volunteers.length > 0) {
     section.classList.remove('hidden');
     if (countBadge) {
-      countBadge.textContent = `${mission.currentVolunteers} / ${mission.maxVolunteers} Warga`;
+      countBadge.textContent = `${mission.currentVolunteers} Warga`;
     }
 
     const html = mission.volunteers.map(v => {
@@ -2088,10 +2122,6 @@ function renderCitizenMissions() {
     const marker = L.marker([mission.lat, mission.lng], { icon: customIcon, riseOnHover: true }).addTo(mapInstance);
     marker._teduhMissionId = mission.id;
 
-    const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
-      ? TEDUH_DATA.formatDateIndo(mission.scheduledDate)
-      : (mission.scheduledDate || 'Segera');
-
     // Markup Pop-up Preview Ringan (Klik card langsung membuka panel analisis di samping)
     const popupContent = `
       <div class="map-popup-card citizen-mission-popup-card" data-mission-id="${safeMissionId}" onclick="event.stopPropagation(); window.selectCitizenMission('${safeMissionId}');" style="cursor: pointer;">
@@ -2106,8 +2136,8 @@ function renderCitizenMissions() {
             <strong>${treeName}</strong>
           </div>
           <div class="map-popup-mini-stat">
-            <span>Jadwal Tanam</span>
-            <strong>${formattedDate}</strong>
+            <span>Warga yang Ikut</span>
+            <strong id="cm-volunteers-${mission.id}">${mission.currentVolunteers} Warga</strong>
           </div>
         </div>
       </div>
@@ -2438,7 +2468,7 @@ function renderUserActiveMissionPin() {
     const popupHtml = `
       <div class="map-popup-card user-active-mission-popup">
         <div class="map-popup-header">
-          <span class="map-popup-badge ${isExpired ? 'hot' : 'cool'}">${isExpired ? 'Misi Hangus' : 'Misi Aktif Saya'}</span>
+          <span class="map-popup-badge cool">Misi Aktif Saya</span>
           <span class="map-popup-location">${escapeHtml(mission.district || 'Denpasar')}</span>
         </div>
         <h4 class="map-popup-title">${escapeHtml(mission.zoneName || 'Kawasan Aksi')}</h4>
@@ -2448,12 +2478,12 @@ function renderUserActiveMissionPin() {
             <strong>${escapeHtml(treeName)}</strong>
           </div>
           <div class="map-popup-mini-stat">
-            <span>Jadwal Aksi</span>
-            <strong class="${isExpired ? 'schedule-status-expired' : ''}" style="${!isExpired ? 'color: #1A382B;' : ''}">${isExpired ? 'Hangus (' + formattedDate + ')' : formattedDate}</strong>
+            <span>Status Aksi</span>
+            <strong style="color: #1A382B;">Sedang Berjalan</strong>
           </div>
         </div>
         <a href="${communityUrl}" class="map-popup-btn" style="color: #FFFFFF !important; text-decoration: none !important; text-align: center;">
-          <span style="color: #FFFFFF !important;">${isExpired ? 'Unggah Bukti / Mulai Ulang' : 'Ke Komunitas &amp; Bagikan Aksi'}</span>
+          <span style="color: #FFFFFF !important;">Ke Komunitas &amp; Bagikan Aksi</span>
         </a>
       </div>
     `;
