@@ -2466,7 +2466,7 @@ function renderUserActiveMissionPin() {
     }
 
     const popupHtml = `
-      <div class="map-popup-card user-active-mission-popup">
+      <div class="map-popup-card user-active-mission-popup" onclick="event.stopPropagation(); window.selectUserActiveMission();" style="cursor: pointer;">
         <div class="map-popup-header">
           <span class="map-popup-badge cool">Misi Aktif Saya</span>
           <span class="map-popup-location">${escapeHtml(mission.district || 'Denpasar')}</span>
@@ -2482,7 +2482,7 @@ function renderUserActiveMissionPin() {
             <strong style="color: #1A382B;">Sedang Berjalan</strong>
           </div>
         </div>
-        <a href="${communityUrl}" class="map-popup-btn" style="color: #FFFFFF !important; text-decoration: none !important; text-align: center;">
+        <a href="${communityUrl}" onclick="event.stopPropagation();" class="map-popup-btn" style="color: #FFFFFF !important; text-decoration: none !important; text-align: center;">
           <span style="color: #FFFFFF !important;">Ke Komunitas &amp; Bagikan Aksi</span>
         </a>
       </div>
@@ -2494,8 +2494,46 @@ function renderUserActiveMissionPin() {
       className: 'custom-leaflet-popup'
     });
 
-    // Pasang interaksi hover responsif
+    // Pasang interaksi klik dan hover responsif
+    userActiveMissionMarker.on('click', function (e) {
+      L.DomEvent.stopPropagation(e);
+      selectUserActiveMission();
+    });
+
     bindHoverPopup(userActiveMissionMarker);
+  } catch (e) {}
+}
+
+// Membuka Kembali Panel Drawer Analisis untuk Titik Misi Aktif Saya
+function selectUserActiveMission() {
+  if (typeof localStorage === 'undefined') return;
+  const saved = localStorage.getItem('teduh_active_mission');
+  if (!saved) return;
+
+  try {
+    const mission = JSON.parse(saved);
+    if (!mission) return;
+
+    let zone = null;
+    if (mission.zoneId && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.zones) {
+      zone = TEDUH_DATA.zones.find(z => z.id === mission.zoneId);
+    }
+    if (!zone && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.zones && TEDUH_DATA.zones.length > 0) {
+      zone = TEDUH_DATA.zones[0];
+    }
+
+    if (zone) {
+      const activeMissionZone = {
+        ...zone,
+        name: mission.zoneName || zone.name,
+        lat: mission.lat || zone.lat,
+        lng: mission.lng || zone.lng
+      };
+      selectZone(activeMissionZone, false, null);
+      if (userActiveMissionMarker && !userActiveMissionMarker.isPopupOpen()) {
+        userActiveMissionMarker.openPopup();
+      }
+    }
   } catch (e) {}
 }
 
@@ -2914,3 +2952,4 @@ window.closeLeaveConfirmModal = closeLeaveConfirmModal;
 window.confirmLeaveCitizenMission = confirmLeaveCitizenMission;
 window.leaveCitizenMission = leaveCitizenMission;
 window.renderUserActiveMissionPin = renderUserActiveMissionPin;
+window.selectUserActiveMission = selectUserActiveMission;
