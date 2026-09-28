@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileNavigation();
   initSmoothScroll();
   initGlobalKeyboardShortcuts();
+  initNotificationDropdown();
   initProfileDropdown();
 });
 
@@ -115,12 +116,104 @@ function initGlobalKeyboardShortcuts() {
         guideModal.classList.add('hidden');
       }
 
-      // Tutup popup menu profil jika terbuka
-      document.querySelectorAll('.nav-profile-wrapper').forEach(w => {
+      // Tutup popup menu profil & notifikasi jika terbuka
+      document.querySelectorAll('.nav-profile-wrapper, .nav-notif-wrapper').forEach(w => {
         w.classList.remove('is-open');
       });
     }
   });
+}
+
+// ==========================================================================
+// INTERAKSI DROPDOWN NOTIFIKASI (INFORMASIONAL ALA NUTRINESIA)
+// ==========================================================================
+function getNotifIconSvg(iconType) {
+  if (iconType === 'tree') {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7"></path><path d="M9 18l3-3 3 3"></path><path d="M12 2a5 5 0 0 0-5 5c0 2 1.5 3.5 3 4.5V15h4v-3.5c1.5-1 3-2.5 3-4.5a5 5 0 0 0-5-5z"></path></svg>`;
+  } else if (iconType === 'chat') {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`;
+  } else if (iconType === 'users') {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
+  } else {
+    return `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`;
+  }
+}
+
+function renderNavNotifications() {
+  if (typeof window.TEDUH_DATA === 'undefined' || !window.TEDUH_DATA.getNotifications) return;
+
+  const notifs = window.TEDUH_DATA.getNotifications();
+  const lists = document.querySelectorAll('.nav-notif-list');
+  const dots = document.querySelectorAll('.nav-notif-dot');
+
+  const hasUnread = notifs.some(n => !n.isRead);
+  dots.forEach(dot => {
+    if (hasUnread) {
+      dot.classList.remove('hidden');
+    } else {
+      dot.classList.add('hidden');
+    }
+  });
+
+  lists.forEach(list => {
+    if (!notifs.length) {
+      list.innerHTML = `<div class="nav-notif-empty">Belum ada notifikasi baru.</div>`;
+      return;
+    }
+
+    list.innerHTML = notifs.map(n => `
+      <div class="nav-notif-item ${n.isRead ? 'is-read' : 'is-unread'}">
+        <div class="nav-notif-icon-box">
+          ${getNotifIconSvg(n.icon)}
+        </div>
+        <div class="nav-notif-content">
+          <p class="nav-notif-item-msg">${n.message}</p>
+          <span class="nav-notif-item-time">${n.time}</span>
+        </div>
+      </div>
+    `).join('');
+  });
+}
+
+function initNotificationDropdown() {
+  const wrappers = document.querySelectorAll('.nav-notif-wrapper');
+  if (!wrappers.length) return;
+
+  wrappers.forEach(wrapper => {
+    const trigger = wrapper.querySelector('.nav-notif-trigger');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = wrapper.classList.contains('is-open');
+      // Tutup wrapper profil dan notif lain
+      document.querySelectorAll('.nav-notif-wrapper, .nav-profile-wrapper').forEach(w => w.classList.remove('is-open'));
+      if (!isOpen) {
+        wrapper.classList.add('is-open');
+      }
+    });
+
+    const popup = wrapper.querySelector('.nav-notif-popup');
+    if (popup) {
+      popup.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+  });
+
+  document.addEventListener('click', () => {
+    wrappers.forEach(w => w.classList.remove('is-open'));
+  });
+
+  renderNavNotifications();
+}
+
+function handleMarkAllNotificationsRead(event) {
+  if (event) event.stopPropagation();
+  if (typeof window.TEDUH_DATA !== 'undefined' && window.TEDUH_DATA.markAllNotificationsRead) {
+    window.TEDUH_DATA.markAllNotificationsRead();
+  }
+  renderNavNotifications();
 }
 
 // ==========================================================================
@@ -139,7 +232,7 @@ function initProfileDropdown() {
       e.stopPropagation();
       const isOpen = wrapper.classList.contains('is-open');
       // Tutup wrapper lain jika ada
-      wrappers.forEach(w => w.classList.remove('is-open'));
+      document.querySelectorAll('.nav-profile-wrapper, .nav-notif-wrapper').forEach(w => w.classList.remove('is-open'));
       if (!isOpen) {
         wrapper.classList.add('is-open');
       }
@@ -190,28 +283,22 @@ function syncNavProfileData() {
 }
 
 // Handler Logout Ramah Pengguna
+let navToastTimeout = null;
 function handleNavLogout() {
-  // Tampilkan notifikasi toast ramah
-  const toast = document.getElementById('teduhToast');
-  if (toast) {
-    toast.textContent = "Sesi John Doe tetap aktif untuk penjelajahan prototipe Teduh.";
-    toast.style.display = 'block';
-    toast.style.position = 'fixed';
-    toast.style.bottom = '24px';
-    toast.style.right = '24px';
-    toast.style.background = '#0E1116';
-    toast.style.color = '#FFFFFF';
-    toast.style.padding = '12px 20px';
-    toast.style.borderRadius = '12px';
-    toast.style.fontSize = '12px';
-    toast.style.fontWeight = '700';
-    toast.style.zIndex = '9999';
-    setTimeout(() => {
-      toast.style.display = 'none';
-    }, 3200);
-  } else {
-    alert("Sesi John Doe tetap aktif untuk penjelajahan prototipe Teduh.");
+  let toast = document.getElementById('teduhToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'teduhToast';
+    document.body.appendChild(toast);
   }
+
+  clearTimeout(navToastTimeout);
+  toast.textContent = "Sesi John Doe tetap aktif untuk penjelajahan prototipe Teduh.";
+  toast.classList.add('is-visible');
+
+  navToastTimeout = setTimeout(() => {
+    toast.classList.remove('is-visible');
+  }, 2500);
 
   // Tutup popup
   document.querySelectorAll('.nav-profile-wrapper').forEach(w => w.classList.remove('is-open'));
@@ -219,6 +306,9 @@ function handleNavLogout() {
 
 // Export global untuk diakses skrip halaman lain
 if (typeof window !== 'undefined') {
+  window.initNotificationDropdown = initNotificationDropdown;
+  window.renderNavNotifications = renderNavNotifications;
+  window.handleMarkAllNotificationsRead = handleMarkAllNotificationsRead;
   window.initProfileDropdown = initProfileDropdown;
   window.syncNavProfileData = syncNavProfileData;
   window.handleNavLogout = handleNavLogout;

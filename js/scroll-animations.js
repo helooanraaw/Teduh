@@ -291,6 +291,7 @@
           duration: 0.8,
           stagger: 0.14,
           ease: 'power3.out',
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: '.prob-list',
             start: 'top 80%'

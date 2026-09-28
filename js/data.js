@@ -2267,7 +2267,7 @@ const TEDUH_DATA = {
       id: "tree-kiara-payung",
       name: "Kiara Payung",
       latin: "Filicium decipiens",
-      image: "assets/trees/pohon-tanjung.jpg",
+      image: "assets/trees/pohon-kiara-payung.jpg",
       category: "yard-large", // pekarangan luas / tepi jalan > 5m
       categoryLabel: "Pekarangan Luas > 5 Meter & Tepi Jalan",
       rootSystem: "Akar Tunggang Kuat Berjangkar",
@@ -2459,7 +2459,7 @@ const TEDUH_DATA = {
     points: 850,
     exp: 850,
     avatar: "JD",
-    avatarImg: "images/testimonial/Mas Bima (1).webp",
+    avatarImg: "assets/avatars/john-doe.jpg",
     completedMissions: 3,
     location: "Denpasar Selatan, Bali",
     target: "Bikin teras lebih sejuk dan jaga pipa air tetap aman.",
@@ -2577,7 +2577,7 @@ const TEDUH_DATA = {
         canopySpread: "Tajuk Rimbun & Penyaring Debu",
         distance: "2.1m dari pipa got",
         status: "Tumbuh Subur",
-        icon: "images/trees/tree-tanjung.jpg"
+        icon: "assets/trees/pohon-tanjung.jpg"
       },
       {
         id: "tree-2",
@@ -2588,7 +2588,7 @@ const TEDUH_DATA = {
         canopySpread: "Peneduh Bertingkat Tanpa Rusak Semen",
         distance: "2.5m dari dinding",
         status: "Tumbuh Subur",
-        icon: "images/trees/tree-ketapang.jpg"
+        icon: "assets/trees/ketapang-kencana.jpg"
       },
       {
         id: "tree-3",
@@ -2599,7 +2599,7 @@ const TEDUH_DATA = {
         canopySpread: "Tajuk Berbunga & Penahan Terik",
         distance: "1.8m dari paving",
         status: "Tumbuh Subur",
-        icon: "images/trees/tree-tabebuia.jpg"
+        icon: "assets/trees/tabebuia-pink.jpg"
       },
       {
         id: "tree-4",
@@ -2610,7 +2610,7 @@ const TEDUH_DATA = {
         canopySpread: "Tajuk Payung Daun Rindang",
         distance: "3.0m dari sudut halaman",
         status: "Tumbuh Subur",
-        icon: "images/trees/tree-kiara.svg"
+        icon: "assets/trees/pohon-kiara-payung.jpg"
       }
     ]
   },
@@ -5966,13 +5966,13 @@ const TEDUH_DATA = {
     {
       id: "post-1",
       authorName: "Made Suantara",
-      authorAvatar: "images/testimonial/Bang Raka.webp",
+      authorAvatar: "assets/avatars/dr-made-ary.jpg",
       timeAgo: "2 jam yang lalu",
       zoneName: "Teuku Umar, Denpasar",
       treeName: "Pohon Tanjung (Mimusops elengi)",
       tag: "Misi Selesai (+250 Poin)",
       tagType: "mission",
-      image: "images/map-popup.png",
+      image: "assets/feed/feed-teuku-umar.jpg",
       story: "Kemarin teras ruko terasa memanggang sampai 39 derajat. Hari ini kami selesaikan penanaman bibit Pohon Tanjung berjarak 1.8 meter dari pipa got utama. Akar tunggangnya aman dan tanah sudah diberi 2 lubang biopori!",
       distanceInfo: "Aman jarak 1.8m dari saluran got",
       likes: 38,
@@ -5981,14 +5981,14 @@ const TEDUH_DATA = {
         {
           id: "c1-1",
           authorName: "Agus Pratama",
-          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          authorAvatar: "assets/avatars/pak-wayan.jpg",
           timeAgo: "1 jam yang lalu",
           text: "Apakah semennya dibongkar manual atau pakai mesin jack hammer bli? Kedalaman galian berapa cm?"
         },
         {
           id: "c1-2",
           authorName: "Made Suantara",
-          authorAvatar: "images/testimonial/Bang Raka.webp",
+          authorAvatar: "assets/avatars/dr-made-ary.jpg",
           isAuthor: true,
           timeAgo: "45 menit yang lalu",
           text: "Bongkar manual 80x80cm bli, gali sedalam 60cm lalu diberi campuran tanah humus dan sekam bakar sebelum bibit masuk."
@@ -5996,7 +5996,7 @@ const TEDUH_DATA = {
         {
           id: "c1-3",
           authorName: "Dewi Lestari",
-          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          authorAvatar: "assets/avatars/dewi-lestari.jpg",
           timeAgo: "20 menit yang lalu",
           text: "Rekomendasi bagus, akar tunggang tanjung memang terbukti tidak mengangkat keramik toko."
         }
@@ -6005,13 +6005,13 @@ const TEDUH_DATA = {
     {
       id: "post-2",
       authorName: "Ayu Lestari",
-      authorAvatar: "images/testimonial/Kakak Putri.webp",
+      authorAvatar: "assets/avatars/ibu-desak.jpg",
       timeAgo: "5 jam yang lalu",
       zoneName: "Gang Sesetan V, Denpasar Selatan",
       treeName: "Ketapang Kencana (Terminalia mantaly)",
       tag: "Misi Selesai (+250 Poin)",
       tagType: "mission",
-      image: "images/masalah-pekarangan-semen.png",
+      image: "assets/feed/feed-sesetan-gang.jpg",
       story: "Selesai membongkar 80x80cm semen teras depan gang dan langsung menanam Ketapang Kencana. Tajuknya ramping bertingkat, lorong gang langsung terasa adem tanpa menghalangi motor warga!",
       distanceInfo: "Aman jarak 1.2m dari saluran got",
       likes: 64,
@@ -6020,14 +6020,14 @@ const TEDUH_DATA = {
         {
           id: "c2-1",
           authorName: "Siti Rahma",
-          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          authorAvatar: "assets/avatars/kadek-sita.jpg",
           timeAgo: "4 jam yang lalu",
           text: "Jarak tajuk ke kabel listrik PLN di atas gang aman gak mbak?"
         },
         {
           id: "c2-2",
           authorName: "Ayu Lestari",
-          authorAvatar: "images/testimonial/Kakak Putri.webp",
+          authorAvatar: "assets/avatars/ibu-desak.jpg",
           isAuthor: true,
           timeAgo: "3 jam yang lalu",
           text: "Aman mbak, cabang bawah rutin dipangkas biar sirkulasi motor tetap plong dan tajuk melebar di atas 2.5 meter."
@@ -6035,7 +6035,7 @@ const TEDUH_DATA = {
         {
           id: "c2-3",
           authorName: "Budi Santoso",
-          authorAvatar: "images/testimonial/Mas Bima (1).webp",
+          authorAvatar: "assets/avatars/gede-surya.jpg",
           timeAgo: "2 jam yang lalu",
           text: "Sore kemarin lewat gang ini memang hawanya langsung adem beda dari gang sebelah."
         }
@@ -6044,13 +6044,13 @@ const TEDUH_DATA = {
     {
       id: "post-3",
       authorName: "Ketut Wiradana",
-      authorAvatar: "images/testimonial/Mas Bima (1).webp",
+      authorAvatar: "assets/avatars/gede-surya.jpg",
       timeAgo: "1 hari yang lalu",
       zoneName: "Renon, Denpasar Timur",
       treeName: "Tabebuia Merah Muda",
       tag: "Aksi Swadaya Warga",
       tagType: "experience",
-      image: "images/hero-thermal-comparison.png",
+      image: "assets/feed/feed-ubud-garden.jpg",
       story: "Menambah 1 bibit Tabebuia di pekarangan rumah sisi barat. Terik sore matahari Denpasar kini tertahan tajuk daun, AC kamar siang hari jadi jauh lebih hemat listrik.",
       distanceInfo: "Aman jarak 2.5m dari pagar",
       likes: 92,
@@ -6059,14 +6059,14 @@ const TEDUH_DATA = {
         {
           id: "c3-1",
           authorName: "Putu Wijaya",
-          authorAvatar: "images/testimonial/Bang Raka.webp",
+          authorAvatar: "assets/avatars/pak-wayan.jpg",
           timeAgo: "18 jam yang lalu",
           text: "Penyiraman di awal butuh berapa liter sehari pak Ketut?"
         },
         {
           id: "c3-2",
           authorName: "Ketut Wiradana",
-          authorAvatar: "images/testimonial/Mas Bima (1).webp",
+          authorAvatar: "assets/avatars/gede-surya.jpg",
           isAuthor: true,
           timeAgo: "15 jam yang lalu",
           text: "Sekitar 5-10 liter tiap sore pak, setelah 3 minggu akarnya sudah mandiri cari air bawah tanah."
@@ -6259,6 +6259,7 @@ const TEDUH_DATA = {
       zoneId: "zone-sesetan",
       authorName: "Dewi Lestari",
       authorAvatar: "DL",
+      authorAvatarImg: "assets/avatars/dewi-lestari.jpg",
       location: "Panjer, Denpasar Selatan",
       lat: -8.6815,
       lng: 115.2260,
@@ -6268,8 +6269,8 @@ const TEDUH_DATA = {
       maxVolunteers: 4,
       bonusPoints: 100,
       volunteers: [
-        { name: "Dewi Lestari", avatar: "DL", role: "Inisiator", time: "2 hari lalu" },
-        { name: "Wayan Sukarja", avatar: "WS", role: "Warga Sekitar", time: "Kemarin" }
+        { name: "Dewi Lestari", avatar: "DL", avatarImg: "assets/avatars/dewi-lestari.jpg", role: "Inisiator", time: "2 hari lalu" },
+        { name: "Wayan Sukarja", avatar: "WS", avatarImg: "assets/avatars/pak-wayan.jpg", role: "Warga Sekitar", time: "Kemarin" }
       ]
     },
     {
@@ -6277,6 +6278,7 @@ const TEDUH_DATA = {
       zoneId: "zone-teuku-umar",
       authorName: "Made Artha",
       authorAvatar: "MA",
+      authorAvatarImg: "assets/avatars/dr-made-ary.jpg",
       location: "Dauh Puri, Denpasar Barat",
       lat: -8.6720,
       lng: 115.2045,
@@ -6286,7 +6288,7 @@ const TEDUH_DATA = {
       maxVolunteers: 3,
       bonusPoints: 100,
       volunteers: [
-        { name: "Made Artha", avatar: "MA", role: "Inisiator", time: "1 hari lalu" }
+        { name: "Made Artha", avatar: "MA", avatarImg: "assets/avatars/dr-made-ary.jpg", role: "Inisiator", time: "1 hari lalu" }
       ]
     },
     {
@@ -6294,6 +6296,7 @@ const TEDUH_DATA = {
       zoneId: "zone-gatot-subroto",
       authorName: "Siti Rahma",
       authorAvatar: "SR",
+      authorAvatarImg: "assets/avatars/kakak-putri.jpg",
       location: "Padangsambian, Denpasar Barat",
       lat: -8.6410,
       lng: 115.1830,
@@ -6303,9 +6306,9 @@ const TEDUH_DATA = {
       maxVolunteers: 5,
       bonusPoints: 100,
       volunteers: [
-        { name: "Siti Rahma", avatar: "SR", role: "Inisiator", time: "3 hari lalu" },
-        { name: "Kadek Suardana", avatar: "KS", role: "Warga Sekitar", time: "2 hari lalu" },
-        { name: "Nyoman Budi", avatar: "NB", role: "Warga Sekitar", time: "Kemarin" }
+        { name: "Siti Rahma", avatar: "SR", avatarImg: "assets/avatars/kakak-putri.jpg", role: "Inisiator", time: "3 hari lalu" },
+        { name: "Kadek Suardana", avatar: "KS", avatarImg: "assets/avatars/gede-surya.jpg", role: "Warga Sekitar", time: "2 hari lalu" },
+        { name: "Nyoman Budi", avatar: "NB", avatarImg: "assets/avatars/pak-wayan.jpg", role: "Warga Sekitar", time: "Kemarin" }
       ]
     },
     {
@@ -6313,6 +6316,7 @@ const TEDUH_DATA = {
       zoneId: "zone-renon",
       authorName: "Putu Wijaya",
       authorAvatar: "PW",
+      authorAvatarImg: "assets/avatars/pak-wayan.jpg",
       location: "Renon, Denpasar Timur",
       lat: -8.6780,
       lng: 115.2390,
@@ -6322,8 +6326,8 @@ const TEDUH_DATA = {
       maxVolunteers: 4,
       bonusPoints: 100,
       volunteers: [
-        { name: "Putu Wijaya", avatar: "PW", role: "Inisiator", time: "1 hari lalu" },
-        { name: "Ketut Astawa", avatar: "KA", role: "Warga Sekitar", time: "5 jam lalu" }
+        { name: "Putu Wijaya", avatar: "PW", avatarImg: "assets/avatars/pak-wayan.jpg", role: "Inisiator", time: "1 hari lalu" },
+        { name: "Ketut Astawa", avatar: "KA", avatarImg: "assets/avatars/gede-surya.jpg", role: "Warga Sekitar", time: "5 jam lalu" }
       ]
     }
   ],
