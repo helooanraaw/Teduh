@@ -174,18 +174,74 @@ function handleMapFreeClick(lat, lng) {
 let activeCitizenMission = null;
 let selectedCitizenMissionMarker = null;
 
+// Helper Deteksi Apakah Suatu Kawasan / Titik Koordinat Memiliki Misi Aktif Saya yang Belum Selesai
+function getUserActiveMissionForZone(zone) {
+  if (typeof localStorage === 'undefined' || !zone) return null;
+  try {
+    const savedStr = localStorage.getItem('teduh_active_mission');
+    if (!savedStr) return null;
+    const saved = JSON.parse(savedStr);
+    if (!saved || saved.isCompleted) return null;
+
+    // 1. Pencocokan Langsung ID Kawasan / ID Misi
+    if (saved.zoneId && (saved.zoneId === zone.id || saved.id === zone.id)) {
+      return saved;
+    }
+    if (zone.id && saved.id === zone.id) {
+      return saved;
+    }
+
+    // 2. Pencocokan Berdasarkan Nama Kawasan (Case-Insensitive)
+    if (saved.zoneName && zone.name) {
+      const sName = saved.zoneName.toLowerCase().trim();
+      const zName = zone.name.toLowerCase().trim();
+      if (sName === zName || sName.includes(zName) || zName.includes(sName)) {
+        return saved;
+      }
+    }
+
+    // 3. Pencocokan Kedekatan Geografis (Radius ~350 meter)
+    if (saved.lat != null && saved.lng != null && zone.lat != null && zone.lng != null) {
+      const dLat = Math.abs(parseFloat(saved.lat) - parseFloat(zone.lat));
+      const dLng = Math.abs(parseFloat(saved.lng) - parseFloat(zone.lng));
+      if (dLat < 0.0035 && dLng < 0.0035) {
+        return saved;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
 // Memilih Zona, Memunculkan Pin Aktif, Popup Kustom, dan Membuka Drawer Analisis
 function selectZone(zone, isDynamic = false, citizenMission = null) {
   if (!zone || !mapInstance) return;
+
+  // Periksa apakah ini kawasan yang sudah memiliki Misi Aktif Saya
+  const activeMissionObj = !citizenMission ? getUserActiveMissionForZone(zone) : null;
+  const isUserActiveZone = !!activeMissionObj;
+
+  // Jika ini adalah zona misi aktif saya, pastikan data nama & koordinat selaras dengan misi
+  if (isUserActiveZone && activeMissionObj) {
+    zone = {
+      ...zone,
+      id: activeMissionObj.zoneId || zone.id,
+      name: activeMissionObj.zoneName || zone.name,
+      district: activeMissionObj.district || zone.district || 'Denpasar',
+      lat: activeMissionObj.lat != null ? activeMissionObj.lat : zone.lat,
+      lng: activeMissionObj.lng != null ? activeMissionObj.lng : zone.lng,
+      fullAddress: zone.fullAddress || activeMissionObj.zoneName || zone.name
+    };
+  }
 
   const drawer = document.getElementById('spatialDrawer');
   const isDrawerOpen = drawer && drawer.classList.contains('is-open');
 
   // Jika kawasan / misi ini sudah aktif dan drawer terbuka, diamkan saja (jangan ulangi pemindaian atau reset)
   const isSameCitizenMission = citizenMission && activeCitizenMission && activeCitizenMission.id === citizenMission.id;
-  const isSameStandardZone = !citizenMission && !activeCitizenMission && activeZone && activeZone.id === zone.id;
+  const isSameUserActiveMission = isUserActiveZone && activeZone && (getUserActiveMissionForZone(activeZone) !== null);
+  const isSameStandardZone = !citizenMission && !activeCitizenMission && !isUserActiveZone && activeZone && activeZone.id === zone.id;
 
-  if (isDrawerOpen && (isSameCitizenMission || isSameStandardZone)) {
+  if (isDrawerOpen && (isSameCitizenMission || isSameUserActiveMission || isSameStandardZone)) {
     if (citizenMission) {
       const targetMarker = citizenMissionMarkers.find(m => m._teduhMissionId === citizenMission.id);
       if (targetMarker) {
@@ -193,6 +249,10 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
         if (!targetMarker.isPopupOpen()) {
           targetMarker.openPopup();
         }
+      }
+    } else if (isUserActiveZone && userActiveMissionMarker) {
+      if (!userActiveMissionMarker.isPopupOpen()) {
+        userActiveMissionMarker.openPopup();
       }
     } else if (activeMarker && !activeMarker.isPopupOpen()) {
       activeMarker.openPopup();
@@ -236,17 +296,6 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
   if (activeMarker) {
     mapInstance.removeLayer(activeMarker);
     activeMarker = null;
-  }
-
-  // Periksa apakah ini kawasan yang sudah memiliki Misi Aktif Saya
-  let isUserActiveZone = false;
-  if (!citizenMission && typeof localStorage !== 'undefined') {
-    try {
-      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-      if (saved && saved.zoneId === zone.id && !saved.isCompleted) {
-        isUserActiveZone = true;
-      }
-    } catch(e) {}
   }
 
   // Titik point pin lokasi yang dipilih (Sunbaked Terracotta untuk terik / Deep Laurel Pine untuk sejuk)
@@ -541,21 +590,18 @@ function populateDrawer(zone) {
   let userActiveMissionDate = '';
   let activeMissionObj = null;
 
-  if (!activeCitizenMission && typeof localStorage !== 'undefined') {
-    try {
-      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-      if (saved && saved.zoneId === zone.id && !saved.isCompleted) {
-        isUserActiveMission = true;
-        activeMissionObj = saved;
-        userActiveMissionDate = saved.scheduledDate || '';
-        if (saved.scheduledDate) {
-          const targetTime = new Date(saved.scheduledDate + 'T23:59:59').getTime();
-          if (!isNaN(targetTime) && Date.now() > targetTime) {
-            isMissionExpired = true;
-          }
+  if (!activeCitizenMission) {
+    activeMissionObj = getUserActiveMissionForZone(zone);
+    if (activeMissionObj) {
+      isUserActiveMission = true;
+      userActiveMissionDate = activeMissionObj.scheduledDate || '';
+      if (activeMissionObj.scheduledDate) {
+        const targetTime = new Date(activeMissionObj.scheduledDate + 'T23:59:59').getTime();
+        if (!isNaN(targetTime) && Date.now() > targetTime) {
+          isMissionExpired = true;
         }
       }
-    } catch(e) {}
+    }
   }
 
   const citizenBadge = document.getElementById('drawerCitizenProfileBadge');
@@ -719,7 +765,7 @@ function populateDrawer(zone) {
   const activeStep3Desc = document.getElementById('activeStep3Desc');
 
   if (activeStepsCard) {
-    if (isUserActiveMission) {
+    if (isUserActiveMission || (activeCitizenMission && activeCitizenMission.isJoined)) {
       if (activeStep1Title && actionPlan.now) activeStep1Title.textContent = actionPlan.now.title;
       if (activeStep1Desc && actionPlan.now) activeStep1Desc.textContent = actionPlan.now.desc;
       if (activeStep2Title && actionPlan.thisWeek) activeStep2Title.textContent = actionPlan.thisWeek.title;
@@ -802,6 +848,7 @@ function populateDrawer(zone) {
   const btnJoinDrawer = document.getElementById('btnJoinCitizenMissionDrawer');
   const btnJoinDrawerLabel = document.getElementById('btnJoinCitizenMissionDrawerLabel');
   const joinedActionsWrap = document.getElementById('drawerCitizenJoinedActions');
+  const btnCitizenGoComm = document.getElementById('btnCitizenJoinedGoCommunity');
   const btnViewZoneActions = document.getElementById('btnViewZoneActions');
 
   if (isUserActiveMission) {
@@ -826,6 +873,11 @@ function populateDrawer(zone) {
     if (isJoined) {
       if (btnJoinDrawer) btnJoinDrawer.classList.add('hidden');
       if (joinedActionsWrap) joinedActionsWrap.classList.remove('hidden');
+      if (btnCitizenGoComm) {
+        const encodedZone = encodeURIComponent(activeCitizenMission.location || zone.name);
+        const encodedTree = encodeURIComponent(activeCitizenMission.treeName || (tree ? tree.name : 'Pohon Tabebuya'));
+        btnCitizenGoComm.href = `community.html?action=complete-mission&zone=${encodedZone}&tree=${encodedTree}`;
+      }
     } else {
       if (btnJoinDrawer) {
         btnJoinDrawer.classList.remove('hidden');
@@ -1316,15 +1368,7 @@ function openMissionConfirmModal() {
   if (treeNameEl) treeNameEl.textContent = tree ? tree.name : 'Pohon Tanjung';
 
   // Periksa apakah ini atur ulang jadwal misi yang sudah diambil
-  let existingMission = null;
-  if (typeof localStorage !== 'undefined') {
-    try {
-      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-      if (saved && saved.zoneId === activeZone.id && !saved.isCompleted) {
-        existingMission = saved;
-      }
-    } catch(e) {}
-  }
+  let existingMission = getUserActiveMissionForZone(activeZone);
 
   if (existingMission) {
     if (modalTitleEl) modalTitleEl.textContent = 'Atur Ulang Jadwal Aksi';
@@ -1427,14 +1471,10 @@ function takeZoneMission(scheduledDate) {
   // Cek apakah ini aksi atur ulang jadwal
   let isReschedule = false;
   let existingCollabs = [];
-  if (typeof localStorage !== 'undefined') {
-    try {
-      const oldSaved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-      if (oldSaved && oldSaved.zoneId === activeZone.id && !oldSaved.isCompleted) {
-        isReschedule = true;
-        existingCollabs = oldSaved.collaborators || [];
-      }
-    } catch(e) {}
+  const existingActiveMission = getUserActiveMissionForZone(activeZone);
+  if (existingActiveMission) {
+    isReschedule = true;
+    existingCollabs = existingActiveMission.collaborators || [];
   }
 
   // Simpan data misi aktif ke localStorage
@@ -2248,6 +2288,13 @@ if (typeof document !== 'undefined') {
         selectCitizenMission(missionId);
       }
     }
+    const userCard = e.target && e.target.closest && e.target.closest('.user-active-mission-popup');
+    if (userCard) {
+      if (e.stopPropagation) e.stopPropagation();
+      if (typeof selectUserActiveMission === 'function') {
+        selectUserActiveMission();
+      }
+    }
   }, true);
 }
 
@@ -2679,11 +2726,17 @@ function selectUserActiveMission() {
 
   try {
     const mission = JSON.parse(saved);
-    if (!mission) return;
+    if (!mission || mission.isCompleted) return;
 
     let zone = null;
     if (mission.zoneId && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.zones) {
       zone = TEDUH_DATA.zones.find(z => z.id === mission.zoneId);
+    }
+    if (!zone && mission.zoneName && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.zones) {
+      zone = TEDUH_DATA.zones.find(z => z.name && z.name.toLowerCase().includes(mission.zoneName.toLowerCase()));
+    }
+    if (!zone && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.generateDynamicAnalysis && mission.lat && mission.lng) {
+      zone = TEDUH_DATA.generateDynamicAnalysis(mission.lat, mission.lng);
     }
     if (!zone && typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.zones && TEDUH_DATA.zones.length > 0) {
       zone = TEDUH_DATA.zones[0];
@@ -2692,10 +2745,19 @@ function selectUserActiveMission() {
     if (zone) {
       const activeMissionZone = {
         ...zone,
+        id: mission.zoneId || zone.id,
         name: mission.zoneName || zone.name,
-        lat: mission.lat || zone.lat,
-        lng: mission.lng || zone.lng
+        district: mission.district || zone.district || 'Denpasar',
+        lat: mission.lat != null ? mission.lat : zone.lat,
+        lng: mission.lng != null ? mission.lng : zone.lng,
+        fullAddress: zone.fullAddress || mission.zoneName || zone.name
       };
+      if (mission.treeName) {
+        activeMissionZone.recommendedTree = {
+          ...(zone.recommendedTree || {}),
+          name: mission.treeName
+        };
+      }
       selectZone(activeMissionZone, false, null);
       if (userActiveMissionMarker && !userActiveMissionMarker.isPopupOpen()) {
         userActiveMissionMarker.openPopup();
@@ -3120,3 +3182,4 @@ window.confirmLeaveCitizenMission = confirmLeaveCitizenMission;
 window.leaveCitizenMission = leaveCitizenMission;
 window.renderUserActiveMissionPin = renderUserActiveMissionPin;
 window.selectUserActiveMission = selectUserActiveMission;
+window.getUserActiveMissionForZone = getUserActiveMissionForZone;
