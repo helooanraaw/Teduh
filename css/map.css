@@ -1803,13 +1803,13 @@ h1, h2, h3, h4, h5, h6, strong, b {
   font-weight: 400;
 }
 
-/* Banner Jadwal Tanam di Bawah Card Pohon */
+/* Banner Jadwal Tanam di Bawah Card Pohon (Zero Border - Clean Neutral) */
 .drawer-tree-schedule-box {
   margin-top: 2px;
-  padding: 11px 14px;
-  background: var(--color-surface, #FAF9F4);
-  border: 1px solid var(--color-border, #D4D0BC);
-  border-radius: var(--radius-md, 14px);
+  padding: 12px 14px;
+  background: #F4F6F5;
+  border: none !important;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1887,26 +1887,27 @@ h1, h2, h3, h4, h5, h6, strong, b {
 
 .btn-secondary-action {
   width: 100%;
-  background: var(--color-surface, #FAF9F4);
+  background: #FFFFFF;
   color: var(--color-slate, #0E1116);
   padding: 13px 20px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 600;
-  border: 1px solid var(--color-border, #D4D0BC);
+  border: none !important;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .btn-secondary-action:hover {
-  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.5));
-  border-color: var(--color-primary, #1A382B);
+  background: #F4F4F5;
   color: var(--color-primary, #1A382B);
+  transform: translateY(-1px);
 }
 
 .drawer-user-active-actions-wrap {
@@ -2978,7 +2979,7 @@ h1, h2, h3, h4, h5, h6, strong, b {
   box-shadow: none !important;
   border-radius: 24px;
   padding: 22px;
-  margin-bottom: 12px;
+  margin: 0;
 }
 
 .volunteer-hero-header {
@@ -3061,7 +3062,7 @@ h1, h2, h3, h4, h5, h6, strong, b {
   box-shadow: none !important;
   border-radius: 24px;
   padding: 22px;
-  margin-bottom: 12px;
+  margin: 0;
 }
 
 .planting-steps-list {
@@ -3129,7 +3130,7 @@ h1, h2, h3, h4, h5, h6, strong, b {
   box-shadow: none !important;
   border-radius: 24px;
   padding: 22px;
-  margin-bottom: 12px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -3334,10 +3335,10 @@ h1, h2, h3, h4, h5, h6, strong, b {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 12px 18px;
-  background: var(--color-surface, #FAF9F4);
+  padding: 13px 18px;
+  background: #F4F4F5;
   color: var(--color-primary, #1A382B);
-  border: 1px solid var(--color-border, #D4D0BC);
+  border: none !important;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 600;
@@ -3347,9 +3348,8 @@ h1, h2, h3, h4, h5, h6, strong, b {
 }
 
 .btn-open-friends-modal:hover {
-  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.5));
-  border-color: var(--color-btn-primary, #5c8437);
-  color: var(--color-btn-primary, #5c8437);
+  background: #E8EFEA;
+  color: #1A382B;
   transform: translateY(-1px);
 }
 
@@ -4313,29 +4313,33 @@ h1, h2, h3, h4, h5, h6, strong, b {
   border-radius: 100px;
 }
 
-/* Kartu Daftar Warga yang Bergabung */
+/* Kartu Daftar Warga yang Bergabung (Zero Border - Clean Zinc Paper Style) */
 .drawer-volunteers-card {
-  background: var(--color-surface, #FAF9F4);
-  border: 1px solid var(--color-border, #D4D0BC);
-  border-radius: var(--radius-xl, 24px);
-  padding: 16px;
-  margin-top: 12px;
+  background: #FFFFFF;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 24px;
+  padding: 22px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .drawer-section-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .drawer-volunteers-count-badge {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--color-text-muted, #6B7280);
-  background: transparent;
-  border: none;
-  padding: 0;
+  color: var(--color-primary, #1A382B);
+  background: #E8EFEA;
+  padding: 2px 9px;
+  border-radius: 100px;
 }
 
 .drawer-volunteers-list {
@@ -4348,16 +4352,20 @@ h1, h2, h3, h4, h5, h6, strong, b {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
-  border-radius: var(--radius-md, 14px);
-  background: var(--color-surface, #FAF9F4);
-  border: 1px solid var(--color-border, #D4D0BC);
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #F4F6F5;
+  border: none !important;
   transition: background var(--transition-fast);
 }
 
+.drawer-volunteer-item:hover {
+  background: #ECEFEF;
+}
+
 .drawer-volunteer-item.is-self {
-  background: rgba(92, 132, 55, 0.08);
-  border-color: rgba(92, 132, 55, 0.25);
+  background: #E8EFEA;
+  border: none !important;
 }
 
 .drawer-volunteer-avatar {

@@ -238,8 +238,19 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
     activeMarker = null;
   }
 
+  // Periksa apakah ini kawasan yang sudah memiliki Misi Aktif Saya
+  let isUserActiveZone = false;
+  if (!citizenMission && typeof localStorage !== 'undefined') {
+    try {
+      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
+      if (saved && saved.zoneId === zone.id && !saved.isCompleted) {
+        isUserActiveZone = true;
+      }
+    } catch(e) {}
+  }
+
   // Titik point pin lokasi yang dipilih (Sunbaked Terracotta untuk terik / Deep Laurel Pine untuk sejuk)
-  if (!citizenMission) {
+  if (!citizenMission && !isUserActiveZone) {
     selectedCitizenMissionMarker = null;
     const isHot = zone.isHotspot;
     const dotColor = isHot ? '#BA4E2A' : '#1A382B';
@@ -309,6 +320,11 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
       L.DomEvent.stopPropagation(e);
       openDrawer();
     });
+  } else if (isUserActiveZone) {
+    selectedCitizenMissionMarker = null;
+    if (userActiveMissionMarker) {
+      userActiveMissionMarker.openPopup();
+    }
   } else {
     // Jika memilih misi warga, pastikan popup pada pin misi warga tetap aktif dan terbuka
     const targetMarker = citizenMissionMarkers.find(m => m._teduhMissionId === citizenMission.id);
@@ -401,7 +417,9 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
     if (stageAnalysis) stageAnalysis.classList.remove('hidden');
 
     // Buka Popup pada Pin Marker setelah pemindaian selesai
-    if (activeMarker) {
+    if (isUserActiveZone && userActiveMissionMarker) {
+      userActiveMissionMarker.openPopup();
+    } else if (activeMarker) {
       activeMarker.openPopup();
     }
 
@@ -1483,6 +1501,17 @@ function closeMissionSuccessModal() {
         modal.classList.add('hidden');
       }
     }, 200);
+  }
+
+  // Tampilkan kembali lokasi yang sudah diambil misinya di peta dan buka panel analisisnya
+  if (activeZone) {
+    populateDrawer(activeZone);
+    openDrawer();
+    if (userActiveMissionMarker) {
+      userActiveMissionMarker.openPopup();
+    }
+  } else {
+    selectUserActiveMission();
   }
 }
 
