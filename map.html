@@ -301,8 +301,9 @@
             </div>
           </div>
 
-          <!-- Judul Standar untuk Zona Wilayah Umum -->
+          <!-- Judul Standar untuk Zona Wilayah Umum / Misi Aktif Saya -->
           <div id="drawerStandardTitleGroup">
+            <div id="drawerUserMissionTag" class="drawer-user-mission-tag hidden">Misi Aktif Saya</div>
             <h2 id="zoneName" class="drawer-title">Nama Kawasan</h2>
             <span id="zoneCoords" class="drawer-coords">Jl. Teuku Umar Barat, Denpasar</span>
           </div>
@@ -405,7 +406,35 @@
             </div>
           </div>
 
-          <!-- KARTU 3: DAFTAR WARGA YANG BERGABUNG (Aktif saat inspeksi titik tanam warga) -->
+          <!-- KARTU 3: PANDUAN PRAKTIS PENANAMAN (Tampil saat Misi Aktif Saya) -->
+          <div id="drawerActiveMissionStepsSection" class="planting-steps-card hidden">
+            <div class="drawer-section-title">Panduan Praktis Penanaman</div>
+            <div class="planting-steps-list">
+              <div class="planting-step-row">
+                <div class="planting-step-num">1</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="activeStep1Title">Tentukan Titik Tanam Aman</h4>
+                  <p class="step-desc" id="activeStep1Desc">Pilih pekarangan berjarak minimal 1.5 meter dari dinding rumah dan saluran air.</p>
+                </div>
+              </div>
+              <div class="planting-step-row">
+                <div class="planting-step-num">2</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="activeStep2Title">Gali Lubang &amp; Beri Kompos</h4>
+                  <p class="step-desc" id="activeStep2Desc">Buat lubang ukuran 60x60 cm dan campurkan tanah gembur dengan pupuk organik.</p>
+                </div>
+              </div>
+              <div class="planting-step-row">
+                <div class="planting-step-num">3</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="activeStep3Title">Tanam Bibit &amp; Siram Rutin</h4>
+                  <p class="step-desc" id="activeStep3Desc">Tanam bibit tegak lurus, padatkan tanah dasar, dan siram secukupnya setiap sore.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 4: DAFTAR WARGA YANG BERGABUNG (Aktif saat inspeksi titik tanam warga) -->
           <div id="drawerVolunteersSection" class="drawer-volunteers-card hidden">
             <div class="drawer-section-title-row">
               <div class="drawer-section-title">Warga yang Ikut Menanam</div>
@@ -416,8 +445,30 @@
             </div>
           </div>
 
-          <!-- Tombol Lanjut ke Solusi Tanam / Gabung Tanam Warga -->
+          <!-- KARTU 5: WARGA YANG DIAJAK GOTONG ROYONG (Tampil jika ada kolaborator misi aktif saya) -->
+          <div id="drawerMyCollabSection" class="drawer-volunteers-card hidden">
+            <div class="drawer-section-title-row">
+              <div class="drawer-section-title">Warga yang Diajak Gotong Royong</div>
+              <span id="drawerMyCollabCountBadge" class="drawer-volunteers-count-badge">0 Warga</span>
+            </div>
+            <div id="drawerMyCollabList" class="drawer-volunteers-list">
+              <!-- Baris kolaborator misi saya -->
+            </div>
+          </div>
+
+          <!-- Tombol Aksi Bawah Stage 1 -->
           <div class="drawer-actions-group" id="drawerStage1ActionsGroup">
+            <!-- Container Aksi Khusus Misi Aktif Saya -->
+            <div id="drawerUserActiveMissionActions" class="drawer-user-active-actions-wrap hidden">
+              <a id="btnDrawerActiveGoCommunity" href="community.html?action=complete-mission" class="btn-primary-action" style="text-decoration: none;">
+                <span>Ke Komunitas &amp; Bagikan Aksi</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
+              <button id="btnDrawerRescheduleMission" type="button" onclick="openMissionConfirmModal()" class="btn-secondary-action">
+                <span id="btnDrawerRescheduleLabel">Atur Ulang Jadwal</span>
+              </button>
+            </div>
+
             <!-- Tombol Gabung Tanam Warga (State Belum Terdaftar) -->
             <button id="btnJoinCitizenMissionDrawer" type="button" class="btn-primary-action hidden">
               <span id="btnJoinCitizenMissionDrawerLabel">Ikut Tanam Bersama (+100 Poin)</span>
@@ -627,7 +678,7 @@
       <!-- Actions Stack -->
       <div class="mission-modal-actions">
         <button type="button" onclick="confirmTakeZoneMission()" class="btn-modal-primary-capsule btn-success-cta">
-          <span>Konfirmasi Jadwal &amp; Ambil Misi</span>
+          <span id="modalConfirmSubmitBtnLabel">Konfirmasi Jadwal &amp; Ambil Misi</span>
         </button>
         <button type="button" onclick="closeMissionConfirmModal()" class="btn-modal-ghost-cancel">
           <span>Batal</span>

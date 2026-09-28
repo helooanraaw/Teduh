@@ -503,7 +503,7 @@ function animateAnalysisWithGSAP(zone) {
 
 // Mengisi Konten Panel Drawer Analisis
 function populateDrawer(zone) {
-  // Selalu reset ke Stage 1 (Diagnosa Kawasan) saat membuka kawasan baru
+  // Selalu reset ke Stage 1 (Diagnosa Kawasan) saat membuka kawasan
   switchDrawerStage(1);
 
   // Reset checklist langkah aksi
@@ -517,8 +517,32 @@ function populateDrawer(zone) {
   // Reset fokus faktor
   activeFactorIndex = null;
 
+  // Deteksi apakah kawasan ini memiliki Misi Aktif Saya
+  let isUserActiveMission = false;
+  let isMissionExpired = false;
+  let userActiveMissionDate = '';
+  let activeMissionObj = null;
+
+  if (!activeCitizenMission && typeof localStorage !== 'undefined') {
+    try {
+      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
+      if (saved && saved.zoneId === zone.id && !saved.isCompleted) {
+        isUserActiveMission = true;
+        activeMissionObj = saved;
+        userActiveMissionDate = saved.scheduledDate || '';
+        if (saved.scheduledDate) {
+          const targetTime = new Date(saved.scheduledDate + 'T23:59:59').getTime();
+          if (!isNaN(targetTime) && Date.now() > targetTime) {
+            isMissionExpired = true;
+          }
+        }
+      }
+    } catch(e) {}
+  }
+
   const citizenBadge = document.getElementById('drawerCitizenProfileBadge');
   const standardTitleGroup = document.getElementById('drawerStandardTitleGroup');
+  const userMissionTag = document.getElementById('drawerUserMissionTag');
   const avatarEl = document.getElementById('drawerHeaderAvatar');
   const authorNameEl = document.getElementById('drawerHeaderAuthorName');
   const headerLocEl = document.getElementById('drawerHeaderLocation');
@@ -529,6 +553,7 @@ function populateDrawer(zone) {
   if (activeCitizenMission) {
     if (citizenBadge) citizenBadge.classList.remove('hidden');
     if (standardTitleGroup) standardTitleGroup.classList.add('hidden');
+    if (userMissionTag) userMissionTag.classList.add('hidden');
     
     if (avatarEl) {
       avatarEl.textContent = activeCitizenMission.authorAvatar || (activeCitizenMission.authorName ? activeCitizenMission.authorName.slice(0, 2).toUpperCase() : 'WG');
@@ -543,6 +568,21 @@ function populateDrawer(zone) {
   } else {
     if (citizenBadge) citizenBadge.classList.add('hidden');
     if (standardTitleGroup) standardTitleGroup.classList.remove('hidden');
+
+    if (userMissionTag) {
+      if (isUserActiveMission) {
+        userMissionTag.classList.remove('hidden');
+        if (isMissionExpired) {
+          userMissionTag.textContent = 'Misi Hangus (Perlu Diatur Ulang)';
+          userMissionTag.classList.add('expired');
+        } else {
+          userMissionTag.textContent = 'Misi Aktif Saya';
+          userMissionTag.classList.remove('expired');
+        }
+      } else {
+        userMissionTag.classList.add('hidden');
+      }
+    }
 
     if (nameEl) nameEl.textContent = zone.name;
     if (coordsEl) {
@@ -610,27 +650,22 @@ function populateDrawer(zone) {
         ? TEDUH_DATA.formatDateIndo(activeCitizenMission.scheduledDate)
         : activeCitizenMission.scheduledDate;
       treeScheduleDateEl.textContent = formattedDate;
+      treeScheduleDateEl.classList.remove('text-terracotta');
+      treeScheduleBox.classList.remove('hidden');
+    } else if (isUserActiveMission && userActiveMissionDate) {
+      const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
+        ? TEDUH_DATA.formatDateIndo(userActiveMissionDate)
+        : userActiveMissionDate;
+      if (isMissionExpired) {
+        treeScheduleDateEl.textContent = `${formattedDate} (Hangus)`;
+        treeScheduleDateEl.classList.add('text-terracotta');
+      } else {
+        treeScheduleDateEl.textContent = formattedDate;
+        treeScheduleDateEl.classList.remove('text-terracotta');
+      }
       treeScheduleBox.classList.remove('hidden');
     } else {
-      let activeMissionDate = null;
-      if (typeof localStorage !== 'undefined') {
-        try {
-          const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-          if (saved && saved.zoneId === zone.id && !saved.isCompleted && saved.scheduledDate) {
-            activeMissionDate = saved.scheduledDate;
-          }
-        } catch(e) {}
-      }
-
-      if (activeMissionDate) {
-        const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
-          ? TEDUH_DATA.formatDateIndo(activeMissionDate)
-          : activeMissionDate;
-        treeScheduleDateEl.textContent = formattedDate;
-        treeScheduleBox.classList.remove('hidden');
-      } else {
-        treeScheduleBox.classList.add('hidden');
-      }
+      treeScheduleBox.classList.add('hidden');
     }
   }
 
@@ -641,6 +676,7 @@ function populateDrawer(zone) {
     longTerm: { title: `Tanam Bibit ${tree ? tree.name : 'Pohon Tanjung'}`, desc: "Tanam bibit tegak lurus, padatkan tanah sekitar, dan siram secukupnya." }
   };
 
+  // Isi data langkah di Stage 2
   const step1TitleEl = document.getElementById('step1Title');
   const step1DescEl = document.getElementById('step1Desc');
   const step2TitleEl = document.getElementById('step2Title');
@@ -655,11 +691,36 @@ function populateDrawer(zone) {
   if (step3TitleEl && actionPlan.longTerm) step3TitleEl.textContent = actionPlan.longTerm.title;
   if (step3DescEl && actionPlan.longTerm) step3DescEl.textContent = actionPlan.longTerm.desc;
 
-  // Reset status kolaborator misi
-  selectedMissionFriends = [];
-  renderSelectedMissionFriendsChips();
+  // Isi data langkah di Stage 1 khusus Misi Aktif Saya
+  const activeStepsCard = document.getElementById('drawerActiveMissionStepsSection');
+  const activeStep1Title = document.getElementById('activeStep1Title');
+  const activeStep1Desc = document.getElementById('activeStep1Desc');
+  const activeStep2Title = document.getElementById('activeStep2Title');
+  const activeStep2Desc = document.getElementById('activeStep2Desc');
+  const activeStep3Title = document.getElementById('activeStep3Title');
+  const activeStep3Desc = document.getElementById('activeStep3Desc');
 
-  // Misi Penanaman Pohon Aksi Warga
+  if (activeStepsCard) {
+    if (isUserActiveMission) {
+      if (activeStep1Title && actionPlan.now) activeStep1Title.textContent = actionPlan.now.title;
+      if (activeStep1Desc && actionPlan.now) activeStep1Desc.textContent = actionPlan.now.desc;
+      if (activeStep2Title && actionPlan.thisWeek) activeStep2Title.textContent = actionPlan.thisWeek.title;
+      if (activeStep2Desc && actionPlan.thisWeek) activeStep2Desc.textContent = actionPlan.thisWeek.desc;
+      if (activeStep3Title && actionPlan.longTerm) activeStep3Title.textContent = actionPlan.longTerm.title;
+      if (activeStep3Desc && actionPlan.longTerm) activeStep3Desc.textContent = actionPlan.longTerm.desc;
+      activeStepsCard.classList.remove('hidden');
+    } else {
+      activeStepsCard.classList.add('hidden');
+    }
+  }
+
+  // Reset status kolaborator misi jika membuka zona biasa
+  if (!isUserActiveMission) {
+    selectedMissionFriends = [];
+    renderSelectedMissionFriendsChips();
+  }
+
+  // Misi Penanaman Pohon Aksi Warga (Stage 2)
   const missionTitleEl = document.getElementById('missionActionTitle');
   const missionTreeEl = document.getElementById('missionTreeName');
   const missionTargetEl = document.getElementById('missionCoolingTarget');
@@ -675,33 +736,14 @@ function populateDrawer(zone) {
     missionTargetEl.textContent = `Turunkan Suhu s.d ${rawDrop}`;
   }
   if (takeLabel && takeBtn) {
-    let hasActiveMission = false;
-    let isMissionExpired = false;
-    let activeMissionDate = '';
-    if (typeof localStorage !== 'undefined') {
-      try {
-        const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
-        if (saved && saved.zoneId === zone.id && !saved.isCompleted) {
-          hasActiveMission = true;
-          activeMissionDate = saved.scheduledDate || '';
-          if (saved.scheduledDate) {
-            const targetTime = new Date(saved.scheduledDate + 'T23:59:59').getTime();
-            if (!isNaN(targetTime) && Date.now() > targetTime) {
-              isMissionExpired = true;
-            }
-          }
-        }
-      } catch(e) {}
-    }
-
-    if (hasActiveMission) {
+    if (isUserActiveMission) {
       takeBtn.classList.add('is-active-mission');
       if (isMissionExpired) {
         takeLabel.textContent = 'Misi Hangus (Atur Ulang)';
       } else {
         const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
-          ? TEDUH_DATA.formatDateIndo(activeMissionDate)
-          : activeMissionDate;
+          ? TEDUH_DATA.formatDateIndo(userActiveMissionDate)
+          : userActiveMissionDate;
         takeLabel.textContent = formattedDate ? `Misi Berjalan (${formattedDate})` : 'Misi Sedang Berjalan';
       }
     } else {
@@ -713,13 +755,55 @@ function populateDrawer(zone) {
   // Render Daftar Warga yang Bergabung (Khusus Aksi Warga)
   renderDrawerVolunteers(activeCitizenMission);
 
-  // Kelola Tombol Aksi di Bagian Bawah Stage 1 (Misi Warga vs Zona Standar)
+  // Render Daftar Warga yang Diajak (Khusus Misi Aktif Saya)
+  const myCollabSection = document.getElementById('drawerMyCollabSection');
+  const myCollabList = document.getElementById('drawerMyCollabList');
+  const myCollabBadge = document.getElementById('drawerMyCollabCountBadge');
+  if (myCollabSection && myCollabList) {
+    if (isUserActiveMission && activeMissionObj && activeMissionObj.collaborators && activeMissionObj.collaborators.length > 0) {
+      myCollabSection.classList.remove('hidden');
+      if (myCollabBadge) myCollabBadge.textContent = `${activeMissionObj.collaborators.length} Warga`;
+      myCollabList.innerHTML = activeMissionObj.collaborators.map(c => `
+        <div class="drawer-volunteer-item">
+          <div class="drawer-volunteer-avatar">${escapeHtml(c.avatar || c.name.slice(0, 2).toUpperCase())}</div>
+          <div class="drawer-volunteer-info">
+            <span class="drawer-volunteer-name">${escapeHtml(c.name)}</span>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      myCollabSection.classList.add('hidden');
+      myCollabList.innerHTML = '';
+    }
+  }
+
+  // Kelola Tombol Aksi di Bagian Bawah Stage 1 (Misi Aktif Saya vs Misi Warga vs Zona Standar)
+  const userActiveActionsWrap = document.getElementById('drawerUserActiveMissionActions');
+  const btnActiveGoCommunity = document.getElementById('btnDrawerActiveGoCommunity');
+  const btnActiveRescheduleLabel = document.getElementById('btnDrawerRescheduleLabel');
   const btnJoinDrawer = document.getElementById('btnJoinCitizenMissionDrawer');
   const btnJoinDrawerLabel = document.getElementById('btnJoinCitizenMissionDrawerLabel');
   const joinedActionsWrap = document.getElementById('drawerCitizenJoinedActions');
   const btnViewZoneActions = document.getElementById('btnViewZoneActions');
 
-  if (activeCitizenMission) {
+  if (isUserActiveMission) {
+    // Mode Misi Aktif Saya: Langsung tampilkan aksi bagikan/selesaikan misi & atur ulang jadwal
+    if (userActiveActionsWrap) userActiveActionsWrap.classList.remove('hidden');
+    if (btnActiveGoCommunity) {
+      const encodedZone = encodeURIComponent(zone.name);
+      const encodedTree = encodeURIComponent(tree ? tree.name : 'Pohon Tanjung');
+      btnActiveGoCommunity.href = `community.html?action=complete-mission&zone=${encodedZone}&tree=${encodedTree}`;
+    }
+    if (btnActiveRescheduleLabel) {
+      btnActiveRescheduleLabel.textContent = isMissionExpired ? 'Atur Ulang Jadwal (Misi Hangus)' : 'Atur Ulang Jadwal';
+    }
+    if (btnJoinDrawer) btnJoinDrawer.classList.add('hidden');
+    if (joinedActionsWrap) joinedActionsWrap.classList.add('hidden');
+    if (btnViewZoneActions) btnViewZoneActions.classList.add('hidden');
+  } else if (activeCitizenMission) {
+    // Mode Misi Warga
+    if (userActiveActionsWrap) userActiveActionsWrap.classList.add('hidden');
+    if (btnViewZoneActions) btnViewZoneActions.classList.add('hidden');
     const isJoined = activeCitizenMission.isJoined;
     if (isJoined) {
       if (btnJoinDrawer) btnJoinDrawer.classList.add('hidden');
@@ -733,10 +817,9 @@ function populateDrawer(zone) {
       }
       if (joinedActionsWrap) joinedActionsWrap.classList.add('hidden');
     }
-    if (btnViewZoneActions) {
-      btnViewZoneActions.classList.add('hidden');
-    }
   } else {
+    // Mode Zona Standar (Belum Diambil)
+    if (userActiveActionsWrap) userActiveActionsWrap.classList.add('hidden');
     if (btnJoinDrawer) btnJoinDrawer.classList.add('hidden');
     if (joinedActionsWrap) joinedActionsWrap.classList.add('hidden');
     if (btnViewZoneActions) btnViewZoneActions.classList.remove('hidden');
@@ -1202,17 +1285,47 @@ function toggleDrawerMobile() {
 function openMissionConfirmModal() {
   if (!activeZone) return;
   const modal = document.getElementById('missionConfirmModal');
+  const modalTitleEl = document.getElementById('modalConfirmTitle');
+  const modalDescEl = modal ? modal.querySelector('.mission-modal-desc') : null;
   const zoneNameEl = document.getElementById('modalConfirmZoneName');
   const treeNameEl = document.getElementById('modalConfirmTreeName');
   const friendsCountEl = document.getElementById('modalConfirmFriendsCount');
   const dateInput = document.getElementById('missionConfirmDateInput');
+  const submitBtnLabel = document.getElementById('modalConfirmSubmitBtnLabel');
 
   const tree = activeZone.recommendedTree;
   if (zoneNameEl) zoneNameEl.textContent = activeZone.name;
   if (treeNameEl) treeNameEl.textContent = tree ? tree.name : 'Pohon Tanjung';
-  if (friendsCountEl) {
-    const count = selectedMissionFriends.length;
-    friendsCountEl.textContent = count > 0 ? `${count} Warga Terpilih` : 'Tanpa Kolaborator';
+
+  // Periksa apakah ini atur ulang jadwal misi yang sudah diambil
+  let existingMission = null;
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const saved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
+      if (saved && saved.zoneId === activeZone.id && !saved.isCompleted) {
+        existingMission = saved;
+      }
+    } catch(e) {}
+  }
+
+  if (existingMission) {
+    if (modalTitleEl) modalTitleEl.textContent = 'Atur Ulang Jadwal Aksi';
+    if (modalDescEl) modalDescEl.textContent = 'Pilih tanggal target penanaman baru untuk pekarangan ini agar status aksi tetap aktif.';
+    if (submitBtnLabel) submitBtnLabel.textContent = 'Simpan Jadwal Baru';
+    if (friendsCountEl) {
+      const collabsCount = (existingMission.collaborators && existingMission.collaborators.length > 0)
+        ? existingMission.collaborators.length
+        : selectedMissionFriends.length;
+      friendsCountEl.textContent = collabsCount > 0 ? `${collabsCount} Warga Terpilih` : 'Tanpa Kolaborator';
+    }
+  } else {
+    if (modalTitleEl) modalTitleEl.textContent = 'Ambil Misi Tanam';
+    if (modalDescEl) modalDescEl.textContent = 'Tentukan jadwal aksi tanam bibit peneduh. Unggah bukti foto aksi sebelum tanggal ini berakhir agar misi tidak hangus.';
+    if (submitBtnLabel) submitBtnLabel.textContent = 'Konfirmasi Jadwal & Ambil Misi';
+    if (friendsCountEl) {
+      const count = selectedMissionFriends.length;
+      friendsCountEl.textContent = count > 0 ? `${count} Warga Terpilih` : 'Tanpa Kolaborator';
+    }
   }
 
   // Tentukan minimal tanggal adalah hari ini
@@ -1224,13 +1337,17 @@ function openMissionConfirmModal() {
 
   if (dateInput) {
     dateInput.min = minDateStr;
-    // Default: 2 hari ke depan agar realistis untuk persiapan warga
-    const defaultDate = new Date(today);
-    defaultDate.setDate(defaultDate.getDate() + 2);
-    const tmY = defaultDate.getFullYear();
-    const tmM = String(defaultDate.getMonth() + 1).padStart(2, '0');
-    const tmD = String(defaultDate.getDate()).padStart(2, '0');
-    dateInput.value = `${tmY}-${tmM}-${tmD}`;
+    if (existingMission && existingMission.scheduledDate && existingMission.scheduledDate >= minDateStr) {
+      dateInput.value = existingMission.scheduledDate;
+    } else {
+      // Default: 2 hari ke depan agar realistis untuk persiapan warga
+      const defaultDate = new Date(today);
+      defaultDate.setDate(defaultDate.getDate() + 2);
+      const tmY = defaultDate.getFullYear();
+      const tmM = String(defaultDate.getMonth() + 1).padStart(2, '0');
+      const tmD = String(defaultDate.getDate()).padStart(2, '0');
+      dateInput.value = `${tmY}-${tmM}-${tmD}`;
+    }
   }
 
   if (modal) {
@@ -1280,43 +1397,38 @@ function takeZoneMission(scheduledDate) {
     weight: 2
   }).addTo(mapInstance);
 
-  // Perbarui tombol drawer secara langsung agar perubahan visual langsung terlihat
-  const takeBtn = document.getElementById('takeMissionBtn');
-  const takeLabel = document.getElementById('takeMissionBtnLabel');
-  const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
-    ? TEDUH_DATA.formatDateIndo(validDate)
-    : validDate;
-
-  if (takeBtn && takeLabel) {
-    takeBtn.classList.add('is-active-mission');
-    takeLabel.textContent = `Misi Berjalan (${formattedDate})`;
-  }
-
   const encodedZone = encodeURIComponent(activeZone.name);
   const tree = activeZone.recommendedTree;
   const encodedTree = encodeURIComponent(tree ? tree.name : 'Pohon Tanjung');
   const communityUrl = `community.html?action=complete-mission&zone=${encodedZone}&tree=${encodedTree}`;
 
-  // Buka Modal Konfirmasi Sukses
-  const modal = document.getElementById('missionSuccessModal');
-  const modalZoneEl = document.getElementById('modalSuccessZoneName');
-  const modalTreeEl = document.getElementById('modalSuccessTreeName');
-  const modalScheduleEl = document.getElementById('modalSuccessScheduleDate');
-  const modalBtn = document.getElementById('modalGoToCommunityBtn');
+  const formattedDate = (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.formatDateIndo)
+    ? TEDUH_DATA.formatDateIndo(validDate)
+    : validDate;
 
-  if (modalZoneEl) modalZoneEl.textContent = activeZone.name;
-  if (modalTreeEl && tree) modalTreeEl.textContent = tree.name;
-  if (modalScheduleEl) modalScheduleEl.textContent = formattedDate;
-  if (modalBtn) modalBtn.href = communityUrl;
-
-  if (modal) {
-    modal.classList.remove('hidden');
-    void modal.offsetWidth;
-    modal.classList.add('is-open');
+  // Cek apakah ini aksi atur ulang jadwal
+  let isReschedule = false;
+  let existingCollabs = [];
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const oldSaved = JSON.parse(localStorage.getItem('teduh_active_mission') || 'null');
+      if (oldSaved && oldSaved.zoneId === activeZone.id && !oldSaved.isCompleted) {
+        isReschedule = true;
+        existingCollabs = oldSaved.collaborators || [];
+      }
+    } catch(e) {}
   }
 
   // Simpan data misi aktif ke localStorage
   if (typeof localStorage !== 'undefined') {
+    const collabs = selectedMissionFriends.length > 0
+      ? selectedMissionFriends.map(f => ({
+          id: f.id,
+          name: f.name,
+          avatar: f.avatar || f.name.slice(0, 2).toUpperCase()
+        }))
+      : existingCollabs;
+
     localStorage.setItem('teduh_active_mission', JSON.stringify({
       id: 'mission-' + Date.now(),
       zoneId: activeZone.id,
@@ -1326,6 +1438,7 @@ function takeZoneMission(scheduledDate) {
       lng: activeZone.lng,
       treeName: tree ? tree.name : 'Pohon Tanjung',
       scheduledDate: validDate,
+      collaborators: collabs,
       isCompleted: false,
       takenAt: Date.now()
     }));
@@ -1333,6 +1446,31 @@ function takeZoneMission(scheduledDate) {
 
   // Tampilkan pin penanda misi aktif saya di peta
   renderUserActiveMissionPin();
+
+  // Segera perbarui tampilan drawer agar beralih ke mode Misi Aktif Saya
+  populateDrawer(activeZone);
+
+  if (isReschedule) {
+    showToast(`Jadwal aksi tanam berhasil diatur ke ${formattedDate}`);
+  } else {
+    // Buka Modal Konfirmasi Sukses untuk pertama kali ambil misi
+    const modal = document.getElementById('missionSuccessModal');
+    const modalZoneEl = document.getElementById('modalSuccessZoneName');
+    const modalTreeEl = document.getElementById('modalSuccessTreeName');
+    const modalScheduleEl = document.getElementById('modalSuccessScheduleDate');
+    const modalBtn = document.getElementById('modalGoToCommunityBtn');
+
+    if (modalZoneEl) modalZoneEl.textContent = activeZone.name;
+    if (modalTreeEl && tree) modalTreeEl.textContent = tree.name;
+    if (modalScheduleEl) modalScheduleEl.textContent = formattedDate;
+    if (modalBtn) modalBtn.href = communityUrl;
+
+    if (modal) {
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.add('is-open');
+    }
+  }
 }
 
 // Menutup Modal Konfirmasi Sukses Ambil Misi
