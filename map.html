@@ -60,6 +60,31 @@
 
         <div class="map-topbar-divider" aria-hidden="true"></div>
 
+        <!-- Pemicu Notifikasi Dropdown Ala NutriNesia -->
+        <div class="nav-notif-wrapper">
+          <button type="button" class="nav-notif-trigger" aria-label="Notifikasi Pengguna" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="nav-notif-dot"></span>
+          </button>
+
+          <!-- Pop-up Dropdown Notifikasi -->
+          <div class="nav-notif-popup" role="menu">
+            <div class="nav-notif-header">
+              <h4 class="nav-notif-title">Notifikasi</h4>
+              <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
+            </div>
+            <div class="nav-notif-list">
+              <!-- Diisi secara dinamis oleh js/main.js -->
+            </div>
+            <div class="nav-notif-footer">
+              <button type="button" class="nav-notif-view-all-btn">Lihat Semua Notifikasi</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Profil John Doe (Desktop - Popup Dropdown ke Bawah) -->
         <div class="nav-profile-wrapper">
           <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
@@ -255,11 +280,32 @@
       <!-- Pegangan Drag Lembut Khusus Tampilan Layar Sentuh Mobile -->
       <div class="drawer-drag-pill" aria-hidden="true" onclick="toggleDrawerMobile()"></div>
 
+      <!-- STATE LOADING PEMINDAIAN MIKRO-IKLIM (Tepat di Tengah Panel) -->
+      <div id="drawerLoadingState" class="drawer-loading-state" style="display: none;" role="status" aria-live="polite">
+        <div class="drawer-loading-spinner" aria-hidden="true"></div>
+        <div class="drawer-loading-info">
+          <h3 class="drawer-loading-title">Menganalisis Iklim Mikro Kawasan</h3>
+          <p class="drawer-loading-desc">Memindai suhu permukaan pekarangan &amp; kanopi pohon...</p>
+        </div>
+      </div>
+
       <!-- Drawer Header -->
-      <div class="drawer-header">
+      <div id="drawerHeader" class="drawer-header">
         <div class="drawer-header-meta">
-          <h2 id="zoneName" class="drawer-title">Nama Kawasan</h2>
-          <span id="zoneCoords" class="drawer-coords">Jl. Teuku Umar Barat, Denpasar</span>
+          <!-- Profile Pengguna Penggagas Aksi (Aktif saat klik misi warga) -->
+          <div id="drawerCitizenProfileBadge" class="drawer-citizen-profile-head hidden">
+            <div class="drawer-citizen-profile-avatar" id="drawerHeaderAvatar">DL</div>
+            <div class="drawer-citizen-profile-text">
+              <h2 id="drawerHeaderAuthorName" class="drawer-citizen-author-name">Dewi Lestari</h2>
+              <span id="drawerHeaderLocation" class="drawer-citizen-location-sub">Panjer, Denpasar Selatan</span>
+            </div>
+          </div>
+
+          <!-- Judul Standar untuk Zona Wilayah Umum -->
+          <div id="drawerStandardTitleGroup">
+            <h2 id="zoneName" class="drawer-title">Nama Kawasan</h2>
+            <span id="zoneCoords" class="drawer-coords">Jl. Teuku Umar Barat, Denpasar</span>
+          </div>
         </div>
 
         <button id="closeDrawerBtn" onclick="closeDrawer()" type="button" class="drawer-close-btn" title="Tutup Panel" aria-label="Tutup Panel Analisis">
@@ -267,35 +313,22 @@
         </button>
       </div>
 
-      <!-- Segmented Stage Switcher Tab Navigation -->
-      <div class="drawer-stage-nav" role="tablist" aria-label="Tahapan Analisis">
-        <button id="tabStage1" onclick="switchDrawerStage(1)" type="button" class="drawer-stage-tab is-active" role="tab" aria-selected="true" aria-controls="drawerStageAnalysis">
-          <span class="stage-tab-num">1</span>
-          <span class="stage-tab-text">Diagnosa Kawasan</span>
-        </button>
-        <button id="tabStage2" onclick="switchDrawerStage(2)" type="button" class="drawer-stage-tab" role="tab" aria-selected="false" aria-controls="drawerStageActions">
-          <span class="stage-tab-num">2</span>
-          <span class="stage-tab-text">Rencana Aksi</span>
-        </button>
-      </div>
-
       <!-- Drawer Body (Scrollable) -->
-      <div class="drawer-body">
+      <div id="drawerBody" class="drawer-body">
         
         <!-- STAGE 1: ANALISA INTI KAWASAN (Kohesif & Terstruktur) -->
-        <div id="drawerStageAnalysis" class="drawer-stage" role="tabpanel" aria-labelledby="tabStage1">
+        <div id="drawerStageAnalysis" class="drawer-stage" role="tabpanel">
           
-          <!-- KARTU 1: KONDISI IKLIM MIKRO & FAKTOR PEMICU -->
+          <!-- KARTU 1: KONDISI PANAS & PENYEBAB -->
           <div class="drawer-analysis-card">
             <div class="drawer-card-header-row">
-              <div class="drawer-section-title">Kondisi Iklim Mikro & Pemicu Panas</div>
-              <span class="donut-interactive-hint">Interaktif</span>
+              <div class="drawer-section-title">Tingkat Panas &amp; Penyebab</div>
             </div>
             
             <!-- Spektrum Suhu Termal -->
             <div class="thermal-spectrum-box">
               <div class="spectrum-header">
-                <span class="spectrum-title">Radiasi Permukaan</span>
+                <span class="spectrum-title">Suhu Permukaan</span>
                 <span id="metricSurfaceTemp" class="spectrum-curr-val">38.8°C</span>
               </div>
               <div class="spectrum-bar-wrap">
@@ -336,11 +369,11 @@
             <!-- Diagnosa Dampak Lapangan Interaktif -->
             <div class="narrative-box">
               <div class="narrative-header">
-                <div class="narrative-title" id="narrativeTitleLabel">Dampak ke Pemukiman:</div>
+                <div class="narrative-title" id="narrativeTitleLabel">Kondisi Pekarangan:</div>
                 <span id="narrativeFactorBadge" class="narrative-factor-badge hidden">Faktor Terpilih</span>
               </div>
               <p id="zoneDiagnosisText" class="narrative-text">
-                Memuat diagnosa kawasan...
+                Memuat kondisi pekarangan...
               </p>
             </div>
           </div>
@@ -351,193 +384,455 @@
             
             <div class="tree-img-wrap">
               <img id="treeImage" src="assets/trees/pohon-tanjung.jpg" alt="Foto Bibit Pohon Peneduh">
-              <div class="tree-img-overlay-badges">
-                <span id="treeRootBadge" class="tree-img-badge">Akar Tunggang Dalam</span>
-                <span id="treeSafetyBadge" class="tree-img-badge green">Aman Saluran Got</span>
-              </div>
             </div>
 
             <div class="tree-text-wrap">
               <h4 id="treeName" class="tree-clean-title">Pohon Tanjung (Mimusops elengi)</h4>
               <p id="treeBenefit" class="tree-clean-desc">
-                Pohon peneduh dengan tajuk bulat rapat yang mampu memotong radiasi panas hingga 4.3°C dan menyaring partikel debu kendaraan. Memiliki sistem akar tunggang yang menghujam lurus ke bawah sehingga aman bagi pondasi bangunan dan saluran air di pekarangan.
+                Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah.
               </p>
             </div>
           </div>
 
-          <!-- Tombol Aksi Utama Menuju Stage 2 -->
-          <div class="drawer-actions-group">
-            <button id="btnViewZoneActions" onclick="switchDrawerStage(2)" type="button" class="btn-primary-action">
-              <span>Lihat Rencana Aksi Kawasan</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          <!-- KARTU 3: DAFTAR WARGA YANG BERGABUNG (Aktif saat inspeksi titik tanam warga) -->
+          <div id="drawerVolunteersSection" class="drawer-volunteers-card hidden">
+            <div class="drawer-section-title-row">
+              <div class="drawer-section-title">Warga yang Ikut Menanam</div>
+              <span id="drawerVolunteersCountBadge" class="drawer-volunteers-count-badge">2 / 4 Warga</span>
+            </div>
+            <div id="drawerVolunteersList" class="drawer-volunteers-list">
+              <!-- Baris warga diisi otomatis oleh map.js -->
+            </div>
+          </div>
+
+          <!-- Tombol Lanjut ke Solusi Tanam / Gabung Tanam Warga -->
+          <div class="drawer-actions-group" id="drawerStage1ActionsGroup">
+            <!-- Tombol Gabung Tanam Warga (State Belum Terdaftar) -->
+            <button id="btnJoinCitizenMissionDrawer" type="button" class="btn-primary-action hidden">
+              <span id="btnJoinCitizenMissionDrawerLabel">Ikut Tanam Bersama (+100 Poin)</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
 
-            <a href="community.html" class="btn-secondary-action">
-              <span>Bagikan Cerita ke Komunitas</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
+            <!-- Container Tombol Tanam Warga (State Sudah Terdaftar) -->
+            <div id="drawerCitizenJoinedActions" class="drawer-citizen-joined-wrap hidden">
+              <div class="drawer-citizen-joined-status">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Anda Terdaftar di Titik Ini</span>
+              </div>
+              <button id="btnCancelJoinCitizenMissionDrawer" type="button" onclick="promptLeaveCitizenMission()" class="btn-cancel-join-mission">
+                <span>Batal Ikut Menanam</span>
+              </button>
+            </div>
+
+            <!-- Tombol Standar Lanjut ke Solusi Tanam -->
+            <button id="btnViewZoneActions" onclick="switchDrawerStage(2)" type="button" class="btn-primary-action">
+              <span>Lanjut ke Solusi Tanam</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
           </div>
         </div>
 
-        <!-- STAGE 2: RENCANA AKSI BERTAHAP & TARGET PEMULIHAN (Ramping, Visual, & Bebas Wall-of-Text) -->
+        <!-- STAGE 2: SOLUSI TANAM & AKSI RELAWAN -->
         <div id="drawerStageActions" class="drawer-stage hidden" role="tabpanel" aria-labelledby="tabStage2">
 
-          <!-- 1. KOTAK PROYEKSI DAMPAK PENYEJUKAN (SEBELUM VS TARGET) -->
-          <div class="impact-comparison-card">
-            <div class="impact-card-top">
-              <div class="impact-tag">
-                <span class="impact-tag-dot"></span>
-                <span>Proyeksi Penyejukan Kawasan</span>
-              </div>
-              <span id="impactScore" class="impact-score-badge">86/100 Sejuk</span>
+          <!-- 1. KARTU MISI RELAWAN & TARGET KESEJUKAN -->
+          <div class="volunteer-hero-card">
+            <div class="volunteer-hero-header">
+              <span class="volunteer-badge-points">+250 Poin Aksi</span>
+              <span class="volunteer-badge-role">Misi Relawan Warga</span>
             </div>
+            <h3 id="missionActionTitle" class="volunteer-hero-title">Aksi Tanam Pohon Peneduh</h3>
+            <p class="volunteer-hero-desc" id="missionActionDesc">
+              Aksi penanaman pohon untuk memayungi pekarangan, meredam pantulan panas lantai semen, dan menyejukkan lingkungan sekitar.
+            </p>
 
-            <!-- Simulator Jumlah Pohon Interaktif -->
-            <div class="sim-selector-row">
-              <span class="sim-selector-label">Simulasi Penanaman:</span>
-              <div class="sim-selector-pills" role="group" aria-label="Pilih jumlah pohon simulasi">
-                <button id="simBtn1Tree" onclick="setTreeSimulationCount(1)" type="button" class="sim-pill is-active">1 Pohon (Standar)</button>
-                <button id="simBtn2Tree" onclick="setTreeSimulationCount(2)" type="button" class="sim-pill">2 Pohon (Maksimal)</button>
+            <div class="volunteer-specs-grid">
+              <div class="volunteer-spec-item">
+                <span class="spec-label">Bibit Terpilih</span>
+                <strong id="missionTreeName" class="spec-value">Pohon Tanjung</strong>
               </div>
-            </div>
-
-            <div class="impact-metrics-grid">
-              <!-- Metrik 1: Suhu Termal Permukaan -->
-              <div class="impact-metric-box">
-                <span class="impact-metric-label">Suhu Permukaan</span>
-                <div class="impact-metric-values">
-                  <span id="impactCurrentTemp" class="impact-val-curr">38.8°C</span>
-                  <svg width="12" height="12" fill="none" stroke="#71717A" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                  <span id="impactTargetTemp" class="impact-val-target">34.5°C</span>
-                </div>
-                <span id="impactTempDrop" class="impact-pill-badge drop">Turun 4.3°C</span>
+              <div class="volunteer-spec-item">
+                <span class="spec-label">Target Penyejukan</span>
+                <strong class="spec-value green" id="missionCoolingTarget">Turunkan Suhu s.d 4.0°C</strong>
               </div>
-
-              <!-- Metrik 2: Tutupan Kanopi Hijau -->
-              <div class="impact-metric-box">
-                <span class="impact-metric-label">Tutupan Kanopi</span>
-                <div class="impact-metric-values">
-                  <span id="impactCurrentCanopy" class="impact-val-curr">5%</span>
-                  <svg width="12" height="12" fill="none" stroke="#71717A" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                  <span id="impactTargetCanopy" class="impact-val-target">25%</span>
-                </div>
-                <span id="impactCanopyGain" class="impact-pill-badge gain">+20% Rimbun</span>
-              </div>
-            </div>
-
-            <!-- Ringkasan Dampak Nyata Listrik & Iklim Mikro -->
-            <div class="impact-benefit-strip">
-              <svg width="14" height="14" fill="none" stroke="#1A382B" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <span id="impactSummaryText">Beban panas dinding berkurang, hemat konsumsi listrik AC s.d 28%.</span>
             </div>
           </div>
 
-          <!-- 2. URUTAN LANGKAH AKSI CHECKLIST INTERAKTIF -->
-          <div class="phased-action-container">
-            <div class="phased-action-header">
-              <div class="drawer-section-title">3 Langkah Aksi Pemulihan</div>
-              <span id="actionProgressBadge" class="action-progress-badge">0/3 Selesai</span>
-            </div>
+          <!-- 2. PANDUAN PRAKTIS PENANAMAN (PANDUAN 1 KALI TANAM) -->
+          <div class="planting-steps-card">
+            <div class="drawer-section-title">Panduan Praktis Penanaman</div>
             
-            <div class="phased-action-timeline">
-              <!-- Langkah 1: Sekarang -->
-              <div class="phased-action-node" id="actionNode1" onclick="toggleActionStep(1)">
-                <div class="action-check-box" id="actionCheckBox1" aria-hidden="true">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <div class="phased-node-body">
-                  <div class="phased-node-top">
-                    <span class="phased-node-badge now">1. Sekarang</span>
-                    <span class="spec-pill" id="actionNowSpec">Pukul 11:30 & 14:00</span>
-                  </div>
-                  <h4 id="actionNowTitle" class="phased-node-title">Siram Lantai Semen Saat Terik</h4>
-                  <span class="spec-desc" id="actionNowDesc">Potong pantulan radiasi panas ke dinding</span>
+            <div class="planting-steps-list">
+              <!-- Langkah 1 -->
+              <div class="planting-step-row">
+                <div class="planting-step-num">1</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="step1Title">Tentukan Titik Tanam Aman</h4>
+                  <p class="step-desc" id="step1Desc">Pilih pekarangan berjarak minimal 1.5 meter dari dinding rumah dan saluran air.</p>
                 </div>
               </div>
 
-              <!-- Langkah 2: Minggu Ini -->
-              <div class="phased-action-node" id="actionNode2" onclick="toggleActionStep(2)">
-                <div class="action-check-box" id="actionCheckBox2" aria-hidden="true">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <div class="phased-node-body">
-                  <div class="phased-node-top">
-                    <span class="phased-node-badge this-week">2. Minggu Ini</span>
-                    <span class="spec-pill" id="actionWeekSpec">Kedalaman 80-100cm</span>
-                  </div>
-                  <h4 id="actionWeekTitle" class="phased-node-title">Buat 3 Lubang Biopori</h4>
-                  <span class="spec-desc" id="actionWeekDesc">Resapan air & dinginkan tanah pekarangan</span>
+              <!-- Langkah 2 -->
+              <div class="planting-step-row">
+                <div class="planting-step-num">2</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="step2Title">Gali Lubang &amp; Beri Kompos</h4>
+                  <p class="step-desc" id="step2Desc">Buat lubang ukuran 60x60 cm dan campurkan tanah gembur dengan pupuk organik.</p>
                 </div>
               </div>
 
-              <!-- Langkah 3: Jangka Panjang -->
-              <div class="phased-action-node" id="actionNode3" onclick="toggleActionStep(3)">
-                <div class="action-check-box" id="actionCheckBox3" aria-hidden="true">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <div class="phased-node-body">
-                  <div class="phased-node-top">
-                    <span class="phased-node-badge long-term">3. Permanen</span>
-                    <span class="spec-pill" id="actionLongSpec">Jarak Min. 1.5m dari Got</span>
-                  </div>
-                  <h4 id="actionLongTitle" class="phased-node-title">Tanam 1 Bibit Pohon Tanjung</h4>
-                  <span class="spec-desc" id="actionLongDesc">Akar tunggang menghujam dalam, aman fondasi</span>
+              <!-- Langkah 3 -->
+              <div class="planting-step-row">
+                <div class="planting-step-num">3</div>
+                <div class="planting-step-info">
+                  <h4 class="step-title" id="step3Title">Tanam Bibit &amp; Siram Rutin</h4>
+                  <p class="step-desc" id="step3Desc">Tanam bibit tegak lurus, padatkan tanah dasar, dan siram secukupnya setiap sore.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 3. KARTU MISI PENANAMAN & KOLABORASI WARGA -->
-          <div class="mission-action-card">
-            <div class="mission-action-header">
-              <div class="mission-reward-badge" id="missionRewardBadge">+250 Poin Kesejukan</div>
-              <span class="mission-zone-pill" id="missionZonePill">Misi Aksi Warga</span>
+          <!-- 3. KARTU AJAK WARGA GOTONG ROYONG -->
+          <div class="volunteer-collab-card">
+            <div class="volunteer-collab-header">
+              <div class="collab-title-group">
+                <span class="collab-title">Ajak Warga Gotong Royong</span>
+                <span id="collabSelectedCountBadge" class="collab-count-badge hidden">0 Warga</span>
+              </div>
+              <span class="collab-sub">Gotong royong bersama warga sekitar untuk aksi tanam bibit</span>
             </div>
 
-            <h4 id="missionActionTitle" class="mission-action-title">Aksi Tanam: Kawasan Ini</h4>
-            
-            <div class="mission-safe-spot-box">
-              <div class="mission-safe-spot-row">
-                <span>Rekomendasi Bibit:</span>
-                <strong id="missionTreeName">Pohon Tanjung</strong>
-              </div>
-              <div class="mission-safe-spot-row">
-                <span>Batas Aman Saluran:</span>
-                <strong id="missionSafeDistance">Minimal 1.5 meter dari got</strong>
-              </div>
+            <!-- Daftar Warga Terpilih / Status Kosong (Luas & Bersih) -->
+            <div id="mapCollabChipsList" class="volunteer-collab-list">
+              <!-- Rendered via JS -->
             </div>
 
-            <!-- Kolaborasi Warga Gotong Royong -->
-            <div id="mapMissionCollabSection" class="map-collab-section">
-              <div class="map-collab-header">
-                <span class="map-collab-title">Kolaborator Gotong Royong:</span>
-                <span id="mapCollabBonusBadge" class="map-collab-bonus">+50 Poin / Teman</span>
-              </div>
-              <div id="mapCollabChipsList" class="map-collab-chips">
-                <span class="map-collab-empty-hint">Klik pin warga terdekat di peta untuk menambah kolaborator</span>
-              </div>
-            </div>
-
-            <div class="mission-btn-group">
-              <button id="takeMissionBtn" onclick="takeZoneMission()" type="button" class="btn-take-mission">
-                <span id="takeMissionBtnLabel">Ambil Misi Tanam (+250 Poin)</span>
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </button>
-              <a id="goToDocBtn" href="community.html?action=new-post" class="btn-doc-link hidden">
-                <span>Unggah Dokumentasi & Klaim Poin</span>
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16m8-8H4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </a>
-            </div>
+            <!-- Tombol CTA Buka Pop-up Daftar Warga -->
+            <button type="button" id="btnOpenFriendsModal" class="btn-open-friends-modal" onclick="openFriendsPickerModal()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+              <span id="btnOpenFriendsModalText">Pilih Warga dari Daftar</span>
+            </button>
           </div>
+
+          <!-- 4. TOMBOL UTAMA AMBIL MISI TANAM -->
+          <div class="drawer-actions-group">
+            <button id="takeMissionBtn" onclick="openMissionConfirmModal()" type="button" class="btn-primary-action">
+              <span id="takeMissionBtnLabel">Ambil Misi Tanam</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <button onclick="switchDrawerStage(1)" type="button" class="btn-secondary-action">
+              <span>Kembali ke Kondisi Lahan</span>
+            </button>
+          </div>
+
         </div>
 
       </div>
     </aside>
 
+    <!-- NOTIFIKASI MELAYANG DARI SAMPING PANEL ANALISIS (Di Luar Drawer) -->
+    <aside id="mapNearbyFriendsSideHint" class="map-side-notice-toast hidden" role="status" aria-live="polite" aria-label="Pemberitahuan Warga Sekitar">
+      <div class="side-notice-inner">
+        <div class="side-notice-icon-box" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A382B" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="side-notice-content">
+          <div class="side-notice-title-row">
+            <strong class="side-notice-title">Ajak Warga Gotong Royong</strong>
+          </div>
+          <p class="side-notice-text">
+            Ada warga sekitar yang siap diajak gotong royong menanam bibit bersama di pekarangan kawasan ini.
+          </p>
+          <div class="side-notice-actions">
+            <button type="button" class="btn-side-notice-cta" onclick="openFriendsPickerModal()">
+              <span>Pilih Warga</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button type="button" class="btn-side-notice-dismiss" onclick="dismissNearbyFriendsNotice()" aria-label="Tutup notifikasi">
+              <span>Nanti Saja</span>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="side-notice-close-btn" onclick="dismissNearbyFriendsNotice()" title="Tutup Notifikasi" aria-label="Tutup notifikasi">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MODAL KONFIRMASI AMBIL MISI TANAM (Minimal Centered Style) -->
+  <div id="missionConfirmModal" class="mission-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalConfirmTitle">
+    <div class="mission-modal-backdrop" onclick="closeMissionConfirmModal()"></div>
+    <div class="mission-modal-card">
+      <button type="button" class="mission-modal-close-btn" onclick="closeMissionConfirmModal()" aria-label="Tutup Dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <!-- Centered Header -->
+      <div class="mission-modal-head-center">
+        <h3 id="modalConfirmTitle" class="mission-modal-title">Ambil Misi Tanam</h3>
+        <p class="mission-modal-desc">
+          Tentukan jadwal aksi tanam bibit peneduh. Unggah bukti foto aksi sebelum tanggal ini berakhir agar misi tidak hangus.
+        </p>
+      </div>
+
+      <!-- Spec & Impact Box -->
+      <div class="mission-spec-box">
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Lokasi Kawasan</span>
+          </div>
+          <strong id="modalConfirmZoneName" class="mission-spec-col-val">Jl. Teuku Umar Barat</strong>
+        </div>
+
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            <span>Bibit Rekomendasi</span>
+          </div>
+          <strong id="modalConfirmTreeName" class="mission-spec-col-val text-pine">Pohon Tanjung</strong>
+        </div>
+
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Warga Kolaborator</span>
+          </div>
+          <strong id="modalConfirmFriendsCount" class="mission-spec-col-val">0 Warga</strong>
+        </div>
+
+        <!-- Date Input Field -->
+        <div class="schedule-input-group">
+          <label for="missionConfirmDateInput" class="schedule-input-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Jadwal Tanggal Aksi</span>
+          </label>
+          <input type="date" id="missionConfirmDateInput" class="schedule-date-input" required>
+        </div>
+      </div>
+
+      <!-- Actions Stack -->
+      <div class="mission-modal-actions">
+        <button type="button" onclick="confirmTakeZoneMission()" class="btn-modal-primary-capsule btn-success-cta">
+          <span>Konfirmasi Jadwal &amp; Ambil Misi</span>
+        </button>
+        <button type="button" onclick="closeMissionConfirmModal()" class="btn-modal-ghost-cancel">
+          <span>Batal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PILIH WARGA GOTONG ROYONG (Popup Dialog) -->
+  <div id="friendsPickerModal" class="friends-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="friendsModalTitle">
+    <div class="friends-modal-backdrop" onclick="closeFriendsPickerModal()"></div>
+    <div class="friends-modal-card">
+      <div class="friends-modal-header">
+        <div class="friends-modal-title-group">
+          <h3 id="friendsModalTitle" class="friends-modal-title">Ajak Warga Gotong Royong</h3>
+          <p class="friends-modal-desc">Pilih warga terdekat untuk gotong royong aksi tanam bersama.</p>
+        </div>
+        <button type="button" class="friends-modal-close-btn" onclick="closeFriendsPickerModal()" aria-label="Tutup Dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="friends-modal-search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="friendsModalSearchInput" placeholder="Cari nama warga atau wilayah..." oninput="filterFriendsModalList(this.value)" autocomplete="off" aria-label="Cari nama warga atau wilayah">
+      </div>
+
+      <!-- Scrollable List of Friends -->
+      <div id="friendsModalListContainer" class="friends-modal-list">
+        <!-- Dynamic Friend Items -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="friends-modal-footer">
+        <div class="friends-modal-summary">
+          <span id="friendsModalSelectedCount" class="friends-modal-count">0 Warga Dipilih</span>
+        </div>
+        <button type="button" class="btn-friends-modal-done" onclick="closeFriendsPickerModal()">
+          <span>Simpan Pilihan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SUKSES AMBIL MISI TANAM (Celebratory Emotional Modal) -->
+  <div id="missionSuccessModal" class="mission-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalSuccessTitle">
+    <div class="mission-modal-backdrop" onclick="closeMissionSuccessModal()"></div>
+    <div class="mission-modal-card mission-success-card">
+      <button type="button" class="mission-modal-close-btn" onclick="closeMissionSuccessModal()" aria-label="Tutup Dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <!-- Celebratory Botanical Badge -->
+      <div class="success-celebrate-wrapper">
+        <div class="success-celebrate-halo"></div>
+        <div class="success-celebrate-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Centered Header with Encouraging Resonance -->
+      <div class="mission-modal-head-center">
+        <h3 id="modalSuccessTitle" class="mission-modal-title">Misi Berhasil Diambil!</h3>
+        <p class="mission-modal-desc" id="modalSuccessDesc">
+          Terima kasih atas kontribusi Anda. Satu pohon ini akan meredam hawa terik dan mewujudkan pekarangan yang lebih sejuk.
+        </p>
+      </div>
+
+      <!-- Spec & Milestone Card -->
+      <div class="mission-spec-box mission-success-milestone-box">
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Lokasi Aksi</span>
+          </div>
+          <strong id="modalSuccessZoneName" class="mission-spec-col-val">Jl. Teuku Umar Barat</strong>
+        </div>
+
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+            <span>Bibit Terpilih</span>
+          </div>
+          <strong id="modalSuccessTreeName" class="mission-spec-col-val text-pine">Pohon Tanjung</strong>
+        </div>
+
+        <div class="mission-spec-row">
+          <div class="mission-spec-col-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Target Jadwal</span>
+          </div>
+          <strong id="modalSuccessScheduleDate" class="mission-spec-col-val text-pine">30 Sep 2026</strong>
+        </div>
+
+        <!-- Supportive Guidance Box -->
+        <div class="mission-success-guide-item">
+          <div class="mission-guide-icon-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          </div>
+          <div class="mission-guide-info">
+            <strong class="mission-guide-title">Langkah Selanjutnya</strong>
+            <p class="mission-guide-text">
+              Tanam bibit di pekarangan Anda, lalu bagikan foto perkembangannya di Komunitas bersama warga lainnya.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Stack -->
+      <div class="mission-modal-actions">
+        <a id="modalGoToCommunityBtn" href="community.html?action=complete-mission" class="btn-modal-primary-capsule btn-success-cta">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          <span>Ke Komunitas & Bagikan Aksi</span>
+        </a>
+        <button type="button" onclick="closeMissionSuccessModal()" class="btn-modal-ghost-cancel">
+          <span>Lihat di Peta</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- MODAL KONFIRMASI IKUT MENANAM (Editorial Awesomic Style) -->
+  <div id="joinCitizenMissionConfirmModal" class="mission-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="joinConfirmTitle">
+    <div class="mission-modal-backdrop" onclick="closeJoinConfirmModal()"></div>
+    <div class="mission-modal-card join-confirm-card">
+      <button type="button" class="mission-modal-close-btn" onclick="closeJoinConfirmModal()" aria-label="Tutup Dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="join-confirm-head">
+        <h3 id="joinConfirmTitle" class="join-confirm-title">Ikut Tanam Bersama?</h3>
+        <p class="join-confirm-desc">
+          Bergabung bersama warga sekitar untuk menanam bibit pohon peneduh di pekarangan ini.
+        </p>
+      </div>
+
+      <!-- Rangkuman Titik Tanam -->
+      <div class="leave-confirm-spec">
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Inisiator Tanam</span>
+          <strong id="joinConfirmAuthor" class="leave-spec-val">Dewi Lestari</strong>
+        </div>
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Lokasi Titik Tanam</span>
+          <strong id="joinConfirmLocation" class="leave-spec-val">Panjer, Denpasar Selatan</strong>
+        </div>
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Bibit Pilihan</span>
+          <strong id="joinConfirmTree" class="leave-spec-val text-pine">Pohon Tabebuya</strong>
+        </div>
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Poin Kontribusi</span>
+          <strong class="leave-spec-val text-pine">+100 Poin</strong>
+        </div>
+      </div>
+
+      <div class="leave-confirm-actions">
+        <button type="button" id="btnConfirmJoinExecute" class="btn-confirm-join-solid">
+          <span>Ikut Tanam Sekarang (+100 Poin)</span>
+        </button>
+        <button type="button" onclick="closeJoinConfirmModal()" class="btn-confirm-leave-ghost">
+          <span>Batal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI BATAL MENANAM (Clean Editorial Anti-Slop Dialog) -->
+  <div id="leaveCitizenMissionConfirmModal" class="mission-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="leaveConfirmTitle">
+    <div class="mission-modal-backdrop" onclick="closeLeaveConfirmModal()"></div>
+    <div class="mission-modal-card leave-confirm-card">
+      <button type="button" class="mission-modal-close-btn" onclick="closeLeaveConfirmModal()" aria-label="Tutup Dialog">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="leave-confirm-head">
+        <h3 id="leaveConfirmTitle" class="leave-confirm-title">Batal Ikut Menanam?</h3>
+        <p class="leave-confirm-desc">
+          Anda akan membatalkan pendaftaran pada titik tanam warga ini.
+        </p>
+      </div>
+
+      <!-- Rangkuman Titik Tanam -->
+      <div class="leave-confirm-spec">
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Inisiator Tanam</span>
+          <strong id="leaveConfirmAuthor" class="leave-spec-val">Dewi Lestari</strong>
+        </div>
+        <div class="leave-spec-row">
+          <span class="leave-spec-label">Lokasi Titik Tanam</span>
+          <strong id="leaveConfirmLocation" class="leave-spec-val">Panjer, Denpasar Selatan</strong>
+        </div>
+      </div>
+
+      <!-- Tombol Aksi -->
+      <div class="leave-confirm-actions">
+        <button type="button" id="btnConfirmLeaveExecute" class="btn-confirm-leave-solid">
+          <span>Ya, Batal Ikut</span>
+        </button>
+        <button type="button" onclick="closeLeaveConfirmModal()" class="btn-confirm-leave-ghost">
+          <span>Tetap Ikut Menanam</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Leaflet JS via CDN -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- GSAP Animation Engine via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <!-- Data Engine & Map Controller -->
   <script src="js/data.js"></script>

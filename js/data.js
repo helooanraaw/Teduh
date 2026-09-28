@@ -1,383 +1,2219 @@
 /**
  * TEDUH DIGITAL PLATFORM - DATA ENGINE
  * Mock Dataset & Spatial Data Models (Pure Client-Side)
- * Disiplin Bahasa: Lugas, Membumi, Tanpa Em Dash (R-02 compliant)
+ * Disiplin Bahasa: Lugas, Membumi, Ramah Warga, Tanpa Em Dash (R-02 compliant)
  */
 
 const TEDUH_DATA = {
-  // Titik Pantau Kawasan Nyata
+  // 1. DAFTAR KAWASAN SPASIAL (4 POLA ARKETIPE RAMAH WARGA)
   zones: [
-    {
-      id: "zone-teuku-umar",
-      name: "Jl. Teuku Umar Barat",
-      address: "Jl. Teuku Umar Barat No. 88",
-      village: "Pemecutan Klod",
-      district: "Kec. Denpasar Barat",
-      city: "Kota Denpasar",
-      province: "Bali",
-      fullAddress: "Jl. Teuku Umar Barat, Pemecutan Klod, Kec. Denpasar Barat, Kota Denpasar",
-      category: "Jl. Teuku Umar Barat",
-      lat: -8.6750,
-      lng: 115.2080,
-      surfaceTemp: "38.8°C",
-      airTemp: "33.6°C",
-      aqi: 92,
-      aqiStatus: "Sedang",
-      canopyCover: "5%",
-      heatLevel: "Sangat Terik",
-      isHotspot: true,
-      primaryFactors: [
-        { label: "Minimnya Pohon Peneduh", percentage: 40, color: "#1A382B" },
-        { label: "Polusi Kendaraan Bermotor", percentage: 30, color: "#0E1116" },
-        { label: "Padatnya Bangunan", percentage: 20, color: "#64748B" },
-        { label: "Asap Pembakaran Sampah", percentage: 10, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: 40, label: "Minim Pohon" },
-      problemDiagnosis: "Minimnya naungan pohon menyebabkan dinding dan pekarangan menyerap panas berlebih sepanjang siang, meningkatkan beban listrik pendingin ruangan secara signifikan.",
-      recommendedTree: {
-        name: "Pohon Tanjung (Mimusops elengi)",
-        scientificName: "Mimusops elengi",
-        image: "assets/trees/pohon-tanjung.jpg",
-        rootType: "Akar Tunggang Dalam",
-        pipeSafety: "Aman untuk pipa got dan fondasi jarak minimal 1.5 meter",
-        canopySpread: "Tajuk bulat padat 4-6 meter",
-        growthRate: "Sedang, sangat tahan debu knalpot",
-        benefit: "Pohon peneduh dengan tajuk bulat rapat yang mampu memotong radiasi panas hingga 4.3°C dan menyaring partikel debu kendaraan. Memiliki sistem akar tunggang yang menghujam lurus ke bawah sehingga aman bagi pondasi bangunan dan saluran air di pekarangan."
+  {
+    "id": "zone-teuku-umar",
+    "name": "Jl. Teuku Umar Barat",
+    "address": "Jl. Teuku Umar Barat No. 88",
+    "village": "Pemecutan Klod",
+    "district": "Kec. Denpasar Barat",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Jl. Teuku Umar Barat, Pemecutan Klod, Kec. Denpasar Barat, Kota Denpasar",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.675,
+    "lng": 115.208,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
       },
-      mitigationActions: [
-        {
-          title: "Pembasahan Pelataran Semen",
-          description: "Siram pelataran semen pada pukul 11:30 dan 14:00 untuk memotong akumulasi radiasi panas ke dinding toko."
-        },
-        {
-          title: "Pembuatan Lubang Biopori",
-          description: "Pasang 3-4 lubang biopori sedalam 100cm di sela batas semen untuk membantu resapan air hujan dan menurunkan suhu tanah."
-        },
-        {
-          title: "Manajemen Parkir Kendaraan",
-          description: "Hindari memarkir motor berjejer menempel langsung pada jendela atau ventilasi agar panas blok mesin tidak masuk ke dalam ruangan."
-        }
-      ],
-      actionPlan: {
-        now: {
-          step: "1. Sekarang (Mitigasi Cepat)",
-          title: "Siram Lantai Semen Saat Jam Terik",
-          desc: "Siram pelataran semen pada pukul 11:30 dan 14:00 untuk memotong pantulan radiasi panas ke dinding rumah."
-        },
-        thisWeek: {
-          step: "2. Minggu Ini (Persiapan Media)",
-          title: "Buat 3 Lubang Biopori Resapan",
-          desc: "Pasang lubang biopori sedalam 80-100cm di sela batas semen untuk membantu resapan air dan mendinginkan tanah dasar."
-        },
-        longTerm: {
-          step: "3. Jangka Panjang (Penanaman)",
-          title: "Tanam Pohon Tanjung Berakar Tunggang",
-          desc: "Tanam 1 bibit Tanjung berjarak aman minimal 1.5 meter dari fondasi dan saluran got untuk kanopi peneduh permanen."
-        }
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
       },
-      simulationImpact: {
-        tempReduction: "-4.3°C",
-        newSurfaceTemp: "34.5°C",
-        newCanopy: "25%",
-        coolingScore: "86/100",
-        summary: "Penanaman 2 pohon tanjung ditambah lubang biopori memotong suhu permukaan sebesar 4.3°C dan menghemat beban listrik pendingin ruangan."
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
       }
     },
-    {
-      id: "zone-sesetan",
-      name: "Jl. Raya Sesetan",
-      address: "Jl. Raya Sesetan Gg. Taman Sari",
-      village: "Sesetan",
-      district: "Kec. Denpasar Selatan",
-      city: "Kota Denpasar",
-      province: "Bali",
-      fullAddress: "Jl. Raya Sesetan Gg. Taman Sari, Sesetan, Kec. Denpasar Selatan, Kota Denpasar",
-      category: "Jl. Raya Sesetan",
-      lat: -8.6890,
-      lng: 115.2195,
-      surfaceTemp: "37.4°C",
-      airTemp: "32.8°C",
-      aqi: 84,
-      aqiStatus: "Sedang",
-      canopyCover: "9%",
-      heatLevel: "Terik Menyengat",
-      isHotspot: true,
-      primaryFactors: [
-        { label: "Minimnya Pohon Peneduh", percentage: 45, color: "#1A382B" },
-        { label: "Padatnya Bangunan", percentage: 25, color: "#64748B" },
-        { label: "Polusi Kendaraan Bermotor", percentage: 20, color: "#0E1116" },
-        { label: "Asap Pembakaran Sampah", percentage: 10, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: 45, label: "Minim Pohon" },
-      problemDiagnosis: "Koridor gang selebar 2.5 meter dengan halaman rapat dan dinding batako tanpa naungan. Sirkulasi angin terhalang dan teras terasa panas di siang hari.",
-      recommendedTree: {
-        name: "Ketapang Kencana (Terminalia mantaly)",
-        scientificName: "Terminalia mantaly",
-        image: "assets/trees/ketapang-kencana.jpg",
-        rootType: "Akar Tunggang Tegak Lurus",
-        pipeSafety: "Sangat aman untuk saluran sanitasi dan fondasi dangkal (jarak 1.5m)",
-        canopySpread: "Tajuk bertingkat ramping 3-4 meter",
-        growthRate: "Cepat tumbuh di lahan terbatas",
-        benefit: "Membentuk kanopi bertingkat yang menyaring terik matahari tanpa memakan ruang sempit pekarangan atau lorong gang. Akarnya tumbuh vertikal lurus ke dalam tanah sehingga tidak merusak lantai semen teras."
-      },
-      mitigationActions: [
-        {
-          title: "Pemanfaatan Pot Resapan Terbuka",
-          description: "Jika semen tidak bisa dibongkar penuh, buat lubang kotak 80x80cm menembus tanah asli untuk media tanam pohon berakar tunggang."
-        },
-        {
-          title: "Pemasangan Jalur Rambat Peneduh",
-          description: "Kombinasikan dengan tanaman rambat dinding sisi barat untuk memblokir terik matahari sore."
-        },
-        {
-          title: "Rutin Siram Pekarangan Sore Hari",
-          description: "Siram teras semen pada pukul 16:00 agar pelepasan panas malam hari berlangsung lebih cepat."
-        }
-      ],
-      actionPlan: {
-        now: {
-          step: "1. Sekarang (Mitigasi Cepat)",
-          title: "Siram Teras Semen Sore Hari",
-          desc: "Siram semen teras pada pukul 16:00 agar pelepasan hawa panas ke dalam ruangan berlangsung lebih cepat."
-        },
-        thisWeek: {
-          step: "2. Minggu Ini (Persiapan Media)",
-          title: "Siapkan Pot Resapan 80x80cm",
-          desc: "Buat lubang kotak 80x80cm menembus tanah asli di pojok teras atau siapkan planter box berdasar terbuka."
-        },
-        longTerm: {
-          step: "3. Jangka Panjang (Penanaman)",
-          title: "Tanam Ketapang Kencana Bertingkat",
-          desc: "Tanam bibit Ketapang Kencana berakar tunggang tegak lurus untuk menaungi lorong gang tanpa mengganggu jalan."
-        }
-      },
-      simulationImpact: {
-        tempReduction: "-3.8°C",
-        newSurfaceTemp: "33.6°C",
-        newCanopy: "28%",
-        coolingScore: "82/100",
-        summary: "Tajuk bertingkat Ketapang Kencana meredam panas dinding gang dan menurunkan suhu teras hingga 3.8°C."
-      }
-    },
-    {
-      id: "zone-renon",
-      name: "Jl. Raya Puputan, Renon",
-      address: "Jl. Raya Puputan Renon",
-      village: "Renon",
-      district: "Kec. Denpasar Timur",
-      city: "Kota Denpasar",
-      province: "Bali",
-      fullAddress: "Jl. Raya Puputan, Renon, Kec. Denpasar Timur, Kota Denpasar",
-      category: "Jl. Raya Puputan, Renon",
-      lat: -8.6720,
-      lng: 115.2340,
-      surfaceTemp: "31.2°C",
-      airTemp: "29.5°C",
-      aqi: 46,
-      aqiStatus: "Baik",
-      canopyCover: "44%",
-      heatLevel: "Sejuk Nyaman",
-      isHotspot: false,
-      primaryFactors: [
-        { label: "Polusi Kendaraan Bermotor", percentage: 35, color: "#0E1116" },
-        { label: "Padatnya Bangunan", percentage: 30, color: "#64748B" },
-        { label: "Minimnya Pohon Peneduh", percentage: 25, color: "#1A382B" },
-        { label: "Asap Pembakaran Sampah", percentage: 10, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: 35, label: "Polusi Kendaraan" },
-      problemDiagnosis: "Contoh kawasan ideal dengan jalur hijau terawat, pohon peneduh berkanopi lebar, dan tutupan rumput yang menyerap panas matahari secara optimal.",
-      recommendedTree: {
-        name: "Tabebuia Merah Muda (Handroanthus roseus)",
-        scientificName: "Handroanthus roseus",
-        image: "assets/trees/tabebuia-pink.jpg",
-        rootType: "Akar Tunggang Vertikal",
-        pipeSafety: "Aman fondasi, tidak merusak trotoar (jarak 1.5m)",
-        canopySpread: "Tajuk rindang 5-8 meter",
-        growthRate: "Sedang, berbunga lebat",
-        benefit: "Mempercantik koridor kota dan halaman rumah sekaligus menjaga kelembapan mikro pekarangan. Sistem perakaran vertikalnya sangat bersahabat bagi saluran got dan dinding pagar."
-      },
-      mitigationActions: [
-        {
-          title: "Pemeliharaan Biopori Alami",
-          description: "Pertahankan area tanah terbuka di sekeliling pangkal batang pohon dan hindari pengecoran semen hingga ke leher akar."
-        },
-        {
-          title: "Perapian Cabang Berkala",
-          description: "Lakukan pemangkasan cabang bawah setahun sekali agar sirkulasi angin pejalan kaki tetap lancar."
-        }
-      ],
-      actionPlan: {
-        now: {
-          step: "1. Sekarang (Mitigasi Cepat)",
-          title: "Jaga Kebersihan Saluran Air",
-          desc: "Bersihkan guguran daun dari saluran got agar air hujan dapat meresap sempurna ke tanah terbuka."
-        },
-        thisWeek: {
-          step: "2. Minggu Ini (Persiapan Media)",
-          title: "Cek Kelembapan Tanah dan Biopori",
-          desc: "Pertahankan tanah terbuka di sekeliling pangkal batang pohon dan hindari pengecoran semen ke akar."
-        },
-        longTerm: {
-          step: "3. Jangka Panjang (Penanaman)",
-          title: "Tambah Titik Tanam Tabebuia",
-          desc: "Tanam Tabebuia Merah Muda untuk mempercantik lingkungan dan menjaga kesejukan mikro tetap stabil."
-        }
-      },
-      simulationImpact: {
-        tempReduction: "-1.2°C",
-        newSurfaceTemp: "30.0°C",
-        newCanopy: "50%",
-        coolingScore: "95/100",
-        summary: "Kawasan telah memenuhi standar kesejukan alami. Penambahan titik tanam baru menjaga kesinambungan iklim mikro."
-      }
-    },
-    {
-      id: "zone-gatot-subroto",
-      name: "Jl. Gatot Subroto Barat",
-      address: "Jl. Gatot Subroto Barat No. 120",
-      village: "Padangsambian Kaja",
-      district: "Kec. Denpasar Barat",
-      city: "Kota Denpasar",
-      province: "Bali",
-      fullAddress: "Jl. Gatot Subroto Barat, Padangsambian Kaja, Kec. Denpasar Barat, Kota Denpasar",
-      category: "Jl. Gatot Subroto Barat",
-      lat: -8.6410,
-      lng: 115.1850,
-      surfaceTemp: "39.2°C",
-      airTemp: "34.2°C",
-      aqi: 110,
-      aqiStatus: "Tidak Sehat bagi Sensitif",
-      canopyCover: "4%",
-      heatLevel: "Sangat Terik & Berdebu",
-      isHotspot: true,
-      primaryFactors: [
-        { label: "Minimnya Pohon Peneduh", percentage: 45, color: "#1A382B" },
-        { label: "Polusi Kendaraan Bermotor", percentage: 35, color: "#0E1116" },
-        { label: "Padatnya Bangunan", percentage: 15, color: "#64748B" },
-        { label: "Asap Pembakaran Sampah", percentage: 5, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: 45, label: "Minim Pohon" },
-      problemDiagnosis: "Jalur aspal lebar tanpa median tanaman pelindung. Kendaraan berat menghasilkan akumulasi emisi panas dan debu suspensi tinggi.",
-      recommendedTree: {
-        name: "Kiara Payung (Filicium decipiens)",
-        scientificName: "Filicium decipiens",
-        image: "assets/trees/pohon-tanjung.jpg",
-        rootType: "Akar Tunggang Kuat Menghujam",
-        pipeSafety: "Aman fondasi dengan jarak tanam 2 meter dari tepi got",
-        canopySpread: "Tajuk payung rapat 6-9 meter",
-        growthRate: "Sedang, sangat tahan kekeringan dan asap",
-        benefit: "Kanopi payung lebat yang efektif menyaring partikulat debu knalpot dan memayungi aspal panas jalanan. Akarnya berjangkar dalam tanpa mendesak pondasi rumah."
-      },
-      mitigationActions: [
-        {
-          title: "Penanaman Pohon di Sempadan Jalan",
-          description: "Tanam pohon berjarak 5 meter antar batang pada sempadan bangunan depan ruko atau rumah tinggal."
-        },
-        {
-          title: "Paving Rumput Pengganti Semen",
-          description: "Ganti area parkir aspal depan toko dengan paving berpori atau paving rumput untuk memotong pantulan terik."
-        }
-      ],
-      actionPlan: {
-        now: {
-          step: "1. Sekarang (Mitigasi Cepat)",
-          title: "Basahi Aspal Depan Bangunan",
-          desc: "Semprotkan air pada area aspal depan pagar saat jam 12:00 untuk menurunkan uap panas kendaraan."
-        },
-        thisWeek: {
-          step: "2. Minggu Ini (Persiapan Media)",
-          title: "Ganti Semen dengan Paving Berpori",
-          desc: "Bongkar 1x1 meter semen parkir untuk digantikan dengan lubang tanam atau paving rumput resapan."
-        },
-        longTerm: {
-          step: "3. Jangka Panjang (Penanaman)",
-          title: "Tanam Kiara Payung Penahan Debu",
-          desc: "Tanam Kiara Payung berjarak 2 meter dari tepi got untuk menyaring debu knalpot dan memayungi aspal jalan."
-        }
-      },
-      simulationImpact: {
-        tempReduction: "-4.8°C",
-        newSurfaceTemp: "34.4°C",
-        newCanopy: "24%",
-        coolingScore: "80/100",
-        summary: "Kanopi Kiara Payung memayungi bidang aspal terbuka, menurunkan suhu permukaan hingga 4.8°C dan menyaring debu polusi."
-      }
-    },
-    {
-      id: "zone-jimbaran",
-      name: "Jl. Kampus Unud, Jimbaran",
-      address: "Jl. Kampus Unud Jimbaran",
-      village: "Jimbaran",
-      district: "Kec. Kuta Selatan",
-      city: "Kab. Badung",
-      province: "Bali",
-      fullAddress: "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kab. Badung",
-      category: "Jl. Kampus Unud, Jimbaran",
-      lat: -8.7980,
-      lng: 115.1630,
-      surfaceTemp: "36.8°C",
-      airTemp: "33.1°C",
-      aqi: 65,
-      aqiStatus: "Sedang",
-      canopyCover: "12%",
-      heatLevel: "Panas Kering",
-      isHotspot: true,
-      primaryFactors: [
-        { label: "Minimnya Pohon Peneduh", percentage: 40, color: "#1A382B" },
-        { label: "Padatnya Bangunan", percentage: 30, color: "#64748B" },
-        { label: "Polusi Kendaraan Bermotor", percentage: 20, color: "#0E1116" },
-        { label: "Asap Pembakaran Sampah", percentage: 10, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: 40, label: "Minim Pohon" },
-      problemDiagnosis: "Tanah kapur berbatu tipis yang minim naungan alami. Paparan angin membawa udara kering tanpa cukup rimbun pepohonan peneduh.",
-      recommendedTree: {
-        name: "Tabebuia Emas (Handroanthus chrysotrichus)",
-        scientificName: "Handroanthus chrysotrichus",
-        image: "assets/trees/tabebuia-pink.jpg",
-        rootType: "Akar Tunggang Tahan Batu Kapur",
-        pipeSafety: "Aman untuk fondasi bangunan dan tandon air tanah (jarak 1.5m)",
-        canopySpread: "Tajuk melebar 4-6 meter",
-        growthRate: "Tahan kekeringan ekstrem dan tanah kapur",
-        benefit: "Akar tunggang tangguh yang mampu menembus celah tanah kapur berbatu tanpa merusak dinding atau pipa tandon air, serta tahan musim kemarau terik."
-      },
-      mitigationActions: [
-        {
-          title: "Pemberian Mulsa Organik",
-          description: "Beri lapisan jerami atau serbuk kayu di sekeliling tanah pohon untuk mempertahankan kelembapan tanah kapur."
-        },
-        {
-          title: "Pembuatan Sumur Resapan",
-          description: "Arahkan talang atap rumah menuju lubang resapan batu kapur agar air hujan tersimpan sebagai cadangan air bawah tanah."
-        }
-      ],
-      actionPlan: {
-        now: {
-          step: "1. Sekarang (Mitigasi Cepat)",
-          title: "Beri Mulsa Organik pada Tanah",
-          desc: "Lapisi permukaan tanah sekitar tanaman dengan jerami atau serbuk kayu untuk menahan penguapan air di tanah kapur."
-        },
-        thisWeek: {
-          step: "2. Minggu Ini (Persiapan Media)",
-          title: "Gali Lubang Tanam Tembus Batu",
-          desc: "Gali lubang tanam sedalam 60cm dan isi dengan campuran tanah subur dan kompos sebelum menanam."
-        },
-        longTerm: {
-          step: "3. Jangka Panjang (Penanaman)",
-          title: "Tanam Tabebuia Emas Tahan Kering",
-          desc: "Tanam Tabebuia Emas berakar tunggang yang mampu menembus celah batu kapur dan tahan musim kemarau."
-        }
-      },
-      simulationImpact: {
-        tempReduction: "-3.6°C",
-        newSurfaceTemp: "33.2°C",
-        newCanopy: "30%",
-        coolingScore: "85/100",
-        summary: "Tabebuia tumbuh subur di tanah kapur, menaungi pekarangan dan menjaga kelembapan udara mikro perumahan."
-      }
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
     }
-  ],
+  },
+  {
+    "id": "zone-gatot-subroto",
+    "name": "Jl. Gatot Subroto Barat",
+    "address": "Jl. Gatot Subroto Barat No. 120",
+    "village": "Padangsambian Kaja",
+    "district": "Kec. Denpasar Barat",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Jl. Gatot Subroto Barat, Padangsambian Kaja, Kec. Denpasar Barat, Kota Denpasar",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.638,
+    "lng": 115.185,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-sesetan",
+    "name": "Jl. Raya Sesetan",
+    "address": "Jl. Raya Sesetan No. 45",
+    "village": "Sesetan",
+    "district": "Kec. Denpasar Selatan",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Jl. Raya Sesetan, Sesetan, Kec. Denpasar Selatan, Kota Denpasar",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.689,
+    "lng": 115.2195,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-sanur-by-pass",
+    "name": "Jl. By Pass Ngurah Rai Sanur",
+    "address": "Jl. By Pass Ngurah Rai No. 210, Sanur",
+    "village": "Sanur Kauh",
+    "district": "Kec. Denpasar Selatan",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Jl. By Pass Ngurah Rai, Sanur Kauh, Kec. Denpasar Selatan, Kota Denpasar",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.692,
+    "lng": 115.253,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-gajah-mada",
+    "name": "Kawasan Gajah Mada & Pasar Badung",
+    "address": "Jl. Gajah Mada No. 12",
+    "village": "Dangin Puri Kangin",
+    "district": "Kec. Denpasar Utara",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Kawasan Gajah Mada & Pasar Badung, Denpasar Utara, Kota Denpasar",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.6575,
+    "lng": 115.2165,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-pelabuhan-benoa",
+    "name": "Kawasan Pelabuhan Benoa",
+    "address": "Jl. Raya Pelabuhan Benoa",
+    "village": "Pedungan",
+    "district": "Kec. Denpasar Selatan",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Kawasan Pelabuhan Benoa, Pedungan, Denpasar Selatan, Kota Denpasar",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.745,
+    "lng": 115.215,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-renon",
+    "name": "Jl. Raya Puputan Renon",
+    "address": "Jl. Raya Puputan No. 1",
+    "village": "Renon",
+    "district": "Kec. Denpasar Timur",
+    "city": "Kota Denpasar",
+    "province": "Bali",
+    "fullAddress": "Jl. Raya Puputan, Renon, Kec. Denpasar Timur, Kota Denpasar",
+    "category": "Kawasan Rimbun Sejuk",
+    "lat": -8.672,
+    "lng": 115.234,
+    "surfaceTemp": "31.0°C",
+    "airTemp": "28.5°C",
+    "aqi": 45,
+    "aqiStatus": "Segar & Bersih",
+    "canopyCover": "85%",
+    "heatLevel": "Sejuk Alami",
+    "isHotspot": false,
+    "primaryFactors": [
+      {
+        "label": "Pepohonan Rimbun",
+        "percentage": 50,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Ruang Terbuka Hijau",
+        "percentage": 30,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Udara Segar Alami",
+        "percentage": 20,
+        "color": "#64748B"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 50,
+      "label": "Pohon Rimbun"
+    },
+    "problemDiagnosis": "Kawasan percontohan dengan pepohonan rimbun dan ruang terbuka hijau yang cukup, menjaga suhu lingkungan tetap sejuk dan udara tetap segar alami.",
+    "recommendedTree": {
+      "name": "Pohon Tabebuia Merah Muda (Handroanthus roseus)",
+      "scientificName": "Handroanthus roseus",
+      "image": "assets/trees/pohon-tabebuia.jpg",
+      "rootType": "Akar Tunggang Aman",
+      "pipeSafety": "Aman Fondasi & Taman",
+      "canopySpread": "Tajuk Indah Berbunga",
+      "growthRate": "Tumbuh Sehat & Asri",
+      "benefit": "Pohon hias peneduh dengan bunga indah yang mempercantik lingkungan serta mempertahankan suasana asri dan sejuk di sekitar pekarangan."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Rawat & Siram Pohon yang Ada",
+        "desc": "Lakukan penyiraman rutin terutama saat cuaca kering dan panas."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Beri Pupuk Kompos Organik",
+        "desc": "Tambahkan pupuk kompos alami di sekitar tanah bawah pohon untuk nutrisi tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Jaga Keberlanjutan Ruang Hijau",
+        "desc": "Pertahankan keteduhan kawasan dan ajak warga sekitar menjaga kelestarian pohon."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-0.5°C",
+      "newSurfaceTemp": "30.5°C",
+      "newCanopy": "90%",
+      "coolingScore": "95/100",
+      "summary": "Kawasan sudah berada pada kondisi ideal sejuk, rindang, dan sangat nyaman bagi warga sekitar."
+    }
+  },
+  {
+    "id": "zone-kuta-legian",
+    "name": "Jl. Raya Kuta & Legian",
+    "address": "Jl. Raya Kuta No. 88",
+    "village": "Kuta",
+    "district": "Kec. Kuta",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Jl. Raya Kuta & Legian, Kuta, Kabupaten Badung",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.7185,
+    "lng": 115.176,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-canggu-batubolong",
+    "name": "Jl. Pantai Batu Bolong, Canggu",
+    "address": "Jl. Pantai Batu Bolong No. 54",
+    "village": "Canggu",
+    "district": "Kec. Kuta Utara",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Jl. Pantai Batu Bolong, Canggu, Kec. Kuta Utara, Kabupaten Badung",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.6505,
+    "lng": 115.132,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-seminyak",
+    "name": "Kawasan Seminyak & Petitenget",
+    "address": "Jl. Kayu Aya No. 22",
+    "village": "Seminyak",
+    "district": "Kec. Kuta Utara",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Kawasan Seminyak & Petitenget, Kuta Utara, Kabupaten Badung",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.688,
+    "lng": 115.156,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-jimbaran",
+    "name": "Jl. Kampus Unud, Jimbaran",
+    "address": "Jl. Kampus Unud No. 12",
+    "village": "Jimbaran",
+    "district": "Kec. Kuta Selatan",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.798,
+    "lng": 115.163,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-nusa-dua-by-pass",
+    "name": "Jl. By Pass Ngurah Rai Nusa Dua",
+    "address": "Jl. By Pass Ngurah Rai Nusa Dua No. 8",
+    "village": "Benoa",
+    "district": "Kec. Kuta Selatan",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Jl. By Pass Ngurah Rai Nusa Dua, Benoa, Kec. Kuta Selatan, Kabupaten Badung",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.788,
+    "lng": 115.218,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-terminal-mengwi",
+    "name": "Kawasan Terminal Mengwi",
+    "address": "Jl. Raya Mengwi No. 1",
+    "village": "Mengwitani",
+    "district": "Kec. Mengwi",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Kawasan Terminal Mengwi, Mengwitani, Kec. Mengwi, Kabupaten Badung",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.568,
+    "lng": 115.174,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-uluwatu",
+    "name": "Kawasan Tebing Uluwatu & Pecatu",
+    "address": "Jl. Raya Uluwatu Pecatu No. 70",
+    "village": "Pecatu",
+    "district": "Kec. Kuta Selatan",
+    "city": "Kabupaten Badung",
+    "province": "Bali",
+    "fullAddress": "Kawasan Tebing Uluwatu & Pecatu, Kuta Selatan, Kabupaten Badung",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.828,
+    "lng": 115.092,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-tabanan-kota",
+    "name": "Jl. Bypass Ir. Soekarno, Tabanan",
+    "address": "Jl. Bypass Ir. Soekarno No. 45",
+    "village": "Delod Peken",
+    "district": "Kec. Tabanan",
+    "city": "Kabupaten Tabanan",
+    "province": "Bali",
+    "fullAddress": "Jl. Bypass Ir. Soekarno, Delod Peken, Kec. Tabanan, Kabupaten Tabanan",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.542,
+    "lng": 115.134,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-kediri-tabanan",
+    "name": "Kawasan Ruko & Industri Kediri",
+    "address": "Jl. Raya Kediri No. 80",
+    "village": "Kediri",
+    "district": "Kec. Kediri",
+    "city": "Kabupaten Tabanan",
+    "province": "Bali",
+    "fullAddress": "Kawasan Ruko & Industri Kediri, Kec. Kediri, Kabupaten Tabanan",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.562,
+    "lng": 115.155,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-ubud-raya",
+    "name": "Jl. Raya Ubud",
+    "address": "Jl. Raya Ubud No. 35",
+    "village": "Ubud",
+    "district": "Kec. Ubud",
+    "city": "Kabupaten Gianyar",
+    "province": "Bali",
+    "fullAddress": "Jl. Raya Ubud, Ubud, Kec. Ubud, Kabupaten Gianyar",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.5069,
+    "lng": 115.2625,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-sukawati",
+    "name": "Kawasan Pasar Seni Sukawati",
+    "address": "Jl. Raya Sukawati No. 10",
+    "village": "Sukawati",
+    "district": "Kec. Sukawati",
+    "city": "Kabupaten Gianyar",
+    "province": "Bali",
+    "fullAddress": "Kawasan Pasar Seni Sukawati, Kec. Sukawati, Kabupaten Gianyar",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.598,
+    "lng": 115.285,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-gianyar-kota",
+    "name": "Pusat Kota Gianyar (Jl. Ngurah Rai)",
+    "address": "Jl. Ngurah Rai No. 20",
+    "village": "Gianyar",
+    "district": "Kec. Gianyar",
+    "city": "Kabupaten Gianyar",
+    "province": "Bali",
+    "fullAddress": "Pusat Kota Gianyar, Jl. Ngurah Rai, Kabupaten Gianyar",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.542,
+    "lng": 115.33,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-semarapura-kota",
+    "name": "Pusat Kota Semarapura",
+    "address": "Jl. Untung Surapati No. 15",
+    "village": "Semarapura Kaja",
+    "district": "Kec. Klungkung",
+    "city": "Kabupaten Klungkung",
+    "province": "Bali",
+    "fullAddress": "Pusat Kota Semarapura, Kec. Klungkung, Kabupaten Klungkung",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.536,
+    "lng": 115.405,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-nusa-penida",
+    "name": "Pelabuhan Sampalan Nusa Penida",
+    "address": "Jl. Raya Sampalan No. 5",
+    "village": "Batununggul",
+    "district": "Kec. Nusa Penida",
+    "city": "Kabupaten Klungkung",
+    "province": "Bali",
+    "fullAddress": "Pelabuhan Sampalan Nusa Penida, Batununggul, Nusa Penida, Kabupaten Klungkung",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.675,
+    "lng": 115.565,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-padangbai",
+    "name": "Kawasan Pelabuhan Padangbai",
+    "address": "Jl. Silayukti No. 1",
+    "village": "Padangbai",
+    "district": "Kec. Manggis",
+    "city": "Kabupaten Karangasem",
+    "province": "Bali",
+    "fullAddress": "Kawasan Pelabuhan Padangbai, Padangbai, Kec. Manggis, Kabupaten Karangasem",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.535,
+    "lng": 115.508,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-amlapura-kota",
+    "name": "Pusat Kota Amlapura (Jl. Gajah Mada)",
+    "address": "Jl. Gajah Mada No. 40",
+    "village": "Subagan",
+    "district": "Kec. Karangasem",
+    "city": "Kabupaten Karangasem",
+    "province": "Bali",
+    "fullAddress": "Pusat Kota Amlapura, Subagan, Kec. Karangasem, Kabupaten Karangasem",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.448,
+    "lng": 115.612,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-kubu-tulamben",
+    "name": "Kawasan Kubu & Tulamben",
+    "address": "Jl. Raya Kubu Tulamben No. 90",
+    "village": "Tulamben",
+    "district": "Kec. Kubu",
+    "city": "Kabupaten Karangasem",
+    "province": "Bali",
+    "fullAddress": "Kawasan Kubu & Tulamben, Kec. Kubu, Kabupaten Karangasem",
+    "category": "Kawasan Padat Semen",
+    "lat": -8.275,
+    "lng": 115.592,
+    "surfaceTemp": "39.0°C",
+    "airTemp": "34.0°C",
+    "aqi": 90,
+    "aqiStatus": "Berdebu & Panas",
+    "canopyCover": "20%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Banyak Lantai Semen",
+        "percentage": 45,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Kurang Pohon Peneduh",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Lalu Lintas Kendaraan",
+        "percentage": 20,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 45,
+      "label": "Lantai Semen"
+    },
+    "problemDiagnosis": "Sebagian besar halaman tertutup lantai semen dan minim tempat tanam, sehingga pekarangan menyerap panas terik matahari sepanjang siang.",
+    "recommendedTree": {
+      "name": "Pohon Tanjung (Mimusops elengi)",
+      "scientificName": "Mimusops elengi",
+      "image": "assets/trees/pohon-tanjung.jpg",
+      "rootType": "Akar Menghujam ke Bawah",
+      "pipeSafety": "Aman dari Keramik & Fondasi",
+      "canopySpread": "Tajuk Teduh 4-6 Meter",
+      "growthRate": "Tahan Panas & Debu",
+      "benefit": "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Siram Lantai Semen Saat Terik Siang",
+        "desc": "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding rumah."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Buat 2 Lubang Biopori Resapan",
+        "desc": "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam 1 Pohon Tanjung Peneduh",
+        "desc": "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.0°C",
+      "newSurfaceTemp": "35.0°C",
+      "newCanopy": "45%",
+      "coolingScore": "88/100",
+      "summary": "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+    }
+  },
+  {
+    "id": "zone-singaraja-kota",
+    "name": "Jl. Ahmad Yani, Singaraja",
+    "address": "Jl. Ahmad Yani No. 55",
+    "village": "Kaliuntu",
+    "district": "Kec. Buleleng",
+    "city": "Kabupaten Buleleng",
+    "province": "Bali",
+    "fullAddress": "Jl. Ahmad Yani, Kaliuntu, Kec. Buleleng, Kabupaten Buleleng",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.118,
+    "lng": 115.088,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-celukan-bawang",
+    "name": "Pelabuhan Celukan Bawang",
+    "address": "Jl. Pelabuhan Celukan Bawang",
+    "village": "Celukan Bawang",
+    "district": "Kec. Gerokgak",
+    "city": "Kabupaten Buleleng",
+    "province": "Bali",
+    "fullAddress": "Pelabuhan Celukan Bawang, Gerokgak, Kabupaten Buleleng",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.198,
+    "lng": 114.845,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-lovina",
+    "name": "Kawasan Wisata Pantai Lovina",
+    "address": "Jl. Raya Lovina Kalibukbuk No. 12",
+    "village": "Kalibukbuk",
+    "district": "Kec. Banjar",
+    "city": "Kabupaten Buleleng",
+    "province": "Bali",
+    "fullAddress": "Kawasan Wisata Pantai Lovina, Kalibukbuk, Kec. Banjar, Kabupaten Buleleng",
+    "category": "Gang Sempit Permukiman",
+    "lat": -8.161,
+    "lng": 115.028,
+    "surfaceTemp": "37.0°C",
+    "airTemp": "33.0°C",
+    "aqi": 75,
+    "aqiStatus": "Pengap & Kurang Angin",
+    "canopyCover": "35%",
+    "heatLevel": "Cukup Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Bangunan Rumah Rapat",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Sirkulasi Udara Terjebak",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Ruang Tanam Terbatas",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Rumah Rapat"
+    },
+    "problemDiagnosis": "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+    "recommendedTree": {
+      "name": "Pohon Ketapang Kencana (Terminalia mantaly)",
+      "scientificName": "Terminalia mantaly",
+      "image": "assets/trees/pohon-ketapang-kencana.jpg",
+      "rootType": "Akar Serabut Halus & Teratur",
+      "pipeSafety": "Aman untuk Pipa Got Sempit",
+      "canopySpread": "Tajuk Ramping Bertingkat",
+      "growthRate": "Tumbuh Vertikal Ramping",
+      "benefit": "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Pasang Tanaman Pot di Dinding",
+        "desc": "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Atur Ruang Tanam di Sudut Teras",
+        "desc": "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Ketapang Kencana",
+        "desc": "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-3.5°C",
+      "newSurfaceTemp": "33.5°C",
+      "newCanopy": "55%",
+      "coolingScore": "85/100",
+      "summary": "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+    }
+  },
+  {
+    "id": "zone-gilimanuk",
+    "name": "Kawasan Pelabuhan Gilimanuk",
+    "address": "Jl. Raya Gilimanuk No. 1",
+    "village": "Gilimanuk",
+    "district": "Kec. Melaya",
+    "city": "Kabupaten Jembrana",
+    "province": "Bali",
+    "fullAddress": "Kawasan Pelabuhan Gilimanuk, Melaya, Kabupaten Jembrana",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.165,
+    "lng": 114.442,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  },
+  {
+    "id": "zone-negara-kota",
+    "name": "Pusat Kota Negara (Jl. Sudirman)",
+    "address": "Jl. Jenderal Sudirman No. 30",
+    "village": "Pendem",
+    "district": "Kec. Negara",
+    "city": "Kabupaten Jembrana",
+    "province": "Bali",
+    "fullAddress": "Pusat Kota Negara, Jl. Jenderal Sudirman, Kabupaten Jembrana",
+    "category": "Jalur Jalan Raya Aspal",
+    "lat": -8.358,
+    "lng": 114.625,
+    "surfaceTemp": "38.5°C",
+    "airTemp": "33.8°C",
+    "aqi": 95,
+    "aqiStatus": "Berdebu & Banyak Asap",
+    "canopyCover": "25%",
+    "heatLevel": "Sangat Panas",
+    "isHotspot": true,
+    "primaryFactors": [
+      {
+        "label": "Pantulan Aspal Hitam",
+        "percentage": 40,
+        "color": "#1A382B"
+      },
+      {
+        "label": "Asap Kendaraan Bermotor",
+        "percentage": 35,
+        "color": "#0E1116"
+      },
+      {
+        "label": "Minim Pohon Pelindung",
+        "percentage": 25,
+        "color": "#BA4E2A"
+      }
+    ],
+    "dominantFactor": {
+      "percentage": 40,
+      "label": "Pantulan Aspal"
+    },
+    "problemDiagnosis": "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+    "recommendedTree": {
+      "name": "Pohon Kiara Payung (Filicium decipiens)",
+      "scientificName": "Filicium decipiens",
+      "image": "assets/trees/pohon-kiara-payung.jpg",
+      "rootType": "Akar Kuat Menancap Dalam",
+      "pipeSafety": "Aman untuk Tepi Jalan",
+      "canopySpread": "Tajuk Payung Lebar 6-8 Meter",
+      "growthRate": "Sangat Rimbun & Menyaring Debu",
+      "benefit": "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+    },
+    "actionPlan": {
+      "now": {
+        "step": "1. Sekarang",
+        "title": "Gunakan Peneduh Sementara",
+        "desc": "Gunakan naungan terpal atau kain peneduh di pekarangan depan pinggir jalan."
+      },
+      "thisWeek": {
+        "step": "2. Minggu Ini",
+        "title": "Siapkan Lubang Tanam Tepi Jalan",
+        "desc": "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos gembur di sempadan jalan."
+      },
+      "longTerm": {
+        "step": "3. Permanen",
+        "title": "Tanam Pohon Kiara Payung",
+        "desc": "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami."
+      }
+    },
+    "simulationImpact": {
+      "tempReduction": "-4.5°C",
+      "newSurfaceTemp": "34.0°C",
+      "newCanopy": "50%",
+      "coolingScore": "90/100",
+      "summary": "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+    }
+  }
+],
 
-  // Direktori Bibit Lengkap untuk guide.html
+  // 2. KATALOG BIBIT POHON PENEDUH AMAN FONDASI
   treeCatalog: [
     {
       id: "tree-tanjung",
@@ -462,84 +2298,160 @@ const TEDUH_DATA = {
   ],
 
   // Penghasil data simulasi untuk klik bebas di peta satelit
+
+  // 3. GENERATOR ANALISIS DINAMIS BERBASIS 4 POLA ARKETIPE
+
+  // 3. GENERATOR ANALISIS DINAMIS BERBASIS 4 POLA ARKETIPE
   generateDynamicAnalysis: function(lat, lng) {
-    // Variasi kalkulasi berbasis koordinat agar terasa nyata
+    // Pilih pola arketipe berdasarkan koordinat sederhana
     const seed = Math.abs(Math.sin(lat * 12.9898 + lng * 78.233));
-    const surfaceVal = (35.2 + seed * 4.4).toFixed(1);
-    const airVal = (31.0 + seed * 3.1).toFixed(1);
-    const aqiVal = Math.floor(62 + seed * 48);
-    const canopyVal = Math.floor(6 + seed * 16);
-    const tempDropVal = (3.4 + seed * 1.4).toFixed(1);
-    const newSurfaceVal = (surfaceVal - tempDropVal).toFixed(1);
-    const newCanopyVal = canopyVal + 20;
+    let archKey = 'semen-ruko';
+    if (seed > 0.66) archKey = 'jalan-aspal';
+    else if (seed > 0.33) archKey = 'gang-sempit';
 
-    let aqiLabel = "Sedang";
-    if (aqiVal > 100) aqiLabel = "Tidak Sehat bagi Sensitif";
-    else if (aqiVal < 50) aqiLabel = "Baik";
-
-    let treePick = TEDUH_DATA.treeCatalog[0];
-    if (seed > 0.6) treePick = TEDUH_DATA.treeCatalog[1];
-    else if (seed > 0.3) treePick = TEDUH_DATA.treeCatalog[2];
-
-    const pTree = Math.floor(35 + seed * 15);
-    const pVehicle = Math.floor(20 + seed * 15);
-    const pBuilding = Math.floor(15 + seed * 10);
-    const pWaste = Math.max(100 - (pTree + pVehicle + pBuilding), 5);
+    const arch = {
+      'semen-ruko': {
+        category: "Kawasan Padat Semen",
+        surfaceTemp: "39.0°C",
+        airTemp: "34.0°C",
+        aqi: 90,
+        aqiStatus: "Berdebu & Panas",
+        canopyCover: "20%",
+        heatLevel: "Sangat Panas",
+        isHotspot: true,
+        primaryFactors: [
+          { label: "Banyak Lantai Semen", percentage: 45, color: "#1A382B" },
+          { label: "Kurang Pohon Peneduh", percentage: 35, color: "#0E1116" },
+          { label: "Lalu Lintas Kendaraan", percentage: 20, color: "#BA4E2A" }
+        ],
+        dominantFactor: { percentage: 45, label: "Lantai Semen" },
+        problemDiagnosis: "Sebagian besar pekarangan tertutup semen padat dan minim pohon, membuat teras menyerap panas terik sepanjang siang.",
+        recommendedTree: {
+          name: "Pohon Tanjung (Mimusops elengi)",
+          scientificName: "Mimusops elengi",
+          image: "assets/trees/pohon-tanjung.jpg",
+          rootType: "Akar Menghujam ke Bawah",
+          pipeSafety: "Aman dari Keramik & Fondasi",
+          canopySpread: "Tajuk Teduh 4-6 Meter",
+          growthRate: "Tahan Panas & Debu",
+          benefit: "Pohon peneduh berdaun rimbun yang mampu meneduhkan pekarangan dan menurunkan panas lantai semen hingga 4°C tanpa khawatir merusak keramik lantai maupun fondasi rumah."
+        },
+        actionPlan: {
+          now: { step: "1. Sekarang", title: "Siram Lantai Semen Saat Terik", desc: "Siram teras semen pada pukul 12:00 untuk meredam pantulan panas ke dinding." },
+          thisWeek: { step: "2. Minggu Ini", title: "Buat 2 Lubang Biopori", desc: "Buat lubang resapan di sela lantai semen agar air hujan meresap dan mendinginkan tanah." },
+          longTerm: { step: "3. Permanen", title: "Tanam 1 Pohon Tanjung", desc: "Tanam bibit pohon tanjung berjarak 1.5 meter dari teras untuk kanopi rindang jangka panjang." }
+        },
+        simulationImpact: {
+          tempReduction: "-4.0°C",
+          newSurfaceTemp: "35.0°C",
+          newCanopy: "45%",
+          coolingScore: "88/100",
+          summary: "Teras menjadi lebih adem, panas lantai semen berkurang 4.0°C, dan pekarangan terlindung dari terik matahari."
+        }
+      },
+      'jalan-aspal': {
+        category: "Jalur Jalan Raya Aspal",
+        surfaceTemp: "38.5°C",
+        airTemp: "33.8°C",
+        aqi: 95,
+        aqiStatus: "Berdebu & Banyak Asap",
+        canopyCover: "25%",
+        heatLevel: "Sangat Panas",
+        isHotspot: true,
+        primaryFactors: [
+          { label: "Pantulan Aspal Hitam", percentage: 40, color: "#1A382B" },
+          { label: "Asap Kendaraan Bermotor", percentage: 35, color: "#0E1116" },
+          { label: "Minim Pohon Pelindung", percentage: 25, color: "#BA4E2A" }
+        ],
+        dominantFactor: { percentage: 40, label: "Pantulan Aspal" },
+        problemDiagnosis: "Jalur aspal lebar menyerap panas matahari secara terus menerus dan dilewati kendaraan bermotor, membuat lingkungan sekitar terasa gersang dan berdebu.",
+        recommendedTree: {
+          name: "Pohon Kiara Payung (Filicium decipiens)",
+          scientificName: "Filicium decipiens",
+          image: "assets/trees/pohon-kiara-payung.jpg",
+          rootType: "Akar Kuat Menancap Dalam",
+          pipeSafety: "Aman untuk Tepi Jalan",
+          canopySpread: "Tajuk Payung Lebar 6-8 Meter",
+          growthRate: "Sangat Rimbun & Menyaring Debu",
+          benefit: "Pohon perindang dengan tajuk daun sangat lebat berbentuk payung yang efektif menyaring debu jalanan dan memayungi lingkungan dari sengatan matahari."
+        },
+        actionPlan: {
+          now: { step: "1. Sekarang", title: "Gunakan Peneduh Sementara", desc: "Gunakan naungan terpal atau tirai di pekarangan depan pinggir jalan." },
+          thisWeek: { step: "2. Minggu Ini", title: "Siapkan Lubang Tanam Tepi Jalan", desc: "Gali lubang tanam ukuran 60x60 cm dengan campuran kompos di sempadan jalan." },
+          longTerm: { step: "3. Permanen", title: "Tanam Pohon Kiara Payung", desc: "Tanam bibit kiara payung di tepi jalan untuk membentuk payung peneduh alami." }
+        },
+        simulationImpact: {
+          tempReduction: "-4.5°C",
+          newSurfaceTemp: "34.0°C",
+          newCanopy: "50%",
+          coolingScore: "90/100",
+          summary: "Panas aspal terhalang kanopi daun lebat, udara pekarangan lebih sejuk dan debu jalanan tersaring alami."
+        }
+      },
+      'gang-sempit': {
+        category: "Gang Sempit Permukiman",
+        surfaceTemp: "37.0°C",
+        airTemp: "33.0°C",
+        aqi: 75,
+        aqiStatus: "Pengap & Kurang Angin",
+        canopyCover: "35%",
+        heatLevel: "Cukup Panas",
+        isHotspot: true,
+        primaryFactors: [
+          { label: "Bangunan Rumah Rapat", percentage: 40, color: "#1A382B" },
+          { label: "Sirkulasi Udara Terjebak", percentage: 35, color: "#0E1116" },
+          { label: "Ruang Tanam Terbatas", percentage: 25, color: "#BA4E2A" }
+        ],
+        dominantFactor: { percentage: 40, label: "Rumah Rapat" },
+        problemDiagnosis: "Lorong gang sempit dengan dinding rumah berdekatan memerangkap udara hangat, membuat sirkulasi angin kurang lancar dan teras rumah terasa gerah.",
+        recommendedTree: {
+          name: "Pohon Ketapang Kencana (Terminalia mantaly)",
+          scientificName: "Terminalia mantaly",
+          image: "assets/trees/pohon-ketapang-kencana.jpg",
+          rootType: "Akar Serabut Halus & Teratur",
+          pipeSafety: "Aman untuk Pipa Got Sempit",
+          canopySpread: "Tajuk Ramping Bertingkat",
+          growthRate: "Tumbuh Vertikal Ramping",
+          benefit: "Pohon peneduh dengan susunan dahan bertingkat yang rapi dan ramping, sangat hemat tempat untuk gang sempit tanpa mengganggu kabel listrik atau jalan warga."
+        },
+        actionPlan: {
+          now: { step: "1. Sekarang", title: "Pasang Tanaman Pot di Dinding", desc: "Letakkan pot tanaman gantung atau tanaman pagar di dinding gang untuk kesegaran teras." },
+          thisWeek: { step: "2. Minggu Ini", title: "Atur Ruang Tanam di Sudut Teras", desc: "Siapkan titik tanam selebar 1 meter di sudut pekarangan atau tepi saluran air." },
+          longTerm: { step: "3. Permanen", title: "Tanam Pohon Ketapang Kencana", desc: "Tanam 1 bibit ramping untuk menyejukkan gang sempit secara vertikal." }
+        },
+        simulationImpact: {
+          tempReduction: "-3.5°C",
+          newSurfaceTemp: "33.5°C",
+          newCanopy: "55%",
+          coolingScore: "85/100",
+          summary: "Gang sempit menjadi sejuk dan asri, aliran angin lebih lancar tanpa mempersempit akses jalan warga."
+        }
+      }
+    }[archKey];
 
     return {
       id: "free-click-" + Date.now(),
       name: "Titik Analisis Kawasan (" + lat.toFixed(4) + ", " + lng.toFixed(4) + ")",
-      category: "Area Terpilih Pengguna",
+      category: arch.category,
       lat: lat,
       lng: lng,
-      surfaceTemp: surfaceVal + "°C",
-      airTemp: airVal + "°C",
-      aqi: aqiVal,
-      aqiStatus: aqiLabel,
-      canopyCover: canopyVal + "%",
-      heatLevel: surfaceVal >= 38 ? "Sangat Terik" : "Terik Panas",
-      isHotspot: surfaceVal >= 37,
-      primaryFactors: [
-        { label: "Minimnya Pohon Peneduh", percentage: pTree, color: "#1A382B" },
-        { label: "Polusi Kendaraan Bermotor", percentage: pVehicle, color: "#0E1116" },
-        { label: "Padatnya Bangunan", percentage: pBuilding, color: "#64748B" },
-        { label: "Asap Pembakaran Sampah", percentage: pWaste, color: "#BA4E2A" }
-      ],
-      dominantFactor: { percentage: pTree, label: "Minim Pohon" },
-      problemDiagnosis: "Area ini menunjukkan dominasi material keras pekarangan dengan tutupan hijau hanya " + canopyVal + "%. Radiasi matahari terserap pada permukaan semen atau aspal di sekitarnya.",
-      recommendedTree: {
-        name: treePick.name + " (" + treePick.latin + ")",
-        scientificName: treePick.latin,
-        image: treePick.image,
-        rootType: treePick.rootSystem,
-        pipeSafety: treePick.rootSafety,
-        canopySpread: "Tajuk " + treePick.canopyRadius,
-        growthRate: treePick.growthSpeed,
-        benefit: treePick.description
-      },
-      mitigationActions: [
-        {
-          title: "Pembasahan Rutin Jam Terik",
-          description: "Siram permukaan keras pada pukul 12:00 untuk menurunkan pelepasan gelombang panas."
-        },
-        {
-          title: "Pembuatan Lubang Biopori",
-          description: "Buat 2 lubang biopori per 20 meter persegi pekarangan untuk memperbaiki daya serap air tanah."
-        }
-      ],
-      simulationImpact: {
-        tempReduction: "-" + tempDropVal + "°C",
-        newSurfaceTemp: newSurfaceVal + "°C",
-        newCanopy: newCanopyVal + "%",
-        coolingScore: "85/100",
-        summary: "Penambahan titik peneduh pada koordinat ini diproyeksikan memotong suhu permukaan sebesar " + tempDropVal + "°C dan menaikkan tutupan kanopi ke " + newCanopyVal + "%."
-      }
+      surfaceTemp: arch.surfaceTemp,
+      airTemp: arch.airTemp,
+      aqi: arch.aqi,
+      aqiStatus: arch.aqiStatus,
+      canopyCover: arch.canopyCover,
+      heatLevel: arch.heatLevel,
+      isHotspot: arch.isHotspot,
+      primaryFactors: arch.primaryFactors,
+      dominantFactor: arch.dominantFactor,
+      problemDiagnosis: arch.problemDiagnosis,
+      recommendedTree: arch.recommendedTree,
+      actionPlan: arch.actionPlan,
+      simulationImpact: arch.simulationImpact
     };
   },
 
-  // ============================================
-  // MODEL AKUN PENGGUNA MASUK (JOHN DOE)
-  // ============================================
+  // 4. PROFIL PENGGUNA & GAMIFIKASI POIN
   userData: {
     name: "John Doe",
     username: "@johndoe",
@@ -612,30 +2524,47 @@ const TEDUH_DATA = {
     scheduleAgendas: [
       {
         id: "agenda-1",
-        title: "Tanam Tabebuia Bareng Warga",
-        dateNum: "19",
-        month: "Sep",
-        isToday: false,
-        location: "Depan Ruko Teuku Umar",
-        note: "Menanam pohon peneduh di pinggir jalan bersama warga sekitar."
-      },
-      {
-        id: "agenda-2",
-        title: "Siram Halaman & Cek Pohon",
+        title: "Tanam Pohon Tanjung di Pekarangan",
         dateNum: "14",
         month: "Sep",
         isToday: true,
+        time: "16:30 WITA",
         location: "Halaman Depan Rumah",
-        note: "Penyiraman rutin sore hari agar lantai semen tidak menyimpan panas."
+        note: "Misi penanaman peneduh untuk meredam pantulan panas lantai semen dan meneduhkan pekarangan.",
+        impact: "+250 Poin Misi"
+      },
+      {
+        id: "agenda-2",
+        title: "Beri Kompos Organik Awal",
+        dateNum: "17",
+        month: "Sep",
+        isToday: false,
+        time: "08:00 WITA",
+        location: "Pangkal Bibit Pohon Tanjung",
+        note: "Taburkan 2 genggam kompos gembur di sekitar pangkal bibit agar akar baru cepat beradaptasi.",
+        impact: "+25 Poin Nutrisi"
       },
       {
         id: "agenda-3",
-        title: "Bersihkan Lubang Resapan Air",
-        dateNum: "20",
+        title: "Pasang Mulsa Daun Kering",
+        dateNum: "21",
         month: "Sep",
         isToday: false,
-        location: "Sudut Halaman Rumah",
-        note: "Angkat sampah daun kering agar air hujan mengalir lancar ke tanah."
+        time: "07:30 WITA",
+        location: "Tanah Sekitar Bibit",
+        note: "Tutup permukaan tanah dengan daun kering untuk menahan kelembapan tanah di tengah terik siang.",
+        impact: "+25 Poin Perawatan"
+      },
+      {
+        id: "agenda-4",
+        title: "Pengecekan Tunas & Resapan Air",
+        dateNum: "26",
+        month: "Sep",
+        isToday: false,
+        time: "16:00 WITA",
+        location: "Sudut Pekarangan Semen",
+        note: "Periksa pertumbuhan tunas baru dan pastikan air siraman meresap lancar ke dalam tanah pekarangan.",
+        impact: "Resapan Air Lancar"
       }
     ],
     plantedTrees: [
@@ -755,22 +2684,11 @@ const TEDUH_DATA = {
     if (typeof localStorage === 'undefined') return this.userData;
     const saved = localStorage.getItem('teduh_user_data');
     if (!saved) {
-      localStorage.setItem('teduh_user_data', JSON.stringify(this.userData));
       return this.userData;
     }
     try {
       const parsed = JSON.parse(saved);
-      if (parsed.points === undefined) parsed.points = 850;
-      parsed.exp = parsed.points;
-      if (!parsed.username) parsed.username = "@johndoe";
-      if (!parsed.avatarImg) parsed.avatarImg = "images/testimonial/Mas Bima (1).webp";
-      if (!parsed.homeZone) parsed.homeZone = this.userData.homeZone;
-      if (!parsed.activities || parsed.activities[0]?.title.includes("Penanaman")) parsed.activities = this.userData.activities;
-      if (!parsed.scheduleAgendas || parsed.scheduleAgendas[0]?.timeOnly || !parsed.scheduleAgendas[0]?.dateNum) parsed.scheduleAgendas = this.userData.scheduleAgendas;
-      if (!parsed.plantedTrees || parsed.plantedTrees.length < 4) parsed.plantedTrees = this.userData.plantedTrees;
-      if (!parsed.location) parsed.location = this.userData.location;
-      if (!parsed.target || parsed.target.includes("radiasi") || parsed.target.includes("Menghilangkan")) parsed.target = this.userData.target;
-      return parsed;
+      return { ...this.userData, ...parsed };
     } catch (e) {
       return this.userData;
     }
@@ -778,15 +2696,14 @@ const TEDUH_DATA = {
 
   updateUserPoints: function(diff) {
     const user = this.getUserData();
-    user.points = Math.max(0, (user.points || 0) + diff);
+    user.points = Math.max(0, (user.points || 850) + diff);
     user.exp = user.points;
     if (diff > 0) {
-      user.completedMissions = (user.completedMissions || 0) + 1;
+      user.completedMissions = (user.completedMissions || 3) + 1;
     }
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('teduh_user_data', JSON.stringify(user));
     }
-    this.syncUserToLeaderboard(user.points);
     return user;
   },
 
@@ -950,237 +2867,3101 @@ const TEDUH_DATA = {
   },
 
   // ============================================
-  // LAPISAN ZONA RADIASI PANAS SPASIAL (LST THERMAL ANOMALY FIELD)
-  // Memodelkan radiasi panas permukaan satelit berbasis multi-node dispersi termal
+  // LAPISAN ZONA RADIASI PANAS SPASIAL (ATMOSPHERIC SOFT THERMAL HALO)
+  // Pendaran hangat transparan alami yang menjaga citra satelit tetap jernih
   // ============================================
+
+  // 5. ZONA POLIGON TERMAL HALUS
+
+  // 5. ZONA POLIGON TERMAL HALUS
   pollutionZones: [
-    {
-      id: "poly-teuku-umar",
-      name: "Jl. Teuku Umar Barat",
-      zoneId: "zone-teuku-umar",
-      type: "hotspot",
-      color: "#C84B20",
-      fillColor: "#C84B20",
-      surfaceTemp: "38.8°C",
-      aqi: 92,
-      aqiLabel: "Polusi Kritis & Radiasi Semen",
-      thermalNodes: [
-        { lat: -8.6750, lng: 115.2080, radius: 950, weight: 0.42 },
-        { lat: -8.6732, lng: 115.2025, radius: 780, weight: 0.35 },
-        { lat: -8.6768, lng: 115.2135, radius: 820, weight: 0.38 }
-      ],
-      coordinates: [
-        [-8.675000, 115.222170],
-        [-8.670747, 115.221510],
-        [-8.667828, 115.217437],
-        [-8.667012, 115.212354],
-        [-8.667094, 115.208000],
-        [-8.667199, 115.203748],
-        [-8.668206, 115.199060],
-        [-8.671031, 115.195393],
-        [-8.675000, 115.194374],
-        [-8.678817, 115.195876],
-        [-8.681847, 115.198990],
-        [-8.683717, 115.203249],
-        [-8.683969, 115.208000],
-        [-8.682824, 115.212264],
-        [-8.681057, 115.215969],
-        [-8.678654, 115.219606]
-      ],
-      mission: {
-        id: "mission-teuku-umar",
-        title: "Peneduh Ruko Jl. Teuku Umar Barat",
-        rewardPoints: 250,
-        recommendedTree: "Pohon Tanjung (Mimusops elengi)",
-        safeDistance: "1.5 meter dari bibir got tertutup",
-        targetDesc: "Tanam pohon peneduh berakar tunggang vertikal di sela pelataran semen pertokoan untuk memotong radiasi panas."
+  {
+    "id": "poly-zone-teuku-umar",
+    "name": "Jl. Teuku Umar Barat",
+    "zoneId": "zone-teuku-umar",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.675,
+        "lng": 115.208,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.672,
+        "lng": 115.2045,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.678,
+        "lng": 115.2115,
+        "radius": 722.5,
+        "weight": 0.38
       }
-    },
-    {
-      id: "poly-gatot-subroto",
-      name: "Jl. Gatot Subroto Barat",
-      zoneId: "zone-gatot-subroto",
-      type: "hotspot",
-      color: "#C84B20",
-      fillColor: "#C84B20",
-      surfaceTemp: "39.2°C",
-      aqi: 110,
-      aqiLabel: "Sangat Terik & Polusi Debu Jalan",
-      thermalNodes: [
-        { lat: -8.6410, lng: 115.1850, radius: 1050, weight: 0.45 },
-        { lat: -8.6402, lng: 115.1760, radius: 850, weight: 0.36 },
-        { lat: -8.6418, lng: 115.1940, radius: 900, weight: 0.38 }
+    ],
+    "coordinates": [
+      [
+        -8.667364,
+        115.208
       ],
-      coordinates: [
-        [-8.641000, 115.200552],
-        [-8.637698, 115.199070],
-        [-8.635161, 115.195304],
-        [-8.633889, 115.190198],
-        [-8.633533, 115.185000],
-        [-8.633549, 115.179553],
-        [-8.634474, 115.173483],
-        [-8.637180, 115.168727],
-        [-8.641000, 115.168121],
-        [-8.644169, 115.171499],
-        [-8.646118, 115.175968],
-        [-8.647712, 115.180094],
-        [-8.649156, 115.185000],
-        [-8.649337, 115.191094],
-        [-8.647558, 115.196573],
-        [-8.644466, 115.199766]
+      [
+        -8.667946,
+        115.210956
       ],
-      mission: {
-        id: "mission-gatsu",
-        title: "Penghijauan Sempadan Aspal Jl. Gatot Subroto Barat",
-        rewardPoints: 300,
-        recommendedTree: "Kiara Payung (Filicium decipiens)",
-        safeDistance: "2.0 meter dari trotoar got",
-        targetDesc: "Tanam bibit penyerap polusi berdaun rimbun di sempadan jalan untuk menahan hempasan debu aspal."
+      [
+        -8.669601,
+        115.213462
+      ],
+      [
+        -8.672078,
+        115.215136
+      ],
+      [
+        -8.675,
+        115.215724
+      ],
+      [
+        -8.677922,
+        115.215136
+      ],
+      [
+        -8.680399,
+        115.213462
+      ],
+      [
+        -8.682054,
+        115.210956
+      ],
+      [
+        -8.682636,
+        115.208
+      ],
+      [
+        -8.682054,
+        115.205044
+      ],
+      [
+        -8.680399,
+        115.202538
+      ],
+      [
+        -8.677922,
+        115.200864
+      ],
+      [
+        -8.675,
+        115.200276
+      ],
+      [
+        -8.672078,
+        115.200864
+      ],
+      [
+        -8.669601,
+        115.202538
+      ],
+      [
+        -8.667946,
+        115.205044
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-gatot-subroto",
+    "name": "Jl. Gatot Subroto Barat",
+    "zoneId": "zone-gatot-subroto",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.638,
+        "lng": 115.185,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.635,
+        "lng": 115.1815,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.641,
+        "lng": 115.1885,
+        "radius": 850,
+        "weight": 0.38
       }
-    },
-    {
-      id: "poly-sesetan",
-      name: "Jl. Raya Sesetan",
-      zoneId: "zone-sesetan",
-      type: "hotspot",
-      color: "#C84B20",
-      fillColor: "#C84B20",
-      surfaceTemp: "37.4°C",
-      aqi: 84,
-      aqiLabel: "Terik Menyengat & Lorong Semen",
-      thermalNodes: [
-        { lat: -8.6890, lng: 115.2195, radius: 880, weight: 0.40 },
-        { lat: -8.6855, lng: 115.2160, radius: 720, weight: 0.32 },
-        { lat: -8.6925, lng: 115.2235, radius: 760, weight: 0.34 }
+    ],
+    "coordinates": [
+      [
+        -8.629017,
+        115.185
       ],
-      coordinates: [
-        [-8.689000, 115.232471],
-        [-8.684726, 115.231992],
-        [-8.681715, 115.228319],
-        [-8.680722, 115.223651],
-        [-8.680727, 115.219500],
-        [-8.681082, 115.215530],
-        [-8.682441, 115.211560],
-        [-8.685272, 115.208604],
-        [-8.689000, 115.207491],
-        [-8.692869, 115.208193],
-        [-8.696273, 115.210696],
-        [-8.698245, 115.214864],
-        [-8.698091, 115.219500],
-        [-8.696529, 115.223275],
-        [-8.694753, 115.226464],
-        [-8.692555, 115.229891]
+      [
+        -8.629701,
+        115.188477
       ],
-      mission: {
-        id: "mission-sesetan",
-        title: "Peneduh Ramping Jl. Raya Sesetan",
-        rewardPoints: 250,
-        recommendedTree: "Ketapang Kencana (Terminalia mantaly)",
-        safeDistance: "1.0 meter dari tepi drainase",
-        targetDesc: "Tanam pohon bertajuk bertingkat ramping yang tidak merusak lantai semen teras rumah warga."
+      [
+        -8.631648,
+        115.191425
+      ],
+      [
+        -8.634562,
+        115.193395
+      ],
+      [
+        -8.638,
+        115.194086
+      ],
+      [
+        -8.641438,
+        115.193395
+      ],
+      [
+        -8.644352,
+        115.191425
+      ],
+      [
+        -8.646299,
+        115.188477
+      ],
+      [
+        -8.646983,
+        115.185
+      ],
+      [
+        -8.646299,
+        115.181523
+      ],
+      [
+        -8.644352,
+        115.178575
+      ],
+      [
+        -8.641438,
+        115.176605
+      ],
+      [
+        -8.638,
+        115.175914
+      ],
+      [
+        -8.634562,
+        115.176605
+      ],
+      [
+        -8.631648,
+        115.178575
+      ],
+      [
+        -8.629701,
+        115.181523
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-sesetan",
+    "name": "Jl. Raya Sesetan",
+    "zoneId": "zone-sesetan",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.689,
+        "lng": 115.2195,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.686,
+        "lng": 115.216,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.692,
+        "lng": 115.223,
+        "radius": 637.5,
+        "weight": 0.38
       }
-    },
-    {
-      id: "poly-jimbaran",
-      name: "Jl. Kampus Unud, Jimbaran",
-      zoneId: "zone-jimbaran",
-      type: "hotspot",
-      color: "#C84B20",
-      fillColor: "#C84B20",
-      surfaceTemp: "36.8°C",
-      aqi: 65,
-      aqiLabel: "Kering Berbatu & Minim Hijau",
-      thermalNodes: [
-        { lat: -8.7980, lng: 115.1630, radius: 1050, weight: 0.40 },
-        { lat: -8.7942, lng: 115.1565, radius: 800, weight: 0.32 },
-        { lat: -8.8018, lng: 115.1695, radius: 850, weight: 0.34 }
+    ],
+    "coordinates": [
+      [
+        -8.682263,
+        115.2195
       ],
-      coordinates: [
-        [-8.798000, 115.175758],
-        [-8.794219, 115.174202],
-        [-8.790811, 115.171823],
-        [-8.788182, 115.167991],
-        [-8.787082, 115.163000],
-        [-8.787584, 115.157705],
-        [-8.789605, 115.152697],
-        [-8.793312, 115.149111],
-        [-8.798000, 115.148623],
-        [-8.801954, 115.151284],
-        [-8.804502, 115.155020],
-        [-8.806712, 115.158571],
-        [-8.808973, 115.163000],
-        [-8.809561, 115.168877],
-        [-8.807027, 115.174078],
-        [-8.802475, 115.176259]
+      [
+        -8.682776,
+        115.222108
       ],
-      mission: {
-        id: "mission-jimbaran",
-        title: "Penghijauan Tanah Kapur Jl. Kampus Unud, Jimbaran",
-        rewardPoints: 250,
-        recommendedTree: "Tabebuia Emas (Handroanthus chrysotrichus)",
-        safeDistance: "2.0 meter dari tandon air",
-        targetDesc: "Tanam Tabebuia yang tahan kemarau panjang untuk menaungi pekarangan tanah kapur."
+      [
+        -8.684236,
+        115.224319
+      ],
+      [
+        -8.686422,
+        115.225797
+      ],
+      [
+        -8.689,
+        115.226316
+      ],
+      [
+        -8.691578,
+        115.225797
+      ],
+      [
+        -8.693764,
+        115.224319
+      ],
+      [
+        -8.695224,
+        115.222108
+      ],
+      [
+        -8.695737,
+        115.2195
+      ],
+      [
+        -8.695224,
+        115.216892
+      ],
+      [
+        -8.693764,
+        115.214681
+      ],
+      [
+        -8.691578,
+        115.213203
+      ],
+      [
+        -8.689,
+        115.212684
+      ],
+      [
+        -8.686422,
+        115.213203
+      ],
+      [
+        -8.684236,
+        115.214681
+      ],
+      [
+        -8.682776,
+        115.216892
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-sanur-by-pass",
+    "name": "Jl. By Pass Ngurah Rai Sanur",
+    "zoneId": "zone-sanur-by-pass",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.692,
+        "lng": 115.253,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.689,
+        "lng": 115.2495,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.695,
+        "lng": 115.2565,
+        "radius": 850,
+        "weight": 0.38
       }
-    }
-  ],
+    ],
+    "coordinates": [
+      [
+        -8.683017,
+        115.253
+      ],
+      [
+        -8.683701,
+        115.256478
+      ],
+      [
+        -8.685648,
+        115.259426
+      ],
+      [
+        -8.688562,
+        115.261396
+      ],
+      [
+        -8.692,
+        115.262087
+      ],
+      [
+        -8.695438,
+        115.261396
+      ],
+      [
+        -8.698352,
+        115.259426
+      ],
+      [
+        -8.700299,
+        115.256478
+      ],
+      [
+        -8.700983,
+        115.253
+      ],
+      [
+        -8.700299,
+        115.249522
+      ],
+      [
+        -8.698352,
+        115.246574
+      ],
+      [
+        -8.695438,
+        115.244604
+      ],
+      [
+        -8.692,
+        115.243913
+      ],
+      [
+        -8.688562,
+        115.244604
+      ],
+      [
+        -8.685648,
+        115.246574
+      ],
+      [
+        -8.683701,
+        115.249522
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-gajah-mada",
+    "name": "Kawasan Gajah Mada & Pasar Badung",
+    "zoneId": "zone-gajah-mada",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.6575,
+        "lng": 115.2165,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.6545,
+        "lng": 115.213,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.6605,
+        "lng": 115.22,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.649864,
+        115.2165
+      ],
+      [
+        -8.650446,
+        115.219456
+      ],
+      [
+        -8.652101,
+        115.221961
+      ],
+      [
+        -8.654578,
+        115.223636
+      ],
+      [
+        -8.6575,
+        115.224224
+      ],
+      [
+        -8.660422,
+        115.223636
+      ],
+      [
+        -8.662899,
+        115.221961
+      ],
+      [
+        -8.664554,
+        115.219456
+      ],
+      [
+        -8.665136,
+        115.2165
+      ],
+      [
+        -8.664554,
+        115.213544
+      ],
+      [
+        -8.662899,
+        115.211039
+      ],
+      [
+        -8.660422,
+        115.209364
+      ],
+      [
+        -8.6575,
+        115.208776
+      ],
+      [
+        -8.654578,
+        115.209364
+      ],
+      [
+        -8.652101,
+        115.211039
+      ],
+      [
+        -8.650446,
+        115.213544
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-pelabuhan-benoa",
+    "name": "Kawasan Pelabuhan Benoa",
+    "zoneId": "zone-pelabuhan-benoa",
+    "type": "hotspot",
+    "city": "Kota Denpasar",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.745,
+        "lng": 115.215,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.742,
+        "lng": 115.2115,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.748,
+        "lng": 115.2185,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.736017,
+        115.215
+      ],
+      [
+        -8.736701,
+        115.218478
+      ],
+      [
+        -8.738648,
+        115.221427
+      ],
+      [
+        -8.741562,
+        115.223397
+      ],
+      [
+        -8.745,
+        115.224089
+      ],
+      [
+        -8.748438,
+        115.223397
+      ],
+      [
+        -8.751352,
+        115.221427
+      ],
+      [
+        -8.753299,
+        115.218478
+      ],
+      [
+        -8.753983,
+        115.215
+      ],
+      [
+        -8.753299,
+        115.211522
+      ],
+      [
+        -8.751352,
+        115.208573
+      ],
+      [
+        -8.748438,
+        115.206603
+      ],
+      [
+        -8.745,
+        115.205911
+      ],
+      [
+        -8.741562,
+        115.206603
+      ],
+      [
+        -8.738648,
+        115.208573
+      ],
+      [
+        -8.736701,
+        115.211522
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-kuta-legian",
+    "name": "Jl. Raya Kuta & Legian",
+    "zoneId": "zone-kuta-legian",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.7185,
+        "lng": 115.176,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.7155,
+        "lng": 115.1725,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.7215,
+        "lng": 115.1795,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.710864,
+        115.176
+      ],
+      [
+        -8.711446,
+        115.178956
+      ],
+      [
+        -8.713101,
+        115.181462
+      ],
+      [
+        -8.715578,
+        115.183137
+      ],
+      [
+        -8.7185,
+        115.183725
+      ],
+      [
+        -8.721422,
+        115.183137
+      ],
+      [
+        -8.723899,
+        115.181462
+      ],
+      [
+        -8.725554,
+        115.178956
+      ],
+      [
+        -8.726136,
+        115.176
+      ],
+      [
+        -8.725554,
+        115.173044
+      ],
+      [
+        -8.723899,
+        115.170538
+      ],
+      [
+        -8.721422,
+        115.168863
+      ],
+      [
+        -8.7185,
+        115.168275
+      ],
+      [
+        -8.715578,
+        115.168863
+      ],
+      [
+        -8.713101,
+        115.170538
+      ],
+      [
+        -8.711446,
+        115.173044
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-canggu-batubolong",
+    "name": "Jl. Pantai Batu Bolong, Canggu",
+    "zoneId": "zone-canggu-batubolong",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.6505,
+        "lng": 115.132,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.6475,
+        "lng": 115.1285,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.6535,
+        "lng": 115.1355,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.643763,
+        115.132
+      ],
+      [
+        -8.644276,
+        115.134608
+      ],
+      [
+        -8.645736,
+        115.136819
+      ],
+      [
+        -8.647922,
+        115.138296
+      ],
+      [
+        -8.6505,
+        115.138815
+      ],
+      [
+        -8.653078,
+        115.138296
+      ],
+      [
+        -8.655264,
+        115.136819
+      ],
+      [
+        -8.656724,
+        115.134608
+      ],
+      [
+        -8.657237,
+        115.132
+      ],
+      [
+        -8.656724,
+        115.129392
+      ],
+      [
+        -8.655264,
+        115.127181
+      ],
+      [
+        -8.653078,
+        115.125704
+      ],
+      [
+        -8.6505,
+        115.125185
+      ],
+      [
+        -8.647922,
+        115.125704
+      ],
+      [
+        -8.645736,
+        115.127181
+      ],
+      [
+        -8.644276,
+        115.129392
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-seminyak",
+    "name": "Kawasan Seminyak & Petitenget",
+    "zoneId": "zone-seminyak",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.688,
+        "lng": 115.156,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.685,
+        "lng": 115.1525,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.691,
+        "lng": 115.1595,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.680364,
+        115.156
+      ],
+      [
+        -8.680946,
+        115.158956
+      ],
+      [
+        -8.682601,
+        115.161462
+      ],
+      [
+        -8.685078,
+        115.163136
+      ],
+      [
+        -8.688,
+        115.163724
+      ],
+      [
+        -8.690922,
+        115.163136
+      ],
+      [
+        -8.693399,
+        115.161462
+      ],
+      [
+        -8.695054,
+        115.158956
+      ],
+      [
+        -8.695636,
+        115.156
+      ],
+      [
+        -8.695054,
+        115.153044
+      ],
+      [
+        -8.693399,
+        115.150538
+      ],
+      [
+        -8.690922,
+        115.148864
+      ],
+      [
+        -8.688,
+        115.148276
+      ],
+      [
+        -8.685078,
+        115.148864
+      ],
+      [
+        -8.682601,
+        115.150538
+      ],
+      [
+        -8.680946,
+        115.153044
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-jimbaran",
+    "name": "Jl. Kampus Unud, Jimbaran",
+    "zoneId": "zone-jimbaran",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.798,
+        "lng": 115.163,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.795,
+        "lng": 115.1595,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.801,
+        "lng": 115.1665,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.791263,
+        115.163
+      ],
+      [
+        -8.791776,
+        115.165609
+      ],
+      [
+        -8.793236,
+        115.167821
+      ],
+      [
+        -8.795422,
+        115.169299
+      ],
+      [
+        -8.798,
+        115.169818
+      ],
+      [
+        -8.800578,
+        115.169299
+      ],
+      [
+        -8.802764,
+        115.167821
+      ],
+      [
+        -8.804224,
+        115.165609
+      ],
+      [
+        -8.804737,
+        115.163
+      ],
+      [
+        -8.804224,
+        115.160391
+      ],
+      [
+        -8.802764,
+        115.158179
+      ],
+      [
+        -8.800578,
+        115.156701
+      ],
+      [
+        -8.798,
+        115.156182
+      ],
+      [
+        -8.795422,
+        115.156701
+      ],
+      [
+        -8.793236,
+        115.158179
+      ],
+      [
+        -8.791776,
+        115.160391
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-nusa-dua-by-pass",
+    "name": "Jl. By Pass Ngurah Rai Nusa Dua",
+    "zoneId": "zone-nusa-dua-by-pass",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.788,
+        "lng": 115.218,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.785,
+        "lng": 115.2145,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.791,
+        "lng": 115.2215,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.779017,
+        115.218
+      ],
+      [
+        -8.779701,
+        115.221479
+      ],
+      [
+        -8.781648,
+        115.224427
+      ],
+      [
+        -8.784562,
+        115.226398
+      ],
+      [
+        -8.788,
+        115.22709
+      ],
+      [
+        -8.791438,
+        115.226398
+      ],
+      [
+        -8.794352,
+        115.224427
+      ],
+      [
+        -8.796299,
+        115.221479
+      ],
+      [
+        -8.796983,
+        115.218
+      ],
+      [
+        -8.796299,
+        115.214521
+      ],
+      [
+        -8.794352,
+        115.211573
+      ],
+      [
+        -8.791438,
+        115.209602
+      ],
+      [
+        -8.788,
+        115.20891
+      ],
+      [
+        -8.784562,
+        115.209602
+      ],
+      [
+        -8.781648,
+        115.211573
+      ],
+      [
+        -8.779701,
+        115.214521
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-terminal-mengwi",
+    "name": "Kawasan Terminal Mengwi",
+    "zoneId": "zone-terminal-mengwi",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.568,
+        "lng": 115.174,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.565,
+        "lng": 115.1705,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.571,
+        "lng": 115.1775,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.559017,
+        115.174
+      ],
+      [
+        -8.559701,
+        115.177476
+      ],
+      [
+        -8.561648,
+        115.180424
+      ],
+      [
+        -8.564562,
+        115.182393
+      ],
+      [
+        -8.568,
+        115.183084
+      ],
+      [
+        -8.571438,
+        115.182393
+      ],
+      [
+        -8.574352,
+        115.180424
+      ],
+      [
+        -8.576299,
+        115.177476
+      ],
+      [
+        -8.576983,
+        115.174
+      ],
+      [
+        -8.576299,
+        115.170524
+      ],
+      [
+        -8.574352,
+        115.167576
+      ],
+      [
+        -8.571438,
+        115.165607
+      ],
+      [
+        -8.568,
+        115.164916
+      ],
+      [
+        -8.564562,
+        115.165607
+      ],
+      [
+        -8.561648,
+        115.167576
+      ],
+      [
+        -8.559701,
+        115.170524
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-uluwatu",
+    "name": "Kawasan Tebing Uluwatu & Pecatu",
+    "zoneId": "zone-uluwatu",
+    "type": "hotspot",
+    "city": "Kabupaten Badung",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.828,
+        "lng": 115.092,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.825,
+        "lng": 115.0885,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.831,
+        "lng": 115.0955,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.821263,
+        115.092
+      ],
+      [
+        -8.821776,
+        115.094609
+      ],
+      [
+        -8.823236,
+        115.096821
+      ],
+      [
+        -8.825422,
+        115.098299
+      ],
+      [
+        -8.828,
+        115.098818
+      ],
+      [
+        -8.830578,
+        115.098299
+      ],
+      [
+        -8.832764,
+        115.096821
+      ],
+      [
+        -8.834224,
+        115.094609
+      ],
+      [
+        -8.834737,
+        115.092
+      ],
+      [
+        -8.834224,
+        115.089391
+      ],
+      [
+        -8.832764,
+        115.087179
+      ],
+      [
+        -8.830578,
+        115.085701
+      ],
+      [
+        -8.828,
+        115.085182
+      ],
+      [
+        -8.825422,
+        115.085701
+      ],
+      [
+        -8.823236,
+        115.087179
+      ],
+      [
+        -8.821776,
+        115.089391
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-tabanan-kota",
+    "name": "Jl. Bypass Ir. Soekarno, Tabanan",
+    "zoneId": "zone-tabanan-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Tabanan",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.542,
+        "lng": 115.134,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.539,
+        "lng": 115.1305,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.545,
+        "lng": 115.1375,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.533017,
+        115.134
+      ],
+      [
+        -8.533701,
+        115.137476
+      ],
+      [
+        -8.535648,
+        115.140423
+      ],
+      [
+        -8.538562,
+        115.142392
+      ],
+      [
+        -8.542,
+        115.143084
+      ],
+      [
+        -8.545438,
+        115.142392
+      ],
+      [
+        -8.548352,
+        115.140423
+      ],
+      [
+        -8.550299,
+        115.137476
+      ],
+      [
+        -8.550983,
+        115.134
+      ],
+      [
+        -8.550299,
+        115.130524
+      ],
+      [
+        -8.548352,
+        115.127577
+      ],
+      [
+        -8.545438,
+        115.125608
+      ],
+      [
+        -8.542,
+        115.124916
+      ],
+      [
+        -8.538562,
+        115.125608
+      ],
+      [
+        -8.535648,
+        115.127577
+      ],
+      [
+        -8.533701,
+        115.130524
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-kediri-tabanan",
+    "name": "Kawasan Ruko & Industri Kediri",
+    "zoneId": "zone-kediri-tabanan",
+    "type": "hotspot",
+    "city": "Kabupaten Tabanan",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.562,
+        "lng": 115.155,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.559,
+        "lng": 115.1515,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.565,
+        "lng": 115.1585,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.554364,
+        115.155
+      ],
+      [
+        -8.554946,
+        115.157955
+      ],
+      [
+        -8.556601,
+        115.16046
+      ],
+      [
+        -8.559078,
+        115.162134
+      ],
+      [
+        -8.562,
+        115.162722
+      ],
+      [
+        -8.564922,
+        115.162134
+      ],
+      [
+        -8.567399,
+        115.16046
+      ],
+      [
+        -8.569054,
+        115.157955
+      ],
+      [
+        -8.569636,
+        115.155
+      ],
+      [
+        -8.569054,
+        115.152045
+      ],
+      [
+        -8.567399,
+        115.14954
+      ],
+      [
+        -8.564922,
+        115.147866
+      ],
+      [
+        -8.562,
+        115.147278
+      ],
+      [
+        -8.559078,
+        115.147866
+      ],
+      [
+        -8.556601,
+        115.14954
+      ],
+      [
+        -8.554946,
+        115.152045
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-ubud-raya",
+    "name": "Jl. Raya Ubud",
+    "zoneId": "zone-ubud-raya",
+    "type": "hotspot",
+    "city": "Kabupaten Gianyar",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.5069,
+        "lng": 115.2625,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.5039,
+        "lng": 115.259,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.5099,
+        "lng": 115.266,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.500163,
+        115.2625
+      ],
+      [
+        -8.500676,
+        115.265107
+      ],
+      [
+        -8.502136,
+        115.267317
+      ],
+      [
+        -8.504322,
+        115.268794
+      ],
+      [
+        -8.5069,
+        115.269312
+      ],
+      [
+        -8.509478,
+        115.268794
+      ],
+      [
+        -8.511664,
+        115.267317
+      ],
+      [
+        -8.513124,
+        115.265107
+      ],
+      [
+        -8.513637,
+        115.2625
+      ],
+      [
+        -8.513124,
+        115.259893
+      ],
+      [
+        -8.511664,
+        115.257683
+      ],
+      [
+        -8.509478,
+        115.256206
+      ],
+      [
+        -8.5069,
+        115.255688
+      ],
+      [
+        -8.504322,
+        115.256206
+      ],
+      [
+        -8.502136,
+        115.257683
+      ],
+      [
+        -8.500676,
+        115.259893
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-sukawati",
+    "name": "Kawasan Pasar Seni Sukawati",
+    "zoneId": "zone-sukawati",
+    "type": "hotspot",
+    "city": "Kabupaten Gianyar",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.598,
+        "lng": 115.285,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.595,
+        "lng": 115.2815,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.601,
+        "lng": 115.2885,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.590364,
+        115.285
+      ],
+      [
+        -8.590946,
+        115.287955
+      ],
+      [
+        -8.592601,
+        115.290461
+      ],
+      [
+        -8.595078,
+        115.292135
+      ],
+      [
+        -8.598,
+        115.292722
+      ],
+      [
+        -8.600922,
+        115.292135
+      ],
+      [
+        -8.603399,
+        115.290461
+      ],
+      [
+        -8.605054,
+        115.287955
+      ],
+      [
+        -8.605636,
+        115.285
+      ],
+      [
+        -8.605054,
+        115.282045
+      ],
+      [
+        -8.603399,
+        115.279539
+      ],
+      [
+        -8.600922,
+        115.277865
+      ],
+      [
+        -8.598,
+        115.277278
+      ],
+      [
+        -8.595078,
+        115.277865
+      ],
+      [
+        -8.592601,
+        115.279539
+      ],
+      [
+        -8.590946,
+        115.282045
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-gianyar-kota",
+    "name": "Pusat Kota Gianyar (Jl. Ngurah Rai)",
+    "zoneId": "zone-gianyar-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Gianyar",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.542,
+        "lng": 115.33,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.539,
+        "lng": 115.3265,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.545,
+        "lng": 115.3335,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.533017,
+        115.33
+      ],
+      [
+        -8.533701,
+        115.333476
+      ],
+      [
+        -8.535648,
+        115.336423
+      ],
+      [
+        -8.538562,
+        115.338392
+      ],
+      [
+        -8.542,
+        115.339084
+      ],
+      [
+        -8.545438,
+        115.338392
+      ],
+      [
+        -8.548352,
+        115.336423
+      ],
+      [
+        -8.550299,
+        115.333476
+      ],
+      [
+        -8.550983,
+        115.33
+      ],
+      [
+        -8.550299,
+        115.326524
+      ],
+      [
+        -8.548352,
+        115.323577
+      ],
+      [
+        -8.545438,
+        115.321608
+      ],
+      [
+        -8.542,
+        115.320916
+      ],
+      [
+        -8.538562,
+        115.321608
+      ],
+      [
+        -8.535648,
+        115.323577
+      ],
+      [
+        -8.533701,
+        115.326524
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-semarapura-kota",
+    "name": "Pusat Kota Semarapura",
+    "zoneId": "zone-semarapura-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Klungkung",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.536,
+        "lng": 115.405,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.533,
+        "lng": 115.4015,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.539,
+        "lng": 115.4085,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.528364,
+        115.405
+      ],
+      [
+        -8.528946,
+        115.407955
+      ],
+      [
+        -8.530601,
+        115.41046
+      ],
+      [
+        -8.533078,
+        115.412133
+      ],
+      [
+        -8.536,
+        115.412721
+      ],
+      [
+        -8.538922,
+        115.412133
+      ],
+      [
+        -8.541399,
+        115.41046
+      ],
+      [
+        -8.543054,
+        115.407955
+      ],
+      [
+        -8.543636,
+        115.405
+      ],
+      [
+        -8.543054,
+        115.402045
+      ],
+      [
+        -8.541399,
+        115.39954
+      ],
+      [
+        -8.538922,
+        115.397867
+      ],
+      [
+        -8.536,
+        115.397279
+      ],
+      [
+        -8.533078,
+        115.397867
+      ],
+      [
+        -8.530601,
+        115.39954
+      ],
+      [
+        -8.528946,
+        115.402045
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-nusa-penida",
+    "name": "Pelabuhan Sampalan Nusa Penida",
+    "zoneId": "zone-nusa-penida",
+    "type": "hotspot",
+    "city": "Kabupaten Klungkung",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.675,
+        "lng": 115.565,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.672,
+        "lng": 115.5615,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.678,
+        "lng": 115.5685,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.668263,
+        115.565
+      ],
+      [
+        -8.668776,
+        115.567608
+      ],
+      [
+        -8.670236,
+        115.569819
+      ],
+      [
+        -8.672422,
+        115.571297
+      ],
+      [
+        -8.675,
+        115.571815
+      ],
+      [
+        -8.677578,
+        115.571297
+      ],
+      [
+        -8.679764,
+        115.569819
+      ],
+      [
+        -8.681224,
+        115.567608
+      ],
+      [
+        -8.681737,
+        115.565
+      ],
+      [
+        -8.681224,
+        115.562392
+      ],
+      [
+        -8.679764,
+        115.560181
+      ],
+      [
+        -8.677578,
+        115.558703
+      ],
+      [
+        -8.675,
+        115.558185
+      ],
+      [
+        -8.672422,
+        115.558703
+      ],
+      [
+        -8.670236,
+        115.560181
+      ],
+      [
+        -8.668776,
+        115.562392
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-padangbai",
+    "name": "Kawasan Pelabuhan Padangbai",
+    "zoneId": "zone-padangbai",
+    "type": "hotspot",
+    "city": "Kabupaten Karangasem",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.535,
+        "lng": 115.508,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.532,
+        "lng": 115.5045,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.538,
+        "lng": 115.5115,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.526017,
+        115.508
+      ],
+      [
+        -8.526701,
+        115.511476
+      ],
+      [
+        -8.528648,
+        115.514423
+      ],
+      [
+        -8.531562,
+        115.516392
+      ],
+      [
+        -8.535,
+        115.517084
+      ],
+      [
+        -8.538438,
+        115.516392
+      ],
+      [
+        -8.541352,
+        115.514423
+      ],
+      [
+        -8.543299,
+        115.511476
+      ],
+      [
+        -8.543983,
+        115.508
+      ],
+      [
+        -8.543299,
+        115.504524
+      ],
+      [
+        -8.541352,
+        115.501577
+      ],
+      [
+        -8.538438,
+        115.499608
+      ],
+      [
+        -8.535,
+        115.498916
+      ],
+      [
+        -8.531562,
+        115.499608
+      ],
+      [
+        -8.528648,
+        115.501577
+      ],
+      [
+        -8.526701,
+        115.504524
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-amlapura-kota",
+    "name": "Pusat Kota Amlapura (Jl. Gajah Mada)",
+    "zoneId": "zone-amlapura-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Karangasem",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.448,
+        "lng": 115.612,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.445,
+        "lng": 115.6085,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.451,
+        "lng": 115.6155,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.439017,
+        115.612
+      ],
+      [
+        -8.439701,
+        115.615475
+      ],
+      [
+        -8.441648,
+        115.618422
+      ],
+      [
+        -8.444562,
+        115.62039
+      ],
+      [
+        -8.448,
+        115.621082
+      ],
+      [
+        -8.451438,
+        115.62039
+      ],
+      [
+        -8.454352,
+        115.618422
+      ],
+      [
+        -8.456299,
+        115.615475
+      ],
+      [
+        -8.456983,
+        115.612
+      ],
+      [
+        -8.456299,
+        115.608525
+      ],
+      [
+        -8.454352,
+        115.605578
+      ],
+      [
+        -8.451438,
+        115.60361
+      ],
+      [
+        -8.448,
+        115.602918
+      ],
+      [
+        -8.444562,
+        115.60361
+      ],
+      [
+        -8.441648,
+        115.605578
+      ],
+      [
+        -8.439701,
+        115.608525
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-kubu-tulamben",
+    "name": "Kawasan Kubu & Tulamben",
+    "zoneId": "zone-kubu-tulamben",
+    "type": "hotspot",
+    "city": "Kabupaten Karangasem",
+    "surfaceTemp": "39.0°C",
+    "aqi": 90,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.275,
+        "lng": 115.592,
+        "radius": 850,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.272,
+        "lng": 115.5885,
+        "radius": 680,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.278,
+        "lng": 115.5955,
+        "radius": 722.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.267364,
+        115.592
+      ],
+      [
+        -8.267946,
+        115.594953
+      ],
+      [
+        -8.269601,
+        115.597456
+      ],
+      [
+        -8.272078,
+        115.599129
+      ],
+      [
+        -8.275,
+        115.599716
+      ],
+      [
+        -8.277922,
+        115.599129
+      ],
+      [
+        -8.280399,
+        115.597456
+      ],
+      [
+        -8.282054,
+        115.594953
+      ],
+      [
+        -8.282636,
+        115.592
+      ],
+      [
+        -8.282054,
+        115.589047
+      ],
+      [
+        -8.280399,
+        115.586544
+      ],
+      [
+        -8.277922,
+        115.584871
+      ],
+      [
+        -8.275,
+        115.584284
+      ],
+      [
+        -8.272078,
+        115.584871
+      ],
+      [
+        -8.269601,
+        115.586544
+      ],
+      [
+        -8.267946,
+        115.589047
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-singaraja-kota",
+    "name": "Jl. Ahmad Yani, Singaraja",
+    "zoneId": "zone-singaraja-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Buleleng",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.118,
+        "lng": 115.088,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.115,
+        "lng": 115.0845,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.121,
+        "lng": 115.0915,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.109017,
+        115.088
+      ],
+      [
+        -8.109701,
+        115.091472
+      ],
+      [
+        -8.111648,
+        115.094416
+      ],
+      [
+        -8.114562,
+        115.096383
+      ],
+      [
+        -8.118,
+        115.097074
+      ],
+      [
+        -8.121438,
+        115.096383
+      ],
+      [
+        -8.124352,
+        115.094416
+      ],
+      [
+        -8.126299,
+        115.091472
+      ],
+      [
+        -8.126983,
+        115.088
+      ],
+      [
+        -8.126299,
+        115.084528
+      ],
+      [
+        -8.124352,
+        115.081584
+      ],
+      [
+        -8.121438,
+        115.079617
+      ],
+      [
+        -8.118,
+        115.078926
+      ],
+      [
+        -8.114562,
+        115.079617
+      ],
+      [
+        -8.111648,
+        115.081584
+      ],
+      [
+        -8.109701,
+        115.084528
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-celukan-bawang",
+    "name": "Pelabuhan Celukan Bawang",
+    "zoneId": "zone-celukan-bawang",
+    "type": "hotspot",
+    "city": "Kabupaten Buleleng",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.198,
+        "lng": 114.845,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.195,
+        "lng": 114.8415,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.201,
+        "lng": 114.8485,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.189017,
+        114.845
+      ],
+      [
+        -8.189701,
+        114.848473
+      ],
+      [
+        -8.191648,
+        114.851418
+      ],
+      [
+        -8.194562,
+        114.853385
+      ],
+      [
+        -8.198,
+        114.854076
+      ],
+      [
+        -8.201438,
+        114.853385
+      ],
+      [
+        -8.204352,
+        114.851418
+      ],
+      [
+        -8.206299,
+        114.848473
+      ],
+      [
+        -8.206983,
+        114.845
+      ],
+      [
+        -8.206299,
+        114.841527
+      ],
+      [
+        -8.204352,
+        114.838582
+      ],
+      [
+        -8.201438,
+        114.836615
+      ],
+      [
+        -8.198,
+        114.835924
+      ],
+      [
+        -8.194562,
+        114.836615
+      ],
+      [
+        -8.191648,
+        114.838582
+      ],
+      [
+        -8.189701,
+        114.841527
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-lovina",
+    "name": "Kawasan Wisata Pantai Lovina",
+    "zoneId": "zone-lovina",
+    "type": "hotspot",
+    "city": "Kabupaten Buleleng",
+    "surfaceTemp": "37.0°C",
+    "aqi": 75,
+    "aqiLabel": "Cukup Panas",
+    "heatStatus": "Cukup Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.161,
+        "lng": 115.028,
+        "radius": 750,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.158,
+        "lng": 115.0245,
+        "radius": 600,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.164,
+        "lng": 115.0315,
+        "radius": 637.5,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.154263,
+        115.028
+      ],
+      [
+        -8.154776,
+        115.030605
+      ],
+      [
+        -8.156236,
+        115.032813
+      ],
+      [
+        -8.158422,
+        115.034288
+      ],
+      [
+        -8.161,
+        115.034806
+      ],
+      [
+        -8.163578,
+        115.034288
+      ],
+      [
+        -8.165764,
+        115.032813
+      ],
+      [
+        -8.167224,
+        115.030605
+      ],
+      [
+        -8.167737,
+        115.028
+      ],
+      [
+        -8.167224,
+        115.025395
+      ],
+      [
+        -8.165764,
+        115.023187
+      ],
+      [
+        -8.163578,
+        115.021712
+      ],
+      [
+        -8.161,
+        115.021194
+      ],
+      [
+        -8.158422,
+        115.021712
+      ],
+      [
+        -8.156236,
+        115.023187
+      ],
+      [
+        -8.154776,
+        115.025395
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-gilimanuk",
+    "name": "Kawasan Pelabuhan Gilimanuk",
+    "zoneId": "zone-gilimanuk",
+    "type": "hotspot",
+    "city": "Kabupaten Jembrana",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.165,
+        "lng": 114.442,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.162,
+        "lng": 114.4385,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.168,
+        "lng": 114.4455,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.156017,
+        114.442
+      ],
+      [
+        -8.156701,
+        114.445473
+      ],
+      [
+        -8.158648,
+        114.448417
+      ],
+      [
+        -8.161562,
+        114.450384
+      ],
+      [
+        -8.165,
+        114.451075
+      ],
+      [
+        -8.168438,
+        114.450384
+      ],
+      [
+        -8.171352,
+        114.448417
+      ],
+      [
+        -8.173299,
+        114.445473
+      ],
+      [
+        -8.173983,
+        114.442
+      ],
+      [
+        -8.173299,
+        114.438527
+      ],
+      [
+        -8.171352,
+        114.435583
+      ],
+      [
+        -8.168438,
+        114.433616
+      ],
+      [
+        -8.165,
+        114.432925
+      ],
+      [
+        -8.161562,
+        114.433616
+      ],
+      [
+        -8.158648,
+        114.435583
+      ],
+      [
+        -8.156701,
+        114.438527
+      ]
+    ]
+  },
+  {
+    "id": "poly-zone-negara-kota",
+    "name": "Pusat Kota Negara (Jl. Sudirman)",
+    "zoneId": "zone-negara-kota",
+    "type": "hotspot",
+    "city": "Kabupaten Jembrana",
+    "surfaceTemp": "38.5°C",
+    "aqi": 95,
+    "aqiLabel": "Sangat Panas",
+    "heatStatus": "Sangat Panas",
+    "thermalNodes": [
+      {
+        "lat": -8.358,
+        "lng": 114.625,
+        "radius": 1000,
+        "weight": 0.45
+      },
+      {
+        "lat": -8.355,
+        "lng": 114.6215,
+        "radius": 800,
+        "weight": 0.35
+      },
+      {
+        "lat": -8.361,
+        "lng": 114.6285,
+        "radius": 850,
+        "weight": 0.38
+      }
+    ],
+    "coordinates": [
+      [
+        -8.349017,
+        114.625
+      ],
+      [
+        -8.349701,
+        114.628475
+      ],
+      [
+        -8.351648,
+        114.63142
+      ],
+      [
+        -8.354562,
+        114.633388
+      ],
+      [
+        -8.358,
+        114.63408
+      ],
+      [
+        -8.361438,
+        114.633388
+      ],
+      [
+        -8.364352,
+        114.63142
+      ],
+      [
+        -8.366299,
+        114.628475
+      ],
+      [
+        -8.366983,
+        114.625
+      ],
+      [
+        -8.366299,
+        114.621525
+      ],
+      [
+        -8.364352,
+        114.61858
+      ],
+      [
+        -8.361438,
+        114.616612
+      ],
+      [
+        -8.358,
+        114.61592
+      ],
+      [
+        -8.354562,
+        114.616612
+      ],
+      [
+        -8.351648,
+        114.61858
+      ],
+      [
+        -8.349701,
+        114.621525
+      ]
+    ]
+  }
+],
 
-  // ============================================
-  // PAPAN MISI PENANAMAN POHON
-  // ============================================
+  // 6. MISI AKSI TANAM WARGA
   missions: [
-    {
-      id: "misi-teuku-umar-1",
-      zoneId: "zone-teuku-umar",
-      zoneName: "Jl. Teuku Umar Barat",
-      title: "Penanaman Pohon Tanjung di Pelataran Ruko",
-      targetTree: "Pohon Tanjung (Mimusops elengi)",
-      rewardPoints: 250,
-      status: "Tersedia",
-      safeDistance: "Minimal 1.5 meter dari dinding got",
-      description: "Bantu redam radiasi aspal panas dengan menanam 1 bibit Pohon Tanjung berakar tunggang di sempadan ruko.",
-      tags: ["Padat Semen", "Akar Tunggang", "+250 Poin"]
-    },
-    {
-      id: "misi-sesetan-1",
-      zoneId: "zone-sesetan",
-      zoneName: "Jl. Raya Sesetan",
-      title: "Hijaukan Koridor Semen Jl. Raya Sesetan",
-      targetTree: "Ketapang Kencana (Terminalia mantaly)",
-      rewardPoints: 250,
-      status: "Tersedia",
-      safeDistance: "Minimal 1.0 meter dari saluran pipa",
-      description: "Beri naungan bertingkat di koridor gang sempit tanpa mengganggu ruang pejalan kaki dan got pemukiman.",
-      tags: ["Gang Sempit", "Akar Vertikal", "+250 Poin"]
-    },
-    {
-      id: "misi-gatsu-1",
-      zoneId: "zone-gatot-subroto",
-      zoneName: "Koridor Sempadan Gatsu Barat",
-      title: "Penghalang Debu & Terik Aspal Gatsu",
-      targetTree: "Kiara Payung (Filicium decipiens)",
-      rewardPoints: 300,
-      status: "Tersedia",
-      safeDistance: "Minimal 2.0 meter dari trotoar",
-      description: "Tanam pohon berdaun lebat untuk memotong debu suspensi kendaraan dan mengurangi pantulan panas aspal.",
-      tags: ["Jalan Raya", "Serap Debu", "+300 Poin"]
-    },
-    {
-      id: "misi-jimbaran-1",
-      zoneId: "zone-jimbaran",
-      zoneName: "Pemukiman Lahan Kering Jimbaran",
-      title: "Peneduh Tahan Kemarau Tanah Kapur",
-      targetTree: "Tabebuia Emas (Handroanthus chrysotrichus)",
-      rewardPoints: 250,
-      status: "Tersedia",
-      safeDistance: "Minimal 2.0 meter dari fondasi",
-      description: "Pohon berbunga indah yang mampu menembus tanah kapur tanpa merusak dinding bangunan warga.",
-      tags: ["Tanah Kapur", "Tahan Panas", "+250 Poin"]
-    }
-  ],
+  {
+    "id": "mission-zone-teuku-umar",
+    "zoneId": "zone-teuku-umar",
+    "title": "Aksi Tanam: Jl. Teuku Umar Barat",
+    "location": "Jl. Teuku Umar Barat, Pemecutan Klod, Kec. Denpasar Barat, Kota Denpasar",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-gatot-subroto",
+    "zoneId": "zone-gatot-subroto",
+    "title": "Aksi Tanam: Jl. Gatot Subroto Barat",
+    "location": "Jl. Gatot Subroto Barat, Padangsambian Kaja, Kec. Denpasar Barat, Kota Denpasar",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-sesetan",
+    "zoneId": "zone-sesetan",
+    "title": "Aksi Tanam: Jl. Raya Sesetan",
+    "location": "Jl. Raya Sesetan, Sesetan, Kec. Denpasar Selatan, Kota Denpasar",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-sanur-by-pass",
+    "zoneId": "zone-sanur-by-pass",
+    "title": "Aksi Tanam: Jl. By Pass Ngurah Rai Sanur",
+    "location": "Jl. By Pass Ngurah Rai, Sanur Kauh, Kec. Denpasar Selatan, Kota Denpasar",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-gajah-mada",
+    "zoneId": "zone-gajah-mada",
+    "title": "Aksi Tanam: Kawasan Gajah Mada & Pasar Badung",
+    "location": "Kawasan Gajah Mada & Pasar Badung, Denpasar Utara, Kota Denpasar",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-pelabuhan-benoa",
+    "zoneId": "zone-pelabuhan-benoa",
+    "title": "Aksi Tanam: Kawasan Pelabuhan Benoa",
+    "location": "Kawasan Pelabuhan Benoa, Pedungan, Denpasar Selatan, Kota Denpasar",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-kuta-legian",
+    "zoneId": "zone-kuta-legian",
+    "title": "Aksi Tanam: Jl. Raya Kuta & Legian",
+    "location": "Jl. Raya Kuta & Legian, Kuta, Kabupaten Badung",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-canggu-batubolong",
+    "zoneId": "zone-canggu-batubolong",
+    "title": "Aksi Tanam: Jl. Pantai Batu Bolong, Canggu",
+    "location": "Jl. Pantai Batu Bolong, Canggu, Kec. Kuta Utara, Kabupaten Badung",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-seminyak",
+    "zoneId": "zone-seminyak",
+    "title": "Aksi Tanam: Kawasan Seminyak & Petitenget",
+    "location": "Kawasan Seminyak & Petitenget, Kuta Utara, Kabupaten Badung",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-jimbaran",
+    "zoneId": "zone-jimbaran",
+    "title": "Aksi Tanam: Jl. Kampus Unud, Jimbaran",
+    "location": "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-nusa-dua-by-pass",
+    "zoneId": "zone-nusa-dua-by-pass",
+    "title": "Aksi Tanam: Jl. By Pass Ngurah Rai Nusa Dua",
+    "location": "Jl. By Pass Ngurah Rai Nusa Dua, Benoa, Kec. Kuta Selatan, Kabupaten Badung",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-terminal-mengwi",
+    "zoneId": "zone-terminal-mengwi",
+    "title": "Aksi Tanam: Kawasan Terminal Mengwi",
+    "location": "Kawasan Terminal Mengwi, Mengwitani, Kec. Mengwi, Kabupaten Badung",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-uluwatu",
+    "zoneId": "zone-uluwatu",
+    "title": "Aksi Tanam: Kawasan Tebing Uluwatu & Pecatu",
+    "location": "Kawasan Tebing Uluwatu & Pecatu, Kuta Selatan, Kabupaten Badung",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-tabanan-kota",
+    "zoneId": "zone-tabanan-kota",
+    "title": "Aksi Tanam: Jl. Bypass Ir. Soekarno, Tabanan",
+    "location": "Jl. Bypass Ir. Soekarno, Delod Peken, Kec. Tabanan, Kabupaten Tabanan",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-kediri-tabanan",
+    "zoneId": "zone-kediri-tabanan",
+    "title": "Aksi Tanam: Kawasan Ruko & Industri Kediri",
+    "location": "Kawasan Ruko & Industri Kediri, Kec. Kediri, Kabupaten Tabanan",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-ubud-raya",
+    "zoneId": "zone-ubud-raya",
+    "title": "Aksi Tanam: Jl. Raya Ubud",
+    "location": "Jl. Raya Ubud, Ubud, Kec. Ubud, Kabupaten Gianyar",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-sukawati",
+    "zoneId": "zone-sukawati",
+    "title": "Aksi Tanam: Kawasan Pasar Seni Sukawati",
+    "location": "Kawasan Pasar Seni Sukawati, Kec. Sukawati, Kabupaten Gianyar",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-gianyar-kota",
+    "zoneId": "zone-gianyar-kota",
+    "title": "Aksi Tanam: Pusat Kota Gianyar (Jl. Ngurah Rai)",
+    "location": "Pusat Kota Gianyar, Jl. Ngurah Rai, Kabupaten Gianyar",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-semarapura-kota",
+    "zoneId": "zone-semarapura-kota",
+    "title": "Aksi Tanam: Pusat Kota Semarapura",
+    "location": "Pusat Kota Semarapura, Kec. Klungkung, Kabupaten Klungkung",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-nusa-penida",
+    "zoneId": "zone-nusa-penida",
+    "title": "Aksi Tanam: Pelabuhan Sampalan Nusa Penida",
+    "location": "Pelabuhan Sampalan Nusa Penida, Batununggul, Nusa Penida, Kabupaten Klungkung",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-padangbai",
+    "zoneId": "zone-padangbai",
+    "title": "Aksi Tanam: Kawasan Pelabuhan Padangbai",
+    "location": "Kawasan Pelabuhan Padangbai, Padangbai, Kec. Manggis, Kabupaten Karangasem",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-amlapura-kota",
+    "zoneId": "zone-amlapura-kota",
+    "title": "Aksi Tanam: Pusat Kota Amlapura (Jl. Gajah Mada)",
+    "location": "Pusat Kota Amlapura, Subagan, Kec. Karangasem, Kabupaten Karangasem",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-kubu-tulamben",
+    "zoneId": "zone-kubu-tulamben",
+    "title": "Aksi Tanam: Kawasan Kubu & Tulamben",
+    "location": "Kawasan Kubu & Tulamben, Kec. Kubu, Kabupaten Karangasem",
+    "targetTemp": "39.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Tanjung (Mimusops elengi)",
+    "safeDistance": "Aman dari Keramik & Fondasi",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-singaraja-kota",
+    "zoneId": "zone-singaraja-kota",
+    "title": "Aksi Tanam: Jl. Ahmad Yani, Singaraja",
+    "location": "Jl. Ahmad Yani, Kaliuntu, Kec. Buleleng, Kabupaten Buleleng",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-celukan-bawang",
+    "zoneId": "zone-celukan-bawang",
+    "title": "Aksi Tanam: Pelabuhan Celukan Bawang",
+    "location": "Pelabuhan Celukan Bawang, Gerokgak, Kabupaten Buleleng",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-lovina",
+    "zoneId": "zone-lovina",
+    "title": "Aksi Tanam: Kawasan Wisata Pantai Lovina",
+    "location": "Kawasan Wisata Pantai Lovina, Kalibukbuk, Kec. Banjar, Kabupaten Buleleng",
+    "targetTemp": "37.0°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 2,
+    "recommendedTree": "Pohon Ketapang Kencana (Terminalia mantaly)",
+    "safeDistance": "Aman untuk Pipa Got Sempit",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-gilimanuk",
+    "zoneId": "zone-gilimanuk",
+    "title": "Aksi Tanam: Kawasan Pelabuhan Gilimanuk",
+    "location": "Kawasan Pelabuhan Gilimanuk, Melaya, Kabupaten Jembrana",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 3,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  },
+  {
+    "id": "mission-zone-negara-kota",
+    "zoneId": "zone-negara-kota",
+    "title": "Aksi Tanam: Pusat Kota Negara (Jl. Sudirman)",
+    "location": "Pusat Kota Negara, Jl. Jenderal Sudirman, Kabupaten Jembrana",
+    "targetTemp": "38.5°C",
+    "rewardPoints": 250,
+    "requiredVolunteers": 3,
+    "currentVolunteers": 1,
+    "recommendedTree": "Pohon Kiara Payung (Filicium decipiens)",
+    "safeDistance": "Aman untuk Tepi Jalan",
+    "status": "Tersedia"
+  }
+],
 
-  // ============================================
-  // FEED POSTINGAN KOMUNITAS WARGA
-  // ============================================
+  // 7. KOMUNITAS & CERITA WARGA
   communityPosts: [
     {
       id: "post-1",
@@ -1402,21 +6183,9 @@ const TEDUH_DATA = {
   redeemVoucher: function(voucherId) {
     const voucher = this.vouchers.find(v => v.id === voucherId);
     if (!voucher) return { success: false, message: "Voucher tidak ditemukan." };
-    
-    const user = this.getUserData();
-    if (user.points < voucher.pointsRequired) {
-      return { 
-        success: false, 
-        message: "Poin Anda (" + user.points + ") belum mencukupi. Dibutuhkan " + voucher.pointsRequired + " poin." 
-      };
-    }
 
-    // Potong poin
-    this.updateUserPoints(-voucher.pointsRequired);
-
-    // Buat kode kupon unik
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const couponCode = voucher.codePrefix + "-" + randomSuffix;
+    const couponCode = (voucher.codePrefix || "TEDUH") + "-" + randomSuffix;
 
     const redeemedItem = {
       ...voucher,
@@ -1433,8 +6202,239 @@ const TEDUH_DATA = {
     return { 
       success: true, 
       couponCode: couponCode, 
-      remainingPoints: user.points - voucher.pointsRequired,
       voucher: redeemedItem 
+    };
+  },
+
+  // ============================================
+  // NOTIFIKASI PENGGUNA (SEDERHANA & INFORMASIONAL ALA NUTRINESIA)
+  // ============================================
+  notifications: [
+    {
+      id: "notif-1",
+      type: "mission",
+      message: "Penanaman Pohon Tanjung berhasil diverifikasi (+250 Poin).",
+      time: "15 menit lalu",
+      icon: "tree",
+      isRead: false
+    },
+    {
+      id: "notif-2",
+      type: "community",
+      message: "Pak Wayan menanggapi diskusi pekarangan sejuk Anda.",
+      time: "1 jam lalu",
+      icon: "chat",
+      isRead: false
+    }
+  ],
+
+  getNotifications: function() {
+    let readIds = [];
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('teduh_read_notifications');
+      if (saved) {
+        try { readIds = JSON.parse(saved) || []; } catch(e) {}
+      }
+    }
+    return this.notifications.map(n => ({
+      ...n,
+      isRead: n.isRead || readIds.includes(n.id)
+    }));
+  },
+
+  markAllNotificationsRead: function() {
+    const allIds = this.notifications.map(n => n.id);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('teduh_read_notifications', JSON.stringify(allIds));
+    }
+    return this.getNotifications();
+  },
+
+  // ============================================
+  // TITIK TANAM BERSAMA WARGA SEKITAR DI PETA
+  // ============================================
+  citizenMissions: [
+    {
+      id: "cm-panjer-dewi",
+      zoneId: "zone-sesetan",
+      authorName: "Dewi Lestari",
+      authorAvatar: "DL",
+      location: "Panjer, Denpasar Selatan",
+      lat: -8.6815,
+      lng: 115.2260,
+      treeName: "Pohon Tabebuya",
+      scheduledDate: "2026-09-30",
+      currentVolunteers: 2,
+      maxVolunteers: 4,
+      bonusPoints: 100,
+      volunteers: [
+        { name: "Dewi Lestari", avatar: "DL", role: "Inisiator", time: "2 hari lalu" },
+        { name: "Wayan Sukarja", avatar: "WS", role: "Warga Sekitar", time: "Kemarin" }
+      ]
+    },
+    {
+      id: "cm-dauh-puri-made",
+      zoneId: "zone-teuku-umar",
+      authorName: "Made Artha",
+      authorAvatar: "MA",
+      location: "Dauh Puri, Denpasar Barat",
+      lat: -8.6720,
+      lng: 115.2045,
+      treeName: "Pohon Tanjung",
+      scheduledDate: "2026-10-02",
+      currentVolunteers: 1,
+      maxVolunteers: 3,
+      bonusPoints: 100,
+      volunteers: [
+        { name: "Made Artha", avatar: "MA", role: "Inisiator", time: "1 hari lalu" }
+      ]
+    },
+    {
+      id: "cm-padangsambian-siti",
+      zoneId: "zone-gatot-subroto",
+      authorName: "Siti Rahma",
+      authorAvatar: "SR",
+      location: "Padangsambian, Denpasar Barat",
+      lat: -8.6410,
+      lng: 115.1830,
+      treeName: "Pohon Kiara Payung",
+      scheduledDate: "2026-10-03",
+      currentVolunteers: 3,
+      maxVolunteers: 5,
+      bonusPoints: 100,
+      volunteers: [
+        { name: "Siti Rahma", avatar: "SR", role: "Inisiator", time: "3 hari lalu" },
+        { name: "Kadek Suardana", avatar: "KS", role: "Warga Sekitar", time: "2 hari lalu" },
+        { name: "Nyoman Budi", avatar: "NB", role: "Warga Sekitar", time: "Kemarin" }
+      ]
+    },
+    {
+      id: "cm-renon-putu",
+      zoneId: "zone-renon",
+      authorName: "Putu Wijaya",
+      authorAvatar: "PW",
+      location: "Renon, Denpasar Timur",
+      lat: -8.6780,
+      lng: 115.2390,
+      treeName: "Pohon Ketapang Kencana",
+      scheduledDate: "2026-10-05",
+      currentVolunteers: 2,
+      maxVolunteers: 4,
+      bonusPoints: 100,
+      volunteers: [
+        { name: "Putu Wijaya", avatar: "PW", role: "Inisiator", time: "1 hari lalu" },
+        { name: "Ketut Astawa", avatar: "KA", role: "Warga Sekitar", time: "5 jam lalu" }
+      ]
+    }
+  ],
+
+  formatDateIndo: function(dateStr) {
+    if (!dateStr) return 'Segera';
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    try {
+      const parts = String(dateStr).split('-');
+      if (parts.length === 3) {
+        const day = parseInt(parts[2], 10);
+        const monthIdx = parseInt(parts[1], 10) - 1;
+        const year = parts[0];
+        if (monthIdx >= 0 && monthIdx < 12) {
+          return `${day} ${months[monthIdx]} ${year}`;
+        }
+      }
+      const d = new Date(dateStr);
+      if (!isNaN(d.getTime())) {
+        return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+      }
+    } catch(e) {}
+    return dateStr;
+  },
+
+  getUserProfile: function() {
+    return this.getUserData();
+  },
+
+  getCitizenMissions: function() {
+    const joinedIds = this.getJoinedCitizenMissions();
+    const currentUser = this.getUserData ? this.getUserData() : { name: "John Doe", avatar: "JD" };
+    return this.citizenMissions.map(m => {
+      const isJoined = joinedIds.includes(m.id);
+      const baseVolunteers = (m.volunteers || []).slice();
+      if (isJoined) {
+        baseVolunteers.push({
+          name: currentUser.name || "John Doe",
+          avatar: currentUser.avatar || "JD",
+          role: "Warga Sekitar",
+          time: "Baru saja",
+          isSelf: true
+        });
+      }
+      return {
+        ...m,
+        isJoined: isJoined,
+        currentVolunteers: isJoined ? (m.currentVolunteers + 1) : m.currentVolunteers,
+        volunteers: baseVolunteers
+      };
+    });
+  },
+
+  getJoinedCitizenMissions: function() {
+    if (typeof localStorage === 'undefined') return [];
+    const saved = localStorage.getItem('teduh_joined_community_missions');
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved) || [];
+    } catch(e) {
+      return [];
+    }
+  },
+
+  joinCitizenMission: function(missionId) {
+    const joinedIds = this.getJoinedCitizenMissions();
+    if (joinedIds.includes(missionId)) {
+      return { success: false, message: 'Sudah terdaftar di titik ini' };
+    }
+    const mission = this.citizenMissions.find(m => m.id === missionId);
+    if (!mission) {
+      return { success: false, message: 'Titik tanam tidak ditemukan' };
+    }
+
+    joinedIds.push(missionId);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('teduh_joined_community_missions', JSON.stringify(joinedIds));
+    }
+
+    const updatedUser = this.updateUserPoints(mission.bonusPoints || 100);
+
+    return {
+      success: true,
+      mission: mission,
+      bonusPoints: mission.bonusPoints || 100,
+      updatedUser: updatedUser
+    };
+  },
+
+  leaveCitizenMission: function(missionId) {
+    let joinedIds = this.getJoinedCitizenMissions();
+    if (!joinedIds.includes(missionId)) {
+      return { success: false, message: 'Belum terdaftar di titik ini' };
+    }
+    const mission = this.citizenMissions.find(m => m.id === missionId);
+    if (!mission) {
+      return { success: false, message: 'Titik tanam tidak ditemukan' };
+    }
+
+    joinedIds = joinedIds.filter(id => id !== missionId);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('teduh_joined_community_missions', JSON.stringify(joinedIds));
+    }
+
+    const updatedUser = this.updateUserPoints(-(mission.bonusPoints || 100));
+
+    return {
+      success: true,
+      mission: mission,
+      bonusPoints: mission.bonusPoints || 100,
+      updatedUser: updatedUser
     };
   }
 };

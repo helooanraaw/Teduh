@@ -12,6 +12,11 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Batas Maksimal Ketebalan Tipografi (Maksimal Font-Weight 600) */
+h1, h2, h3, h4, h5, h6, strong, b {
+  font-weight: 600;
+}
+
 .map-viewport {
   position: relative;
   width: 100%;
@@ -351,7 +356,7 @@ html, body {
   color: var(--color-primary);
   font-family: var(--font-family);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   user-select: none;
   padding: 12px 20px;
@@ -456,14 +461,14 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
   flex-shrink: 0;
 }
 
 .map-onboarding-text h4 {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate);
   margin-bottom: 3px;
 }
@@ -528,25 +533,28 @@ html, body {
 }
 
 /* ============================================
-   LAPISAN CITRA RADIASI TERMAL INFRAMERAH (LST HEATMAP GAUSSIAN BLEND)
-   Model dispersi radiasi panas alami tanpa garis poligon bersudut
+   LAPISAN CITRA RADIASI TERMAL INFRAMERAH (FLIR THERMAL INFRARED BLEND)
+   Model dispersi radiasi panas alami multi-tingkat kontras tinggi (Zoom Jauh)
    ============================================ */
 .thermal-heat-outer {
   stroke: none !important;
   pointer-events: none;
-  filter: blur(28px);
+  filter: blur(14px);
+  will-change: opacity;
 }
 
 .thermal-heat-mid {
   stroke: none !important;
   pointer-events: none;
-  filter: blur(18px);
+  filter: blur(8px);
+  will-change: opacity;
 }
 
 .thermal-heat-core {
   stroke: none !important;
   pointer-events: none;
-  filter: blur(10px);
+  filter: blur(4px);
+  will-change: opacity;
 }
 
 .thermal-click-target {
@@ -554,22 +562,83 @@ html, body {
   outline: none !important;
   cursor: pointer;
   pointer-events: auto;
+  transition: fill-opacity 0.2s ease;
 }
 
-/* Leaflet Custom Elements, Pins & Popups (Zero Border, Zero Shadow) */
-.leaflet-popup-content-wrapper {
-  background: #FFFFFF !important;
-  color: var(--color-slate) !important;
-  border-radius: var(--radius-xl) !important;
-  border: none !important;
-  box-shadow: none !important;
+.thermal-click-target:hover {
+  fill-opacity: 0.08 !important;
+}
+
+/* ============================================
+   KORIDOR RADIASI JALAN MIKRO (MICRO STREET HEAT RIBBONS)
+   Radiasi presisi pada aspal dan lorong semen saat zoom dekat (Zoom >= 15-16)
+   ============================================ */
+.street-heat-outer {
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  pointer-events: none;
+  filter: blur(7px);
+  will-change: opacity;
+}
+
+.street-heat-mid {
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  pointer-events: none;
+  filter: blur(3px);
+  will-change: opacity;
+}
+
+.street-heat-core {
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  pointer-events: none;
+  filter: blur(1px);
+  will-change: opacity;
+}
+
+.street-heat-target {
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  outline: none !important;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: stroke-opacity 0.2s ease;
+}
+
+.street-heat-target:hover {
+  stroke-opacity: 0.14 !important;
+}
+
+
+
+/* Leaflet Custom Elements, Pins & Popups */
+.custom-leaflet-popup .leaflet-popup-content-wrapper {
+  background: var(--color-surface, #FAF9F4) !important;
+  color: var(--color-slate, #0E1116) !important;
+  border-radius: var(--radius-lg, 20px) !important;
+  border: 1px solid var(--color-border, #D4D0BC) !important;
+  box-shadow: 0 16px 36px -4px rgba(14, 17, 22, 0.16), 0 4px 12px rgba(14, 17, 22, 0.04) !important;
   padding: 4px !important;
+  animation: popupCardEntrance 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom center;
 }
 
-.leaflet-popup-tip {
-  background: #FFFFFF !important;
-  box-shadow: none !important;
-  border: none !important;
+.custom-leaflet-popup .leaflet-popup-tip {
+  background: var(--color-surface, #FAF9F4) !important;
+  box-shadow: 0 4px 12px rgba(14, 17, 22, 0.1) !important;
+  border: 1px solid var(--color-border, #D4D0BC) !important;
+}
+
+@keyframes popupCardEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .leaflet-popup-content {
@@ -621,7 +690,7 @@ html, body {
 
 .map-popup-title {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate);
   margin: 0;
   line-height: 1.25;
@@ -636,46 +705,62 @@ html, body {
 
 .map-popup-mini-stat {
   background: var(--color-surface-subtle);
-  padding: 6px 8px;
-  border-radius: var(--radius-sm);
+  padding: 7px 9px;
+  border-radius: var(--radius-sm, 8px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .map-popup-mini-stat span {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--color-text-muted);
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .map-popup-mini-stat strong {
-  font-size: 11px;
+  font-size: 12.5px;
   color: var(--color-slate);
   font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2px;
 }
 
-.map-popup-btn {
+.map-popup-btn,
+.leaflet-container a.map-popup-btn,
+.custom-leaflet-popup a.map-popup-btn {
   margin-top: 4px;
-  background: var(--color-slate);
-  color: #FFFFFF;
+  background: var(--color-btn-primary, #5c8437) !important;
+  color: #FFFFFF !important;
   border: none;
   border-radius: var(--radius-full);
   padding: 9px 14px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
-.map-popup-btn:hover {
-  background: var(--color-primary);
-  color: #FFFFFF;
+.map-popup-btn *,
+.leaflet-container a.map-popup-btn *,
+.custom-leaflet-popup a.map-popup-btn * {
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+}
+
+.map-popup-btn:hover,
+.leaflet-container a.map-popup-btn:hover,
+.custom-leaflet-popup a.map-popup-btn:hover {
+  background: var(--color-btn-primary-hover, #6ea842) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
 }
 
 /* Custom Marker Pins */
@@ -756,7 +841,7 @@ html, body {
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
@@ -797,7 +882,7 @@ html, body {
   background: var(--color-primary, #1A382B);
   color: #FFFFFF;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -811,7 +896,7 @@ html, body {
 
 .friend-popup-name {
   font-size: 13.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate, #0E1116);
   margin: 0 0 2px 0;
   line-height: 1.3;
@@ -883,7 +968,7 @@ html, body {
   background: #2E7D32;
   color: #FFFFFF;
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -976,6 +1061,18 @@ html, body {
   background: var(--color-background);
 }
 
+.drawer-header.hidden {
+  display: none !important;
+}
+
+.drawer-body.hidden {
+  display: none !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .drawer-header-meta {
   display: flex;
   flex-direction: column;
@@ -984,9 +1081,68 @@ html, body {
   flex: 1;
 }
 
-.drawer-category-pill {
+/* Profil Inisiator Misi Warga di Drawer Header */
+.drawer-citizen-profile-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-citizen-profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 4px 10px rgba(26, 56, 43, 0.22);
+}
+
+.drawer-citizen-profile-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+.drawer-citizen-role-pill {
   font-size: 10px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1A382B;
+  background: #E8EFEA;
+  padding: 2px 8px;
+  border-radius: 100px;
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 2px;
+}
+
+.drawer-citizen-author-name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #0E1116;
+  margin: 0;
+}
+
+.drawer-citizen-location-sub {
+  font-size: 11.5px;
+  color: #717680;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.drawer-category-pill {
+  font-size: 10px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 3px 9px;
@@ -1000,7 +1156,7 @@ html, body {
 
 .drawer-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.02em;
   color: var(--color-slate);
@@ -1056,7 +1212,7 @@ html, body {
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   flex-shrink: 0;
@@ -1071,7 +1227,7 @@ html, body {
 /* Navigasi Segmented Stage Switcher */
 .drawer-stage-nav {
   display: flex;
-  background: #E4E9E6;
+  background: rgba(221, 217, 177, 0.45);
   padding: 4px;
   border-radius: var(--radius-full);
   margin: 0 28px 16px 28px;
@@ -1102,7 +1258,8 @@ html, body {
 
 .drawer-stage-tab.is-active {
   background: #FFFFFF;
-  color: var(--color-slate);
+  color: var(--color-primary);
+  font-weight: 600;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -1116,7 +1273,7 @@ html, body {
   background: #CBD5D0;
   color: var(--color-slate);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .drawer-stage-tab.is-active .stage-tab-num {
@@ -1132,6 +1289,89 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* ============================================
+   STATUS PEMUATAN ANALISIS SPASIAL (CLEAN DRAWER LOADING)
+   ============================================ */
+.drawer-loading-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px 24px;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: auto 0;
+  will-change: transform, opacity;
+  animation: drawerLoadingFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes drawerLoadingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.drawer-loading-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #E8EFEA;
+  border-top-color: var(--color-primary, #1A382B);
+  border-radius: 50%;
+  animation: drawerSpin 0.8s linear infinite;
+}
+
+@keyframes drawerSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.drawer-loading-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 280px;
+}
+
+.drawer-loading-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.drawer-loading-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: #71717A;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Optimasi Animasi GSAP Reveal */
+.drawer-header,
+.drawer-body,
+.drawer-analysis-card,
+.drawer-tree-card,
+.drawer-actions-group,
+.narrative-box,
+.volunteer-hero-card,
+.planting-steps-card,
+.planting-step-row,
+.volunteer-collab-card {
+  will-change: transform, opacity;
 }
 
 /* Custom Scrollbar untuk Drawer */
@@ -1155,7 +1395,7 @@ html, body {
 /* Section Headings di dalam Drawer */
 .drawer-section-title {
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-primary);
@@ -1171,7 +1411,7 @@ html, body {
 
 .donut-interactive-hint {
   font-size: 9.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
   background: #E8EFEA;
   padding: 2px 7px;
@@ -1257,7 +1497,7 @@ html, body {
 
 .spectrum-curr-val {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-secondary);
   letter-spacing: -0.02em;
 }
@@ -1344,7 +1584,7 @@ html, body {
 
 .donut-score {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1395,7 +1635,7 @@ html, body {
 
 .legend-item.is-active .legend-val {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .legend-left {
@@ -1439,7 +1679,7 @@ html, body {
 
 .narrative-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-secondary);
@@ -1448,7 +1688,7 @@ html, body {
 
 .narrative-factor-badge {
   font-size: 9.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
   background: #E8EFEA;
   padding: 2px 7px;
@@ -1507,7 +1747,7 @@ html, body {
 
 .tree-img-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 3px 8px;
   border-radius: var(--radius-full);
   background: rgba(14, 17, 22, 0.82);
@@ -1529,7 +1769,7 @@ html, body {
 
 .tree-clean-title {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate);
   margin: 0;
   letter-spacing: -0.015em;
@@ -1544,7 +1784,7 @@ html, body {
   font-weight: 400;
 }
 
-/* Tombol Aksi Utama Drawer (Stage 1) */
+/* Tombol Aksi Utama Drawer (Stage 1 & Stage 2) */
 .drawer-actions-group {
   display: flex;
   flex-direction: column;
@@ -1554,11 +1794,11 @@ html, body {
 
 .btn-primary-action {
   width: 100%;
-  background: var(--color-slate);
+  background: var(--color-btn-primary, #5c8437);
   color: #FFFFFF;
   padding: 14px 20px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13.5px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -1570,30 +1810,37 @@ html, body {
 }
 
 .btn-primary-action:hover {
-  background: var(--color-primary);
+  background: var(--color-btn-primary-hover, #6ea842);
   transform: translateY(-1px);
+}
+
+.btn-primary-action.is-active-mission {
+  background: var(--color-primary, #1A382B);
+  opacity: 0.95;
 }
 
 .btn-secondary-action {
   width: 100%;
-  background: #FFFFFF;
-  color: var(--color-primary);
+  background: var(--color-surface, #FAF9F4);
+  color: var(--color-slate, #0E1116);
   padding: 13px 20px;
-  border-radius: var(--radius-full);
-  font-size: 12.5px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
   font-weight: 600;
-  border: none;
+  border: 1px solid var(--color-border, #D4D0BC);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   text-decoration: none;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
 .btn-secondary-action:hover {
-  background: #E2ECE7;
-  color: var(--color-slate);
+  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.5));
+  border-color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1A382B);
 }
 
 /* =========================================================================
@@ -1645,6 +1892,85 @@ html, body {
 }
 
 /* =========================================================================
+   ATMOSPHERIC SOFT THERMAL HALO & MICRO FOCAL NODES (Clean Satellite Contrast)
+========================================================================== */
+.thermal-heat-outer {
+  filter: blur(22px);
+  transform: translate3d(0, 0, 0);
+  will-change: filter;
+  pointer-events: none !important;
+}
+
+.thermal-heat-mid {
+  filter: blur(12px);
+  transform: translate3d(0, 0, 0);
+  will-change: filter;
+  pointer-events: none !important;
+}
+
+.thermal-heat-core {
+  filter: blur(6px);
+  transform: translate3d(0, 0, 0);
+  will-change: filter;
+  pointer-events: none !important;
+}
+
+.thermal-click-target {
+  cursor: pointer !important;
+}
+
+.thermal-focal-marker {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.thermal-focal-node {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.thermal-focal-ring {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #BA4E2A;
+  opacity: 0.3;
+  animation: focal-pulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.thermal-focal-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #BA4E2A;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes focal-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+}
+
+/* =========================================================================
    STAGE 2: RENCANA AKSI & TARGET PEMULIHAN (Impeccable Polish)
 ========================================================================== */
 .impact-comparison-card {
@@ -1670,7 +1996,7 @@ html, body {
   align-items: center;
   gap: 6px;
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate, #0E1116);
   letter-spacing: -0.01em;
 }
@@ -1684,7 +2010,7 @@ html, body {
 
 .impact-score-badge {
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 3px 9px;
   border-radius: var(--radius-full, 9999px);
   background: var(--color-primary-container, #E8EFEA);
@@ -1772,14 +2098,14 @@ html, body {
 
 .impact-val-target {
   font-size: 16.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--color-slate, #0E1116);
   letter-spacing: -0.02em;
 }
 
 .impact-pill-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 7px;
   border-radius: var(--radius-full, 9999px);
   align-self: flex-start;
@@ -1824,7 +2150,7 @@ html, body {
 
 .action-progress-badge {
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary, #1A382B);
   background: #E8EFEA;
   padding: 2px 8px;
@@ -1899,7 +2225,7 @@ html, body {
 
 .phased-node-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   padding: 2px 7px;
@@ -1925,7 +2251,7 @@ html, body {
 
 .phased-node-title {
   font-size: 13.5px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-slate, #0E1116);
   margin: 0;
   line-height: 1.35;
@@ -2030,127 +2356,7 @@ html, body {
   text-align: right;
 }
 
-/* Kolaborasi Warga Gotong Royong di Drawer (Stage 2) */
-.map-collab-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: var(--color-surface-subtle, #F4F6F5);
-  border-radius: var(--radius-md, 16px);
-  padding: 14px 16px;
-  margin-top: 4px;
-}
-
-.map-collab-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.map-collab-title {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--color-slate, #0E1116);
-  letter-spacing: -0.01em;
-}
-
-.map-collab-bonus {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--color-primary, #1A382B);
-  background: #E2ECE7;
-  padding: 2px 8px;
-  border-radius: var(--radius-full, 9999px);
-}
-
-.map-collab-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-height: 28px;
-  align-items: center;
-}
-
-.map-collab-empty-hint {
-  font-size: 11px;
-  color: #71717A;
-  line-height: 1.4;
-  font-style: normal;
-}
-
-.map-collab-chip-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #FFFFFF;
-  border: 1px solid #E4E7E5;
-  border-radius: var(--radius-full, 9999px);
-  padding: 4px 10px 4px 5px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--color-slate, #0E1116);
-  animation: chip-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes chip-fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.map-collab-chip-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
-  font-size: 9px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.map-collab-chip-name {
-  max-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.map-collab-chip-pts {
-  font-size: 10px;
-  color: var(--color-primary, #1A382B);
-  font-weight: 700;
-  background: #E8F0EC;
-  padding: 1px 6px;
-  border-radius: var(--radius-full, 9999px);
-}
-
-.map-collab-chip-remove {
-  background: transparent;
-  border: none;
-  color: #94A3B8;
-  font-size: 12px;
-  cursor: pointer;
-  padding: 0 2px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color var(--transition-fast, 0.2s ease);
-}
-
-.map-collab-chip-remove:hover {
-  color: #BA4E2A;
-}
+/* Kolaborasi Warga Gotong Royong (Didefinisikan lengkap di Stage 2 section) */
 
 .mission-btn-group {
   display: flex;
@@ -2307,7 +2513,7 @@ html, body {
 
 .impact-temp-drop {
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 600;
   color: #2E7D32;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -2335,7 +2541,7 @@ html, body {
   padding: 12px 18px;
   border-radius: var(--radius-full);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2355,22 +2561,24 @@ html, body {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(24px);
   z-index: 9999;
-  background: var(--color-slate);
+  background: #0E1116;
   color: #FFFFFF;
   font-size: 12px;
-  font-weight: 600;
-  padding: 10px 22px;
-  border-radius: var(--radius-full);
-  border: none;
-  box-shadow: none;
-  transition: opacity 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 9px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
   opacity: 0;
   pointer-events: none;
 }
 
 #teduhToast.is-visible {
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
@@ -2636,5 +2844,1716 @@ html, body {
   }
 }
 
+@media (max-width: 420px) {
+  .map-mobile-search-capsule {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+  }
 
+  .map-mobile-search-inner {
+    padding: 4px 8px 4px 4px;
+    min-height: 44px;
+  }
+
+  .map-mobile-back-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .map-mobile-brand-logo {
+    height: 30px;
+  }
+
+  .map-mobile-bottom-dock {
+    bottom: 8px;
+    padding: 3px 4px;
+    max-width: calc(100vw - 16px);
+  }
+
+  .map-dock-item {
+    padding: 5px 6px;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  .drawer-header {
+    padding: 10px 14px 10px 14px;
+  }
+
+  .drawer-stage-nav {
+    margin: 0 14px 12px 14px;
+  }
+
+  .drawer-body {
+    padding: 0 14px 20px 14px;
+  }
+}
+
+/* ==========================================================================
+   KOMPONEN SOLUSI TANAM RELAWAN & MODAL SUKSES AMBIL MISI
+   ========================================================================== */
+
+/* 1. Hero Card Misi Relawan (Zero Border) */
+.volunteer-hero-card {
+  background: #FFFFFF;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 24px;
+  padding: 22px;
+  margin-bottom: 12px;
+}
+
+.volunteer-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.volunteer-badge-points {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  letter-spacing: 0.2px;
+}
+
+.volunteer-badge-role {
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+}
+
+.volunteer-hero-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0E1116;
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+}
+
+.volunteer-hero-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #52525B;
+  margin: 0 0 12px 0;
+}
+
+.volunteer-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #F4F4F5;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.volunteer-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.volunteer-spec-item .spec-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #71717A;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.volunteer-spec-item .spec-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0E1116;
+}
+
+.volunteer-spec-item .spec-value.green {
+  color: #1A382B;
+}
+
+/* 2. Menu 3 Langkah Menanam (Zero Border Step Cards) */
+.planting-steps-card {
+  background: #FFFFFF;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 24px;
+  padding: 22px;
+  margin-bottom: 12px;
+}
+
+.planting-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.planting-step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #F4F4F5;
+  border: none !important;
+  border-radius: 14px;
+  transition: background var(--transition-fast);
+}
+
+.planting-step-row:hover {
+  background: #ECEFEF;
+}
+
+.planting-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.planting-step-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.planting-step-info .step-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0E1116;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.planting-step-info .step-desc {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #71717A;
+  margin: 0;
+}
+
+/* 3. Kartu Ajak Warga Gotong Royong (Zero Border, Clean Neutral Zinc Paper Style) */
+.volunteer-collab-card {
+  background: #FFFFFF;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 24px;
+  padding: 22px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.volunteer-collab-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.collab-title-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.collab-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  letter-spacing: -0.01em;
+}
+
+.collab-count-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary, #1A382B);
+  background: #E8EFEA;
+  padding: 2px 9px;
+  border-radius: 100px;
+}
+
+.collab-count-badge.hidden {
+  display: none !important;
+}
+
+.collab-sub {
+  font-size: 11.5px;
+  color: #71717A;
+  line-height: 1.45;
+}
+
+/* Daftar Warga Terpilih (Spacious Rows - Clean Neutral) */
+.volunteer-collab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invited-resident-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #F4F6F5;
+  border: none !important;
+  border-radius: 14px;
+  transition: background var(--transition-fast);
+  animation: residentSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes residentSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.invited-resident-card:hover {
+  background: #ECEFEF;
+}
+
+.invited-resident-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.invited-resident-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.invited-resident-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.invited-resident-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0E1116;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.invited-resident-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  color: #71717A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.invited-resident-meta svg {
+  color: #1A382B;
+  flex-shrink: 0;
+}
+
+.btn-remove-resident {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #FFFFFF;
+  border: none !important;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717A;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-remove-resident:hover {
+  background: #FEE2E2;
+  color: #BA4E2A;
+}
+
+/* Empty State Card (Zero Border - Clean Neutral) */
+.collab-empty-state {
+  padding: 14px 16px;
+  background: #F4F6F5;
+  border: none !important;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.collab-empty-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #E8EFEA;
+  color: #1A382B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.collab-empty-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.collab-empty-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0E1116;
+}
+
+.collab-empty-sub {
+  font-size: 11px;
+  color: #71717A;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Tombol CTA Buka Pop-up Daftar Warga */
+.btn-open-friends-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 18px;
+  background: var(--color-surface, #FAF9F4);
+  color: var(--color-primary, #1A382B);
+  border: 1px solid var(--color-border, #D4D0BC);
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.btn-open-friends-modal:hover {
+  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.5));
+  border-color: var(--color-btn-primary, #5c8437);
+  color: var(--color-btn-primary, #5c8437);
+  transform: translateY(-1px);
+}
+
+/* 4. Modal Konfirmasi & Sukses Ambil Misi Tanam (Editorial Style with Emotional Touch) */
+.mission-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.mission-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mission-modal-overlay.hidden {
+  display: none !important;
+}
+
+.mission-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 17, 22, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mission-modal-overlay.is-open .mission-modal-backdrop {
+  opacity: 1;
+}
+
+.mission-modal-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid #ECECEE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(14, 17, 22, 0.12);
+  padding: 28px 22px 20px 22px;
+  box-sizing: border-box;
+  transform: scale(0.95) translateY(12px);
+  opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.mission-modal-overlay.is-open .mission-modal-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Khusus Modal Sukses: sentuhan emosional & perayaan */
+.mission-success-card {
+  max-width: 416px;
+  padding: 26px 22px 22px 22px;
+}
+
+.mission-modal-overlay.is-open .mission-success-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+/* Badge Perayaan Botani Halus */
+.success-celebrate-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+}
+
+.success-celebrate-halo {
+  position: absolute;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26, 56, 43, 0.12) 0%, rgba(26, 56, 43, 0) 72%);
+  pointer-events: none;
+}
+
+.success-celebrate-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #1A382B;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 20px rgba(26, 56, 43, 0.24), 0 0 0 4px rgba(26, 56, 43, 0.08);
+}
+
+.mission-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #F4F4F5;
+  border: none;
+  color: #717680;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mission-modal-close-btn:hover {
+  background: #E4E4E7;
+  color: #0E1116;
+}
+
+/* Centered Header */
+.mission-modal-head-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.mission-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0E1116;
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.mission-modal-desc {
+  font-size: 12.5px;
+  color: #717680;
+  margin: 0;
+  line-height: 1.45;
+  max-width: 330px;
+}
+
+/* Spec & Impact Box */
+.mission-spec-box {
+  width: 100%;
+  background: #F8FAF8;
+  border: 1px solid #ECECEE;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+}
+
+.mission-success-milestone-box {
+  background: #F8FAF8;
+  border: 1px solid #E2EAE4;
+  gap: 10px;
+}
+
+.mission-spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #EEF1EF;
+}
+
+.mission-spec-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.mission-spec-col-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #717680;
+  font-weight: 400;
+}
+
+.mission-spec-col-label svg {
+  color: #A1A1AA;
+  flex-shrink: 0;
+}
+
+.mission-spec-col-val {
+  color: #0E1116;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mission-spec-col-val.text-pine {
+  color: #1A382B;
+}
+
+/* Guidance Item in Success Modal */
+.mission-success-guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #FFFFFF;
+  border: 1px solid #E2EAE4;
+  border-radius: 12px;
+}
+
+.mission-guide-icon-pill {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(26, 56, 43, 0.08);
+  color: #1A382B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.mission-guide-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.mission-guide-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0E1116;
+}
+
+.mission-guide-text {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #525866;
+  margin: 0;
+}
+
+/* Actions Stack */
+.mission-modal-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.btn-modal-primary-capsule {
+  width: 100%;
+  padding: 12px 20px;
+  background: var(--color-btn-primary, #5c8437);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-modal-primary-capsule:hover {
+  background: var(--color-btn-primary-hover, #6ea842);
+  transform: translateY(-1px);
+}
+
+.btn-success-cta {
+  padding: 13px 20px;
+}
+
+.btn-success-cta:hover {
+  transform: translateY(-1px);
+}
+
+.btn-modal-ghost-cancel {
+  width: 100%;
+  padding: 9px 16px;
+  background: transparent;
+  color: var(--color-text-muted, #6B7280);
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.btn-modal-ghost-cancel:hover {
+  color: var(--color-slate, #0E1116);
+  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.4));
+}
+
+
+
+/* ==========================================================================
+   FLOATING CONTEXTUAL SIDE NOTIFICATION (Di Luar Drawer Analisis)
+   ========================================================================== */
+.map-side-notice-toast {
+  position: fixed;
+  right: 530px;
+  top: 96px;
+  z-index: 1040;
+  width: 310px;
+  max-width: calc(100vw - 560px);
+  background: #FFFFFF;
+  border: 1px solid #ECECEE;
+  border-radius: 20px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  box-shadow: 0 16px 36px -6px rgba(14, 17, 22, 0.1), 0 4px 12px -2px rgba(14, 17, 22, 0.04);
+  animation: noticeSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.map-side-notice-toast.hidden {
+  display: none !important;
+}
+
+.map-side-notice-toast.is-closing {
+  animation: noticeSlideOut 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes noticeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes noticeSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.95);
+  }
+}
+
+.side-notice-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.side-notice-icon-box {
+  width: auto;
+  height: auto;
+  background: transparent;
+  padding: 2px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.side-notice-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.side-notice-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  padding-right: 18px;
+}
+
+.side-notice-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0E1116;
+  letter-spacing: -0.01em;
+}
+
+.side-notice-text {
+  font-size: 11px;
+  color: #52525B;
+  line-height: 1.45;
+  margin: 2px 0 10px 0;
+}
+
+.side-notice-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-side-notice-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-side-notice-cta:hover {
+  background: #132B21;
+  transform: translateY(-1px);
+}
+
+.btn-side-notice-dismiss {
+  padding: 6px 10px;
+  background: transparent;
+  color: #71717A;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.btn-side-notice-dismiss:hover {
+  color: #0E1116;
+}
+
+.side-notice-close-btn {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #F4F4F5;
+  border: none;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.side-notice-close-btn:hover {
+  background: #E4E4E7;
+  color: #0E1116;
+}
+
+/* ==========================================================================
+   MODAL PILIH WARGA GOTONG ROYONG
+   ========================================================================== */
+.friends-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.friends-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.friends-modal-overlay.hidden {
+  display: none !important;
+}
+
+.friends-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 17, 22, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.friends-modal-overlay.is-open .friends-modal-backdrop {
+  opacity: 1;
+}
+
+.friends-modal-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  max-height: 85vh;
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid #ECECEE;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(14, 17, 22, 0.16);
+  transform: scale(0.95) translateY(12px);
+  opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.friends-modal-overlay.is-open .friends-modal-card {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.friends-modal-header {
+  padding: 22px 24px 14px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.friends-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.friends-modal-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0E1116;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.friends-modal-desc {
+  font-size: 12px;
+  color: #71717A;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.friends-modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #F4F4F5;
+  border: none;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.friends-modal-close-btn:hover {
+  background: #E4E4E7;
+  color: #0E1116;
+}
+
+.friends-modal-search-box {
+  margin: 0 24px 12px 24px;
+  padding: 9px 14px;
+  background: #F4F4F5;
+  border: 1px solid #ECECEE;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.friends-modal-search-box svg {
+  color: #71717A;
+  flex-shrink: 0;
+}
+
+.friends-modal-search-box input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #0E1116;
+  outline: none;
+}
+
+.friends-modal-search-box input::placeholder {
+  color: #71717A;
+}
+
+.friends-modal-list {
+  padding: 0 24px 14px 24px;
+  overflow-y: auto;
+  flex: 1;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.friend-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #ECECEE;
+  border-radius: 14px;
+  transition: all var(--transition-fast);
+}
+
+.friend-item-row:hover {
+  background: #F9FAF9;
+  border-color: #D4DFD8;
+}
+
+.friend-item-row.is-invited {
+  background: #F4F8F5;
+  border-color: #C2D6CA;
+}
+
+.friend-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.friend-item-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #E8EFEA;
+  color: #1A382B;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.friend-item-row.is-invited .friend-item-avatar {
+  background: #1A382B;
+  color: #FFFFFF;
+}
+
+.friend-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.friend-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0E1116;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friend-item-sub {
+  font-size: 11px;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friend-item-sub svg {
+  color: #1A382B;
+  flex-shrink: 0;
+}
+
+.btn-friend-item-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #FFFFFF;
+  color: #0E1116;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  border: 1px solid #D4D4D8;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.btn-friend-item-toggle:hover {
+  background: #F4F4F5;
+  border-color: #0E1116;
+}
+
+.btn-friend-item-toggle.is-selected,
+.friend-item-row.is-invited .btn-friend-item-toggle {
+  background: var(--color-btn-primary, #5c8437);
+  color: #FFFFFF;
+  border: 1px solid var(--color-btn-primary, #5c8437);
+}
+
+.btn-friend-item-toggle.is-selected:hover,
+.friend-item-row.is-invited .btn-friend-item-toggle:hover {
+  background: var(--color-btn-primary-hover, #6ea842);
+  border-color: var(--color-btn-primary-hover, #6ea842);
+}
+
+.friends-modal-footer {
+  padding: 14px 24px 18px 24px;
+  border-top: 1px solid var(--color-border, #D4D0BC);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--color-surface, #FAF9F4);
+}
+
+.friends-modal-count {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+}
+
+.btn-friends-modal-done {
+  padding: 11px 22px;
+  background: var(--color-btn-primary, #5c8437);
+  color: #FFFFFF;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-friends-modal-done:hover {
+  background: var(--color-btn-primary-hover, #6ea842);
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments for mobile & tablet */
+@media (max-width: 860px) {
+  .map-side-notice-toast {
+    right: 16px;
+    left: 16px;
+    top: 76px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* ==========================================================================
+   MISI SPASIAL WARGA SEKITAR & MISI AKTIF PENGGUNA DI PETA
+   ========================================================================== */
+
+/* 1. Pin Lokasi Standar (Teardrop Location Pin) */
+.citizen-location-pin-container,
+.user-active-location-pin-container {
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+.standard-location-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: visible !important;
+  filter: drop-shadow(0 4px 10px rgba(14, 17, 22, 0.24));
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+}
+
+.standard-location-pin svg {
+  display: block;
+  overflow: visible !important;
+}
+
+.standard-location-pin:hover {
+  transform: translateY(-4px) scale(1.12);
+  filter: drop-shadow(0 8px 18px rgba(14, 17, 22, 0.32));
+}
+
+.standard-location-pin.is-my-mission:hover {
+  filter: drop-shadow(0 8px 20px rgba(92, 132, 55, 0.45));
+}
+
+.standard-location-pin.is-citizen:hover {
+  filter: drop-shadow(0 8px 20px rgba(186, 78, 42, 0.45));
+}
+
+/* 2. Pin Misi Saya dengan Animasi Denyut Lembut */
+.pin-pulse-halo {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(92, 132, 55, 0.28);
+  animation: locationPinPulse 2.2s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes locationPinPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* 3. Tombol Aksi Pop-up Misi Warga */
+.btn-join-citizen-mission {
+  background: #BA4E2A !important;
+  color: #FFFFFF !important;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-join-citizen-mission:hover {
+  background: #9E3D1E !important;
+  transform: translateY(-1px);
+}
+
+.btn-joined-citizen-mission {
+  background: #E8EFEA !important;
+  color: #1A382B !important;
+  border: 1px solid #C8DDD0 !important;
+  cursor: default !important;
+  opacity: 0.95;
+}
+
+/* 4. Pop-up Card Interaktif Misi Warga */
+.citizen-mission-popup-card {
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.citizen-mission-popup-card:hover .map-popup-title {
+  color: #1A382B;
+}
+
+/* 5. Inisiator & Daftar Relawan Misi Warga di Panel Samping (Drawer) */
+.drawer-citizen-collab-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F4F4F5;
+  border: 1px solid #ECECEE;
+  border-radius: 14px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.drawer-citizen-collab-pill .collab-avatar-disc {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #1A382B;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.drawer-citizen-collab-pill .collab-meta {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.drawer-citizen-collab-pill .collab-author {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0E1116;
+  line-height: 1.2;
+}
+
+.drawer-citizen-collab-pill .collab-count {
+  font-size: 10.5px;
+  color: #717680;
+  line-height: 1.2;
+}
+
+.drawer-citizen-collab-pill .collab-bonus-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1A382B;
+  background: #E8EFEA;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+
+/* Kartu Daftar Warga yang Bergabung */
+.drawer-volunteers-card {
+  background: var(--color-surface, #FAF9F4);
+  border: 1px solid var(--color-border, #D4D0BC);
+  border-radius: var(--radius-xl, 24px);
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.drawer-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.drawer-volunteers-count-badge {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-muted, #6B7280);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.drawer-volunteers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-volunteer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md, 14px);
+  background: var(--color-surface, #FAF9F4);
+  border: 1px solid var(--color-border, #D4D0BC);
+  transition: background var(--transition-fast);
+}
+
+.drawer-volunteer-item.is-self {
+  background: rgba(92, 132, 55, 0.08);
+  border-color: rgba(92, 132, 55, 0.25);
+}
+
+.drawer-volunteer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary, #1A382B);
+  color: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.drawer-volunteer-item.is-self .drawer-volunteer-avatar {
+  background: var(--color-slate, #0E1116);
+}
+
+.drawer-volunteer-info {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.drawer-volunteer-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Aksi Bergabung / Batal Bergabung */
+.drawer-citizen-joined-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.drawer-citizen-joined-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(92, 132, 55, 0.12);
+  color: var(--color-btn-primary, #5c8437);
+  border: 1px solid rgba(92, 132, 55, 0.25);
+  padding: 11px 16px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-cancel-join-mission {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-surface, #FAF9F4);
+  border: 1px solid var(--color-border, #D4D0BC);
+  color: var(--color-text-muted, #6B7280);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.btn-cancel-join-mission:hover {
+  background: #FDF2E9;
+  border-color: #F5D6CB;
+  color: var(--color-secondary, #BA4E2A);
+}
+
+/* 6. Modal Konfirmasi Bergabung & Batal Bergabung (Anti-Slop Editorial Awesomic Style) */
+.join-confirm-card,
+.leave-confirm-card {
+  max-width: 400px;
+  padding: 24px 22px 20px 22px;
+  border-radius: var(--radius-xl, 24px);
+  background: var(--color-surface, #FAF9F4);
+  border: 1px solid var(--color-border, #D4D0BC);
+  box-shadow: 0 20px 48px rgba(14, 17, 22, 0.12);
+  text-align: left;
+}
+
+.join-confirm-head,
+.leave-confirm-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+  padding-right: 20px;
+}
+
+.join-confirm-title,
+.leave-confirm-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.join-confirm-desc,
+.leave-confirm-desc {
+  font-size: 12.5px;
+  color: var(--color-text-muted, #6B7280);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.leave-confirm-spec {
+  background: rgba(221, 217, 177, 0.35);
+  border: 1px solid var(--color-border, #D4D0BC);
+  border-radius: var(--radius-lg, 16px);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.leave-spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  gap: 8px;
+}
+
+.leave-spec-label {
+  color: var(--color-text-muted, #6B7280);
+  font-weight: 400;
+}
+
+.leave-spec-val {
+  color: var(--color-slate, #0E1116);
+  font-weight: 600;
+  text-align: right;
+}
+
+.leave-spec-val.text-pine {
+  color: var(--color-primary, #1A382B);
+}
+
+.leave-confirm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-confirm-join-solid {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-btn-primary, #5c8437);
+  color: #FFFFFF;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-confirm-join-solid:hover {
+  background: var(--color-btn-primary-hover, #6ea842);
+  transform: translateY(-1px);
+}
+
+.btn-confirm-leave-solid {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-secondary, #BA4E2A);
+  color: #FFFFFF;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-confirm-leave-solid:hover {
+  background: var(--color-secondary-hover, #9E3F20);
+  transform: translateY(-1px);
+}
+
+.btn-confirm-leave-ghost {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-surface, #FAF9F4);
+  color: var(--color-slate, #0E1116);
+  border: 1px solid var(--color-border, #D4D0BC);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-confirm-leave-ghost:hover {
+  background: var(--color-surface-subtle, rgba(221, 217, 177, 0.5));
+  border-color: #A0A0A0;
+}
+
+/* =========================================================================
+   MODAL JADWAL AKSI AMBIL MISI TANAM (Clean Editorial Modal)
+========================================================================== */
+.schedule-mission-card {
+  max-width: 410px;
+  padding: 26px 22px 22px 22px;
+  background: #FFFFFF;
+  border-radius: var(--radius-2xl, 32px);
+  border: 1px solid var(--color-border, #D4D0BC);
+  box-shadow: 0 20px 48px rgba(14, 17, 22, 0.12);
+  text-align: center;
+}
+
+.schedule-input-group {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.schedule-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+}
+
+.schedule-date-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 14px);
+  border: 1.5px solid var(--color-border, #D4D0BC);
+  background: var(--color-surface, #FAF9F4);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-slate, #0E1116);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.schedule-date-input:focus {
+  border-color: var(--color-btn-primary, #5c8437);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(92, 132, 55, 0.15);
+}
+
+.schedule-status-expired {
+  color: var(--color-secondary, #BA4E2A) !important;
+  font-weight: 700;
+}
 
