@@ -1418,18 +1418,37 @@ function openMissionConfirmModal() {
     modal.classList.remove('hidden');
     void modal.offsetWidth;
     modal.classList.add('is-open');
+
+    const modalCard = modal.querySelector('.mission-modal-card');
+    if (typeof gsap !== 'undefined' && modalCard) {
+      gsap.fromTo(modalCard, 
+        { scale: 0.92, opacity: 0, y: 14 }, 
+        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: 'back.out(1.4)' }
+      );
+    }
   }
 }
 
 function closeMissionConfirmModal() {
   const modal = document.getElementById('missionConfirmModal');
   if (modal) {
-    modal.classList.remove('is-open');
-    setTimeout(() => {
-      if (!modal.classList.contains('is-open')) {
-        modal.classList.add('hidden');
-      }
-    }, 200);
+    const modalCard = modal.querySelector('.mission-modal-card');
+    if (typeof gsap !== 'undefined' && modalCard) {
+      gsap.to(modalCard, {
+        scale: 0.93,
+        opacity: 0,
+        y: 10,
+        duration: 0.22,
+        ease: 'power2.in',
+        onComplete: () => {
+          modal.classList.remove('is-open');
+          modal.classList.add('hidden');
+        }
+      });
+    } else {
+      modal.classList.remove('is-open');
+      modal.classList.add('hidden');
+    }
   }
 }
 
@@ -1529,6 +1548,14 @@ function takeZoneMission(scheduledDate) {
       modal.classList.remove('hidden');
       void modal.offsetWidth;
       modal.classList.add('is-open');
+
+      const modalCard = modal.querySelector('.mission-modal-card');
+      if (typeof gsap !== 'undefined' && modalCard) {
+        gsap.fromTo(modalCard, 
+          { scale: 0.90, opacity: 0, y: 16 }, 
+          { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }
+        );
+      }
     }
   }
 }
@@ -1537,12 +1564,23 @@ function takeZoneMission(scheduledDate) {
 function closeMissionSuccessModal() {
   const modal = document.getElementById('missionSuccessModal');
   if (modal) {
-    modal.classList.remove('is-open');
-    setTimeout(() => {
-      if (!modal.classList.contains('is-open')) {
-        modal.classList.add('hidden');
-      }
-    }, 200);
+    const modalCard = modal.querySelector('.mission-modal-card');
+    if (typeof gsap !== 'undefined' && modalCard) {
+      gsap.to(modalCard, {
+        scale: 0.92,
+        opacity: 0,
+        y: 10,
+        duration: 0.22,
+        ease: 'power2.in',
+        onComplete: () => {
+          modal.classList.remove('is-open');
+          modal.classList.add('hidden');
+        }
+      });
+    } else {
+      modal.classList.remove('is-open');
+      modal.classList.add('hidden');
+    }
   }
 
   // Tampilkan kembali lokasi yang sudah diambil misinya di peta dan buka panel analisisnya

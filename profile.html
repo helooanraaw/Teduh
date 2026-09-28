@@ -11,12 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Leaflet CSS via CDN -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-
   <!-- Stylesheets Murni (Pure CSS) -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 
@@ -36,6 +34,31 @@
       </div>
 
       <div class="navbar-actions">
+        <!-- Pemicu Notifikasi Dropdown Ala NutriNesia -->
+        <div class="nav-notif-wrapper">
+          <button type="button" class="nav-notif-trigger" aria-label="Notifikasi Pengguna" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="nav-notif-dot"></span>
+          </button>
+
+          <!-- Pop-up Dropdown Notifikasi -->
+          <div class="nav-notif-popup" role="menu">
+            <div class="nav-notif-header">
+              <h4 class="nav-notif-title">Notifikasi</h4>
+              <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
+            </div>
+            <div class="nav-notif-list">
+              <!-- Diisi secara dinamis oleh js/main.js -->
+            </div>
+            <div class="nav-notif-footer">
+              <button type="button" class="nav-notif-view-all-btn">Lihat Semua Notifikasi</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Pemicu Avatar Profil Bulat & Arrow Chevron (Hover & Klik) -->
         <div class="nav-profile-wrapper">
           <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
@@ -98,42 +121,60 @@
   <!-- Mobile Drawer Overlay & Menu -->
   <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
   <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
-    <div>
+    <div class="mobile-nav-top">
       <div class="mobile-nav-header">
         <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
-          <img src="assets/logo/teduh-logo.svg" alt="Teduh" style="height: 28px; width: auto;">
+          <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
         </a>
         <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
 
-      <nav class="mobile-nav-list">
-        <a href="index.html" class="mobile-nav-item">Beranda</a>
-        <a href="map.html" class="mobile-nav-item">Konsol Peta</a>
-        <a href="reward.html" class="mobile-nav-item">Peringkat &amp; Hadiah</a>
-        <a href="community.html" class="mobile-nav-item">Komunitas</a>
-        <a href="profile.html" class="mobile-nav-item active">Profil Saya</a>
-        <a href="reward.html#voucher" class="mobile-nav-item">Tukar Poin Hadiah</a>
+      <div class="mobile-nav-profile">
+        <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+        <div class="mobile-nav-profile-info">
+          <strong>John Doe</strong>
+          <span id="mobileUserPoints">Level 3: Perintis Teduh (850 Poin)</span>
+        </div>
+      </div>
+
+      <nav class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Beranda</span>
+        </a>
+        <a href="map.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+          <span>Konsol Peta</span>
+        </a>
+        <a href="community.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Komunitas</span>
+        </a>
+        <a href="reward.html" class="mobile-nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+          <span>Peringkat &amp; Hadiah</span>
+        </a>
+        <a href="profile.html" class="mobile-nav-link active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span>Profil Saya</span>
+        </a>
       </nav>
     </div>
 
-    <div>
-      <a href="map.html" class="btn-primary" style="width: 100%; text-align: center; justify-content: center;">Pindai Peta Wilayah</a>
+    <div class="mobile-nav-footer">
+      <button type="button" class="mobile-nav-logout" onclick="handleNavLogout()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <span>Keluar dari Akun</span>
+      </button>
     </div>
   </aside>
 
-  <!-- KONTEN UTAMA: DASHBOARD PROFIL (3 KOLOM) -->
+  <!-- KONTEN UTAMA: DASHBOARD PROFIL (2 KOLOM) -->
   <main class="pf-main">
     
-    <!-- Breadcrumb Navigasi -->
-    <nav class="pf-breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Beranda</a>
-      <span class="pf-breadcrumb-sep" aria-hidden="true">&rsaquo;</span>
-      <span class="pf-breadcrumb-curr">Profil & Pekarangan John Doe</span>
-    </nav>
-
-    <!-- Grid 3 Kolom ala NutriNesia -->
+    <!-- Grid 2 Kolom Seimbang -->
     <div class="pf-grid">
 
       <!-- KOLOM 1 (KIRI): IDENTITAS & PREFERENSI -->
@@ -146,15 +187,11 @@
               <div class="pf-avatar-circle">
                 <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
               </div>
-              <div class="pf-level-ring-badge" id="pfLevelRingBadge" title="Tingkat Kontribusi Kesejukan">L3</div>
             </div>
 
             <div class="pf-identity-info">
-              <div class="pf-identity-name-row">
-                <h1 class="pf-identity-name" id="pfUserName">John Doe</h1>
-                <span class="pf-identity-user" id="pfUserTag">@johndoe</span>
-              </div>
-              <span class="pf-identity-email" id="pfUserEmail">johndoe@gmail.com</span>
+              <h1 class="pf-identity-name" id="pfUserName">John Doe</h1>
+              <span class="pf-identity-user" id="pfUserTag">@johndoe</span>
 
               <div class="pf-level-pill-box" id="pfLevelBadge">
                 <span style="width: 6px; height: 6px; border-radius: 50%; background: #1A382B; display: inline-block;"></span>
@@ -163,49 +200,16 @@
             </div>
           </div>
 
-          <!-- 3 Metrik Ringkas Pengguna (NutriNesia Style) -->
-          <div class="pf-user-quick-stats">
-            <div class="pf-user-stat-col">
-              <span class="pf-user-stat-val" id="pfUserQuickPoints">850</span>
-              <span class="pf-user-stat-lbl">Poin</span>
-            </div>
-            <div class="pf-user-stat-divider"></div>
-            <div class="pf-user-stat-col">
-              <span class="pf-user-stat-val" id="pfUserQuickTrees">4</span>
-              <span class="pf-user-stat-lbl">Pohon</span>
-            </div>
-            <div class="pf-user-stat-divider"></div>
-            <div class="pf-user-stat-col">
-              <span class="pf-user-stat-val" id="pfUserQuickMissions">3</span>
-              <span class="pf-user-stat-lbl">Misi</span>
-            </div>
-          </div>
-
-          <!-- Parameter Info Pekarangan (Layout Horisontal / Grid 2-Kolom) -->
-          <div class="pf-info-summary-list">
-            <div class="pf-info-summary-item">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <span id="pfLocationText">Denpasar Selatan, Bali</span>
-            </div>
-            <div class="pf-info-summary-item">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <span>Halaman 45 m² Semen</span>
-            </div>
-            <div class="pf-info-summary-item pf-info-summary-full">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <span>Status: Terverifikasi Teduh</span>
-            </div>
+          <!-- Lokasi Wilayah Pekarangan Pengguna -->
+          <div class="pf-location-badge-box">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span id="pfLocationText">Denpasar Selatan, Bali</span>
           </div>
 
           <div class="pf-target-box">
             <strong>Target Utama</strong>
             <p id="pfTargetText">Bikin teras lebih sejuk dan jaga pipa air tetap aman.</p>
           </div>
-
-          <a href="map.html" class="pf-edit-profile-btn">
-            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            <span>Ubah Data Pekarangan</span>
-          </a>
         </section>
 
         <!-- Kartu Jadwal & Agenda Aksi Pekarangan -->
@@ -223,21 +227,25 @@
           <div class="pf-schedule-list" id="pfScheduleContainer">
             <!-- Diisi secara dinamis oleh js/profile.js -->
           </div>
-
-          <div class="pf-schedule-footer">
-            <button type="button" class="pf-logout-inline-btn" onclick="handleNavLogout()">
-              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              <span>Keluar Akun</span>
-            </button>
-          </div>
         </section>
 
+        <!-- Aksi Edit & Keluar Akun (Vertikal di Bawah Agenda Pekarangan) -->
+        <div class="pf-account-actions-stack">
+          <button type="button" class="pf-account-action-btn pf-action-settings" aria-label="Edit Profil" onclick="event.preventDefault();">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span>Edit</span>
+          </button>
+          <button type="button" class="pf-account-action-btn pf-action-logout" onclick="handleNavLogout()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span>Keluar</span>
+          </button>
+        </div>
       </div>
 
-      <!-- KOLOM 2 (TENGAH): STATISTIK & LINIMASA AKSI -->
+      <!-- KOLOM 2 (KANAN): STATISTIK KESEJUKAN, POIN & LINIMASA AKSI -->
       <div class="pf-col">
         
-        <!-- Kartu Ringkasan Kesejukan Rumah -->
+        <!-- Kartu Ringkasan Kesejukan & Dompet Poin -->
         <section class="pf-card pf-shape-asym-card">
           <div class="pf-section-header">
             <div class="pf-card-title-group">
@@ -252,28 +260,47 @@
             </div>
           </div>
 
-          <!-- Kubah Kesejukan -->
-          <div class="pf-climate-dome">
-            <div class="pf-ring-meter">
-              <svg viewBox="0 0 140 140">
-                <circle class="bg-circle" cx="70" cy="70" r="60"></circle>
-                <circle id="pfRingFg" class="fg-circle" cx="70" cy="70" r="60"></circle>
-              </svg>
-              <div class="pf-ring-center">
-                <span class="pf-ring-val" id="pfCoolingScore">86</span>
-                <span class="pf-ring-unit">Skor Sejuk</span>
+          <!-- Modul Dual Hero: Skor Kesejukan & Dompet Poin Berdampingan -->
+          <div class="pf-dual-hero-grid">
+            
+            <!-- Sisi Kiri: Kubah Skor Sejuk -->
+            <div class="pf-climate-dome">
+              <div class="pf-ring-meter">
+                <svg viewBox="0 0 140 140">
+                  <circle class="bg-circle" cx="70" cy="70" r="60"></circle>
+                  <circle id="pfRingFg" class="fg-circle" cx="70" cy="70" r="60"></circle>
+                </svg>
+                <div class="pf-ring-center">
+                  <span class="pf-ring-val" id="pfCoolingScore">86</span>
+                  <span class="pf-ring-unit">Skor Sejuk</span>
+                </div>
+              </div>
+
+              <div class="pf-dome-content">
+                <div class="pf-dome-headline">Pekarangan Lebih Sejuk</div>
+                <p class="pf-dome-sub">
+                  Pohon peneduh terbukti menurunkan panas teras dan lindungi pondasi.
+                </p>
               </div>
             </div>
 
-            <div class="pf-dome-content">
-              <div class="pf-dome-headline">Pekarangan Lebih Sejuk & Aman</div>
-              <p class="pf-dome-sub">
-                Pohon peneduh berhasil menurunkan panas lantai teras dan saluran pipa air tetap aman.
-              </p>
+            <!-- Sisi Kanan: Dompet Poin (Layout Horisontal ke Samping & Bersih) -->
+            <div class="pf-wallet-side-box">
+              <div class="pf-wallet-info-side">
+                <span class="pf-balance-label">Saldo Poin Aktif</span>
+                <div class="pf-balance-number" id="pfWalletPointsNumber">850 Poin</div>
+                <span class="pf-balance-sub">Tukar bibit &amp; voucher</span>
+              </div>
+
+              <a href="community.html#voucher" class="pf-wallet-redeem-action-btn" title="Tukar Poin Hadiah">
+                <span>Tukar Poin</span>
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </a>
             </div>
+
           </div>
 
-          <!-- Tile Metrik Mikro Sederhana -->
+          <!-- Tile Metrik Mikro 2x2 Seimbang (Distilled) -->
           <div class="pf-metrics-grid">
             <div class="pf-metric-tile">
               <span class="pf-metric-lbl">Suhu Lebih Adem</span>
@@ -306,100 +333,17 @@
               </span>
               <h3 class="pf-card-title">Aktivitas Terbaru</h3>
             </div>
-            <a href="community.html" class="pf-schedule-all-link">Lihat Semua &rsaquo;</a>
           </div>
 
           <div id="pfTimelineContainer" class="pf-timeline-list">
             <!-- Linimasa aktivitas dirender dinamis oleh js/profile.js -->
           </div>
-        </section>
 
-      </div>
-
-      <!-- KOLOM 3 (KANAN): PETA RUMAH & DOMPET VOUCHER -->
-      <div class="pf-col">
-        
-        <!-- Kartu Peta Spasial Rumah -->
-        <section class="pf-card pf-home-map-card">
-          <div class="pf-section-header pf-home-map-header">
-            <div class="pf-card-title-group">
-              <span class="pf-card-title-icon">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2"></path></svg>
-              </span>
-              <h3 class="pf-card-title">Peta Rumah</h3>
-            </div>
-          </div>
-
-          <!-- Peta Mini Satelit Leaflet -->
-          <div class="pf-home-map-container">
-            <div class="pf-map-overlay-badge">
-              <span class="pf-map-dot-pulse"></span>
-              <span>34.4°C Pekarangan Terlindungi</span>
-            </div>
-            <div id="profileHomeMap"></div>
-          </div>
-
-          <div class="pf-home-map-footer">
-            <div class="pf-map-detail-row">
-              <span>Suhu Tanpa Pohon:</span>
-              <strong style="color: #bc4800;" id="pfMapBeforeTemp">38.8°C</strong>
-            </div>
-            <div class="pf-map-detail-row">
-              <span>Suhu Sekarang:</span>
-              <strong style="color: #1A382B;" id="pfMapCurrentTemp">34.4°C</strong>
-            </div>
-            <div class="pf-map-detail-row">
-              <span>Jarak Aman Pipa:</span>
-              <strong id="pfMapPipeDist">2.1 meter (Aman Fondasi)</strong>
-            </div>
-          </div>
-        </section>
-
-        <!-- Kartu Dompet Poin & Kupon Diskon -->
-        <section class="pf-card pf-wallet-card">
-          <div class="pf-section-header">
-            <div class="pf-card-title-group">
-              <span class="pf-card-title-icon">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"></rect><path d="M7 15h10M7 9h4" stroke-width="2"></path></svg>
-              </span>
-              <h3 class="pf-card-title">Dompet Poin</h3>
-            </div>
-            <a href="community.html#voucher" class="pf-schedule-all-link">
-              Tukar &rsaquo;
-            </a>
-          </div>
-
-          <div class="pf-points-balance-box">
-            <div>
-              <span class="pf-balance-label">Saldo Poin Aktif</span>
-              <div class="pf-balance-number" id="pfWalletPointsNumber">850 Poin</div>
-            </div>
-            <a href="community.html#voucher" class="btn-primary" style="padding: 8px 14px; font-size: 11px;">
-              Katalog
-            </a>
-          </div>
-
-          <div>
-            <span style="font-size: 11px; font-weight: 600; color: #6C7470; display: block; margin-bottom: 6px;">Kupon Voucher Saya</span>
-            <div id="pfCouponsContainer" class="pf-claimed-coupons-list">
-              <!-- Kupon aktif dirender oleh js/profile.js -->
-            </div>
-          </div>
-        </section>
-
-        <!-- Kartu Pohon Peneduh Tertanam -->
-        <section class="pf-card pf-trees-card">
-          <div class="pf-section-header">
-            <div class="pf-card-title-group">
-              <span class="pf-card-title-icon">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L4 14h5v8h6v-8h5L12 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </span>
-              <h3 class="pf-card-title">Pohon Pekarangan</h3>
-            </div>
-          </div>
-          <div id="pfPlantedTreesContainer" class="pf-trees-list">
-            <!-- Daftar pohon dirender oleh js/profile.js -->
-          </div>
+          <!-- Tombol Lihat Lainnya di Dalam Card Aktivitas Terbaru -->
+          <button type="button" class="pf-timeline-more-btn" onclick="event.preventDefault();" aria-label="Lihat Lainnya">
+            <span>Lihat Lainnya</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+          </button>
         </section>
 
       </div>
@@ -493,15 +437,85 @@
     </div>
   </footer>
 
-  <!-- Toast Notifikasi Ringan -->
-  <div id="teduhToast" style="display: none;"></div>
+  <!-- FLOATING CHATBOT ASISTEN TEDUH -->
+  <div class="td-chatbot-wrapper">
+    <!-- Tooltip Sambutan Otomatis -->
+    <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
+      Tanya Asisten Teduh
+    </div>
 
-  <!-- Leaflet JS via CDN -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Tombol FAB Bulat -->
+    <button id="tdChatFab" class="td-chatbot-fab" type="button" aria-label="Buka Chatbot Asisten Teduh" aria-expanded="false">
+      <img src="assets/landing/question-section.png" alt="Avatar Asisten Teduh" class="td-chatbot-fab-img">
+      <svg class="td-chatbot-fab-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Jendela Chat Pop-up -->
+    <div id="tdChatWindow" class="td-chatbot-window" role="dialog" aria-label="Percakapan Asisten Teduh">
+      <!-- Header -->
+      <div class="td-chat-header">
+        <div class="td-chat-header-profile">
+          <div class="td-chat-header-avatar">
+            <img src="assets/landing/question-section.png" alt="Robot Asisten Teduh">
+            <span class="td-chat-status-dot" aria-hidden="true"></span>
+          </div>
+          <div class="td-chat-header-info">
+            <span class="td-chat-header-name">Asisten Teduh</span>
+            <span class="td-chat-header-status">Siap bantu seputar wilayah &amp; pohon</span>
+          </div>
+        </div>
+        <button id="tdChatClose" class="td-chat-close-btn" type="button" aria-label="Tutup Obrolan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Isi Pesan Chat -->
+      <div id="tdChatBody" class="td-chat-body">
+        <div class="td-msg-row bot">
+          <div class="td-bubble">
+            <p style="margin: 0 0 8px 0;">Halo! Butuh bantuan seputar cek suhu lingkungan atau memilih pohon yang pas? Pilih topik cepat di bawah atau ketik pertanyaan Anda.</p>
+            <div class="td-chat-chips">
+              <button type="button" class="td-chip-btn" data-topic-id="suhu_peta">Cek Suhu di Peta</button>
+              <button type="button" class="td-chip-btn" data-topic-id="pohon_fondasi">Pohon Aman Fondasi</button>
+              <button type="button" class="td-chip-btn" data-topic-id="jarak_tanam">Jarak Tanam Rumah</button>
+              <button type="button" class="td-chip-btn" data-topic-id="bibit_gratis">Klaim Bibit Gratis</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Form Input -->
+      <div class="td-chat-footer">
+        <form id="tdChatForm" class="td-chat-form">
+          <input type="text" id="tdChatInput" class="td-chat-input" placeholder="Tanyakan seputar suhu atau bibit..." autocomplete="off" aria-label="Ketik pesan pertanyaan">
+          <button type="submit" class="td-chat-send-btn" aria-label="Kirim Pesan">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifikasi Ringan -->
+  <div id="teduhToast" role="status" aria-live="polite"></div>
+
+  <!-- GSAP Animation Engine via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <!-- Controller Scripts -->
+  <script src="js/page-transition.js"></script>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/profile.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>

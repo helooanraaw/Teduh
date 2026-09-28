@@ -34,6 +34,31 @@
       </div>
 
       <div class="navbar-actions">
+        <!-- Pemicu Notifikasi Dropdown Ala NutriNesia -->
+        <div class="nav-notif-wrapper">
+          <button type="button" class="nav-notif-trigger" aria-label="Notifikasi Pengguna" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="nav-notif-dot"></span>
+          </button>
+
+          <!-- Pop-up Dropdown Notifikasi -->
+          <div class="nav-notif-popup" role="menu">
+            <div class="nav-notif-header">
+              <h4 class="nav-notif-title">Notifikasi</h4>
+              <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
+            </div>
+            <div class="nav-notif-list">
+              <!-- Diisi secara dinamis oleh js/main.js -->
+            </div>
+            <div class="nav-notif-footer">
+              <button type="button" class="nav-notif-view-all-btn">Lihat Semua Notifikasi</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Pemicu Avatar Profil Bulat & Arrow Chevron -->
         <div class="nav-profile-wrapper">
           <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
@@ -96,7 +121,7 @@
   <!-- Mobile Drawer Overlay & Menu -->
   <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
   <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
-    <div>
+    <div class="mobile-nav-top">
       <div class="mobile-nav-header">
         <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
           <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
@@ -158,106 +183,65 @@
         <!-- KOLOM KIRI: FEED THREAD STREAM -->
         <div class="km-feed-stream">
 
-          <!-- FEED FILTER TABS (THREADS / LINKEDIN STYLE) -->
-          <div class="km-feed-tabs" role="tablist" aria-label="Filter Linimasa Komunitas">
-            <button type="button" class="km-feed-tab is-active" data-filter="all" onclick="switchFeedTab(this, 'all')">
-              <span>Semua Feed</span>
-            </button>
-            <button type="button" class="km-feed-tab" data-filter="mission" onclick="switchFeedTab(this, 'mission')">
-              <span>Aksi Berpoin</span>
-              <span class="km-tab-pill">Misi</span>
-            </button>
-            <button type="button" class="km-feed-tab" data-filter="#AksiTanam" onclick="switchFeedTab(this, '#AksiTanam')">
-              <span>#AksiTanam</span>
-            </button>
-            <button type="button" class="km-feed-tab" data-filter="#TanyaBibit" onclick="switchFeedTab(this, '#TanyaBibit')">
-              <span>#TanyaBibit</span>
-            </button>
+          <!-- FEED TRIGGER CARD (LINKEDIN STYLE) -->
+          <div class="km-composer-trigger-card" id="kmComposerTriggerCard">
+            <div class="km-trigger-top-row">
+              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" class="km-trigger-avatar">
+              <button type="button" class="km-trigger-fake-input" onclick="openPostModal('text')">
+                <span>Bagikan kondisi pekarangan atau tanya bibit peneduh...</span>
+              </button>
+            </div>
+            <div class="km-trigger-bottom-row">
+              <button type="button" class="km-trigger-btn" onclick="openPostModal('photo')">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Foto Pekarangan</span>
+              </button>
+              <button type="button" class="km-trigger-btn" onclick="openPostModal('location')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Tandai Lokasi</span>
+              </button>
+            </div>
           </div>
 
-          <!-- INLINE QUICK POST COMPOSER BOX WITH MISSION LINKER -->
-          <div class="km-quick-post-card" id="kmComposerBox">
-            <div class="km-quick-post-header">
-              <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar John Doe" class="km-composer-avatar">
-              <div class="km-composer-input-wrap">
-                <textarea 
-                  id="composerTextInput" 
-                  class="km-composer-textarea" 
-                  placeholder="Bagikan pengalaman tanam, tanya bibit aman fondasi, atau pilih misi di bawah untuk klaim poin..."
-                  rows="3"
-                  aria-label="Tulis postingan warga"
-                ></textarea>
-
-                <!-- Pilihan Tautkan Misi Berpoin -->
-                <div class="km-composer-mission-row">
-                  <div class="km-mission-label-wrap">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                    <span>Tautkan Misi Berpoin:</span>
-                  </div>
-                  <select id="composerMissionSelect" class="km-mission-select" onchange="handleComposerMissionChange(this)" aria-label="Pilih Misi Tanam Berpoin">
-                    <option value="none" data-points="15">Postingan Cerita Umum (+15 Poin)</option>
-                    <option value="plant-1" data-points="100">🎯 Misi: Tanam 1 Bibit Peneduh Pekarangan (+100 Poin)</option>
-                    <option value="temp-drop" data-points="50">🌡️ Misi: Lapor Penurunan Suhu Teras (+50 Poin)</option>
-                    <option value="biopori" data-points="75">🌿 Misi: Buat Lubang Biopori &amp; Akar Aman (+75 Poin)</option>
-                    <option value="ask-tree" data-points="25">💬 Misi: Diskusi Rekomendasi Bibit (+25 Poin)</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tag Pilihan Cepat -->
-            <div class="km-composer-tags-row">
-              <span class="km-composer-tag-pill is-selected" onclick="selectComposerTag(this, '#AksiTanam')">#AksiTanam</span>
-              <span class="km-composer-tag-pill" onclick="selectComposerTag(this, '#TanyaBibit')">#TanyaBibit</span>
-              <span class="km-composer-tag-pill" onclick="selectComposerTag(this, '#PekaranganSemen')">#PekaranganSemen</span>
-              <span class="km-composer-tag-pill" onclick="selectComposerTag(this, '#AmanFondasi')">#AmanFondasi</span>
-            </div>
-
-            <div class="km-quick-post-footer">
-              <button type="button" class="km-btn-upload-fake" onclick="handleFakePhotoUpload()">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21" stroke-width="2"></polyline></svg>
-                <span id="composerUploadLabel">Sematkan Foto</span>
-              </button>
-
-              <button type="button" class="km-btn-submit-post" onclick="submitNewPost()">
-                <span id="composerSubmitPointsText">Kirim &amp; Klaim +15 Poin</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-              </button>
-            </div>
+          <!-- SEKSI HEADER FEED: ON TRENDING -->
+          <div class="km-feed-section-header">
+            <h2 class="km-feed-section-title">On Trending</h2>
           </div>
 
           <!-- DAFTAR THREAD FEED (Diisi Dinamis & Default 3 Thread) -->
           <div id="kmFeedContainer" class="km-feed-stream">
             
             <!-- Thread 1: Mas Bima -->
-            <article class="km-thread-card" id="thread-1" data-tag="#AksiTanam" data-mission="plant-1">
+            <article class="km-thread-card" id="thread-1" data-tag="#AksiTanam">
               <div class="km-thread-header">
                 <div class="km-thread-author-wrap">
                   <img src="images/testimonial/Mas Bima (1).webp" alt="Mas Bima" class="km-thread-avatar">
                   <div class="km-thread-meta">
                     <div class="km-author-title-row">
                       <span class="km-thread-author-name">Mas Bima</span>
-                      <span class="km-author-level-tag">Perintis Teduh</span>
                     </div>
-                    <span class="km-thread-location-time">Renon, Denpasar Selatan &bull; 2 jam yang lalu</span>
+                    <div class="km-author-loc-time-stack">
+                      <span class="km-thread-location">Renon, Denpasar Selatan</span>
+                      <span class="km-thread-time">2 jam yang lalu</span>
+                    </div>
                   </div>
                 </div>
-                <div class="km-post-points-badge">+100 Poin</div>
-              </div>
-
-              <!-- Badge Misi Selesai Terverifikasi -->
-              <div class="km-thread-mission-bar">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span>Misi Tanam Selesai: Tanam 1 Bibit Peneduh Pekarangan</span>
               </div>
 
               <div class="km-thread-body">
-                <p class="km-thread-text">Pagi tadi selesai menanam 1 bibit Pohon Tanjung di sudut barat pekarangan rumah. Teras depan yang dulunya kena radiasi pantulan semen 38°C sekarang mulai teduh. Jarak ke pagar 2.2 meter, aman dari saluran got.</p>
-                <div class="km-thread-image-container">
-                  <img src="assets/trees/pohon-tanjung.jpg" alt="Dokumentasi Pohon Tanjung" class="km-thread-image">
-                </div>
-                <div class="km-thread-tags-row">
-                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#AksiTanam')">#AksiTanam</a>
+                <p class="km-thread-text">Pagi tadi selesai menanam 1 bibit Pohon Tanjung di sudut barat pekarangan rumah. Teras depan yang dulunya kena radiasi pantulan semen 38°C sekarang mulai teduh. Jarak ke pagar 2.2 meter, aman dari saluran got. <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span></p>
+                
+                <!-- Multi-Foto Grid 3 Gambar -->
+                <div class="km-photo-grid km-photo-grid-3">
+                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat dokumentasi Pohon Tanjung">
+                    <img src="assets/trees/pohon-tanjung.jpg" alt="Dokumentasi Pohon Tanjung" loading="lazy">
+                  </a>
+                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat kondisi adaptasi bibit">
+                    <img src="assets/trees/ketapang-kencana.jpg" alt="Kondisi adaptasi bibit pekarangan" loading="lazy">
+                  </a>
+                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat naungan teras rumah">
+                    <img src="assets/trees/tabebuia-pink.jpg" alt="Naungan teras semen rumah" loading="lazy">
+                  </a>
                 </div>
               </div>
 
@@ -270,19 +254,22 @@
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                   <span class="comment-count">2</span> Komentar
                 </button>
+                <a href="community-detail.html?id=thread-1" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  <span>Buka Thread</span>
+                </a>
               </div>
 
               <!-- Inline Comments Section -->
               <div class="km-thread-comments-section">
-                <!-- Input Balas Komentar di ATAS (Langsung di bawah Bar Suka/Komentar) -->
+                <!-- Input Balas Komentar di ATAS -->
                 <div class="km-comment-input-row">
                   <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan Mas Bima..." onkeydown="handleCommentKey(event, 'thread-1')">
                   <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-1')">Kirim</button>
                 </div>
 
-                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <!-- Pohon Komentar (Branch Tree Graph) -->
                 <div class="km-comments-tree" id="comments-list-thread-1">
-                  <!-- Parent Comment Node (Level 1) -->
                   <div class="km-comment-branch" id="branch-thread-1-comment-1">
                     <div class="km-comment-node">
                       <img src="images/testimonial/Bu Maya.webp" alt="Ibu Desak" class="km-comment-avatar">
@@ -299,7 +286,7 @@
                       </div>
                     </div>
 
-                    <!-- Sub-Branch Replies (Level 2 - Terhubung langsung dari Foto Profil Ibu Desak) -->
+                    <!-- Sub-Branch Replies -->
                     <div class="km-comment-replies" id="replies-thread-1-comment-1">
                       <div class="km-comment-node is-reply">
                         <img src="images/testimonial/Mas Bima (1).webp" alt="Mas Bima" class="km-comment-avatar">
@@ -321,7 +308,7 @@
                         <img src="images/testimonial/Mas Bima (1).webp" alt="Avatar Anda" class="km-reply-user-avatar">
                         <div class="km-reply-composer-content">
                           <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-1-comment-1">@Ibu Desak</strong></span>
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-1-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@Ibu Desak')" onmouseleave="hideHoverCard()">@Ibu Desak</strong></span>
                             <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-1-comment-1')">Batal</button>
                           </div>
                           <div class="km-reply-input-group">
@@ -337,34 +324,33 @@
             </article>
 
             <!-- Thread 2: Ibu Desak -->
-            <article class="km-thread-card" id="thread-2" data-tag="#PekaranganSemen" data-mission="temp-drop">
+            <article class="km-thread-card" id="thread-2" data-tag="#PekaranganSemen">
               <div class="km-thread-header">
                 <div class="km-thread-author-wrap">
                   <img src="images/testimonial/Bu Maya.webp" alt="Ibu Desak" class="km-thread-avatar">
                   <div class="km-thread-meta">
                     <div class="km-author-title-row">
                       <span class="km-thread-author-name">Ibu Desak</span>
-                      <span class="km-author-level-tag">Penanam Aktif</span>
                     </div>
-                    <span class="km-thread-location-time">Sesetan, Denpasar Selatan &bull; 5 jam yang lalu</span>
+                    <div class="km-author-loc-time-stack">
+                      <span class="km-thread-location">Sesetan, Denpasar Selatan</span>
+                      <span class="km-thread-time">5 jam yang lalu</span>
+                    </div>
                   </div>
                 </div>
-                <div class="km-post-points-badge">+50 Poin</div>
-              </div>
-
-              <!-- Badge Misi Selesai Terverifikasi -->
-              <div class="km-thread-mission-bar">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-                <span>Misi Tanam Selesai: Lapor Penurunan Suhu Teras</span>
               </div>
 
               <div class="km-thread-body">
-                <p class="km-thread-text">Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga.</p>
-                <div class="km-thread-image-container">
-                  <img src="assets/trees/ketapang-kencana.jpg" alt="Ketapang Kencana di Pekarangan" class="km-thread-image">
-                </div>
-                <div class="km-thread-tags-row">
-                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#PekaranganSemen')">#PekaranganSemen</a>
+                <p class="km-thread-text">Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga. <span class="km-inline-tag" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')" onmouseenter="showTagHoverCard(event, '#PekaranganSemen')" onmouseleave="hideHoverCard()">#PekaranganSemen</span></p>
+                
+                <!-- Multi-Foto Grid 2 Gambar -->
+                <div class="km-photo-grid km-photo-grid-2">
+                  <a href="community-detail.html?id=thread-2" class="km-photo-item" aria-label="Lihat Ketapang Kencana di pekarangan">
+                    <img src="assets/trees/ketapang-kencana.jpg" alt="Ketapang Kencana di pekarangan" loading="lazy">
+                  </a>
+                  <a href="community-detail.html?id=thread-2" class="km-photo-item" aria-label="Lihat suasana gang sejuk">
+                    <img src="assets/trees/pohon-tanjung.jpg" alt="Suasana gang sejuk" loading="lazy">
+                  </a>
                 </div>
               </div>
 
@@ -377,6 +363,10 @@
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                   <span class="comment-count">1</span> Komentar
                 </button>
+                <a href="community-detail.html?id=thread-2" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  <span>Buka Thread</span>
+                </a>
               </div>
 
               <!-- Inline Comments Section -->
@@ -387,7 +377,7 @@
                   <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-2')">Kirim</button>
                 </div>
 
-                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <!-- Pohon Komentar (Branch Tree Graph) -->
                 <div class="km-comments-tree" id="comments-list-thread-2">
                   <div class="km-comment-branch" id="branch-thread-2-comment-1">
                     <div class="km-comment-node">
@@ -411,7 +401,7 @@
                         <img src="images/testimonial/Bu Maya.webp" alt="Avatar Anda" class="km-reply-user-avatar">
                         <div class="km-reply-composer-content">
                           <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-2-comment-1">@Pak Wayan</strong></span>
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-2-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@Pak Wayan')" onmouseleave="hideHoverCard()">@Pak Wayan</strong></span>
                             <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-2-comment-1')">Batal</button>
                           </div>
                           <div class="km-reply-input-group">
@@ -427,31 +417,36 @@
             </article>
 
             <!-- Thread 3: dr. Made Ary -->
-            <article class="km-thread-card" id="thread-3" data-tag="#AmanFondasi" data-mission="biopori">
+            <article class="km-thread-card" id="thread-3" data-tag="#AmanFondasi">
               <div class="km-thread-header">
                 <div class="km-thread-author-wrap">
                   <img src="images/testimonial/Kakak Putri.webp" alt="dr. Made Ary" class="km-thread-avatar">
                   <div class="km-thread-meta">
                     <div class="km-author-title-row">
                       <span class="km-thread-author-name">dr. Made Ary</span>
-                      <span class="km-author-level-tag">Ahli Sanitasi &amp; Pohon</span>
                     </div>
-                    <span class="km-thread-location-time">Gatot Subroto Barat &bull; 1 hari yang lalu</span>
+                    <div class="km-author-loc-time-stack">
+                      <span class="km-thread-location">Gatot Subroto Barat</span>
+                      <span class="km-thread-time">1 hari yang lalu</span>
+                    </div>
                   </div>
                 </div>
-                <div class="km-post-points-badge">+75 Poin</div>
-              </div>
-
-              <!-- Badge Misi Selesai Terverifikasi -->
-              <div class="km-thread-mission-bar">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span>Misi Tanam Selesai: Edukasi Biopori &amp; Akar Aman Fondasi</span>
               </div>
 
               <div class="km-thread-body">
-                <p class="km-thread-text">Banyak tetangga ragu menanam pohon karena takut tembok pagar retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang (seperti Tanjung atau Tabebuia), bukan akar serabut liar seperti Beringin. Tambahkan pipa biopori vertikal agar air mengalir ke bawah.</p>
-                <div class="km-thread-tags-row">
-                  <a href="javascript:void(0)" class="km-thread-tag-link" onclick="filterByTag('#AmanFondasi')">#AmanFondasi</a>
+                <p class="km-thread-text">Banyak tetangga ragu menanam pohon karena takut tembok pagar retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang (seperti Tanjung atau Tabebuia), bukan akar serabut liar seperti Beringin. Tambahkan pipa biopori vertikal agar air mengalir ke bawah. <span class="km-inline-tag" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')" onmouseenter="showTagHoverCard(event, '#AmanFondasi')" onmouseleave="hideHoverCard()">#AmanFondasi</span></p>
+                
+                <!-- Multi-Foto Grid 3 Gambar -->
+                <div class="km-photo-grid km-photo-grid-3">
+                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat Tabebuia Pink akar aman">
+                    <img src="assets/trees/tabebuia-pink.jpg" alt="Tabebuia Pink Akar Aman" loading="lazy">
+                  </a>
+                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat instalasi pipa biopori vertikal">
+                    <img src="assets/trees/pohon-tanjung.jpg" alt="Instalasi biopori vertikal" loading="lazy">
+                  </a>
+                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat perbandingan kondisi semen teras">
+                    <img src="assets/trees/ketapang-kencana.jpg" alt="Perbandingan semen teras" loading="lazy">
+                  </a>
                 </div>
               </div>
 
@@ -464,6 +459,10 @@
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                   <span class="comment-count">1</span> Komentar
                 </button>
+                <a href="community-detail.html?id=thread-3" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  <span>Buka Thread</span>
+                </a>
               </div>
 
               <!-- Inline Comments Section -->
@@ -474,7 +473,7 @@
                   <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-3')">Kirim</button>
                 </div>
 
-                <!-- Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) -->
+                <!-- Pohon Komentar (Branch Tree Graph) -->
                 <div class="km-comments-tree" id="comments-list-thread-3">
                   <div class="km-comment-branch" id="branch-thread-3-comment-1">
                     <div class="km-comment-node">
@@ -498,7 +497,7 @@
                         <img src="images/testimonial/Kakak Putri.webp" alt="Avatar Anda" class="km-reply-user-avatar">
                         <div class="km-reply-composer-content">
                           <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-3-comment-1">@John Doe</strong></span>
+                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-3-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@John Doe')" onmouseleave="hideHoverCard()">@John Doe</strong></span>
                             <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-3-comment-1')">Batal</button>
                           </div>
                           <div class="km-reply-input-group">
@@ -513,6 +512,14 @@
               </div>
             </article>
 
+          </div>
+
+          <!-- TOMBOL LIHAT POSTINGAN LENGKAP -->
+          <div class="km-feed-load-more-wrap">
+            <button type="button" class="km-btn-view-more-posts" aria-label="Lihat postingan lengkap">
+              <span>Lihat Postingan Lengkap</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
           </div>
         </div>
 
@@ -556,84 +563,36 @@
             </a>
           </div>
 
-          <!-- Card 1: Misi Tanam Berpoin Aktif (Civic Quests) -->
-          <div class="km-sidebar-card km-sidebar-quests-card">
+          <!-- Card 2: Tren Pekarangan untuk Anda -->
+          <div class="km-sidebar-card km-x-trend-card">
             <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Misi Tanam Berpoin</h3>
-              <span class="km-sidebar-badge">Klaim Poin</span>
+              <h3 class="km-sidebar-title">Tren untuk Anda</h3>
             </div>
-            <p class="km-sidebar-desc">Pilih misi tanam di bawah untuk menautkannya ke postingan Anda dan raih poin instan.</p>
-
-            <div class="km-quest-list" id="kmQuestList">
-              <!-- Quest 1 -->
-              <div class="km-quest-item" id="quest-item-plant-1" data-mission-id="plant-1">
-                <div class="km-quest-info">
-                  <div class="km-quest-title-row">
-                    <span class="km-quest-title">Tanam 1 Bibit Peneduh</span>
-                    <span class="km-quest-points">+100 Poin</span>
-                  </div>
-                  <p class="km-quest-desc">Dokumentasikan bibit pohon yang ditanam di pekarangan.</p>
-                </div>
-                <button type="button" class="km-btn-quest-action" onclick="applyMissionToComposer('plant-1')">Kerjakan</button>
-              </div>
-
-              <!-- Quest 2 -->
-              <div class="km-quest-item" id="quest-item-temp-drop" data-mission-id="temp-drop">
-                <div class="km-quest-info">
-                  <div class="km-quest-title-row">
-                    <span class="km-quest-title">Lapor Penurunan Suhu</span>
-                    <span class="km-quest-points">+50 Poin</span>
-                  </div>
-                  <p class="km-quest-desc">Bagikan data suhu teras sebelum dan sesudah ada pohon.</p>
-                </div>
-                <button type="button" class="km-btn-quest-action" onclick="applyMissionToComposer('temp-drop')">Kerjakan</button>
-              </div>
-
-              <!-- Quest 3 -->
-              <div class="km-quest-item" id="quest-item-biopori" data-mission-id="biopori">
-                <div class="km-quest-info">
-                  <div class="km-quest-title-row">
-                    <span class="km-quest-title">Buat Lubang Biopori Teras</span>
-                    <span class="km-quest-points">+75 Poin</span>
-                  </div>
-                  <p class="km-quest-desc">Bongkar semen atau buat biopori agar akar aman fondasi.</p>
-                </div>
-                <button type="button" class="km-btn-quest-action" onclick="applyMissionToComposer('biopori')">Kerjakan</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 2: Topik Populer & Filter Tag Seragam -->
-          <div class="km-sidebar-card">
-            <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Topik Populer</h3>
-              <button type="button" class="km-tag-reset-btn" id="kmResetTagBtn" onclick="filterByTag('all')">Reset</button>
-            </div>
-            <div class="km-trending-list" id="kmTagFilterList">
-              <button type="button" class="km-trend-item is-active" data-tag="all" onclick="filterByTag('all')">
-                <span class="km-trend-name">#Semua</span>
-                <span class="km-trend-count">126</span>
+            <div class="km-x-trend-list" id="kmTagFilterList">
+              <button type="button" class="km-x-trend-item is-active" data-tag="all" onclick="filterByTag('all')">
+                <span class="km-x-trend-tag">#SemuaAksi</span>
+                <span class="km-x-trend-count">126 postingan</span>
               </button>
-              <button type="button" class="km-trend-item" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')">
-                <span class="km-trend-name">#AksiTanam</span>
-                <span class="km-trend-count">48</span>
+              <button type="button" class="km-x-trend-item" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')">
+                <span class="km-x-trend-tag">#AksiTanam</span>
+                <span class="km-x-trend-count">48 postingan</span>
               </button>
-              <button type="button" class="km-trend-item" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')">
-                <span class="km-trend-name">#PekaranganSemen</span>
-                <span class="km-trend-count">32</span>
+              <button type="button" class="km-x-trend-item" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')">
+                <span class="km-x-trend-tag">#PekaranganSemen</span>
+                <span class="km-x-trend-count">32 postingan</span>
               </button>
-              <button type="button" class="km-trend-item" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')">
-                <span class="km-trend-name">#AmanFondasi</span>
-                <span class="km-trend-count">27</span>
+              <button type="button" class="km-x-trend-item" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')">
+                <span class="km-x-trend-tag">#AmanFondasi</span>
+                <span class="km-x-trend-count">27 postingan</span>
               </button>
-              <button type="button" class="km-trend-item" data-tag="#TanyaBibit" onclick="filterByTag('#TanyaBibit')">
-                <span class="km-trend-name">#TanyaBibit</span>
-                <span class="km-trend-count">19</span>
+              <button type="button" class="km-x-trend-item" data-tag="#TanyaBibit" onclick="filterByTag('#TanyaBibit')">
+                <span class="km-x-trend-tag">#TanyaBibit</span>
+                <span class="km-x-trend-count">19 postingan</span>
               </button>
             </div>
           </div>
 
-          <!-- Card 2: Mini Diagram Papan Peringkat (Top 3 Perintis) -->
+          <!-- Card 3: Mini Diagram Papan Peringkat (Top 3 Perintis) -->
           <div class="km-sidebar-card">
             <div class="km-sidebar-card-header">
               <h3 class="km-sidebar-title">Perintis Kesejukan</h3>
@@ -688,46 +647,89 @@
             </a>
           </div>
 
-          <!-- Card 3: Target Bersama Kesejukan Denpasar -->
-          <div class="km-sidebar-card km-goal-card">
-            <div class="km-goal-header">
-              <span class="km-goal-tag">Target Gotong Royong</span>
-              <span class="km-goal-percent">76%</span>
-            </div>
-            <h4 class="km-goal-title">Aksi 50 Titik Tanam Baru Pekarangan Denpasar</h4>
-            <p class="km-goal-desc">Target penanaman pohon peneduh berakar aman untuk meredam suhu pekarangan semen bulan ini.</p>
-            
-            <div class="km-goal-progress-bar">
-              <div class="km-goal-progress-fill" style="width: 76%;"></div>
-            </div>
-            
-            <div class="km-goal-metrics-grid">
-              <div class="km-goal-metric-item">
-                <span class="km-goal-metric-val">38/50</span>
-                <span class="km-goal-metric-lbl">Titik Tanam</span>
-              </div>
-              <div class="km-goal-metric-item">
-                <span class="km-goal-metric-val">-3.2°C</span>
-                <span class="km-goal-metric-lbl">Dampak Suhu</span>
-              </div>
-              <div class="km-goal-metric-item">
-                <span class="km-goal-metric-val">126</span>
-                <span class="km-goal-metric-lbl">Warga Ikut</span>
-              </div>
-            </div>
-
-            <button type="button" class="km-goal-cta-btn" onclick="focusComposer()">
-              <span>Bagikan Ceritamu di Sini</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
-            </button>
-          </div>
-
         </aside>
 
       </div>
 
     </div>
-  </main>
+  <!-- MODAL DIALOG BUAT POSTINGAN (LINKEDIN STYLE) -->
+  <div id="kmPostModal" class="km-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalPostTitle" onclick="handleModalBackdropClick(event)">
+    <div class="km-modal-dialog" onclick="event.stopPropagation()">
+      
+      <!-- Header Modal -->
+      <div class="km-modal-header">
+        <h2 class="km-modal-title" id="modalPostTitle">Bagikan Postingan</h2>
+        <button type="button" class="km-modal-close-btn" onclick="closePostModal()" aria-label="Tutup Dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Body Modal -->
+      <div class="km-modal-body">
+        
+        <!-- Profil Penulis Mini -->
+        <div class="km-modal-author-row">
+          <img src="images/testimonial/Mas Bima (1).webp" alt="John Doe" class="km-modal-author-avatar">
+          <div class="km-modal-author-info">
+            <span class="km-modal-author-name">John Doe</span>
+            <div class="km-location-picker-wrap" id="composerLocationPickerWrap">
+              <button type="button" class="km-modal-location-trigger is-empty" id="modalLocationTrigger" onclick="toggleLocationPicker(event)" title="Pilih lokasi aksi pekarangan">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span id="modalLocationText">Tambahkan Lokasi</span>
+              </button>
+
+              <!-- Pop-up Dropdown Pencarian & Pemilihan Lokasi -->
+              <div id="composerLocationPopup" class="km-location-popup" style="display: none;" role="dialog" aria-label="Pilih Lokasi">
+                <div class="km-location-search-box">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <input type="text" id="composerLocationSearchInput" class="km-location-input" placeholder="Cari kecamatan atau ketik jalan kustom..." oninput="filterLocationList(this.value)" onkeydown="handleLocationInputKeydown(event)">
+                </div>
+                <div class="km-location-list" id="composerLocationList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Textarea Utama dengan Autocomplete Tagar (#) & Mention (@) & Highlight Realtime -->
+        <div class="km-modal-textarea-wrap">
+          <div id="composerTextBackdrop" class="km-composer-backdrop" aria-hidden="true"></div>
+          <textarea 
+            id="modalComposerTextInput" 
+            class="km-modal-textarea" 
+            placeholder="Apa yang ingin Anda bagikan seputar kondisi pekarangan atau bibit hari ini? (Ketik # untuk tagar atau @ untuk mention)"
+            rows="4"
+            aria-label="Tulis narasi postingan"
+            oninput="syncComposerHighlight(); validateMissionComposer()"
+          ></textarea>
+
+          <!-- Dropdown Pop-up Autocomplete Tagar & Mention -->
+          <div id="composerAutocompletePopup" class="km-autocomplete-popup" role="listbox" style="display: none;"></div>
+        </div>
+
+        <!-- Area Unggah & Pratinjau Foto Pekarangan (Card Gray + Plus Sederhana) -->
+        <div class="km-composer-media-section" id="composerPhotoSection">
+          <div id="composerMediaGrid" class="km-composer-media-grid">
+            <label class="km-composer-upload-card" id="composerUploadCard" title="Unggah Foto Pekarangan">
+              <input type="file" id="composerFileInput" accept="image/*" multiple class="km-file-input-hidden" onchange="handleMultiPhotoUpload(event)">
+              <div class="km-upload-plus-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Modal Toolbar -->
+      <div class="km-modal-footer">
+        <button type="button" class="km-modal-btn-submit" id="modalSubmitBtn" onclick="submitNewPost()">
+          <span>Bagikan Cerita</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- TOAST NOTIFIKASI -->
   <div id="kmToast" role="status" aria-live="polite"></div>
@@ -736,7 +738,7 @@
   <div class="td-chatbot-wrapper">
     <!-- Tooltip Sambutan Otomatis -->
     <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
-      Tanya Asisten Teduh 👋
+      Tanya Asisten Teduh
     </div>
 
     <!-- Tombol FAB Bulat -->
@@ -800,7 +802,11 @@
     </div>
   </div>
 
+  <!-- GSAP Animation Engine via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
   <!-- SCRIPT ENGINE -->
+  <script src="js/page-transition.js"></script>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script src="js/community.js"></script>
