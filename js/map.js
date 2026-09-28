@@ -212,6 +212,24 @@ function getUserActiveMissionForZone(zone) {
   return null;
 }
 
+// Helper Format Judul Kawasan: Ringkas, Lugas, Tanpa Rincian Kurung yang Berlebihan
+function formatZoneTitle(name) {
+  if (!name) return 'Kawasan Pilihan';
+  let clean = name.replace(/\s*\([^)]*\)/g, '').trim();
+  clean = clean.replace(/^Kawasan Wisata\s+/i, '');
+  return clean;
+}
+
+// Helper Format Lokasi Singkat Penggagas Warga
+function formatShortLocation(loc) {
+  if (!loc) return 'Denpasar';
+  const parts = loc.split(',').map(s => s.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    return `${parts[0]}, ${parts[1]}`;
+  }
+  return loc;
+}
+
 // Memilih Zona, Memunculkan Pin Aktif, Popup Kustom, dan Membuka Drawer Analisis
 function selectZone(zone, isDynamic = false, citizenMission = null) {
   if (!zone || !mapInstance) return;
@@ -391,7 +409,6 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
   const headerLocEl = document.getElementById('drawerHeaderLocation');
 
   const nameEl = document.getElementById('zoneName');
-  const coordsEl = document.getElementById('zoneCoords');
 
   if (citizenMission) {
     if (citizenBadge) citizenBadge.classList.remove('hidden');
@@ -405,20 +422,13 @@ function selectZone(zone, isDynamic = false, citizenMission = null) {
     }
     if (headerLocEl) {
       const loc = citizenMission.location || citizenMission.zoneName || zone.name || 'Denpasar';
-      headerLocEl.textContent = loc;
+      headerLocEl.textContent = formatShortLocation(loc);
     }
   } else {
     if (citizenBadge) citizenBadge.classList.add('hidden');
     if (standardTitleGroup) standardTitleGroup.classList.remove('hidden');
 
-    if (nameEl) nameEl.textContent = zone.name;
-    if (coordsEl) {
-      if (zone.fullAddress) {
-        coordsEl.textContent = zone.fullAddress;
-      } else {
-        coordsEl.textContent = `Koordinat: ${zone.lat.toFixed(4)}, ${zone.lng.toFixed(4)}`;
-      }
-    }
+    if (nameEl) nameEl.textContent = formatZoneTitle(zone.name);
   }
 
   // Tampilkan State Loading Bersih & Sembunyikan Header dan Konten Drawer Dulu
@@ -612,7 +622,6 @@ function populateDrawer(zone) {
   const headerLocEl = document.getElementById('drawerHeaderLocation');
 
   const nameEl = document.getElementById('zoneName');
-  const coordsEl = document.getElementById('zoneCoords');
 
   if (activeCitizenMission) {
     if (citizenBadge) citizenBadge.classList.remove('hidden');
@@ -627,7 +636,7 @@ function populateDrawer(zone) {
     }
     if (headerLocEl) {
       const loc = activeCitizenMission.location || activeCitizenMission.zoneName || zone.name || 'Denpasar';
-      headerLocEl.textContent = loc;
+      headerLocEl.textContent = formatShortLocation(loc);
     }
   } else {
     if (citizenBadge) citizenBadge.classList.add('hidden');
@@ -648,14 +657,7 @@ function populateDrawer(zone) {
       }
     }
 
-    if (nameEl) nameEl.textContent = zone.name;
-    if (coordsEl) {
-      if (zone.fullAddress) {
-        coordsEl.textContent = zone.fullAddress;
-      } else {
-        coordsEl.textContent = `Koordinat: ${zone.lat.toFixed(4)}, ${zone.lng.toFixed(4)}`;
-      }
-    }
+    if (nameEl) nameEl.textContent = formatZoneTitle(zone.name);
   }
 
   // 1. Spektrum Suhu Termal (Hijau Dingin -> Terracotta Panas)
