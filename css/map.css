@@ -3157,12 +3157,12 @@ h1, h2, h3, h4, h5, h6, strong, b {
 }
 
 .collab-count-badge {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  background: #E8EFEA;
-  padding: 2px 9px;
-  border-radius: 100px;
+  color: #71717A;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .collab-count-badge.hidden {
@@ -4336,10 +4336,10 @@ h1, h2, h3, h4, h5, h6, strong, b {
 .drawer-volunteers-count-badge {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  background: #E8EFEA;
-  padding: 2px 9px;
-  border-radius: 100px;
+  color: #71717A;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .drawer-volunteers-list {
