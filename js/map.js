@@ -33,7 +33,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initDrawerTouchGestures();
   checkUrlParameters();
   syncUserProfile();
+  initMapConsoleEntranceAnimation();
 });
+
+// Animasi Masuk Kontrol Konsol Peta Saat Halaman Dibuka
+function initMapConsoleEntranceAnimation() {
+  if (typeof gsap === 'undefined') return;
+
+  // 1. Bilah atas masuk dari atas
+  gsap.fromTo('.map-desktop-topbar, .map-mobile-search-capsule',
+    { y: -26, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out' }
+  );
+
+  // 2. Kontrol mengambang peta masuk bertahap dengan efek scale pop
+  gsap.fromTo('#layerControlPanel, .map-floating-pill, .map-zoom-controls-wrapper, .map-reset-btn-pill, .map-macro-toggle-btn',
+    { scale: 0.9, opacity: 0, y: 8 },
+    { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.4)', stagger: 0.06, delay: 0.18 }
+  );
+}
 
 // Inisialisasi Peta Leaflet dengan Google Satellite Hybrid
 function initMap() {

@@ -20,6 +20,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    initScrollProgressBar();
     initHeroAnimations();
     initAboutAnimations();
     initProblemAnimations();
@@ -32,6 +33,26 @@
     initUniversalScrollReveals();
   });
 
+  /* 0 · HAIRLINE SCROLL PROGRESS BAR */
+  function initScrollProgressBar() {
+    if (!document.getElementById('teduhScrollProgressBar')) {
+      var progressBar = document.createElement('div');
+      progressBar.id = 'teduhScrollProgressBar';
+      progressBar.setAttribute('aria-hidden', 'true');
+      document.body.prepend(progressBar);
+    }
+
+    var bar = document.getElementById('teduhScrollProgressBar');
+    if (!bar) return;
+
+    window.addEventListener('scroll', function () {
+      var winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      bar.style.width = scrolled + '%';
+    }, { passive: true });
+  }
+
   /* 1 · HERO SECTION: Signature Split-Text Entrance & Satellite Depth Parallax */
   function initHeroAnimations() {
     var heroSplit = document.querySelector('.hero-split');
@@ -39,12 +60,21 @@
 
     var heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
+    var navbar = document.querySelector('header') || document.querySelector('.navbar');
     var heroLabel = document.querySelector('.hero-label');
     var heroTitle = document.querySelector('.hero-title');
     var heroDesc = document.querySelector('.hero-desc');
     var heroBtn = document.querySelector('.hero-action-row');
     var heroImg = document.querySelector('.hero-full-img');
     var heroCards = document.querySelectorAll('.hero-card-float');
+
+    if (navbar) {
+      heroTl.fromTo(navbar,
+        { y: -24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65 },
+        0
+      );
+    }
 
     if (heroLabel) {
       heroTl.fromTo(heroLabel, 
