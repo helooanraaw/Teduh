@@ -1501,8 +1501,9 @@
     height: auto;
     min-height: auto;
     max-height: none;
-    padding: 40px 0 48px 0;
+    padding: 40px 24px 48px 24px;
     gap: 32px;
+    box-sizing: border-box;
   }
 
   .hero-left {
@@ -1563,10 +1564,10 @@
 
   .hero-right {
     width: 100%;
-    max-width: 640px;
-    height: 340px;
-    min-height: 280px;
-    border-radius: 26px;
+    max-width: 600px;
+    height: 320px;
+    min-height: 260px;
+    border-radius: 24px;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -1579,7 +1580,7 @@
     transform: none !important;
     mask-image: none !important;
     -webkit-mask-image: none !important;
-    border-radius: 26px;
+    border-radius: 24px;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1598,24 +1599,25 @@
 
   .about-images-wrapper {
     max-width: 440px;
-    height: 340px;
+    height: 320px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
     margin: 0 auto;
     position: relative;
+    width: 100%;
   }
 
   .about-img-back-wrapper {
     width: 82%;
     height: 82%;
-    border-radius: 28px;
+    border-radius: 26px;
   }
 
   .about-img-front-wrapper {
     width: 64%;
     height: 64%;
-    border-radius: 22px;
+    border-radius: 20px;
   }
 
   .about-rating-badge {
@@ -1710,9 +1712,9 @@
   .problem-img-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 320px;
+    height: 300px;
     min-height: auto;
-    border-radius: 26px;
+    border-radius: 24px;
     margin: 0 auto;
     position: relative;
   }
@@ -1741,11 +1743,11 @@
   .fa-main-carousel-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 320px;
+    height: 300px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
-    border-radius: 26px;
+    border-radius: 24px;
     margin: 0 auto 28px auto;
   }
 
@@ -1765,7 +1767,7 @@
     text-align: left;
   }
 
-  /* 5 · TESTIMONI */
+  /* 5 · TESTIMONI (RATA KIRI) */
   .testimonial {
     padding: 60px 0;
     min-height: auto;
@@ -1774,7 +1776,7 @@
   .testimonial h2.hd {
     font-size: clamp(26px, 3.8vw, 32px);
     margin-bottom: 32px;
-    text-align: center;
+    text-align: left;
   }
 
   .testimonial__layout {
@@ -1784,36 +1786,36 @@
   }
 
   .testimonial__gallery {
-    height: 300px;
-    max-width: 540px;
-    margin: 0 auto;
+    height: 280px;
+    max-width: 500px;
+    margin: 0;
   }
 
   .testimonial__quote-card {
     height: auto;
     min-height: auto;
     max-height: none;
-    padding: 2.4rem;
-    border-radius: 26px;
-    text-align: center;
+    padding: 2.2rem;
+    border-radius: 24px;
+    text-align: left;
     background: var(--color-surface);
   }
 
   .testimonial__navigation {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .testimonial__quote {
-    font-size: 17px;
+    font-size: 16.5px;
     line-height: 1.6;
-    text-align: center;
-    margin: 0 auto;
-    max-width: 50ch;
+    text-align: left;
+    margin: 0 0 16px 0;
+    max-width: 100%;
   }
 
   .testimonial__author {
-    text-align: center;
-    align-items: center;
+    text-align: left;
+    align-items: flex-start;
   }
 
   /* 6 · MITRA 3D DOME */
@@ -1839,7 +1841,7 @@
   }
 
   .mitra-dome-container {
-    height: 400px;
+    height: 380px;
   }
 
   /* 7 · FAQ */
@@ -1866,11 +1868,11 @@
   .faq-img-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 320px;
+    height: 300px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
-    border-radius: 26px;
+    border-radius: 24px;
     margin: 0 auto 28px auto;
   }
 
@@ -1894,7 +1896,7 @@
   .hero-partners-new {
     padding: 44px 32px;
     margin: 40px auto 60px auto;
-    border-radius: 30px;
+    border-radius: 28px;
     background: var(--color-surface);
   }
 
@@ -1965,8 +1967,9 @@
     height: auto;
     min-height: auto;
     max-height: none;
-    padding: 24px 0 36px 0;
+    padding: 24px 16px 32px 16px;
     gap: 20px;
+    box-sizing: border-box;
   }
 
   .hero-left {
@@ -2038,10 +2041,10 @@
   .hero-right {
     width: 100%;
     max-width: 100%;
-    height: 240px;
-    min-height: 200px;
-    border-radius: 20px;
-    margin: 8px auto 0 auto;
+    height: 220px;
+    min-height: 180px;
+    border-radius: 18px;
+    margin: 6px auto 0 auto;
     overflow: hidden;
   }
 
@@ -2053,7 +2056,7 @@
     transform: none !important;
     mask-image: none !important;
     -webkit-mask-image: none !important;
-    border-radius: 20px;
+    border-radius: 18px;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -2061,22 +2064,22 @@
 
   /* 2 · TENTANG KAMI */
   .about-section {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 24px;
   }
 
   .about-images-wrapper {
-    max-width: 360px;
-    height: 260px;
+    max-width: 340px;
+    height: 240px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
-    margin: 0 auto 8px auto;
+    margin: 0 auto 4px auto;
     position: relative;
     width: 100%;
   }
@@ -2084,30 +2087,30 @@
   .about-img-back-wrapper {
     width: 82%;
     height: 82%;
-    border-radius: 22px;
+    border-radius: 20px;
   }
 
   .about-img-front-wrapper {
     width: 64%;
     height: 64%;
-    border-radius: 18px;
+    border-radius: 16px;
   }
 
   .about-rating-badge {
-    top: 12px;
-    left: -6px;
-    padding: 8px 14px;
-    gap: 10px;
+    top: 10px;
+    left: -4px;
+    padding: 7px 12px;
+    gap: 8px;
     background: var(--color-surface);
     border-radius: var(--radius-full);
   }
 
   .about-rating-score {
-    font-size: 14px;
+    font-size: 13.5px;
   }
 
   .about-rating-label {
-    font-size: 11px;
+    font-size: 10.5px;
   }
 
   .about-content {
@@ -2183,7 +2186,7 @@
 
   /* 3 · MASALAH SUHU */
   .problem-section {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
@@ -2194,7 +2197,7 @@
 
   .problem-title h2 {
     font-size: clamp(22px, 5.5vw, 28px);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     text-align: left;
     line-height: 1.2;
   }
@@ -2247,16 +2250,16 @@
   .problem-img-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 230px;
+    height: 220px;
     min-height: auto;
-    border-radius: 20px;
-    margin: 8px auto 0 auto;
+    border-radius: 18px;
+    margin: 6px auto 0 auto;
     position: relative;
   }
 
   /* 4 · FITUR ACCORDION */
   .features-accordion {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
@@ -2267,7 +2270,7 @@
 
   .fa-left .hd {
     font-size: clamp(22px, 5.5vw, 28px);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     text-align: left;
     line-height: 1.2;
   }
@@ -2275,12 +2278,12 @@
   .fa-main-carousel-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 230px;
+    height: 220px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
-    border-radius: 20px;
-    margin: 0 auto 20px auto;
+    border-radius: 18px;
+    margin: 0 auto 18px auto;
   }
 
   .acc-item {
@@ -2321,30 +2324,30 @@
     justify-content: flex-start;
   }
 
-  /* 5 · TESTIMONI */
+  /* 5 · TESTIMONI (RATA KIRI) */
   .testimonial {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
   .testimonial h2.hd {
     font-size: clamp(22px, 5.5vw, 28px);
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 18px;
+    text-align: left;
     line-height: 1.2;
   }
 
   .testimonial__layout {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
     column-gap: 0;
   }
 
   .testimonial__gallery {
-    height: 220px;
+    height: 200px;
     width: 100%;
-    max-width: 380px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0 0 12px 0;
   }
 
   .testimonial__portrait[data-testimonial-slot="previous"] {
@@ -2365,61 +2368,61 @@
     height: auto;
     min-height: auto;
     max-height: none;
-    padding: 1.8rem 1.4rem;
-    border-radius: 22px;
-    text-align: center;
+    padding: 1.6rem 1.4rem;
+    border-radius: 20px;
+    text-align: left;
     background: var(--color-surface);
   }
 
   .testimonial__navigation {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
     margin-bottom: 8px;
   }
 
   .testimonial__navigation-button {
-    width: 3rem;
-    height: 3rem;
-    min-width: 3rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    min-width: 2.8rem;
   }
 
   .testimonial__quote-mark {
-    font-size: 8rem;
+    font-size: 7rem;
     top: -0.3em;
-    right: 0;
-    opacity: 0.5;
+    right: 0.2em;
+    opacity: 0.35;
   }
 
   .testimonial__quote-content {
-    padding-top: 0.5rem;
+    padding-top: 0.4rem;
   }
 
   .testimonial__quote {
-    font-size: 14.5px;
+    font-size: 14px;
     line-height: 1.6;
-    text-align: center;
-    margin: 0 auto 14px auto;
+    text-align: left;
+    margin: 0 0 12px 0;
   }
 
   .testimonial__author {
-    text-align: center;
-    align-items: center;
+    text-align: left;
+    align-items: flex-start;
     gap: 2px;
-    padding-top: 0.5rem;
+    padding-top: 0.4rem;
   }
 
   .testimonial__name {
-    font-size: 15.5px;
+    font-size: 15px;
     font-weight: 700;
   }
 
   .testimonial__role {
-    font-size: 12.5px;
+    font-size: 12px;
   }
 
   /* 6 · MITRA 3D DOME */
   .mitra-section {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
@@ -2442,12 +2445,12 @@
   }
 
   .mitra-dome-container {
-    height: 300px;
+    height: 290px;
   }
 
   /* 7 · FAQ */
   .faq-section {
-    padding: 44px 0;
+    padding: 40px 0;
     min-height: auto;
   }
 
@@ -2466,12 +2469,12 @@
   .faq-img-wrapper {
     width: 100%;
     max-width: 100%;
-    height: 230px;
+    height: 220px;
     min-height: auto;
     max-height: none;
     aspect-ratio: auto;
-    border-radius: 20px;
-    margin: 0 auto 20px auto;
+    border-radius: 18px;
+    margin: 0 auto 18px auto;
   }
 
   .faq-item {
@@ -2515,7 +2518,7 @@
   .hero-partners-new {
     padding: 32px 18px;
     margin: 28px auto 44px auto;
-    border-radius: 24px;
+    border-radius: 22px;
     background: var(--color-surface);
   }
 
@@ -2600,8 +2603,12 @@
     width: calc(100% - 20px);
   }
 
+  .hero {
+    padding: 20px 12px 28px 12px;
+  }
+
   .hero-title {
-    font-size: 26px !important;
+    font-size: 25px !important;
   }
 
   .hero-desc {
@@ -2609,18 +2616,18 @@
   }
 
   .hero-right {
-    height: 210px;
-    border-radius: 18px;
+    height: 195px;
+    border-radius: 16px;
   }
 
   .about-images-wrapper {
-    height: 230px;
+    height: 220px;
   }
 
   .problem-img-wrapper,
   .fa-main-carousel-wrapper {
-    height: 210px;
-    border-radius: 18px;
+    height: 200px;
+    border-radius: 16px;
   }
 
   .prob-list-item,
@@ -2644,16 +2651,16 @@
   }
 
   .testimonial__gallery {
-    height: 200px;
+    height: 190px;
   }
 
   .mitra-dome-container {
-    height: 270px;
+    height: 260px;
   }
 
   .faq-img-wrapper {
-    height: 200px;
-    border-radius: 18px;
+    height: 195px;
+    border-radius: 16px;
   }
 
   .faq-inner {
@@ -2661,8 +2668,8 @@
   }
 
   .hero-partners-new {
-    padding: 24px 14px;
-    border-radius: 20px;
+    padding: 22px 12px;
+    border-radius: 18px;
   }
 }
 
