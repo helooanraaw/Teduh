@@ -361,14 +361,8 @@ function initTestimonialGallery() {
         }
       });
 
-      // D. Animasi Subtle Breathing pada Kartu Ulasan Teks
-      if (quoteCard) {
-        gsap.fromTo(
-          quoteCard,
-          { scale: 0.985, y: direction === "next" ? 6 : -6 },
-          { scale: 1, y: 0, duration: 0.65, ease: "power3.out" },
-        );
-      }
+      // D. Kontainer Kartu Ulasan Teks Tetap Stabil (Tanpa Skala/Perubahan Bentuk)
+
 
       // E. Animasi Tanda Kutip Dekoratif (Elastic Spin & Settle)
       if (quoteMark) {
