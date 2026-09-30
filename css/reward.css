@@ -247,10 +247,91 @@ body {
   border-radius: 0;
   border: none;
   box-shadow: none;
-  padding: 16px 0 32px 0;
+  padding: 20px 0 32px 0;
   margin-bottom: 28px;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.rw-podium-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rw-podium-topo-arcs {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 960px;
+  height: 100%;
+  opacity: 0.95;
+}
+
+.rw-podium-datum-line {
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  border-top: 1px dashed rgba(26, 56, 43, 0.08);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 0;
+}
+
+.rw-podium-datum-line.datum-high {
+  top: 32%;
+}
+
+.rw-podium-datum-line.datum-mid {
+  top: 56%;
+}
+
+.rw-datum-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(26, 56, 43, 0.38);
+  background: #fdfdfc;
+  padding: 2px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(26, 56, 43, 0.06);
+}
+
+.rw-podium-ground-shadow {
+  position: absolute;
+  bottom: 22px;
+  left: 6%;
+  right: 6%;
+  height: 28px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26, 56, 43, 0.06) 0%,
+    rgba(26, 56, 43, 0.02) 50%,
+    transparent 80%
+  );
+  border-radius: 50%;
+  filter: blur(8px);
+}
+
+@media (max-width: 640px) {
+  .rw-datum-tag {
+    font-size: 8.5px;
+    padding: 1px 6px;
+  }
+  .rw-podium-datum-line.datum-high {
+    top: 34%;
+  }
 }
 
 .rw-podium-diagram {
