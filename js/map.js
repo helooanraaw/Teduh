@@ -161,22 +161,12 @@ function initMap() {
     attributionControl: true,
   }).setView([-8.675, 115.215], 13);
 
-  // 1. Layer Citra Satelit Murni Google Earth (Bebas Iklan, Toko, & Garis Tebal)
-  L.tileLayer("https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+  // Layer Citra Satelit Hybrid Google Maps (Citra Satelit Tajam + Label Wilayah Administratif Bebas API Key)
+  L.tileLayer("https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", {
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"],
-    attribution: "Citra Satelit &copy; Google Earth | Platform Teduh",
+    attribution: "Citra Satelit &copy; Google Maps / Earth | Platform Teduh",
   }).addTo(mapInstance);
-
-  // 2. Layer Khusus Nama Daerah Administratif Bersih (Denpasar, Panjer, Sesetan, Badung, Karangasem, dll - Tanpa Tempat Bisnis)
-  L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png",
-    {
-      maxZoom: 20,
-      subdomains: "abcd",
-      opacity: 0.95,
-    },
-  ).addTo(mapInstance);
 
   // Batasi jangkauan geser kamera agar tetap fokus di sekitar Pulau Bali
   const baliBounds = L.latLngBounds(
