@@ -38,17 +38,17 @@
   --color-btn-primary-hover: #6ea842;
   --color-on-slate: #ffffff;
 
-  --color-background: #f2f0e4;
-  --color-surface: #faf9f4;
-  --color-surface-subtle: rgba(221, 217, 177, 0.5);
-  --color-surface-container: rgba(221, 217, 177, 0.5);
+  --color-background: #f9f8f3;
+  --color-surface: #ffffff;
+  --color-surface-subtle: rgba(221, 217, 177, 0.35);
+  --color-surface-container: rgba(221, 217, 177, 0.35);
 
   --color-text-title: #0e1116;
   --color-text-body: #374151;
   --color-text-muted: #6b7280;
   --color-text-faint: #9ca3af;
 
-  --color-border: #d4d0bc;
+  --color-border: #e6e3d5;
   --color-border-subtle: rgba(26, 56, 43, 0.08);
   --color-border-dark: #23262d;
 

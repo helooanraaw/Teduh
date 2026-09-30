@@ -16,7 +16,7 @@
  */
 
 .rw-page-wrapper {
-  background-color: var(--color-background, #f2f0e4);
+  background-color: var(--color-background, #f9f8f3);
   min-height: 100vh;
   padding-bottom: 96px;
 }
