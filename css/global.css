@@ -287,11 +287,11 @@ button {
   max-width: var(--container-max-wide, 1340px);
   border-radius: var(--radius-full);
   margin: 16px auto 0 auto;
-  background: rgba(238, 234, 218, 0.78);
+  background: rgba(246, 244, 236, 0.8);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: none !important;
-  box-shadow: 0 4px 20px rgba(26, 56, 43, 0.05);
+  box-shadow: 0 4px 20px rgba(14, 17, 22, 0.04);
   transition:
     max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
     width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -315,11 +315,11 @@ button {
 .navbar.navbar-scrolled {
   width: calc(100% - 48px);
   max-width: var(--container-max, 1180px);
-  background: rgba(235, 230, 212, 0.92);
+  background: rgba(243, 240, 230, 0.9);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: none !important;
-  box-shadow: 0 8px 30px rgba(14, 17, 22, 0.08);
+  box-shadow: 0 8px 28px rgba(14, 17, 22, 0.06);
 }
 
 .navbar.navbar-scrolled .navbar-inner {
