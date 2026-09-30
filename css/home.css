@@ -1112,7 +1112,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: space-between;
   min-height: 0;
   padding-top: 0;
   opacity: 1;
@@ -1129,7 +1128,7 @@
 
 .testimonial__quote {
   max-width: 48ch;
-  margin: 0;
+  margin: auto 0;
   color: var(--color-slate);
   font-size: 19px;
   line-height: 1.62;
@@ -1139,8 +1138,8 @@
 .testimonial__author {
   display: grid;
   gap: 4px;
-  margin-top: auto;
-  padding-top: 16px;
+  margin-top: 0;
+  padding-top: 12px;
   flex-shrink: 0;
 }
 
@@ -2107,7 +2106,7 @@
   .testimonial__navigation {
     justify-content: flex-start;
     gap: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
 
   .testimonial__navigation-button {
@@ -2119,7 +2118,6 @@
   .testimonial__quote-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 0;
     flex: 1;
     min-height: 0;
@@ -2132,7 +2130,7 @@
     font-size: 16.5px;
     line-height: 1.58;
     text-align: left;
-    margin: 0;
+    margin: auto 0;
     max-width: 100%;
   }
 
@@ -2140,8 +2138,8 @@
     text-align: left;
     align-items: flex-start;
     gap: 4px;
-    margin-top: auto;
-    padding-top: 12px;
+    margin-top: 0;
+    padding-top: 8px;
     border-top: none !important;
     width: 100%;
     flex-shrink: 0;
@@ -2781,7 +2779,7 @@
   .testimonial__navigation {
     justify-content: flex-start;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 
   .testimonial__navigation-button {
@@ -2800,7 +2798,6 @@
   .testimonial__quote-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 0;
     flex: 1;
     min-height: 0;
@@ -2813,7 +2810,7 @@
     font-size: 15px;
     line-height: 1.55;
     text-align: left;
-    margin: 0;
+    margin: auto 0;
     max-width: 100%;
   }
 
@@ -2821,8 +2818,8 @@
     text-align: left;
     align-items: flex-start;
     gap: 3px;
-    margin-top: auto;
-    padding-top: 10px;
+    margin-top: 0;
+    padding-top: 6px;
     border-top: none !important;
     width: 100%;
     flex-shrink: 0;
@@ -3105,7 +3102,7 @@
   }
 
   .testimonial__navigation {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .testimonial__navigation-button {
@@ -3117,7 +3114,6 @@
   .testimonial__quote-content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 0;
     flex: 1;
     min-height: 0;
@@ -3128,12 +3124,12 @@
   .testimonial__quote {
     font-size: 13.5px;
     line-height: 1.52;
-    margin: 0;
+    margin: auto 0;
   }
 
   .testimonial__author {
-    margin-top: auto;
-    padding-top: 8px;
+    margin-top: 0;
+    padding-top: 4px;
     flex-shrink: 0;
   }
 
