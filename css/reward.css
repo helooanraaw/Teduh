@@ -15,8 +15,12 @@
  * ==========================================================================
  */
 
+body {
+  background-color: #fbfaf7;
+}
+
 .rw-page-wrapper {
-  background-color: var(--color-background, #f9f8f3);
+  background-color: #fbfaf7;
   min-height: 100vh;
   padding-bottom: 96px;
 }
