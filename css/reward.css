@@ -247,45 +247,10 @@ body {
   border-radius: 0;
   border: none;
   box-shadow: none;
-  padding: 20px 0 32px 0;
+  padding: 16px 0 32px 0;
   margin-bottom: 28px;
   width: 100%;
   box-sizing: border-box;
-}
-
-/* 1. Ambient Botanical & Warm Gold Halo di Belakang Diagram */
-.rw-podium-diagram-card::before {
-  content: "";
-  position: absolute;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(94%, 720px);
-  height: 380px;
-  background:
-    radial-gradient(ellipse 50% 42% at 50% 26%, rgba(245, 158, 11, 0.16) 0%, transparent 64%),
-    radial-gradient(ellipse 72% 58% at 50% 56%, rgba(26, 56, 43, 0.08) 0%, rgba(92, 132, 55, 0.04) 45%, transparent 72%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(30px);
-}
-
-/* 2. Cincin Isotermal Kesejukan Spasial (Radius Mikro Sejuk) */
-.rw-podium-diagram-card::after {
-  content: "";
-  position: absolute;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(92%, 640px);
-  height: 340px;
-  background:
-    radial-gradient(circle at 50% 26%, transparent 80px, rgba(26, 56, 43, 0.045) 81px, transparent 83px),
-    radial-gradient(circle at 50% 26%, transparent 150px, rgba(26, 56, 43, 0.03) 151px, transparent 153px),
-    radial-gradient(circle at 50% 26%, transparent 225px, rgba(26, 56, 43, 0.018) 226px, transparent 228px);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .rw-podium-diagram {
@@ -342,21 +307,6 @@ body {
   box-shadow:
     0 8px 24px -2px rgba(245, 158, 11, 0.35),
     0 2px 6px rgba(14, 17, 22, 0.1);
-}
-
-.rw-podium-col.col-1 .rw-podium-avatar-wrap::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 130px;
-  height: 130px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(245, 158, 11, 0.05) 50%, transparent 70%);
-  border-radius: 50%;
-  z-index: -1;
-  filter: blur(12px);
-  pointer-events: none;
 }
 
 .rw-podium-crown {
@@ -426,29 +376,37 @@ body {
 .rw-podium-bar::before {
   content: "";
   position: absolute;
-  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 78px;
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.12);
   line-height: 1;
   pointer-events: none;
   font-family: inherit;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   user-select: none;
+  z-index: 1;
 }
 
 .rw-podium-bar.bar-1::before {
   content: "1";
+  bottom: 22px;
+  font-size: 68px;
+  color: rgba(254, 240, 138, 0.2);
 }
 
 .rw-podium-bar.bar-2::before {
   content: "2";
+  bottom: 14px;
+  font-size: 54px;
+  color: rgba(255, 255, 255, 0.12);
 }
 
 .rw-podium-bar.bar-3::before {
   content: "3";
+  bottom: 10px;
+  font-size: 46px;
+  color: rgba(255, 255, 255, 0.12);
 }
 
 /* Subtly illuminated top chamfer / rim */
@@ -1553,8 +1511,22 @@ body {
   }
 
   .rw-podium-bar::before {
-    font-size: 52px;
-    bottom: -4px;
+    line-height: 1;
+  }
+
+  .rw-podium-bar.bar-1::before {
+    bottom: 14px;
+    font-size: 44px;
+  }
+
+  .rw-podium-bar.bar-2::before {
+    bottom: 10px;
+    font-size: 36px;
+  }
+
+  .rw-podium-bar.bar-3::before {
+    bottom: 6px;
+    font-size: 30px;
   }
 
   .rw-podium-bar.bar-1 {
@@ -1821,8 +1793,22 @@ body {
   }
 
   .rw-podium-bar::before {
-    font-size: 42px;
-    bottom: -3px;
+    line-height: 1;
+  }
+
+  .rw-podium-bar.bar-1::before {
+    bottom: 10px;
+    font-size: 36px;
+  }
+
+  .rw-podium-bar.bar-2::before {
+    bottom: 8px;
+    font-size: 28px;
+  }
+
+  .rw-podium-bar.bar-3::before {
+    bottom: 5px;
+    font-size: 24px;
   }
 
   .rw-podium-bar.bar-1 {
