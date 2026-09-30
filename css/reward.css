@@ -251,87 +251,41 @@ body {
   margin-bottom: 28px;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-.rw-podium-backdrop {
+/* 1. Ambient Botanical & Warm Gold Halo di Belakang Diagram */
+.rw-podium-diagram-card::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.rw-podium-topo-arcs {
-  position: absolute;
-  top: 48%;
+  top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 960px;
-  height: 100%;
-  opacity: 0.95;
-}
-
-.rw-podium-datum-line {
-  position: absolute;
-  left: 2%;
-  right: 2%;
-  border-top: 1px dashed rgba(26, 56, 43, 0.08);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  z-index: 0;
-}
-
-.rw-podium-datum-line.datum-high {
-  top: 32%;
-}
-
-.rw-podium-datum-line.datum-mid {
-  top: 56%;
-}
-
-.rw-datum-tag {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba(26, 56, 43, 0.38);
-  background: #fdfdfc;
-  padding: 2px 10px;
-  border-radius: 4px;
-  border: 1px solid rgba(26, 56, 43, 0.06);
-}
-
-.rw-podium-ground-shadow {
-  position: absolute;
-  bottom: 22px;
-  left: 6%;
-  right: 6%;
-  height: 28px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(26, 56, 43, 0.06) 0%,
-    rgba(26, 56, 43, 0.02) 50%,
-    transparent 80%
-  );
+  width: min(94%, 720px);
+  height: 380px;
+  background:
+    radial-gradient(ellipse 50% 42% at 50% 26%, rgba(245, 158, 11, 0.16) 0%, transparent 64%),
+    radial-gradient(ellipse 72% 58% at 50% 56%, rgba(26, 56, 43, 0.08) 0%, rgba(92, 132, 55, 0.04) 45%, transparent 72%);
   border-radius: 50%;
-  filter: blur(8px);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(30px);
 }
 
-@media (max-width: 640px) {
-  .rw-datum-tag {
-    font-size: 8.5px;
-    padding: 1px 6px;
-  }
-  .rw-podium-datum-line.datum-high {
-    top: 34%;
-  }
+/* 2. Cincin Isotermal Kesejukan Spasial (Radius Mikro Sejuk) */
+.rw-podium-diagram-card::after {
+  content: "";
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92%, 640px);
+  height: 340px;
+  background:
+    radial-gradient(circle at 50% 26%, transparent 80px, rgba(26, 56, 43, 0.045) 81px, transparent 83px),
+    radial-gradient(circle at 50% 26%, transparent 150px, rgba(26, 56, 43, 0.03) 151px, transparent 153px),
+    radial-gradient(circle at 50% 26%, transparent 225px, rgba(26, 56, 43, 0.018) 226px, transparent 228px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .rw-podium-diagram {
@@ -388,6 +342,21 @@ body {
   box-shadow:
     0 8px 24px -2px rgba(245, 158, 11, 0.35),
     0 2px 6px rgba(14, 17, 22, 0.1);
+}
+
+.rw-podium-col.col-1 .rw-podium-avatar-wrap::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.22) 0%, rgba(245, 158, 11, 0.05) 50%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(12px);
+  pointer-events: none;
 }
 
 .rw-podium-crown {
