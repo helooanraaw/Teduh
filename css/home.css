@@ -1341,9 +1341,9 @@
   background: radial-gradient(
     ellipse 70% 80% at 50% 50%,
     transparent 35%,
-    rgba(242, 240, 228, 0.4) 62%,
-    rgba(242, 240, 228, 0.88) 84%,
-    var(--color-background) 96%
+    rgba(249, 248, 243, 0.4) 62%,
+    rgba(249, 248, 243, 0.88) 84%,
+    var(--color-background, #f9f8f3) 96%
   );
 }
 
