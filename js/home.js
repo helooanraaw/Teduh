@@ -383,15 +383,10 @@ function initTestimonialGallery() {
         );
       }
 
-      // 2. GSAP Cinematic Text Cascade (Flip Out -> Update -> Flip In)
-      const outY = direction === "next" ? -14 : 14;
-      const inY = direction === "next" ? 22 : -22;
-
+      // 2. Transisi Teks & Nama Warga yang Halus dan Diam di Tempat
       gsap.to([quoteEl, nameEl, roleEl], {
         opacity: 0,
-        y: outY,
-        duration: 0.22,
-        stagger: 0.02,
+        duration: 0.18,
         ease: "power2.in",
         onComplete: () => {
           const activeItemData = items[active];
@@ -401,36 +396,32 @@ function initTestimonialGallery() {
 
           gsap.fromTo(
             quoteEl,
-            { opacity: 0, y: inY, rotateX: -8 },
+            { opacity: 0, y: direction === "next" ? 8 : -8 },
             {
               opacity: 1,
               y: 0,
-              rotateX: 0,
-              duration: 0.65,
-              ease: "power3.out",
+              duration: 0.45,
+              ease: "power2.out",
             },
           );
           gsap.fromTo(
             nameEl,
-            { opacity: 0, y: inY * 0.7, x: direction === "next" ? 14 : -14 },
+            { opacity: 0 },
             {
               opacity: 1,
-              y: 0,
-              x: 0,
-              duration: 0.55,
-              ease: "back.out(1.5)",
-              delay: 0.06,
+              duration: 0.4,
+              ease: "power2.out",
+              delay: 0.04,
             },
           );
           gsap.fromTo(
             roleEl,
-            { opacity: 0, y: inY * 0.5 },
+            { opacity: 0 },
             {
               opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power3.out",
-              delay: 0.12,
+              duration: 0.4,
+              ease: "power2.out",
+              delay: 0.08,
               onComplete: () => {
                 isTransitioning = false;
               },
