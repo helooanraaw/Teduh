@@ -1679,11 +1679,11 @@
   }
 
   .navbar.navbar-scrolled {
-    background: rgba(250, 249, 244, 0.9) !important;
+    background: rgba(235, 230, 212, 0.95) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(221, 217, 177, 0.6) !important;
-    box-shadow: 0 8px 24px rgba(14, 17, 22, 0.08) !important;
+    border: 1px solid #d4ceb8 !important;
+    box-shadow: 0 8px 28px rgba(14, 17, 22, 0.08) !important;
   }
 
   .navbar.navbar-scrolled .navbar-brand-logo-mobile,
