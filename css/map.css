@@ -436,7 +436,8 @@ b {
   display: none;
 }
 
-.map-desktop-topbar-right .nav-profile-popup {
+.map-desktop-topbar-right .nav-profile-popup,
+.map-desktop-topbar-right .nav-notif-popup {
   top: calc(100% + 10px) !important;
   bottom: auto !important;
   right: 0 !important;
