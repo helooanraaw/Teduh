@@ -161,8 +161,8 @@ function initMap() {
     attributionControl: true,
   }).setView([-8.675, 115.215], 13);
 
-  // Layer Citra Satelit Hybrid Google Maps (Citra Satelit Tajam + Label Wilayah Administratif Bebas API Key)
-  L.tileLayer("https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", {
+  // Layer Citra Satelit Murni Google Maps (Citra Satelit Tajam Bersih Tanpa Label Tempat/Komersial Bebas API Key)
+  L.tileLayer("https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"],
     attribution: "Citra Satelit &copy; Google Maps / Earth | Platform Teduh",
