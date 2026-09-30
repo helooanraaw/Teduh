@@ -68,20 +68,138 @@ function initMobileNavigation() {
 }
 
 function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const targetId = this.getAttribute("href");
-      if (targetId === "#" || !targetId) return;
+  if (typeof window === "undefined") return;
 
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    $(document).on("click", 'a[href^="#"]', function (e) {
+      const targetId = $(this).attr("href");
+      if (!targetId || targetId === "#") return;
+      try {
+        const $target = $(targetId);
+        if ($target.length) {
+          e.preventDefault();
+          window.scrollTo(0, Math.max(0, $target.offset().top - 76));
+        }
+      } catch (err) {}
     });
+    return;
+  }
+
+  let currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+  let targetY = currentY;
+  let isMoving = false;
+  let rafId = null;
+  const damping = 0.12;
+
+  function render() {
+    const diff = targetY - currentY;
+    if (Math.abs(diff) < 0.25) {
+      currentY = targetY;
+      window.scrollTo(0, Math.round(currentY));
+      isMoving = false;
+      return;
+    }
+
+    currentY += diff * damping;
+    window.scrollTo(0, Math.round(currentY));
+    rafId = requestAnimationFrame(render);
+  }
+
+  $(document).on("click", 'a[href^="#"]', function (e) {
+    const targetId = $(this).attr("href");
+    if (!targetId || targetId === "#") return;
+    try {
+      const $target = $(targetId);
+      if ($target.length) {
+        e.preventDefault();
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        targetY = Math.max(0, Math.min(maxScroll, $target.offset().top - 76));
+        if (!isMoving) {
+          isMoving = true;
+          currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+          rafId = requestAnimationFrame(render);
+        }
+      }
+    } catch (err) {}
+  });
+
+  const isTouchDevice = "ontouchstart" in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
+  if (isTouchDevice) return;
+
+  window.addEventListener(
+    "wheel",
+    function (e) {
+      if (e.ctrlKey || e.metaKey) return;
+      if (document.body.style.overflow === "hidden") return;
+
+      const target = e.target;
+      if (
+        target &&
+        target.closest &&
+        target.closest(
+          ".leaflet-container, .map-viewport, .spatial-drawer, .td-chat-messages, .km-modal-content, .km-lightbox-wrapper, .friends-list-container, textarea, select"
+        )
+      ) {
+        return;
+      }
+
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      if (maxScroll <= 0) return;
+
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) {
+        delta *= 40;
+      } else if (e.deltaMode === 2) {
+        delta *= window.innerHeight;
+      }
+
+      targetY = Math.max(0, Math.min(maxScroll, targetY + delta));
+
+      if (!isMoving) {
+        isMoving = true;
+        currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        rafId = requestAnimationFrame(render);
+      }
+
+      e.preventDefault();
+    },
+    { passive: false }
+  );
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!isMoving) {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        currentY = scrollY;
+        targetY = scrollY;
+      }
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("keydown", function (e) {
+    if (["input", "textarea", "select"].includes(document.activeElement?.tagName?.toLowerCase())) return;
+    if (document.body.style.overflow === "hidden") return;
+
+    let keyDelta = 0;
+    if (e.key === "ArrowDown") keyDelta = 100;
+    else if (e.key === "ArrowUp") keyDelta = -100;
+    else if (e.key === "PageDown" || (e.key === " " && !e.shiftKey)) keyDelta = window.innerHeight * 0.8;
+    else if (e.key === "PageUp" || (e.key === " " && e.shiftKey)) keyDelta = -window.innerHeight * 0.8;
+    else if (e.key === "Home") keyDelta = -targetY;
+    else if (e.key === "End") keyDelta = document.documentElement.scrollHeight;
+
+    if (keyDelta !== 0) {
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      targetY = Math.max(0, Math.min(maxScroll, targetY + keyDelta));
+      if (!isMoving) {
+        isMoving = true;
+        currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        rafId = requestAnimationFrame(render);
+      }
+      e.preventDefault();
+    }
   });
 }
 

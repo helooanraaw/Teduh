@@ -14,8 +14,6 @@
  *    - Foto & Visual: Dihasilkan via Generative AI (Banana AI).
  * ==========================================================================
  */
-
-
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 :root {
@@ -86,7 +84,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;

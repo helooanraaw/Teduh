@@ -19,7 +19,6 @@
     initHeroEntrance();
     initUniversalScrollObserver();
     initNumberCounters();
-    initSmoothAnchorScroll();
     initMascotEntrance();
   });
 
@@ -247,25 +246,6 @@
 
     $counterElements.each(function () {
       counterObserver.observe(this);
-    });
-  }
-
-  function initSmoothAnchorScroll() {
-    $('a[href^="#"]').on("click", function (e) {
-      var targetId = $(this).attr("href");
-      if (targetId === "#" || !targetId) return;
-
-      var $target = $(targetId);
-      if ($target.length) {
-        e.preventDefault();
-        $("html, body").animate(
-          {
-            scrollTop: $target.offset().top - 76
-          },
-          600,
-          "swing"
-        );
-      }
     });
   }
 
