@@ -297,6 +297,25 @@
 
     if (!fab || !windowEl || !chatBody) return;
 
+    windowEl.setAttribute("data-lenis-prevent", "true");
+    chatBody.setAttribute("data-lenis-prevent", "true");
+
+    chatBody.addEventListener(
+      "wheel",
+      function (e) {
+        e.stopPropagation();
+      },
+      { passive: true },
+    );
+
+    chatBody.addEventListener(
+      "touchmove",
+      function (e) {
+        e.stopPropagation();
+      },
+      { passive: true },
+    );
+
     var isOpen = false;
 
     var CLOCKWISE = [
