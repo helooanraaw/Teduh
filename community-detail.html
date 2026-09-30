@@ -1,515 +1,1090 @@
-<!DOCTYPE html>
+<!--
+  TEDUH DIGITAL PLATFORM
+  Berkas: community-detail.html
+  Deskripsi: Halaman Detail Diskusi Komunitas, Dokumentasi Lapangan & Respon Warga
+
+  ==========================================================================
+  SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+  1. Fotografi & Dokumentasi Lapangan (Seluruh aset memiliki Open License / Bebas Hak Cipta Komersial):
+     - Potret Avatar Warga & Profil (assets/avatars/*): Unsplash & Pexels (Open License / Free for Commercial Use).
+     - Direktori Pohon & Botani Peneduh (assets/trees/*): Wikimedia Commons & Open Flora Archive (Creative Commons CC BY-SA 4.0).
+     - Dokumentasi Aksi Pekarangan (assets/feed/*): Unsplash & Freepik (Open License with Free Commercial Rights).
+     - Katalog Reward & Voucher Ekologis (assets/vouchers/*): Freepik & Unsplash (Open License).
+     - Lanskap Perkotaan & Kanopi Hijau (assets/landing/*): Unsplash (Open License / Free to Use).
+  2. Ilustrasi & Identitas Visual Orisinal:
+     - Maskot Interaktif Teduh Bot (assets/bot/*): Ilustrasi Digital Orisinal Tim Pengembang Teduh.
+     - Logo & Brandmark Teduh (assets/logo/*): Desain Vektor Orisinal Tim Pengembang Teduh.
+     - Logo Institusi & Mitra Ekologis (assets/mitra/*): Aset Vektor Resmi Domain Publik / Mitra Terkait.
+  3. Peta Spasial & Citra Satelit:
+     - Citra Satelit Google Hybrid: Google Maps / Earth Tile Server.
+     - CartoDB Dark Matter & Voyager: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
+  4. Tipografi, Ikonografi & Pustaka Eksternal:
+     - Google Fonts Plus Jakarta Sans: Tokyo Type Directors Club & Tokotype (SIL Open Font License 1.1).
+     - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+     - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
+     - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
+     - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+  ==========================================================================
+-->
+
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Cerita Tanam: Mas Bima &bull; Teduh Komunitas</title>
-  <meta name="description" content="Dokumentasi lengkap aksi penanaman Pohon Tanjung peneduh pekarangan Mas Bima di Renon Denpasar Selatan. Diskusi aman akar dan penurunan suhu permukaan semen.">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Cerita Tanam: Mas Bima &bull; Teduh Komunitas</title>
+    <meta
+      name="description"
+      content="Dokumentasi lengkap aksi penanaman Pohon Tanjung peneduh pekarangan Mas Bima di Renon Denpasar Selatan. Diskusi aman akar dan penurunan suhu permukaan semen."
+    />
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Stylesheets Murni -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/community.css">
-  <link rel="stylesheet" href="css/chatbot.css">
-</head>
-<body>
+    <link rel="icon" type="image/svg+xml" href="assets/logo/teduh-cloud.svg" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/community.css" />
+    <link rel="stylesheet" href="css/chatbot.css" />
+  </head>
+  <body>
+    <nav class="navbar" aria-label="Navigasi Utama">
+      <div class="navbar-inner">
+        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <img
+            src="assets/logo/teduh-logo.svg"
+            alt="Teduh"
+            class="navbar-brand-logo"
+          />
+          <img
+            src="assets/logo/teduh-only.svg"
+            alt="Teduh"
+            class="navbar-brand-logo-mobile"
+          />
+        </a>
 
-  <!-- TOP FLOATING CAPSULE NAVIGATION -->
-  <nav class="navbar" aria-label="Navigasi Utama">
-    <div class="navbar-inner">
-      <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
-        <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
-        <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
-      </a>
-
-      <div class="navbar-links">
-        <a href="index.html" class="navbar-link">Beranda</a>
-        <a href="map.html" class="navbar-link">Konsol Peta</a>
-        <a href="community.html" class="navbar-link active" aria-current="page">Komunitas</a>
-        <a href="reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
-      </div>
-
-      <div class="navbar-actions">
-        <!-- Pemicu Notifikasi Dropdown Ala NutriNesia -->
-        <div class="nav-notif-wrapper">
-          <button type="button" class="nav-notif-trigger" aria-label="Notifikasi Pengguna" aria-expanded="false">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            <span class="nav-notif-dot"></span>
-          </button>
-
-          <!-- Pop-up Dropdown Notifikasi -->
-          <div class="nav-notif-popup" role="menu">
-            <div class="nav-notif-header">
-              <h4 class="nav-notif-title">Notifikasi</h4>
-              <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
-            </div>
-            <div class="nav-notif-list">
-              <!-- Diisi secara dinamis oleh js/main.js -->
-            </div>
-            <div class="nav-notif-footer">
-              <button type="button" class="nav-notif-view-all-btn">Lihat Semua Notifikasi</button>
-            </div>
-          </div>
+        <div class="navbar-links">
+          <a href="index.html" class="navbar-link">Beranda</a>
+          <a href="map.html" class="navbar-link">Konsol Peta</a>
+          <a
+            href="community.html"
+            class="navbar-link active"
+            aria-current="page"
+            >Komunitas</a
+          >
+          <a href="reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
         </div>
 
-        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron -->
-        <div class="nav-profile-wrapper">
-          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
-            <div class="nav-profile-avatar">
-              <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
-            </div>
-            <div class="nav-profile-arrow">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-          </button>
+        <div class="navbar-actions">
+          <div class="nav-notif-wrapper">
+            <button
+              type="button"
+              class="nav-notif-trigger"
+              aria-label="Notifikasi Pengguna"
+              aria-expanded="false"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span class="nav-notif-dot"></span>
+            </button>
 
-          <!-- Pop-up Menu Profil John Doe -->
-          <div class="nav-profile-popup" role="menu">
-            <div class="nav-popup-header">
-              <div class="nav-popup-avatar">
-                <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            <div class="nav-notif-popup" role="menu">
+              <div class="nav-notif-header">
+                <h4 class="nav-notif-title">Notifikasi</h4>
+                <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
               </div>
-              <div class="nav-popup-user-meta">
-                <span class="nav-popup-name">John Doe</span>
-                <span class="nav-popup-username">@johndoe</span>
+              <div class="nav-notif-list"></div>
+              <div class="nav-notif-footer">
+                <button type="button" class="nav-notif-view-all-btn">
+                  Lihat Semua Notifikasi
+                </button>
               </div>
             </div>
+          </div>
 
-            <!-- Metrik Level & Poin Sederhana -->
-            <div class="nav-popup-metrics">
-              <div class="nav-popup-metrics-row">
-                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
-                <div class="nav-popup-points-badge">
-                  <span class="nav-popup-points-value" id="navUserPointsValue">850 Poin</span>
+          <div class="nav-profile-wrapper">
+            <button
+              type="button"
+              class="nav-profile-trigger"
+              aria-label="Menu Profil John Doe"
+              aria-expanded="false"
+            >
+              <div class="nav-profile-avatar">
+                <img
+                  src="assets/avatars/john-doe.jpg"
+                  alt="Avatar John Doe"
+                  onerror="
+                    this.style.display = 'none';
+                    this.parentElement.innerText = 'JD';
+                  "
+                />
+              </div>
+              <div class="nav-profile-arrow">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </button>
+
+            <div class="nav-profile-popup" role="menu">
+              <div class="nav-popup-header">
+                <div class="nav-popup-avatar">
+                  <img
+                    src="assets/avatars/john-doe.jpg"
+                    alt="Avatar John Doe"
+                    onerror="
+                      this.style.display = 'none';
+                      this.parentElement.innerText = 'JD';
+                    "
+                  />
+                </div>
+                <div class="nav-popup-user-meta">
+                  <span class="nav-popup-name">John Doe</span>
+                  <span class="nav-popup-username">@johndoe</span>
                 </div>
               </div>
 
-              <div class="nav-popup-progress-track">
-                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
-              </div>
-            </div>
-
-            <!-- Menu Tautan Profil -->
-            <div class="nav-popup-menu">
-              <a href="profile.html" class="nav-popup-item" role="menuitem">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
-                <span>Profil Saya</span>
-              </a>
-              <div class="nav-popup-divider"></div>
-              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button id="navbarHamburger" class="navbar-hamburger" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Drawer Overlay & Menu -->
-  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
-  <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
-    <div class="mobile-nav-top">
-      <div class="mobile-nav-header">
-        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
-          <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
-        </a>
-        <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-      </div>
-
-      <div class="mobile-nav-profile">
-        <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
-        <div class="mobile-nav-profile-info">
-          <strong>John Doe</strong>
-          <span>Level 3: Perintis Teduh (850 Poin)</span>
-        </div>
-      </div>
-
-      <nav class="mobile-nav-links">
-        <a href="index.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          <span>Beranda</span>
-        </a>
-        <a href="map.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-          <span>Konsol Peta</span>
-        </a>
-        <a href="community.html" class="mobile-nav-link active">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span>Komunitas</span>
-        </a>
-        <a href="reward.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-          <span>Peringkat &amp; Hadiah</span>
-        </a>
-        <a href="profile.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span>Profil Saya</span>
-        </a>
-      </nav>
-    </div>
-
-    <div class="mobile-nav-footer">
-      <button type="button" class="mobile-nav-logout" onclick="handleNavLogout()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        <span>Keluar dari Akun</span>
-      </button>
-    </div>
-  </aside>
-
-  <!-- MAIN WRAPPER -->
-  <main class="km-page-wrapper">
-    <div class="km-container">
-
-      <!-- HEADER NAVIGASI KEMBALI -->
-      <div class="km-back-nav-wrapper">
-        <a href="community.html" class="km-back-nav-btn" id="kmBackBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-          <span>Kembali ke Linimasa Komunitas</span>
-        </a>
-      </div>
-
-      <!-- LAYOUT GRID: THREAD DETAIL & SIDEBAR -->
-      <div class="km-layout-grid" style="margin-top: 16px;">
-
-        <!-- KOLOM KIRI: THREAD DETAIL STREAM -->
-        <div class="km-feed-stream" id="kmDetailFeedColumn">
-
-          <!-- KARTU UTAMA THREAD DETAIL -->
-          <article class="km-detail-thread-card" id="detailMainCard">
-
-            <!-- Header Penulis -->
-            <div class="km-thread-header">
-              <div class="km-thread-author-wrap">
-                <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-thread-avatar" id="detailAuthorAvatar" style="width: 48px; height: 48px;">
-                <div class="km-thread-meta">
-                  <span class="km-thread-author-name" id="detailAuthorName" style="font-size: 16px;">Gede Surya</span>
-                  <div class="km-author-loc-time-stack">
-                    <span class="km-thread-location" id="detailLocationText">Renon, Denpasar Selatan</span>
-                    <span class="km-thread-time" id="detailTimeText">2 jam yang lalu</span>
+              <div class="nav-popup-metrics">
+                <div class="nav-popup-metrics-row">
+                  <span class="nav-popup-level-badge"
+                    >Level 3: Perintis Teduh</span
+                  >
+                  <div class="nav-popup-points-badge">
+                    <span class="nav-popup-points-value" id="navUserPointsValue"
+                      >850 Poin</span
+                    >
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Narasi Lengkap Pengalaman Warga -->
-            <div class="km-detail-narrative" id="detailNarrativeContent">
-              <p>Pagi tadi sekitar jam 07.30 WITA, saya selesai menanam 1 bibit Pohon Tanjung (Mimusops elengi) setinggi 1.5 meter di sudut barat pekarangan rumah.</p>
-              <p>Jarak tanam dipatok 2.2 meter dari dinding pagar utama dan 3.1 meter dari pipa saluran air bersih. Di sekeliling lubang tanam dipasang pipa biopori PVC vertikal sedalam 80 cm agar akar langsung tumbuh menghujam ke bawah tanpa meretakkan semen lantai teras.</p>
-              <p>Sebelum ditanam, suhu pantulan semen teras rumah saat tengah hari bisa menyentuh 38.8°C dan hawa panasnya bertahan sampai jam 8 malam. Setelah 2 minggu proses adaptasi bibit ini, naungan awal mulai menahan radiasi langsung. Tanah humus subak Denpasar sangat cocok untuk mempercepat penguatan akar tunggang bibit muda.</p>
-            </div>
-
-            <!-- Foto Dokumentasi Multi-Foto Tanam -->
-            <div class="km-detail-image-wrap" id="detailImageWrap">
-              <div class="km-photo-grid km-photo-grid-3">
-                <div class="km-photo-item">
-                  <img src="assets/feed/feed-ubud-garden.jpg" alt="Dokumentasi pekarangan" loading="lazy">
-                </div>
-                <div class="km-photo-item">
-                  <img src="assets/feed/feed-gatsu-roadside.jpg" alt="Kondisi adaptasi bibit pekarangan" loading="lazy">
-                </div>
-                <div class="km-photo-item">
-                  <img src="assets/feed/feed-gotong-royong.jpg" alt="Gotong royong penanaman pekarangan" loading="lazy">
+                <div class="nav-popup-progress-track">
+                  <div class="nav-popup-progress-fill" style="width: 70%"></div>
                 </div>
               </div>
+
+              <div class="nav-popup-menu">
+                <a href="profile.html" class="nav-popup-item" role="menuitem">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                    <circle
+                      cx="12"
+                      cy="7"
+                      r="4"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></circle>
+                  </svg>
+                  <span>Profil Saya</span>
+                </a>
+                <div class="nav-popup-divider"></div>
+                <button
+                  type="button"
+                  class="nav-popup-logout-btn"
+                  onclick="handleNavLogout()"
+                  role="menuitem"
+                >
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                  <span>Logout</span>
+                </button>
+              </div>
             </div>
+          </div>
 
-            <!-- Bar Statistik Keterlibatan (Suka, Komentar, Dilihat) -->
-            <div class="km-detail-stats-bar">
-              <div class="km-detail-stat-entry">
-                <strong id="detailStatLikes">24</strong> Suka
-              </div>
-              <span>&bull;</span>
-              <div class="km-detail-stat-entry">
-                <strong id="detailStatComments">2</strong> Komentar Warga
-              </div>
-              <span>&bull;</span>
-              <div class="km-detail-stat-entry">
-                <strong>1.420</strong> Kali Dilihat
-              </div>
-            </div>
+          <button
+            id="navbarHamburger"
+            class="navbar-hamburger"
+            type="button"
+            aria-label="Buka Menu Navigasi"
+            aria-expanded="false"
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="3.5" y1="6" x2="20.5" y2="6"></line>
+              <line x1="3.5" y1="12" x2="20.5" y2="12"></line>
+              <line x1="3.5" y1="18" x2="20.5" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-            <!-- Bar Aksi Interaktif Suka & Balas -->
-            <div class="km-thread-actions-bar" style="padding-top: 0; border-top: none;">
-              <button type="button" class="km-action-btn" id="detailLikeBtn" onclick="toggleDetailThreadLike(this)">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                <span class="like-count" id="detailActionLikeCount">24</span> Suka
-              </button>
-              <button type="button" class="km-action-btn" onclick="focusDetailCommentInput()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <span>Tulis Tanggapan</span>
-              </button>
-              <button type="button" class="km-action-btn" onclick="copyDetailShareLink()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
-                <span>Bagikan Cerita</span>
-              </button>
-            </div>
+    <div
+      id="mobileNavOverlay"
+      class="mobile-nav-overlay"
+      aria-hidden="true"
+    ></div>
+    <aside
+      id="mobileNavMenu"
+      class="mobile-nav-menu"
+      aria-label="Menu Navigasi Mobile"
+    >
+      <div class="mobile-nav-top">
+        <div class="mobile-nav-header">
+          <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+            <img
+              src="assets/logo/teduh-logo.svg"
+              alt="Teduh"
+              class="navbar-brand-logo"
+            />
+          </a>
+          <button
+            id="mobileNavClose"
+            class="mobile-nav-close"
+            type="button"
+            aria-label="Tutup Menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
 
-            <!-- SEKSI KOMENTAR & DISKUSI BERSARANG -->
-            <div class="km-thread-comments-section" style="padding-top: 20px;">
-              
-              <!-- Input Tanggapan Baru di ATAS -->
-              <div class="km-comment-input-row">
-                <input type="text" class="km-inline-comment-input" id="detailCommentInput" placeholder="Tulis tanggapan atau saran botani untuk Gede Surya..." onkeydown="handleDetailCommentKey(event)">
-                <button type="button" class="km-btn-send-comment" onclick="submitDetailComment()">Kirim (+10 Poin)</button>
-              </div>
+        <nav class="mobile-nav-links">
+          <a href="index.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Beranda</span>
+          </a>
+          <a href="map.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+              ></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Konsol Peta</span>
+          </a>
+          <a href="community.html" class="mobile-nav-link active">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Komunitas</span>
+          </a>
+          <a href="reward.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="8" r="7"></circle>
+              <polyline
+                points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"
+              ></polyline>
+            </svg>
+            <span>Peringkat &amp; Hadiah</span>
+          </a>
+        </nav>
+      </div>
 
-              <!-- Wadah Pohon Komentar (Curved Branching Tree) -->
-              <div class="km-comments-tree" id="detailCommentsTree">
-                
-                <!-- Komentar Node 1: Ibu Desak -->
-                <div class="km-comment-branch" id="branch-detail-c-1">
-                  <div class="km-comment-node">
-                    <img src="assets/avatars/ibu-desak.jpg" alt="Ibu Desak" class="km-comment-avatar">
-                    <div class="km-comment-content">
-                      <div class="km-comment-header">
-                        <span class="km-comment-author">Ibu Desak</span>
-                        <span class="km-comment-time">1 jam lalu</span>
-                      </div>
-                      <p class="km-comment-text">Bagus sekali Bli Surya. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?</p>
-                      <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('detail-c-1', 'Ibu Desak')">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                        <span>Balas</span>
-                      </button>
+      <div class="mobile-nav-footer">
+        <a
+          href="profile.html"
+          class="mobile-nav-profile"
+          aria-label="Buka Profil John Doe"
+        >
+          <img
+            src="assets/avatars/john-doe.jpg"
+            alt="Avatar John Doe"
+            onerror="
+              this.style.display = 'none';
+              this.parentElement.innerText = 'JD';
+            "
+          />
+          <div class="mobile-nav-profile-info">
+            <strong>John Doe</strong>
+            <span id="mobileUserPoints">Level 3 • 850 Poin</span>
+          </div>
+          <svg
+            class="mobile-nav-profile-arrow"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          class="mobile-nav-logout"
+          onclick="handleNavLogout()"
+        >
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Keluar dari Akun</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="km-page-wrapper">
+      <div class="km-container">
+        <div class="km-back-nav-wrapper">
+          <a href="community.html" class="km-back-nav-btn" id="kmBackBtn">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Kembali ke Linimasa Komunitas</span>
+          </a>
+        </div>
+
+        <div class="km-layout-grid" style="margin-top: 16px">
+          <div class="km-feed-stream" id="kmDetailFeedColumn">
+            <article class="km-detail-thread-card" id="detailMainCard">
+              <div class="km-thread-header">
+                <div class="km-thread-author-wrap">
+                  <img
+                    src="assets/avatars/gede-surya.jpg"
+                    alt="Gede Surya"
+                    class="km-thread-avatar"
+                    id="detailAuthorAvatar"
+                    style="width: 48px; height: 48px"
+                  />
+                  <div class="km-thread-meta">
+                    <span
+                      class="km-thread-author-name"
+                      id="detailAuthorName"
+                      style="font-size: 16px"
+                      >Gede Surya</span
+                    >
+                    <div class="km-author-loc-time-stack">
+                      <span class="km-thread-location" id="detailLocationText"
+                        >Renon, Denpasar Selatan</span
+                      >
+                      <span class="km-thread-time" id="detailTimeText"
+                        >2 jam yang lalu</span
+                      >
                     </div>
                   </div>
+                </div>
+              </div>
 
-                  <!-- Sub-Branch Balasan (Level 2) -->
-                  <div class="km-comment-replies" id="replies-detail-c-1">
-                    <div class="km-comment-node is-reply">
-                      <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-comment-avatar">
+              <div class="km-detail-narrative" id="detailNarrativeContent">
+                <p>
+                  Pagi tadi sekitar jam 07.30 WITA, saya selesai menanam 1 bibit
+                  Pohon Tanjung setinggi 1.5 meter di sudut barat pekarangan
+                  rumah.
+                </p>
+                <p>
+                  Jarak tanam dipatok 2.2 meter dari dinding pagar utama dan 3.1
+                  meter dari pipa saluran air bersih. Di sekeliling lubang tanam
+                  dipasang pipa biopori PVC vertikal sedalam 80 cm agar akar
+                  langsung tumbuh menghujam ke bawah tanpa meretakkan semen
+                  lantai teras.
+                </p>
+                <p>
+                  Sebelum ditanam, suhu pantulan semen teras rumah saat tengah
+                  hari bisa menyentuh 38.8°C dan hawa panasnya bertahan sampai
+                  jam 8 malam. Setelah 2 minggu proses adaptasi bibit ini,
+                  naungan awal mulai menahan radiasi langsung. Tanah humus subak
+                  Denpasar sangat cocok untuk mempercepat penguatan akar
+                  tunggang bibit muda.
+                </p>
+              </div>
+
+              <div class="km-detail-image-wrap" id="detailImageWrap">
+                <div class="km-photo-grid km-photo-grid-3">
+                  <div class="km-photo-item">
+                    <img
+                      src="assets/feed/feed-ubud-garden.jpg"
+                      alt="Dokumentasi pekarangan"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="km-photo-item">
+                    <img
+                      src="assets/feed/feed-gatsu-roadside.jpg"
+                      alt="Kondisi adaptasi bibit pekarangan"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="km-photo-item">
+                    <img
+                      src="assets/feed/feed-gotong-royong.jpg"
+                      alt="Gotong royong penanaman pekarangan"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="km-detail-stats-bar">
+                <div class="km-detail-stat-entry">
+                  <strong id="detailStatLikes">24</strong> Suka
+                </div>
+                <span>&bull;</span>
+                <div class="km-detail-stat-entry">
+                  <strong id="detailStatComments">2</strong> Komentar Warga
+                </div>
+                <span>&bull;</span>
+                <div class="km-detail-stat-entry">
+                  <strong>1.420</strong> Kali Dilihat
+                </div>
+              </div>
+
+              <div
+                class="km-thread-actions-bar"
+                style="padding-top: 0; border-top: none"
+              >
+                <button
+                  type="button"
+                  class="km-action-btn"
+                  id="detailLikeBtn"
+                  onclick="toggleDetailThreadLike(this)"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                  <span class="like-count" id="detailActionLikeCount">24</span>
+                  Suka
+                </button>
+                <button
+                  type="button"
+                  class="km-action-btn"
+                  onclick="focusDetailCommentInput()"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                    ></path>
+                  </svg>
+                  <span>Tulis Tanggapan</span>
+                </button>
+                <button
+                  type="button"
+                  class="km-action-btn"
+                  onclick="copyDetailShareLink()"
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </svg>
+                  <span>Bagikan Cerita</span>
+                </button>
+              </div>
+
+              <div class="km-thread-comments-section" style="padding-top: 20px">
+                <div class="km-comment-input-row">
+                  <input
+                    type="text"
+                    class="km-inline-comment-input"
+                    id="detailCommentInput"
+                    placeholder="Tulis tanggapan atau saran botani untuk Gede Surya..."
+                    onkeydown="handleDetailCommentKey(event)"
+                  />
+                  <button
+                    type="button"
+                    class="km-btn-send-comment"
+                    onclick="submitDetailComment()"
+                  >
+                    Kirim (+10 Poin)
+                  </button>
+                </div>
+
+                <div class="km-comments-tree" id="detailCommentsTree">
+                  <div class="km-comment-branch" id="branch-detail-c-1">
+                    <div class="km-comment-node">
+                      <img
+                        src="assets/avatars/ibu-desak.jpg"
+                        alt="Ibu Desak"
+                        class="km-comment-avatar"
+                      />
                       <div class="km-comment-content">
                         <div class="km-comment-header">
-                          <span class="km-comment-author">Gede Surya (Penulis)</span>
-                          <span class="km-comment-time">45 menit lalu</span>
+                          <span class="km-comment-author">Ibu Desak</span>
+                          <span class="km-comment-time">1 jam lalu</span>
                         </div>
-                        <p class="km-comment-text">Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.</p>
-                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('detail-c-1', 'Gede Surya')">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                        <p class="km-comment-text">
+                          Bagus sekali Bli Surya. Ditanam dari bibit ukuran
+                          berapa meter kemarin? Akarnya langsung tunggang ke
+                          bawah ya?
+                        </p>
+                        <button
+                          type="button"
+                          class="km-comment-reply-btn"
+                          onclick="
+                            toggleInlineReplyForm('detail-c-1', 'Ibu Desak')
+                          "
+                        >
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                          >
+                            <polyline points="9 17 4 12 9 7"></polyline>
+                            <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                          </svg>
                           <span>Balas</span>
                         </button>
                       </div>
                     </div>
 
-                    <!-- Wadah Form Balas Bersarang -->
-                    <div class="km-reply-composer-box" id="reply-box-detail-c-1" style="display: none;">
-                      <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
-                      <div class="km-reply-composer-content">
-                        <div class="km-reply-composer-header">
-                          <span class="km-replying-to-label">Membalas <strong id="reply-target-detail-c-1">@Ibu Desak</strong></span>
-                          <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('detail-c-1')">Batal</button>
+                    <div class="km-comment-replies" id="replies-detail-c-1">
+                      <div class="km-comment-node is-reply">
+                        <img
+                          src="assets/avatars/gede-surya.jpg"
+                          alt="Gede Surya"
+                          class="km-comment-avatar"
+                        />
+                        <div class="km-comment-content">
+                          <div class="km-comment-header">
+                            <span class="km-comment-author"
+                              >Gede Surya (Penulis)</span
+                            >
+                            <span class="km-comment-time">45 menit lalu</span>
+                          </div>
+                          <p class="km-comment-text">
+                            Pakai bibit 1.5 meter Bu. Langsung disiram air
+                            cucian beras dan tanah humus subak, cepat kokoh
+                            akarnya.
+                          </p>
+                          <button
+                            type="button"
+                            class="km-comment-reply-btn"
+                            onclick="
+                              toggleInlineReplyForm('detail-c-1', 'Gede Surya')
+                            "
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                            >
+                              <polyline points="9 17 4 12 9 7"></polyline>
+                              <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                            </svg>
+                            <span>Balas</span>
+                          </button>
                         </div>
-                        <div class="km-reply-input-group">
-                          <input type="text" class="km-nested-reply-input" id="reply-input-detail-c-1" placeholder="Tulis balasan untuk Ibu Desak..." onkeydown="handleDetailNestedReplyKey(event, 'detail-c-1')">
-                          <button type="button" class="km-btn-send-nested-reply" onclick="submitDetailNestedReply('detail-c-1')">Balas</button>
+                      </div>
+
+                      <div
+                        class="km-reply-composer-box"
+                        id="reply-box-detail-c-1"
+                        style="display: none"
+                      >
+                        <img
+                          src="assets/avatars/john-doe.jpg"
+                          alt="Avatar Anda"
+                          class="km-reply-user-avatar"
+                        />
+                        <div class="km-reply-composer-content">
+                          <div class="km-reply-composer-header">
+                            <span class="km-replying-to-label"
+                              >Membalas
+                              <strong id="reply-target-detail-c-1"
+                                >@Ibu Desak</strong
+                              ></span
+                            >
+                            <button
+                              type="button"
+                              class="km-reply-cancel-btn"
+                              onclick="closeInlineReplyForm('detail-c-1')"
+                            >
+                              Batal
+                            </button>
+                          </div>
+                          <div class="km-reply-input-group">
+                            <input
+                              type="text"
+                              class="km-nested-reply-input"
+                              id="reply-input-detail-c-1"
+                              placeholder="Tulis balasan untuk Ibu Desak..."
+                              onkeydown="
+                                handleDetailNestedReplyKey(event, 'detail-c-1')
+                              "
+                            />
+                            <button
+                              type="button"
+                              class="km-btn-send-nested-reply"
+                              onclick="submitDetailNestedReply('detail-c-1')"
+                            >
+                              Balas
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
               </div>
-            </div>
-
-          </article>
-
-        </div>
-
-        <!-- KOLOM KANAN: SIDEBAR DETAIL PENULIS & SPESIFIKASI POHON -->
-        <aside class="km-sidebar" aria-label="Sidebar Informasi Thread">
-
-          <!-- Card 1: Profil Penulis Thread -->
-          <div class="km-sidebar-card km-author-detail-card">
-            <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Tentang Penulis</h3>
-            </div>
-
-            <div class="km-author-detail-header">
-              <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-author-detail-avatar" id="sidebarAuthorAvatar">
-              <div class="km-side-profile-info">
-                <strong class="km-side-profile-name" id="sidebarAuthorName">Gede Surya</strong>
-                <span class="km-side-profile-handle" id="sidebarAuthorHandle">@bima_renon</span>
-              </div>
-            </div>
-
-            <p class="km-author-detail-bio" id="sidebarAuthorBio">
-              Warga Renon, Denpasar Selatan. Aktif menata pekarangan semen sempit menjadi koridor sejuk dengan pohon peneduh berakar tunggang dan biopori mandiri.
-            </p>
-
-            <div class="km-author-detail-metrics">
-              <div class="km-author-metric-box">
-                <span class="km-author-metric-lbl">Aksi Tanam</span>
-                <strong class="km-author-metric-val" id="sidebarAuthorTrees">3 Pohon</strong>
-              </div>
-              <div class="km-author-metric-box">
-                <span class="km-author-metric-lbl">Poin Warga</span>
-                <strong class="km-author-metric-val km-points-accent" id="sidebarAuthorPoints">1.450 Poin</strong>
-              </div>
-            </div>
+            </article>
           </div>
 
-          <!-- Card 2: Hasil & Dampak Aksi Tanam -->
-          <div class="km-sidebar-card km-impact-analysis-card">
-            <div class="km-sidebar-card-header">
-              <div>
-                <h3 class="km-sidebar-title">Dampak Aksi Tanam</h3>
-                <span class="km-impact-tree-sub" id="sidebarTreeName">Pohon Tanjung (Mimusops elengi)</span>
-              </div>
-            </div>
-
-            <div class="km-impact-metrics-grid">
-              <div class="km-impact-tile">
-                <span class="km-impact-lbl">Reduksi Suhu</span>
-                <span class="km-impact-val accent-temp" id="sidebarImpactTemp">-3.8°C</span>
+          <aside class="km-sidebar" aria-label="Sidebar Informasi Thread">
+            <div class="km-sidebar-card km-author-detail-card">
+              <div class="km-sidebar-card-header">
+                <h3 class="km-sidebar-title">Tentang Penulis</h3>
               </div>
 
-              <div class="km-impact-tile">
-                <span class="km-impact-lbl">Luas Naungan</span>
-                <span class="km-impact-val" id="sidebarImpactCanopy">14.2 m²</span>
-              </div>
-
-              <div class="km-impact-tile">
-                <span class="km-impact-lbl">Keamanan Akar</span>
-                <span class="km-impact-val" id="sidebarImpactRoot">Aman</span>
-              </div>
-
-              <div class="km-impact-tile">
-                <span class="km-impact-lbl">Poin Warga</span>
-                <span class="km-impact-val km-points-accent" id="sidebarImpactPoints">+120 Poin</span>
-              </div>
-            </div>
-
-            <a href="map.html" class="km-impact-action-btn">
-              <span>Tanam Pohon di Konsol Peta</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 3: Cerita Warga Sekitar -->
-          <div class="km-sidebar-card">
-            <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Cerita Warga Sekitar</h3>
-            </div>
-
-            <div class="km-related-thread-list">
-              <a href="community-detail.html?id=thread-2" class="km-related-thread-item">
-                <img src="assets/avatars/ibu-desak.jpg" alt="Ibu Desak" class="km-related-avatar">
-                <div class="km-related-info">
-                  <span class="km-related-author">Ibu Desak &bull; Sesetan</span>
-                  <p class="km-related-snippet">Ketapang Kencana untuk gang sempit selebar 3 meter...</p>
-                  <span class="km-related-time">5 jam lalu</span>
+              <div class="km-author-detail-header">
+                <img
+                  src="assets/avatars/gede-surya.jpg"
+                  alt="Gede Surya"
+                  class="km-author-detail-avatar"
+                  id="sidebarAuthorAvatar"
+                />
+                <div class="km-side-profile-info">
+                  <strong class="km-side-profile-name" id="sidebarAuthorName"
+                    >Gede Surya</strong
+                  >
+                  <span class="km-side-profile-handle" id="sidebarAuthorHandle"
+                    >@bima_renon</span
+                  >
                 </div>
-              </a>
+              </div>
 
-              <a href="community-detail.html?id=thread-3" class="km-related-thread-item">
-                <img src="assets/avatars/dr-made-ary.jpg" alt="dr. Made Ary" class="km-related-avatar">
-                <div class="km-related-info">
-                  <span class="km-related-author">dr. Made Ary &bull; Gatsu Barat</span>
-                  <p class="km-related-snippet">Edukasi biopori vertikal dan pencegahan akar liar...</p>
-                  <span class="km-related-time">1 hari lalu</span>
+              <p class="km-author-detail-bio" id="sidebarAuthorBio">
+                Warga Renon, Denpasar Selatan. Aktif menata pekarangan semen
+                sempit menjadi koridor sejuk dengan pohon peneduh berakar
+                tunggang dan biopori mandiri.
+              </p>
+
+              <div class="km-author-detail-metrics">
+                <div class="km-author-metric-box">
+                  <span class="km-author-metric-lbl">Aksi Tanam</span>
+                  <strong class="km-author-metric-val" id="sidebarAuthorTrees"
+                    >3 Pohon</strong
+                  >
                 </div>
-              </a>
-            </div>
-          </div>
-
-        </aside>
-
-      </div>
-
-    </div>
-  </main>
-
-  <!-- TOAST NOTIFIKASI -->
-  <div id="kmToast" role="status" aria-live="polite"></div>
-
-  <!-- FLOATING CHATBOT ASISTEN TEDUH -->
-  <div class="td-chatbot-wrapper">
-    <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">Tanyakan Teduh Bot! 😉</div>
-
-    <button id="tdChatFab" class="td-chatbot-fab" type="button" aria-label="Buka Chatbot Asisten Teduh" aria-expanded="false">
-      <div class="td-mascot-viewport">
-        <div class="td-mascot-head" id="tdMascotHead" role="img" aria-label="Maskot Asisten Teduh"></div>
-        <div class="td-mascot-boop-fx" id="tdMascotBoopFx" aria-hidden="true"></div>
-      </div>
-      <!-- Expressive Reaction Mascot (When Active / Clicked) -->
-      <div class="td-reaction-viewport" aria-hidden="true">
-        <div class="td-mascot-reaction" id="tdMascotReaction" role="img" aria-label="Reaksi Maskot Asisten Teduh"></div>
-      </div>
-    </button>
-
-    <div id="tdChatWindow" class="td-chatbot-window" role="dialog" aria-label="Percakapan Asisten Teduh">
-      <div class="td-chat-header">
-        <div class="td-chat-header-profile">
-          <div class="td-chat-header-avatar">
-            <img src="assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh">
-            <span class="td-chat-status-dot" aria-hidden="true"></span>
-          </div>
-          <div class="td-chat-header-info">
-            <span class="td-chat-header-name">Teduh Bot</span>
-          </div>
-        </div>
-        <button id="tdChatClose" class="td-chat-close-btn" type="button" aria-label="Tutup Obrolan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div id="tdChatBody" class="td-chat-body">
-        <div class="td-msg-row bot">
-          <div class="td-msg-avatar bot-avatar" aria-hidden="true">
-            <img src="assets/bot/teduh-bot.png" alt="Teduh Bot">
-          </div>
-          <div class="td-msg-content">
-            <div class="td-bubble">
-              <p style="margin: 0 0 10px 0;">Halo! Saya <strong>Teduh Bot</strong>. Tanyakan apa saja seputar alasan ilmiah pohon menurunkan suhu lingkungan, rekomendasi pohon ramah fondasi, atau ketik pertanyaan Anda di bawah.</p>
-              <div class="td-chat-chips">
-                <button type="button" class="td-chip-btn" data-topic-id="kenapa_pohon_sejuk">Kenapa pohon bikin sejuk?</button>
-                <button type="button" class="td-chip-btn" data-topic-id="pohon_cepat_teduh">Pohon cepat bikin teduh</button>
-                <button type="button" class="td-chip-btn" data-topic-id="kenapa_akar_aman">Kenapa akar aman fondasi?</button>
-                <button type="button" class="td-chip-btn" data-topic-id="efek_semen_panas">Kenapa pekarangan semen panas?</button>
+                <div class="km-author-metric-box">
+                  <span class="km-author-metric-lbl">Poin Warga</span>
+                  <strong
+                    class="km-author-metric-val km-points-accent"
+                    id="sidebarAuthorPoints"
+                    >1.450 Poin</strong
+                  >
+                </div>
               </div>
             </div>
-          </div>
+
+            <div class="km-sidebar-card km-impact-analysis-card">
+              <div class="km-sidebar-card-header">
+                <div>
+                  <h3 class="km-sidebar-title">Dampak Aksi Tanam</h3>
+                  <span class="km-impact-tree-sub" id="sidebarTreeName"
+                    >Pohon Tanjung</span
+                  >
+                </div>
+              </div>
+
+              <div class="km-impact-metrics-grid">
+                <div class="km-impact-tile">
+                  <span class="km-impact-lbl">Reduksi Suhu</span>
+                  <span class="km-impact-val accent-temp" id="sidebarImpactTemp"
+                    >-3.8°C</span
+                  >
+                </div>
+
+                <div class="km-impact-tile">
+                  <span class="km-impact-lbl">Luas Naungan</span>
+                  <span class="km-impact-val" id="sidebarImpactCanopy"
+                    >14.2 m²</span
+                  >
+                </div>
+
+                <div class="km-impact-tile">
+                  <span class="km-impact-lbl">Keamanan Akar</span>
+                  <span class="km-impact-val" id="sidebarImpactRoot">Aman</span>
+                </div>
+
+                <div class="km-impact-tile">
+                  <span class="km-impact-lbl">Poin Warga</span>
+                  <span
+                    class="km-impact-val km-points-accent"
+                    id="sidebarImpactPoints"
+                    >+120 Poin</span
+                  >
+                </div>
+              </div>
+
+              <a href="map.html" class="km-impact-action-btn">
+                <span>Tanam Pohon di Konsol Peta</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <div class="km-sidebar-card">
+              <div class="km-sidebar-card-header">
+                <h3 class="km-sidebar-title">Cerita Warga Sekitar</h3>
+              </div>
+
+              <div class="km-related-thread-list">
+                <a
+                  href="community-detail.html?id=thread-2"
+                  class="km-related-thread-item"
+                >
+                  <img
+                    src="assets/avatars/ibu-desak.jpg"
+                    alt="Ibu Desak"
+                    class="km-related-avatar"
+                  />
+                  <div class="km-related-info">
+                    <span class="km-related-author"
+                      >Ibu Desak &bull; Sesetan</span
+                    >
+                    <p class="km-related-snippet">
+                      Ketapang Kencana untuk gang sempit selebar 3 meter...
+                    </p>
+                    <span class="km-related-time">5 jam lalu</span>
+                  </div>
+                </a>
+
+                <a
+                  href="community-detail.html?id=thread-3"
+                  class="km-related-thread-item"
+                >
+                  <img
+                    src="assets/avatars/dr-made-ary.jpg"
+                    alt="dr. Made Ary"
+                    class="km-related-avatar"
+                  />
+                  <div class="km-related-info">
+                    <span class="km-related-author"
+                      >dr. Made Ary &bull; Gatsu Barat</span
+                    >
+                    <p class="km-related-snippet">
+                      Edukasi biopori vertikal dan pencegahan akar liar...
+                    </p>
+                    <span class="km-related-time">1 hari lalu</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
+    </main>
 
-      <div class="td-chat-footer">
-        <form id="tdChatForm" class="td-chat-form">
-          <input type="text" id="tdChatInput" class="td-chat-input" placeholder="Tanyakan seputar cuaca, pohon teduh, akar..." autocomplete="off" aria-label="Ketik pesan pertanyaan">
-          <button type="submit" class="td-chat-send-btn" aria-label="Kirim Pesan">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+    <div id="kmToast" role="status" aria-live="polite"></div>
+
+    <div class="td-chatbot-wrapper">
+      <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
+        Tanyakan Teduh Bot! 😉
+      </div>
+
+      <button
+        id="tdChatFab"
+        class="td-chatbot-fab"
+        type="button"
+        aria-label="Buka Chatbot Asisten Teduh"
+        aria-expanded="false"
+      >
+        <div class="td-mascot-viewport">
+          <div
+            class="td-mascot-head"
+            id="tdMascotHead"
+            role="img"
+            aria-label="Maskot Asisten Teduh"
+          ></div>
+          <div
+            class="td-mascot-boop-fx"
+            id="tdMascotBoopFx"
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        <div class="td-reaction-viewport" aria-hidden="true">
+          <div
+            class="td-mascot-reaction"
+            id="tdMascotReaction"
+            role="img"
+            aria-label="Reaksi Maskot Asisten Teduh"
+          ></div>
+        </div>
+      </button>
+
+      <div
+        id="tdChatWindow"
+        class="td-chatbot-window"
+        role="dialog"
+        aria-label="Percakapan Asisten Teduh"
+      >
+        <div class="td-chat-header">
+          <div class="td-chat-header-profile">
+            <div class="td-chat-header-avatar">
+              <img src="assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh" />
+              <span class="td-chat-status-dot" aria-hidden="true"></span>
+            </div>
+            <div class="td-chat-header-info">
+              <span class="td-chat-header-name">Teduh Bot</span>
+            </div>
+          </div>
+          <button
+            id="tdChatClose"
+            class="td-chat-close-btn"
+            type="button"
+            aria-label="Tutup Obrolan"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
-        </form>
+        </div>
+
+        <div id="tdChatBody" class="td-chat-body">
+          <div class="td-msg-row bot">
+            <div class="td-msg-avatar bot-avatar" aria-hidden="true">
+              <img src="assets/bot/teduh-bot.png" alt="Teduh Bot" />
+            </div>
+            <div class="td-msg-content">
+              <div class="td-bubble">
+                <p style="margin: 0 0 10px 0">
+                  Halo! Saya <strong>Teduh Bot</strong>. Tanyakan apa saja
+                  seputar alasan ilmiah pohon menurunkan suhu lingkungan,
+                  rekomendasi pohon ramah fondasi, atau ketik pertanyaan Anda di
+                  bawah.
+                </p>
+                <div class="td-chat-chips">
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="kenapa_pohon_sejuk"
+                  >
+                    Kenapa pohon bikin sejuk?
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="pohon_cepat_teduh"
+                  >
+                    Pohon cepat bikin teduh
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="kenapa_akar_aman"
+                  >
+                    Kenapa akar aman fondasi?
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="efek_semen_panas"
+                  >
+                    Kenapa pekarangan semen panas?
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="td-chat-footer">
+          <form id="tdChatForm" class="td-chat-form">
+            <input
+              type="text"
+              id="tdChatInput"
+              class="td-chat-input"
+              placeholder="Tanyakan seputar cuaca, pohon teduh, akar..."
+              autocomplete="off"
+              aria-label="Ketik pesan pertanyaan"
+            />
+            <button
+              type="submit"
+              class="td-chat-send-btn"
+              aria-label="Kirim Pesan"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- GSAP Animation Engine via CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
 
-  <!-- SCRIPT ENGINE -->
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/community.js"></script>
-  <script src="js/chatbot.js"></script>
-</body>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/chatbot.js"></script>
+  </body>
 </html>

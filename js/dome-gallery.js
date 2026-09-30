@@ -1,36 +1,63 @@
 /**
- * KEDIS 3D DOME GALLERY ENGINE (MITRA & KOMUNITAS)
- * Clean modular partner logo mapping directly bound to assets/mitra/mitra-1.svg through mitra-30.svg
- * with automatic fallback handling, smooth glide deceleration, and full top-to-bottom dome coverage.
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: js/dome-gallery.js
+ * Deskripsi: Galeri Interaktif Kubah Foto Dokumentasi Lingkungan & Kanopi
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Pustaka & Framework Eksternal:
+ *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
+ *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
+ *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+ * 2. Layanan Peta & Citra Satelit:
+ *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
+ *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
+ * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
+ * 4. Identitas Grafis & Ilustrasi Digital:
+ *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * ==========================================================================
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initMitra3DDome();
 });
 
 function initMitra3DDome() {
-  const container = document.getElementById('mitra-dome-root');
-  const sphere = document.getElementById('mitra-dome-sphere');
+  const container = document.getElementById("mitra-dome-root");
+  const sphere = document.getElementById("mitra-dome-sphere");
   if (!container || !sphere) return;
 
-  // List of 10 core partner logos mapped to assets/mitra/ (mitra-1.svg ... mitra-10.svg)
-  // Automatically loops (repeats) across all 288 sphere tiles so you only need 10 logo files!
   const partners = [
-    { file: 'assets/mitra/mitra-3.png' },
-    { file: 'assets/mitra/mitra-4.webp' },
-    { file: 'assets/mitra/mitra-5.jpg' },
-    { file: 'assets/mitra/mitra-6.webp' },
-    { file: 'assets/mitra/mitra-7.webp' },
-    { file: 'assets/mitra/mitra-8.jpg' },
-    { file: 'assets/mitra/mitra-9.jpg' },
-    { file: 'assets/mitra/mitra-10.webp' },
-    { file: 'assets/mitra/mitra-11.png' },
-    { file: 'assets/mitra/mitra-12.jpg' }
+    { file: "assets/mitra/bca-logo.png", type: "wide", name: "BCA" },
+    { file: "assets/mitra/bmkg-logo.png", type: "square", name: "BMKG" },
+    { file: "assets/mitra/gojek-logo.png", type: "wide", name: "Gojek" },
+    {
+      file: "assets/mitra/lingkungan-logo.png",
+      type: "square",
+      name: "Kementerian Lingkungan Hidup",
+    },
+    { file: "assets/mitra/dana-logo.png", type: "wide", name: "DANA" },
+    { file: "assets/mitra/aws-logo.png", type: "square", name: "AWS" },
+    { file: "assets/mitra/bni-logo.png", type: "wide", name: "BNI" },
+    { file: "assets/mitra/kominfo-logo.png", type: "square", name: "Kominfo" },
+    { file: "assets/mitra/gopay-logo.png", type: "wide", name: "GoPay" },
+    {
+      file: "assets/mitra/pupuk-logo.png",
+      type: "square",
+      name: "Pupuk Indonesia",
+    },
+    { file: "assets/mitra/komdigi-logo.png", type: "wide", name: "Komdigi" },
+    {
+      file: "assets/mitra/kehutanan-logo.png",
+      type: "wide",
+      name: "Kementerian Kehutanan",
+    },
+    { file: "assets/mitra/pln-logo.png", type: "wide", name: "PLN" },
   ];
 
-  // Full 8-Tier Vertical Staggered Honeycomb Grid (36 cols x 8 rows = 288 tiles)
   const segments = 36;
-  const unit = 360 / segments / 2; // 5 deg per step
+  const unit = 360 / segments / 2;
   const evenYs = [-6.3, -4.5, -2.7, -0.9, 0.9, 2.7, 4.5, 6.3];
   const oddYs = [-5.4, -3.6, -1.8, 0, 1.8, 3.6, 5.4, 7.2];
 
@@ -38,12 +65,12 @@ function initMitra3DDome() {
     if (window.innerWidth < 480) return 280;
     if (window.innerWidth < 640) return 340;
     if (window.innerWidth < 1024) return 520;
-    return Math.min(window.innerWidth * 0.58, 740);
+    return Math.min(window.innerWidth * 0.48, 620);
   }
 
   let radius = getResponsiveRadius();
 
-  sphere.innerHTML = '';
+  sphere.innerHTML = "";
 
   const tileCoords = [];
   for (let c = 0; c < segments; c++) {
@@ -58,13 +85,13 @@ function initMitra3DDome() {
 
   tileCoords.forEach((coord, i) => {
     const partner = partners[i % partners.length];
-    const tile = document.createElement('div');
-    tile.className = 'mitra-dome-tile';
+    const tile = document.createElement("div");
+    tile.className = `mitra-dome-tile is-${partner.type}`;
     tile.style.transform = `rotateY(${coord.rotateY}deg) rotateX(${coord.rotateX}deg) translateZ(${radius}px)`;
 
     tile.innerHTML = `
-      <div class="tile-logo-wrapper">
-        <img src="${partner.file}" alt="Mitra Logo" class="mitra-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="tile-logo-wrapper is-${partner.type}">
+        <img src="${partner.file}" alt="${partner.name}" class="mitra-logo-img is-${partner.type}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div class="mitra-logo-fallback" style="display:none;">
           <span class="material-symbols-outlined text-emerald-600">handshake</span>
         </div>
@@ -74,12 +101,11 @@ function initMitra3DDome() {
     sphere.appendChild(tile);
   });
 
-  // 3D Dome Mechanics: Smooth drag glide momentum that eases into gentle ambient rotation
   let rotX = 0;
   let rotY = 0;
   let velX = 0;
-  let velY = 0.025; // Gentle initial ambient drift speed
-  let targetVelY = 0.025; // Target idle rotation speed
+  let velY = 0.025;
+  let targetVelY = 0.025;
   let isDragging = false;
   let startX = 0;
   let startY = 0;
@@ -97,8 +123,7 @@ function initMitra3DDome() {
 
   updateTransform();
 
-  // Pointer Drag Event Handlers with pointer capture & full release safety
-  container.addEventListener('pointerdown', (e) => {
+  container.addEventListener("pointerdown", (e) => {
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;
@@ -109,7 +134,7 @@ function initMitra3DDome() {
     startRotY = rotY;
     velX = 0;
     velY = 0;
-    container.classList.add('is-grabbing');
+    container.classList.add("is-grabbing");
     try {
       container.setPointerCapture(e.pointerId);
     } catch (err) {}
@@ -129,9 +154,9 @@ function initMitra3DDome() {
     rotY = startRotY + dx * 0.08;
     rotX = Math.max(-6, Math.min(6, startRotX - dy * 0.06));
 
-    const rawVelY = (moveDx / dt) * 0.20;
+    const rawVelY = (moveDx / dt) * 0.2;
     velY = Math.max(-0.5, Math.min(0.5, rawVelY));
-    velX = -(moveDy / dt) * 0.10;
+    velX = -(moveDy / dt) * 0.1;
 
     if (Math.abs(moveDx) > 0.5) {
       dragDirection = Math.sign(moveDx);
@@ -147,7 +172,7 @@ function initMitra3DDome() {
   const handlePointerUp = (e) => {
     if (isDragging) {
       isDragging = false;
-      container.classList.remove('is-grabbing');
+      container.classList.remove("is-grabbing");
       if (e && e.pointerId !== undefined) {
         try {
           container.releasePointerCapture(e.pointerId);
@@ -157,17 +182,16 @@ function initMitra3DDome() {
     }
   };
 
-  window.addEventListener('pointermove', handlePointerMove);
-  window.addEventListener('pointerup', handlePointerUp);
-  window.addEventListener('pointercancel', handlePointerUp);
-  window.addEventListener('blur', handlePointerUp);
+  window.addEventListener("pointermove", handlePointerMove);
+  window.addEventListener("pointerup", handlePointerUp);
+  window.addEventListener("pointercancel", handlePointerUp);
+  window.addEventListener("blur", handlePointerUp);
 
-  // Responsive Radius Recalculation on Window Resize
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     const newRadius = getResponsiveRadius();
     if (newRadius !== radius) {
       radius = newRadius;
-      const tiles = sphere.querySelectorAll('.mitra-dome-tile');
+      const tiles = sphere.querySelectorAll(".mitra-dome-tile");
       tiles.forEach((tile, i) => {
         if (tileCoords[i]) {
           tile.style.transform = `rotateY(${tileCoords[i].rotateY}deg) rotateX(${tileCoords[i].rotateX}deg) translateZ(${radius}px)`;
@@ -177,16 +201,13 @@ function initMitra3DDome() {
     }
   });
 
-  // Render Loop: Glides after release and smoothly eases back into gentle ambient rotation
   function animate() {
     if (!isDragging) {
-      // Smoothly transition velocity towards target idle speed (targetVelY)
       velY += (targetVelY - velY) * 0.025;
 
       rotY += velY;
 
-      // Vertical decay: level back upright
-      velX *= 0.90;
+      velX *= 0.9;
       rotX += velX;
       rotX *= 0.96;
 
@@ -195,8 +216,7 @@ function initMitra3DDome() {
     requestAnimationFrame(animate);
   }
 
-  // Hook kecepatan scroll untuk akselerasi bola dome saat digulir cepat (lebih bertenaga & responsif)
-  window.applyDomeScrollVelocity = function(impulse) {
+  window.applyDomeScrollVelocity = function (impulse) {
     if (!isDragging) {
       velY = Math.max(-0.48, Math.min(0.48, velY + impulse));
     }

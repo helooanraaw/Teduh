@@ -1,14 +1,29 @@
-/* TEDUH DIGITAL PLATFORM - USER PROFILE & HOME CLIMATE DASHBOARD (css/profile.css) - Arsitektur Editorial 3-Kolom ala NutriNesia - Palet 3 Warna: Deep Laurel Pine (#1A382B), Obsidian Slate (#0E1116), Sunbaked Terracotta (#BA4E2A) - Bentuk Shape Khusus: Asimetris, Kubah Iklim Mikro, & Tile Terukir - Bebas Em Dash & Zero Dirty Shadow */
+/**
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: css/profile.css
+ * Deskripsi: Gaya Tampilan Dashboard Profil Pengguna & Manajemen Pekarangan Rumah
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Tipografi & Ikonografi:
+ *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
+ *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+ * 2. Visual Media & Fotografi (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
+ * 3. Identitas Visual & Grafis Orisinal:
+ *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * ==========================================================================
+ */
 
-/* Wadah Utama Profil (Harmonis dengan Landing Page & Floating Navbar) */
 .pf-main {
   width: 100%;
-  max-width: var(--container-max-wide);
+  max-width: var(--container-max, 1240px);
   margin: 0 auto;
   padding-top: 32px;
   padding-bottom: 56px;
   padding-left: 24px;
   padding-right: 24px;
+  box-sizing: border-box;
 }
 
 .pf-main strong,
@@ -20,12 +35,13 @@
   font-weight: 600;
 }
 
-/* Grid 2-Kolom Responsif (Harmonis, Seimbang & Bernapas Luas) */
 .pf-grid {
   display: grid;
   grid-template-columns: 375px 1fr;
   gap: 24px;
   align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pf-col {
@@ -33,22 +49,26 @@
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* Kartu Dasar Bersih (Luas, Bernapas, Zero Dirty Shadow) */
 .pf-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 24px;
   padding: 24px;
-  border: 1px solid #ECECEE;
+  border: 1px solid #ececee;
   box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
   position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* Header Kartu Minimalis & Bersih (Ikon Bersatu Tanpa Kotak Background) */
 .pf-card-title-group {
   display: flex;
   align-items: center;
@@ -56,7 +76,7 @@
 }
 
 .pf-card-title-icon {
-  color: var(--color-primary);
+  color: #5c8437;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +100,6 @@
   line-height: 1.3;
 }
 
-/* Waktu Tenang Alami (Teks Biasa dengan Ikon Jam, Tanpa Kapsul/Border) */
 .pf-card-time {
   display: inline-flex;
   align-items: center;
@@ -96,7 +115,6 @@
   color: var(--color-text-muted);
 }
 
-/* Penyelarasan Alami Kartu Kolom & Baseline Sejajar */
 .pf-col:nth-child(1) .pf-schedule-card {
   flex: 1;
   display: flex;
@@ -127,28 +145,29 @@
   gap: 10px;
 }
 
-/* BENTUK SHAPE KHUSUS (ASIMETRIS & ORGANIK) */
-
-/* 1. Shape Asimetris untuk Kartu Identitas & Ringkasan Kesejukan */
 .pf-shape-asym-card {
   border-radius: 36px 14px 36px 14px !important;
   padding: 28px 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* 2. Modul Dual Hero: Skor Kesejukan & Dompet Poin Berdampingan */
 .pf-dual-hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* Sisi Kiri: Kubah Kesejukan Rumah (Layout Horisontal ke Samping, Borderless Lembut) */
 .pf-climate-dome {
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 18px;
   padding: 26px 24px;
   min-height: 160px;
@@ -160,20 +179,22 @@
   overflow: hidden;
   border: none;
   height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .pf-climate-dome::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 24px;
   width: 48px;
   height: 3px;
-  background: var(--color-primary);
+  background: #5c8437;
   border-radius: 0 0 3px 3px;
 }
 
-/* Circular Meter Ring Kesejukan (di Sisi Kiri) */
 .pf-ring-meter {
   position: relative;
   width: 106px;
@@ -190,13 +211,13 @@
 
 .pf-ring-meter .bg-circle {
   fill: transparent;
-  stroke: #E2ECE7;
+  stroke: #eef5eb;
   stroke-width: 9;
 }
 
 .pf-ring-meter .fg-circle {
   fill: transparent;
-  stroke: var(--color-primary);
+  stroke: #5c8437;
   stroke-width: 9;
   stroke-linecap: round;
   stroke-dasharray: 377;
@@ -218,7 +239,7 @@
   font-size: 30px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--color-primary);
+  color: #5c8437;
 }
 
 .pf-ring-unit {
@@ -230,7 +251,6 @@
   margin-top: 2px;
 }
 
-/* Konten Teks Kesejukan (di Sisi Kanan Meter) */
 .pf-dome-content {
   flex: 1;
   display: flex;
@@ -257,9 +277,8 @@
   margin: 0;
 }
 
-/* Sisi Kanan: Dompet Poin (Layout Horisontal ke Samping, Borderless Lembut) */
 .pf-wallet-side-box {
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 18px;
   padding: 26px 24px;
   min-height: 160px;
@@ -272,16 +291,19 @@
   overflow: hidden;
   border: none;
   height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .pf-wallet-side-box::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 24px;
   width: 48px;
   height: 3px;
-  background: var(--color-slate);
+  background: #5c8437;
   border-radius: 0 0 3px 3px;
 }
 
@@ -304,7 +326,7 @@
 .pf-balance-number {
   font-size: 34px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-slate);
   letter-spacing: -0.025em;
   line-height: 1.1;
   margin: 2px 0;
@@ -324,44 +346,50 @@
   gap: 6px;
   padding: 11px 20px;
   border-radius: var(--radius-full);
-  background: var(--color-slate);
-  color: #FFFFFF;
+  background: #5c8437;
+  color: #ffffff;
   font-size: 12.5px;
   font-weight: 600;
   text-decoration: none;
   transition: all var(--transition-fast);
-  box-shadow: 0 2px 8px rgba(14, 17, 22, 0.08);
+  box-shadow: 0 2px 8px rgba(92, 132, 55, 0.18);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .pf-wallet-redeem-action-btn:hover {
-  background: var(--color-primary);
+  background: #4b6d2d;
   transform: translateY(-1px);
-  color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(26, 56, 43, 0.16);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(92, 132, 55, 0.28);
 }
 
-/* 3. Grid Tile Metrik Khusus (2x2 Grid Seimbang, Borderless Lembut) */
 .pf-metrics-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .pf-metric-tile {
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 18px;
   padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  transition: transform var(--transition-fast), background var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast);
   border: none;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .pf-metric-tile:hover {
-  background: #EAEFEA;
+  background: #eaefea;
   transform: translateY(-1px);
 }
 
@@ -381,7 +409,6 @@
   line-height: 1.2;
 }
 
-/* KOLOM KIRI: KARTU IDENTITAS & PREFERENSI PEKARANGAN */
 .pf-identity-card {
   align-items: stretch;
   text-align: left;
@@ -391,7 +418,6 @@
   flex-direction: column;
 }
 
-/* Header Identitas Pengguna (Layout Horisontal ke Samping & Lebih Besar) */
 .pf-identity-header {
   display: flex;
   align-items: center;
@@ -411,16 +437,16 @@
   width: 100%;
   height: 100%;
   border-radius: var(--radius-full);
-  background: var(--color-primary);
-  color: #FFFFFF;
+  background: #5c8437;
+  color: #ffffff;
   font-size: 26px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(92, 132, 55, 0.2);
 }
 
 .pf-avatar-circle img {
@@ -433,8 +459,8 @@
   position: absolute;
   bottom: -2px;
   right: -2px;
-  background: var(--color-primary);
-  color: #FFFFFF;
+  background: #5c8437;
+  color: #ffffff;
   width: 26px;
   height: 26px;
   border-radius: var(--radius-full);
@@ -443,7 +469,7 @@
   justify-content: center;
   font-size: 11.5px;
   font-weight: 600;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #ffffff;
 }
 
 .pf-identity-info {
@@ -466,7 +492,7 @@
 .pf-identity-user {
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-slate);
   line-height: 1.2;
 }
 
@@ -485,15 +511,14 @@
   gap: 6px;
   padding: 5px 12px;
   border-radius: var(--radius-full);
-  background: #E2ECE7;
-  color: var(--color-primary);
+  background: #eef5eb;
+  color: #5c8437;
   font-size: 11.5px;
   font-weight: 600;
   margin-top: 4px;
   align-self: flex-start;
 }
 
-/* Lokasi Wilayah Pekarangan Pengguna (Distilled: Jelas & Prominen) */
 .pf-location-badge-box {
   display: flex;
   align-items: center;
@@ -501,10 +526,11 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--color-slate);
-  background: #F4F6F5;
+  background: #f4f6f5;
   padding: 12px 16px;
   border-radius: 14px;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   border: none;
 }
@@ -512,7 +538,7 @@
 .pf-location-badge-box svg {
   width: 16px;
   height: 16px;
-  color: var(--color-primary);
+  color: #5c8437;
   flex-shrink: 0;
 }
 
@@ -520,11 +546,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .pf-target-box {
   width: 100%;
-  background: #EBF1ED;
+  background: #f2f7f0;
   border-radius: 16px;
   padding: 14px 16px;
   text-align: left;
@@ -535,7 +562,7 @@
   font-size: 10.5px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-primary);
+  color: #5c8437;
   display: block;
   margin-bottom: 3px;
 }
@@ -547,7 +574,6 @@
   margin: 0;
 }
 
-/* KOLOM 1 BAWAH: JADWAL & AGENDA AKSI PEKARANGAN */
 .pf-schedule-card {
   display: flex;
   flex-direction: column;
@@ -559,7 +585,7 @@
 .pf-schedule-all-link {
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: #5c8437;
   text-decoration: none;
   transition: opacity var(--transition-fast);
 }
@@ -577,12 +603,11 @@
   overflow: hidden;
 }
 
-/* Daftar Agenda Aksi Pekarangan (Distilled: Borderless, Tanpa Ubah Warna, Detail saat Hover) */
 .pf-schedule-row {
   display: flex;
   flex-direction: column;
   padding: 12px 14px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 16px;
   border: none;
   box-shadow: none;
@@ -596,7 +621,7 @@
 .pf-schedule-row:hover,
 .pf-schedule-row:focus-visible,
 .pf-schedule-row.is-expanded {
-  background: #EAEFEA;
+  background: #eaefea;
   border: none;
   box-shadow: none;
   transform: none;
@@ -611,7 +636,6 @@
   border: none;
 }
 
-/* Bar Utama (Kotak Tanggal + Judul) */
 .pf-schedule-row-main {
   display: flex;
   align-items: center;
@@ -619,11 +643,10 @@
   width: 100%;
 }
 
-/* Blok Tanggal Bersih (44x44px Borderless dengan Elevasi Alami) */
 .pf-schedule-date-block {
   width: 44px;
   height: 44px;
-  background: #FFFFFF;
+  background: #ffffff;
   border: none;
   box-shadow: 0 1px 3px rgba(14, 17, 22, 0.04);
   border-radius: 12px;
@@ -643,7 +666,7 @@
 }
 
 .pf-schedule-date-block.date-today {
-  background: var(--color-primary);
+  background: #5c8437;
   border: none;
 }
 
@@ -655,7 +678,7 @@
 }
 
 .pf-schedule-date-block.date-today .pf-date-num {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .pf-date-month {
@@ -669,7 +692,7 @@
 }
 
 .pf-schedule-date-block.date-today .pf-date-month {
-  color: #E2ECE7;
+  color: #eef5eb;
 }
 
 .pf-schedule-info {
@@ -702,18 +725,21 @@
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 6px;
-  background: #E2ECE7;
-  color: var(--color-primary);
+  background: #eef5eb;
+  color: #5c8437;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-/* Panel Detail Ekspansi saat Hover / Fokus / Klik (Deskripsi, Jam & Lokasi) */
 .pf-schedule-detail-panel {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  transition: max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, margin-top 0.22s ease, padding-top 0.22s ease;
+  transition:
+    max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.22s ease,
+    margin-top 0.22s ease,
+    padding-top 0.22s ease;
   margin-top: 0;
   padding-top: 0;
   border-top: 1px solid transparent;
@@ -726,7 +752,7 @@
   opacity: 1;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #E6ECE8;
+  border-top: 1px solid #eaf0e8;
 }
 
 .pf-schedule-detail-note {
@@ -753,10 +779,9 @@
 }
 
 .pf-schedule-meta-item svg {
-  color: var(--color-primary);
+  color: #5c8437;
 }
 
-/* Tombol Aksi Cepat Misi di Panel Detail Agenda */
 .pf-schedule-action-wrap {
   margin-top: 10px;
   display: flex;
@@ -769,8 +794,8 @@
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  background: var(--color-slate);
-  color: #FFFFFF;
+  background: #5c8437;
+  color: #ffffff;
   border-radius: var(--radius-full);
   font-size: 11.5px;
   font-weight: 600;
@@ -779,13 +804,13 @@
 }
 
 .pf-schedule-action-btn:hover {
-  background: var(--color-primary);
-  color: #FFFFFF;
+  background: #4b6d2d;
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
 .pf-schedule-action-btn svg {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .pf-schedule-completed-badge {
@@ -794,17 +819,16 @@
   gap: 5px;
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--color-primary);
-  background: #E2ECE7;
+  color: #5c8437;
+  background: #eef5eb;
   padding: 5px 12px;
   border-radius: var(--radius-full);
 }
 
 .pf-schedule-completed-badge svg {
-  color: var(--color-primary);
+  color: #5c8437;
 }
 
-/* Tumpukan Aksi Akun di Bawah Agenda Pekarangan (Vertikal, Besar & Sederhana) */
 .pf-account-actions-stack {
   display: flex;
   flex-direction: column;
@@ -831,21 +855,20 @@
   box-sizing: border-box;
 }
 
-/* Tombol Edit Profil (Tampilan Sederhana & Nyata) */
 .pf-account-action-btn.pf-action-settings {
-  background: #F4F6F5;
-  color: var(--color-slate);
+  background: #eef5eb;
+  color: #5c8437;
   cursor: pointer;
 }
 
 .pf-account-action-btn.pf-action-settings svg {
-  color: var(--color-primary);
+  color: #5c8437;
   transition: transform var(--transition-fast);
 }
 
 .pf-account-action-btn.pf-action-settings:hover {
-  background: #EAEFEA;
-  color: var(--color-primary);
+  background: #e1eddc;
+  color: #4b6d2d;
   transform: translateY(-1px);
 }
 
@@ -857,30 +880,28 @@
   transform: translateY(0);
 }
 
-/* Tombol Keluar (Aktif & Sederhana di Bawah) */
 .pf-account-action-btn.pf-action-logout {
-  background: #FDF3EE;
-  color: #BA4E2A;
+  background: #fdf3ee;
+  color: #ba4e2a;
   cursor: pointer;
 }
 
 .pf-account-action-btn.pf-action-logout:hover {
-  background: #FCE6DD;
-  color: #9C3919;
+  background: #fce6dd;
+  color: #9c3919;
   transform: translateY(-1px);
 }
 
 .pf-account-action-btn.pf-action-logout svg {
-  color: #BA4E2A;
+  color: #ba4e2a;
   transition: transform var(--transition-fast);
 }
 
 .pf-account-action-btn.pf-action-logout:hover svg {
-  color: #9C3919;
+  color: #9c3919;
   transform: translateX(2px);
 }
 
-/* KOLOM TENGAH: LINIMASA RIWAYAT AKTIVITAS (Distilled & Sederhana) */
 .pf-section-header,
 .pf-home-map-header {
   display: flex;
@@ -909,14 +930,16 @@
   gap: 12px;
   align-items: center;
   padding: 10px 12px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 14px;
   border: none;
-  transition: transform var(--transition-fast), background var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast);
 }
 
 .pf-timeline-item:hover {
-  background: #EAEFEA;
+  background: #eaefea;
   transform: translateX(2px);
 }
 
@@ -924,8 +947,8 @@
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: #FFFFFF;
-  color: var(--color-primary);
+  background: #ffffff;
+  color: #5c8437;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -962,19 +985,17 @@
   text-overflow: ellipsis;
 }
 
-/* Badge Poin Diselaraskan (Satu Warna Herbal Pine yang Tenang & Selaras) */
 .pf-timeline-badge {
   font-size: 11px;
   font-weight: 600;
   padding: 3px 9px;
   border-radius: 6px;
   white-space: nowrap;
-  background: #E2ECE7;
-  color: var(--color-primary);
+  background: #eef5eb;
+  color: #5c8437;
   flex-shrink: 0;
 }
 
-/* Tombol Lihat Lainnya di Dalam Card Aktivitas Terbaru (Dummy & Selaras UI Lainnya) */
 .pf-timeline-more-btn {
   display: inline-flex;
   align-items: center;
@@ -986,8 +1007,8 @@
   border-radius: 14px;
   font-size: 13px;
   font-weight: 600;
-  background: #F4F6F5;
-  color: var(--color-slate);
+  background: #eef5eb;
+  color: #5c8437;
   border: none;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -996,13 +1017,13 @@
 }
 
 .pf-timeline-more-btn svg {
-  color: var(--color-primary);
+  color: #5c8437;
   transition: transform var(--transition-fast);
 }
 
 .pf-timeline-more-btn:hover {
-  background: #EAEFEA;
-  color: var(--color-primary);
+  background: #e1eddc;
+  color: #4b6d2d;
   transform: translateY(-1px);
 }
 
@@ -1014,9 +1035,6 @@
   transform: translateY(0);
 }
 
-/* KOLOM KANAN: STATUS SPASIAL RUMAH & DOMPET VOUCHER */
-
-/* Kotak Peta Mini Satelit Rumah (Isolasi Spasial agar Tidak Menimpa Navbar) */
 .pf-home-map-card {
   overflow: hidden;
   padding: 0;
@@ -1028,7 +1046,6 @@
   padding: 14px 16px 10px;
 }
 
-/* Kupon Voucher dalam Dompet Samping */
 .pf-claimed-coupons-list {
   display: flex;
   flex-direction: column;
@@ -1041,16 +1058,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: #FFFFFF;
-  border: 1px solid #ECECEE;
+  background: #ffffff;
+  border: 1px solid #ececee;
   border-radius: 12px;
   font-size: 11px;
   transition: all var(--transition-fast);
 }
 
 .pf-coupon-item:hover {
-  background: #F4F8F6;
-  border-color: var(--color-primary);
+  background: #f6faf4;
+  border-color: #5c8437;
 }
 
 .pf-coupon-item strong {
@@ -1061,19 +1078,20 @@
 }
 
 .pf-coupon-arrow {
-  color: #8A928E;
+  color: #8a928e;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-fast), color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .pf-coupon-item:hover .pf-coupon-arrow {
   transform: translateX(3px);
-  color: var(--color-primary);
+  color: #5c8437;
 }
 
-/* Responsivitas Layar (Tablet & Mobile) */
 @media (max-width: 1080px) {
   .pf-grid {
     grid-template-columns: 1fr;

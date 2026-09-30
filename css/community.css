@@ -1,12 +1,20 @@
-/* ==========================================================================
-   TEDUH DIGITAL PLATFORM - COMMUNITY STYLESHEET (css/community.css)
-   Layout 2 Kolom Modular Ala NutriNesia: Hero Carousel Persegi Panjang,
-   Inline Thread Composer, Card Stream dengan Komentar Dummy Interaktif,
-   dan Sidebar Panduan Lingkungan.
-   Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, 0 Em-Dash (R-02)
-   ========================================================================== */
+/**
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: css/community.css
+ * Deskripsi: Gaya Tampilan Komunitas Warga, Feed Dokumentasi & Modal Aksi
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Tipografi & Ikonografi:
+ *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
+ *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+ * 2. Visual Media & Fotografi (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
+ * 3. Identitas Visual & Grafis Orisinal:
+ *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * ==========================================================================
+ */
 
-/* Kanvas Utama Komunitas */
 .km-page-wrapper {
   background-color: var(--color-background, #f2f0e4);
   min-height: 100vh;
@@ -20,14 +28,10 @@
   padding: 0 24px;
 }
 
-/* ==========================================================================
-   1. SOCIAL MEDIA FEED TABS & GRID LAYOUT
-   ========================================================================== */
 .km-layout-grid-top {
   padding-top: 32px;
 }
 
-/* Feed Filter Tabs (Threads / LinkedIn Style) */
 .km-feed-tabs {
   display: flex;
   align-items: center;
@@ -48,26 +52,26 @@
   gap: 6px;
   padding: 8px 18px;
   border-radius: var(--radius-full, 9999px);
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid var(--color-border, #d4d0bc);
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--color-text-body, #474E4A);
+  color: var(--color-text-body, #474e4a);
   cursor: pointer;
   transition: all var(--transition-fast, 0.2s cubic-bezier(0.16, 1, 0.3, 1));
   white-space: nowrap;
 }
 
 .km-feed-tab:hover {
-  border-color: var(--color-primary, #1A382B);
-  color: var(--color-primary, #1A382B);
-  background: #F9FAF9;
+  border-color: var(--color-primary, #1a382b);
+  color: var(--color-primary, #1a382b);
+  background: #f9faf9;
 }
 
 .km-feed-tab.is-active {
-  background: var(--color-primary, #1A382B);
-  border-color: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  border-color: var(--color-primary, #1a382b);
+  color: #ffffff;
 }
 
 .km-feed-tab .km-tab-pill {
@@ -76,17 +80,14 @@
   padding: 2px 7px;
   border-radius: 9999px;
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-feed-tab.is-active .km-tab-pill {
   background: rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-/* ==========================================================================
-   2. INLINE COMPOSER WITH MISSION LINKER
-   ========================================================================== */
 .km-composer-input-wrap {
   flex: 1;
   display: flex;
@@ -94,7 +95,6 @@
   gap: 8px;
 }
 
-/* Pratinjau Multi-Foto & Card Gray Plus di Composer */
 .km-composer-media-section {
   margin-top: 6px;
 }
@@ -117,8 +117,8 @@
   height: 88px;
   border-radius: 14px;
   overflow: hidden;
-  background: #E8ECE9;
-  border: 1px solid #E2E8E5;
+  background: #e8ece9;
+  border: 1px solid #e2e8e5;
   flex-shrink: 0;
 }
 
@@ -137,7 +137,7 @@
   height: 22px;
   border-radius: 50%;
   background: rgba(14, 17, 22, 0.75);
-  color: #FFFFFF;
+  color: #ffffff;
   border: none;
   cursor: pointer;
   display: flex;
@@ -148,29 +148,30 @@
 }
 
 .km-btn-remove-thumb:hover {
-  background: var(--color-terracotta, #BA4E2A);
+  background: var(--color-terracotta, #ba4e2a);
   transform: scale(1.05);
 }
 
-/* Card Gray Minimalis dengan Ikon Plus Unggah Foto */
 .km-composer-upload-card {
   width: 78px;
   height: 78px;
   border-radius: 12px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
   user-select: none;
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
 .km-composer-upload-card:hover {
-  background: #EAEFEA;
+  background: #eaefea;
   transform: translateY(-1px);
 }
 
@@ -178,7 +179,7 @@
   width: auto;
   height: auto;
   background: transparent;
-  color: #94A3B8;
+  color: #94a3b8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,10 +188,9 @@
 
 .km-composer-upload-card:hover .km-upload-plus-icon {
   background: transparent;
-  color: #64748B;
+  color: #64748b;
 }
 
-/* Meta Chips Aktif di Composer (Tagar & Lokasi) */
 .km-composer-meta-chips {
   display: flex;
   align-items: center;
@@ -207,14 +207,14 @@
   border-radius: var(--radius-full, 9999px);
   font-size: 11.5px;
   font-weight: 600;
-  background: #EAF2ED;
-  color: var(--color-primary, #1A382B);
+  background: #eaf2ed;
+  color: var(--color-primary, #1a382b);
 }
 
 .km-meta-chip-btn-remove {
   background: transparent;
   border: none;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -223,13 +223,12 @@
 }
 
 .km-meta-chip-btn-remove:hover {
-  color: var(--color-terracotta, #BA4E2A);
+  color: var(--color-terracotta, #ba4e2a);
 }
 
-/* Drawer Pilihan Cepat Topik & Lokasi */
 .km-composer-drawer {
   display: none;
-  background: #F8FAFA;
+  background: #f8fafa;
   border-radius: 12px;
   padding: 10px 12px;
   margin-top: 4px;
@@ -247,20 +246,20 @@
   justify-content: space-between;
   font-size: 11.5px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-drawer-close-btn {
   background: transparent;
   border: none;
   font-size: 11px;
-  color: #71717A;
+  color: #71717a;
   cursor: pointer;
   padding: 0;
 }
 
 .km-drawer-close-btn:hover {
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-drawer-chips-list {
@@ -275,18 +274,18 @@
   font-size: 11.5px;
   font-weight: 600;
   border: none;
-  background: #FFFFFF;
-  color: #4A5568;
+  background: #ffffff;
+  color: #4a5568;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.km-drawer-chip:hover, .km-drawer-chip.is-active {
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+.km-drawer-chip:hover,
+.km-drawer-chip.is-active {
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
 }
 
-/* Header Penulis & Lokasi pada Postingan */
 .km-author-title-row {
   display: flex;
   align-items: center;
@@ -297,8 +296,8 @@
 .km-author-level-tag {
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  background: #EAF2ED;
+  color: var(--color-primary, #1a382b);
+  background: #eaf2ed;
   padding: 2px 8px;
   border-radius: 9999px;
 }
@@ -306,18 +305,15 @@
 .km-post-points-badge {
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
-  background: #EAF2ED;
+  color: var(--color-primary, #1a382b);
+  background: #eaf2ed;
   padding: 4px 10px;
   border-radius: 9999px;
   align-self: flex-start;
 }
 
-/* ==========================================================================
-   3. SIDEBAR: KARTU PROFIL PENGGUNA & MISI BERPOIN (CIVIC QUESTS)
-   ========================================================================== */
 .km-sidebar-profile-card {
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .km-side-profile-header {
@@ -331,7 +327,7 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 2px solid var(--color-primary, #1A382B);
+  border: 2px solid var(--color-primary, #1a382b);
   object-fit: cover;
 }
 
@@ -343,19 +339,19 @@
 .km-side-profile-name {
   font-size: 15.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-side-profile-handle {
   font-size: 12px;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-side-profile-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  background: #F8FAFA;
+  background: #f8fafa;
   border-radius: 12px;
   padding: 12px;
   border: none;
@@ -371,7 +367,7 @@
 .km-side-stat-label {
   font-size: 10.5px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -379,11 +375,11 @@
 .km-side-stat-value {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-side-stat-value.km-points-accent {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-side-level-progress {
@@ -395,13 +391,13 @@
   justify-content: space-between;
   font-size: 11.5px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
   margin-bottom: 6px;
 }
 
 .km-side-progress-track {
   height: 6px;
-  background: #E8ECE9;
+  background: #e8ece9;
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -418,7 +414,7 @@
   align-items: center;
   justify-content: space-between;
   background: var(--color-btn-primary, #5c8437);
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 10px 16px;
   border-radius: var(--radius-full, 9999px);
   font-size: 12.5px;
@@ -432,7 +428,6 @@
   transform: translateY(-1px);
 }
 
-/* Sidebar Quests Card */
 .km-quest-list {
   display: flex;
   flex-direction: column;
@@ -440,7 +435,7 @@
 }
 
 .km-quest-item {
-  background: #F8FAFA;
+  background: #f8fafa;
   border: none;
   border-radius: 12px;
   padding: 10px 12px;
@@ -452,7 +447,7 @@
 }
 
 .km-quest-item:hover {
-  background: #EFF5F2;
+  background: #eff5f2;
 }
 
 .km-quest-item.is-completed {
@@ -474,13 +469,13 @@
 .km-quest-title {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-quest-points {
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
   padding: 1px 6px;
   border-radius: 9999px;
@@ -488,15 +483,15 @@
 
 .km-quest-desc {
   font-size: 11px;
-  color: #71717A;
+  color: #71717a;
   margin: 0;
   line-height: 1.35;
 }
 
 .km-btn-quest-action {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid var(--color-border, #d4d0bc);
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   padding: 5px 12px;
   border-radius: var(--radius-full, 9999px);
   font-size: 11.5px;
@@ -508,20 +503,17 @@
 
 .km-btn-quest-action:hover {
   background: var(--color-btn-primary, #5c8437);
-  color: #FFFFFF;
+  color: #ffffff;
   border-color: var(--color-btn-primary, #5c8437);
 }
 
 .km-quest-item.is-completed .km-btn-quest-action {
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   border-color: transparent;
   cursor: default;
 }
 
-/* ==========================================================================
-   2. GRID 2 KOLOM (FEED THREAD KIRI, SIDEBAR KANAN)
-   ========================================================================== */
 .km-layout-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -537,22 +529,14 @@
   }
 }
 
-/* ==========================================================================
-   3. FEED THREAD UTAMA (KOLOM KIRI - CARD POST STREAM)
-   ========================================================================== */
 .km-feed-stream {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* ==========================================================================
-   2. FEED TRIGGER CARD & MODAL PEMBUAT POSTINGAN (LINKEDIN STYLE)
-   ========================================================================== */
-
-/* FEED TRIGGER CARD (LINKEDIN STYLE) */
 .km-composer-trigger-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
   border: none;
   box-shadow: none;
@@ -578,12 +562,12 @@
 
 .km-trigger-fake-input {
   flex: 1;
-  background: #F8FAFA;
+  background: #f8fafa;
   border-radius: var(--radius-full, 9999px);
   padding: 11px 18px;
   font-size: 13.5px;
   font-weight: 500;
-  color: #71717A;
+  color: #71717a;
   border: none;
   text-align: left;
   cursor: pointer;
@@ -595,8 +579,8 @@
 }
 
 .km-trigger-fake-input:hover {
-  background: #F1F5F3;
-  color: var(--color-slate, #0E1116);
+  background: #f1f5f3;
+  color: var(--color-slate, #0e1116);
 }
 
 .km-trigger-bottom-row {
@@ -604,7 +588,7 @@
   align-items: center;
   justify-content: space-around;
   padding-top: 8px;
-  border-top: 1px solid #F1F4F2;
+  border-top: 1px solid #f1f4f2;
   gap: 8px;
 }
 
@@ -619,7 +603,7 @@
   border-radius: var(--radius-full, 9999px);
   font-size: 12.5px;
   font-weight: 600;
-  color: #4A5568;
+  color: #4a5568;
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
@@ -627,17 +611,14 @@
 }
 
 .km-trigger-btn:hover {
-  background: #F4F7F5;
-  color: var(--color-primary, #1A382B);
+  background: #f4f7f5;
+  color: var(--color-primary, #1a382b);
 }
 
 .km-trigger-btn svg {
   stroke: currentColor;
 }
 
-/* ==========================================================================
-   MODAL DIALOG POSTINGAN KOMUNITAS
-   ========================================================================== */
 .km-modal-overlay {
   position: fixed;
   inset: 0;
@@ -650,7 +631,6 @@
   justify-content: center;
   padding: 16px;
   opacity: 0;
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .km-modal-overlay.is-active {
@@ -659,22 +639,27 @@
 }
 
 .km-modal-dialog {
-  background: #FFFFFF;
-  border-radius: var(--radius-xl, 20px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14, 17, 22, 0.2) 0%,
+      rgba(92, 132, 55, 0.3) 14%,
+      rgba(92, 132, 55, 0.08) 24%,
+      rgba(255, 255, 255, 0) 34%
+    ),
+    #ffffff;
+  border-radius: var(--radius-2xl, 24px);
   width: 100%;
   max-width: 580px;
   max-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(92, 132, 55, 0.18);
+  box-shadow:
+    0 24px 48px -12px rgba(14, 17, 22, 0.2),
+    0 4px 16px rgba(92, 132, 55, 0.08);
   overflow: hidden;
-  transform: scale(0.96) translateY(8px);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.km-modal-overlay.is-active .km-modal-dialog {
-  transform: scale(1) translateY(0);
+  will-change: transform, opacity;
 }
 
 .km-modal-header {
@@ -682,13 +667,12 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid #F1F4F2;
 }
 
 .km-modal-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0;
 }
 
@@ -701,14 +685,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #71717A;
+  color: #71717a;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .km-modal-close-btn:hover {
-  background: #F4F6F5;
-  color: var(--color-slate, #0E1116);
+  background: #f4f6f5;
+  color: var(--color-slate, #0e1116);
 }
 
 .km-modal-body {
@@ -743,7 +727,7 @@
 .km-modal-author-name {
   font-size: 14.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-location-picker-wrap {
@@ -763,13 +747,15 @@
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   cursor: pointer;
   text-align: left;
   line-height: 1.3;
   width: fit-content;
   border-radius: 6px;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
   user-select: none;
 }
 
@@ -779,20 +765,19 @@
 }
 
 .km-modal-location-trigger:hover {
-  background: #F4F6F5;
-  color: var(--color-primary, #1A382B);
+  background: #f4f6f5;
+  color: var(--color-primary, #1a382b);
 }
 
 .km-modal-location-trigger.is-empty {
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-modal-location-trigger.is-empty:hover {
-  background: #F4F6F5;
-  color: #3F3F46;
+  background: #f4f6f5;
+  color: #3f3f46;
 }
 
-/* Pop-up Dialog Pemilih & Pencari Lokasi */
 .km-location-popup {
   position: absolute;
   top: calc(100% + 4px);
@@ -800,8 +785,8 @@
   z-index: 1000;
   width: 290px;
   max-width: calc(100vw - 32px);
-  background: #FFFFFF;
-  border: 1px solid #ECECEE;
+  background: #ffffff;
+  border: 1px solid #ececee;
   border-radius: 14px;
   box-shadow: 0 10px 28px rgba(14, 17, 22, 0.08);
   padding: 8px;
@@ -815,14 +800,14 @@
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 8px;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-location-search-box svg {
   flex-shrink: 0;
-  stroke: #71717A;
+  stroke: #71717a;
 }
 
 .km-location-input {
@@ -831,12 +816,12 @@
   background: transparent;
   font-family: inherit;
   font-size: 12.5px;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   width: 100%;
 }
 
 .km-location-input::placeholder {
-  color: #8E9A94;
+  color: #8e9a94;
 }
 
 .km-location-list {
@@ -853,22 +838,24 @@
   border-radius: 7px;
   font-size: 12.5px;
   font-weight: 500;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
 }
 
 .km-location-item:hover {
-  background: #F4F6F5;
-  color: var(--color-primary, #1A382B);
+  background: #f4f6f5;
+  color: var(--color-primary, #1a382b);
 }
 
 .km-location-item.is-selected {
-  background: #EBF3EE;
-  color: var(--color-primary, #1A382B);
+  background: #ebf3ee;
+  color: var(--color-primary, #1a382b);
   font-weight: 600;
 }
 
@@ -877,28 +864,27 @@
   border-radius: 7px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-accent, #BA4E2A);
+  color: var(--color-accent, #ba4e2a);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  border-top: 1px solid #F1F4F2;
+  border-top: 1px solid #f1f4f2;
   margin-top: 2px;
   transition: background 0.12s ease;
 }
 
 .km-location-clear-item:hover {
-  background: #FDF2EE;
+  background: #fdf2ee;
 }
 
 .km-location-empty-state {
   padding: 10px;
   font-size: 12px;
-  color: #71717A;
+  color: #71717a;
   text-align: center;
 }
 
-/* Wrapper Textarea & Dropdown Autocomplete (# & @) */
 .km-modal-textarea-wrap {
   position: relative;
   width: 100%;
@@ -923,7 +909,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   pointer-events: none;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   user-select: none;
   box-sizing: border-box;
   scrollbar-width: none;
@@ -935,13 +921,13 @@
 
 .km-editor-mention {
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   background: transparent;
 }
 
 .km-editor-tag {
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   background: transparent;
 }
 
@@ -964,12 +950,12 @@
   word-break: break-word;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  caret-color: var(--color-slate, #0E1116);
+  caret-color: var(--color-slate, #0e1116);
 }
 
 .km-modal-textarea::placeholder {
-  color: #8E9A94;
-  -webkit-text-fill-color: #8E9A94;
+  color: #8e9a94;
+  -webkit-text-fill-color: #8e9a94;
 }
 
 .km-modal-textarea::selection {
@@ -978,16 +964,17 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Pop-up Dropdown Autocomplete (#Tagar & @Mention) */
 .km-autocomplete-popup {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(100% + 4px);
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.08);
-  border: 1px solid #E2E8E4;
+  box-shadow:
+    0 12px 28px -4px rgba(0, 0, 0, 0.12),
+    0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8e4;
   padding: 4px;
   max-height: 200px;
   overflow-y: auto;
@@ -1022,7 +1009,7 @@
 
 .km-autocomplete-item:hover,
 .km-autocomplete-item.is-selected {
-  background: #F0F4F2;
+  background: #f0f4f2;
 }
 
 .km-auto-avatar {
@@ -1043,20 +1030,19 @@
 .km-auto-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   line-height: 1.25;
 }
 
 .km-auto-desc {
   font-size: 11px;
-  color: #71717A;
+  color: #71717a;
   line-height: 1.2;
 }
 
-/* Tagar Inline dalam Deskripsi */
 .km-inline-tag {
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
@@ -1066,27 +1052,27 @@
   opacity: 0.85;
 }
 
-/* Mention Inline dalam Deskripsi */
 .km-inline-mention {
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .km-inline-mention:hover {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   text-decoration: underline;
 }
 
-/* Floating Hover Card (Tagar & Mention Pop-up di Feed) */
 .km-floating-hover-card {
   position: absolute;
   z-index: 9999;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.06);
-  border: 1px solid #E2E8E4;
+  box-shadow:
+    0 10px 25px -3px rgba(0, 0, 0, 0.12),
+    0 4px 10px -2px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8e4;
   padding: 8px 12px;
   pointer-events: none;
   animation: kmHoverFadeIn 0.15s ease-out;
@@ -1132,13 +1118,13 @@
 .km-hover-card-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   line-height: 1.2;
 }
 
 .km-hover-card-sub {
   font-size: 11px;
-  color: #71717A;
+  color: #71717a;
   white-space: nowrap;
 }
 
@@ -1147,8 +1133,8 @@
   align-items: center;
   justify-content: flex-end;
   padding: 14px 20px;
-  border-top: 1px solid #F1F4F2;
-  background: #FFFFFF;
+  border-top: 1px solid #f1f4f2;
+  background: #ffffff;
 }
 
 .km-file-input-hidden {
@@ -1159,8 +1145,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--color-slate, #0E1116);
-  color: #FFFFFF;
+  background: var(--color-slate, #0e1116);
+  color: #ffffff;
   font-size: 13px;
   font-weight: 600;
   padding: 9px 22px;
@@ -1172,21 +1158,20 @@
 }
 
 .km-modal-btn-submit:hover {
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .km-modal-btn-submit.is-locked {
-  background: #EAEFEA;
-  color: #7A8480;
+  background: #eaefea;
+  color: #7a8480;
   cursor: not-allowed;
 }
 
 .km-modal-btn-submit.is-locked:hover {
-  background: #EAEFEA;
-  color: #7A8480;
+  background: #eaefea;
+  color: #7a8480;
 }
 
-/* Status Verifikasi Cerdas Aksi Misi di Modal */
 .km-mission-verify-notice {
   display: flex;
   align-items: center;
@@ -1200,13 +1185,13 @@
 }
 
 .km-mission-verify-notice.is-valid {
-  background: #E2ECE7;
-  color: #1A382B;
+  background: #e2ece7;
+  color: #1a382b;
 }
 
 .km-mission-verify-notice.is-warning {
-  background: #FDF2EE;
-  color: #BA4E2A;
+  background: #fdf2ee;
+  color: #ba4e2a;
 }
 
 .km-mission-verify-icon-wrap {
@@ -1216,15 +1201,14 @@
   flex-shrink: 0;
 }
 
-/* Badge Misi Terverifikasi di Feed Card */
 .km-verified-mission-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 11px;
   font-weight: 600;
-  color: #1A382B;
-  background: #E2ECE7;
+  color: #1a382b;
+  background: #e2ece7;
   padding: 3px 10px;
   border-radius: 9999px;
   margin-top: 8px;
@@ -1243,11 +1227,6 @@
   }
 }
 
-/* ==========================================================================
-   3. FEED THREAD UTAMA (CARD POST STREAM)
-   ========================================================================== */
-
-/* SEKSI HEADER FEED (ON TRENDING) */
 .km-feed-section-header {
   padding: 10px 2px 4px 2px;
   margin-top: 4px;
@@ -1256,13 +1235,12 @@
 .km-feed-section-title {
   font-size: 20px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   letter-spacing: -0.02em;
   margin: 0;
   line-height: 1.25;
 }
 
-/* TOMBOL MUAT LEBIH BANYAK / LIHAT POSTINGAN LENGKAP */
 .km-feed-load-more-wrap {
   display: flex;
   width: 100%;
@@ -1276,8 +1254,8 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  background: #FFFFFF;
-  color: var(--color-slate, #0E1116);
+  background: #ffffff;
+  color: var(--color-slate, #0e1116);
   font-size: 13.5px;
   font-weight: 600;
   padding: 14px 20px;
@@ -1292,8 +1270,8 @@
 }
 
 .km-btn-view-more-posts:hover {
-  background: #EAF2ED;
-  color: var(--color-primary, #1A382B);
+  background: #eaf2ed;
+  color: var(--color-primary, #1a382b);
 }
 
 .km-btn-view-more-posts svg {
@@ -1305,9 +1283,8 @@
   transform: translateY(2px);
 }
 
-/* THREAD POST CARD ITEM (BEBAS BORDER & BEBAS SHADOW) */
 .km-thread-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
   border: none;
   box-shadow: none;
@@ -1317,7 +1294,6 @@
   gap: 14px;
 }
 
-/* Header Thread (Author & Stacked Meta) */
 .km-thread-header {
   display: flex;
   align-items: flex-start;
@@ -1348,19 +1324,18 @@
 .km-thread-author-name {
   font-size: 14.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   line-height: 1.25;
 }
 
 .km-thread-location-time {
   font-size: 12px;
-  color: #71717A;
+  color: #71717a;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-/* Body Thread (Teks Lembut, Foto Aksi & Hashtag Rapi) */
 .km-thread-body {
   display: flex;
   flex-direction: column;
@@ -1370,18 +1345,15 @@
 .km-thread-text {
   font-size: 14.5px;
   line-height: 1.65;
-  color: #374151; /* Charcoal lembut, nyaman dibaca */
+  color: #374151;
   margin: 0;
   white-space: pre-line;
 }
 
-/* ==========================================================================
-   SISTEM GRID FOTO RESPONSIVE SOSIAL MEDIA (1, 2, 3, 4, 4+ FOTO)
-   ========================================================================== */
 .km-photo-grid {
   border-radius: 14px;
   overflow: hidden;
-  background: #F4F4F5;
+  background: #f4f4f5;
   margin-top: 4px;
   width: 100%;
 }
@@ -1490,7 +1462,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 18px;
   font-weight: 600;
   backdrop-filter: blur(2px);
@@ -1529,7 +1501,7 @@
 .km-thread-tag-link {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   text-decoration: none;
   cursor: pointer;
   transition: all var(--transition-fast, 0.2s ease);
@@ -1540,13 +1512,12 @@
   text-decoration: underline;
 }
 
-/* Bar Aksi Thread (Like, Comment) */
 .km-thread-actions-bar {
   display: flex;
   align-items: center;
   gap: 12px;
   padding-top: 14px;
-  border-top: 1px solid #EEF2EF;
+  border-top: 1px solid #eef2ef;
 }
 
 .km-action-btn {
@@ -1555,7 +1526,7 @@
   gap: 6px;
   background: rgba(26, 56, 43, 0.04);
   border: none;
-  color: #4B5563;
+  color: #4b5563;
   font-size: 12.5px;
   font-weight: 500;
   cursor: pointer;
@@ -1566,29 +1537,27 @@
 
 .km-action-btn:hover {
   background: rgba(26, 56, 43, 0.09);
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-action-btn.is-liked {
-  color: #BA4E2A;
-  background: #FDF2EE;
+  color: #ba4e2a;
+  background: #fdf2ee;
 }
 
 .km-action-btn.is-liked svg {
-  fill: #BA4E2A;
-  stroke: #BA4E2A;
+  fill: #ba4e2a;
+  stroke: #ba4e2a;
 }
 
-/* SECTION KOMENTAR INLINE PADA THREAD (Input di Atas & Branch Tree Graph Rapi) */
 .km-thread-comments-section {
   display: flex;
   flex-direction: column;
   gap: 14px;
   padding-top: 14px;
-  border-top: 1px solid #F1F4F2;
+  border-top: 1px solid #f1f4f2;
 }
 
-/* Input Balas Komentar di ATAS (Langsung di bawah Bar Suka/Komentar) */
 .km-comment-input-row {
   display: flex;
   align-items: center;
@@ -1599,28 +1568,28 @@
 .km-inline-comment-input {
   flex: 1;
   height: 38px;
-  border: 1px solid #D2DFD8;
+  border: 1px solid #d2dfd8;
   border-radius: var(--radius-full, 9999px);
   padding: 0 16px;
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-family, "Plus Jakarta Sans", sans-serif);
   font-size: 12.5px;
-  color: #333C37;
-  background: #F9FAF9;
+  color: #333c37;
+  background: #f9faf9;
   outline: none;
   transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-inline-comment-input:focus {
-  background: #FFFFFF;
-  border-color: var(--color-primary, #1A382B);
+  background: #ffffff;
+  border-color: var(--color-primary, #1a382b);
   box-shadow: 0 0 0 3px rgba(26, 56, 43, 0.08);
 }
 
 .km-btn-send-comment {
   height: 38px;
   padding: 0 18px;
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
   border-radius: var(--radius-full, 9999px);
   border: none;
   font-size: 12px;
@@ -1631,10 +1600,9 @@
 }
 
 .km-btn-send-comment:hover {
-  background: var(--color-slate, #0E1116);
+  background: var(--color-slate, #0e1116);
 }
 
-/* Wadah Pohon Komentar (Branch Tree Graph dari Foto Profil ke Foto Profil) */
 .km-comments-tree {
   display: flex;
   flex-direction: column;
@@ -1650,7 +1618,6 @@
   position: relative;
 }
 
-/* Node Komentar Induk (Level 1) */
 .km-comment-node {
   display: flex;
   align-items: flex-start;
@@ -1664,8 +1631,8 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border: 1.5px solid #FFFFFF;
-  background: #FFFFFF;
+  border: 1.5px solid #ffffff;
+  background: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   z-index: 2;
   position: relative;
@@ -1690,13 +1657,13 @@
 .km-comment-author {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   line-height: 1.25;
 }
 
 .km-comment-time {
   font-size: 11.5px;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-comment-text {
@@ -1706,7 +1673,6 @@
   margin: 0;
 }
 
-/* Tombol Balas Komentar */
 .km-comment-reply-btn {
   display: inline-flex;
   align-items: center;
@@ -1715,7 +1681,7 @@
   border: none;
   font-size: 11.5px;
   font-weight: 600;
-  color: #52635B;
+  color: #52635b;
   cursor: pointer;
   padding: 2px 0;
   margin-top: 2px;
@@ -1724,35 +1690,30 @@
 }
 
 .km-comment-reply-btn:hover {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   SUB-BRANCH BALASAN DARI FOTO PROFIL KE FOTO PROFIL (AVATAR TO AVATAR)
-   ========================================================================== */
 .km-comment-replies {
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin-left: 0;
-  padding-left: 44px; /* Offset dari tepi kiri agar anak menjorok rapi */
+  padding-left: 44px;
   position: relative;
 }
 
-/* Garis Vertikal Batang Cabang: Dimulai PERSIS dari bawah tengah foto profil Induk (x = 16px) */
 .km-comment-replies::before {
-  content: '';
+  content: "";
   position: absolute;
-  left: 15px; /* Sumbu tengah avatar induk 32px */
-  top: -12px; /* Nyambung dari bagian bawah avatar induk */
-  bottom: 16px; /* Berakhir di avatar balasan terakhir */
+  left: 15px;
+  top: -12px;
+  bottom: 16px;
   width: 2px;
-  background: #CBDAD2;
+  background: #cbdad2;
   border-radius: 2px;
 }
 
-/* Node Balasan Komentar (Level 2) */
 .km-comment-node.is-reply {
   display: flex;
   align-items: flex-start;
@@ -1760,16 +1721,15 @@
   position: relative;
 }
 
-/* Garis Lengkung L-Shape: Menghubungkan batang vertikal (left: 15px) langsung ke Foto Profil Balasan */
 .km-comment-node.is-reply::before {
-  content: '';
+  content: "";
   position: absolute;
-  left: -29px; /* Jarak dari x=44px ke x=15px adalah 29px */
+  left: -29px;
   top: 0;
   width: 28px;
-  height: 14px; /* Setengah tinggi avatar balasan (28px / 2 = 14px) */
-  border-bottom: 2px solid #CBDAD2;
-  border-left: 2px solid #CBDAD2;
+  height: 14px;
+  border-bottom: 2px solid #cbdad2;
+  border-left: 2px solid #cbdad2;
   border-bottom-left-radius: 10px;
 }
 
@@ -1778,32 +1738,28 @@
   height: 28px;
 }
 
-/* ==========================================================================
-   CONTAINER BALAS KOMENTAR BERSARANG (INLINE REPLY COMPOSER BOX)
-   ========================================================================== */
 .km-reply-composer-box {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   position: relative;
-  background: #F9FAF9;
-  border: 1px solid #E2EAE5;
+  background: #f9faf9;
+  border: 1px solid #e2eae5;
   border-radius: 14px;
   padding: 12px 14px;
   margin-top: 4px;
   z-index: 2;
 }
 
-/* Garis Kait L-Shape ke Container Balas Komentar */
 .km-reply-composer-box::before {
-  content: '';
+  content: "";
   position: absolute;
   left: -29px;
   top: 0;
   width: 28px;
   height: 20px;
-  border-bottom: 2px solid #CBDAD2;
-  border-left: 2px solid #CBDAD2;
+  border-bottom: 2px solid #cbdad2;
+  border-left: 2px solid #cbdad2;
   border-bottom-left-radius: 10px;
 }
 
@@ -1813,7 +1769,7 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border: 1px solid #E2E8E5;
+  border: 1px solid #e2e8e5;
 }
 
 .km-reply-composer-content {
@@ -1832,11 +1788,11 @@
 
 .km-replying-to-label {
   font-size: 11.5px;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-replying-to-label strong {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   font-weight: 600;
 }
 
@@ -1845,14 +1801,14 @@
   border: none;
   font-size: 11.5px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
   cursor: pointer;
   padding: 0;
   transition: color var(--transition-fast, 0.2s ease);
 }
 
 .km-reply-cancel-btn:hover {
-  color: #BA4E2A;
+  color: #ba4e2a;
 }
 
 .km-reply-input-group {
@@ -1864,27 +1820,27 @@
 .km-nested-reply-input {
   flex: 1;
   height: 34px;
-  border: 1px solid #D2DFD8;
+  border: 1px solid #d2dfd8;
   border-radius: var(--radius-full, 9999px);
   padding: 0 14px;
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-family, "Plus Jakarta Sans", sans-serif);
   font-size: 12px;
-  color: #333C37;
-  background: #FFFFFF;
+  color: #333c37;
+  background: #ffffff;
   outline: none;
   transition: all var(--transition-fast, 0.2s ease);
 }
 
 .km-nested-reply-input:focus {
-  border-color: var(--color-primary, #1A382B);
+  border-color: var(--color-primary, #1a382b);
   box-shadow: 0 0 0 2px rgba(26, 56, 43, 0.08);
 }
 
 .km-btn-send-nested-reply {
   height: 34px;
   padding: 0 14px;
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
   border-radius: var(--radius-full, 9999px);
   border: none;
   font-size: 11.5px;
@@ -1895,12 +1851,9 @@
 }
 
 .km-btn-send-nested-reply:hover {
-  background: var(--color-slate, #0E1116);
+  background: var(--color-slate, #0e1116);
 }
 
-/* ==========================================================================
-   4. SIDEBAR KOMUNITAS (KOLOM KANAN - STICKY & TOP 3 DIAGRAM)
-   ========================================================================== */
 .km-sidebar {
   display: flex;
   flex-direction: column;
@@ -1911,7 +1864,7 @@
 }
 
 .km-sidebar-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
   border: none;
   padding: 22px 20px;
@@ -1931,7 +1884,7 @@
 .km-sidebar-title {
   font-size: 15px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0;
   line-height: 1.3;
 }
@@ -1941,7 +1894,7 @@
   border: none;
   font-size: 11.5px;
   font-weight: 500;
-  color: #71717A;
+  color: #71717a;
   cursor: pointer;
   padding: 2px 8px;
   border-radius: 6px;
@@ -1949,7 +1902,7 @@
 }
 
 .km-tag-reset-btn:hover {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   background: rgba(26, 56, 43, 0.08);
 }
 
@@ -1959,11 +1912,10 @@
   padding: 3px 9px;
   border-radius: var(--radius-full, 9999px);
   background: rgba(26, 56, 43, 0.08);
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   border: none;
 }
 
-/* 4.1 Card Tren untuk Anda (Sederhana, Bersih & Selaras) */
 .km-x-trend-list {
   display: flex;
   flex-direction: column;
@@ -1976,7 +1928,7 @@
   align-items: flex-start;
   padding: 10px 14px;
   border-radius: 12px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border: none;
   cursor: pointer;
   text-align: left;
@@ -1988,39 +1940,38 @@
 }
 
 .km-x-trend-item:hover {
-  background: #EAEFEA;
+  background: #eaefea;
   transform: translateX(2px);
 }
 
 .km-x-trend-item.is-active {
-  background: #E6EFEA;
+  background: #e6efea;
 }
 
 .km-x-trend-tag {
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   transition: color 0.15s ease;
   line-height: 1.3;
 }
 
 .km-x-trend-item.is-active .km-x-trend-tag {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-x-trend-count {
   font-size: 11.5px;
   font-weight: 500;
-  color: #71717A;
+  color: #71717a;
   transition: color 0.15s ease;
   line-height: 1.2;
 }
 
 .km-x-trend-item.is-active .km-x-trend-count {
-  color: #4F685B;
+  color: #4f685b;
 }
 
-/* Fallback legacy trending list */
 .km-trending-list {
   display: flex;
   flex-direction: column;
@@ -2033,7 +1984,7 @@
   justify-content: space-between;
   padding: 9px 14px;
   border-radius: 12px;
-  background: #F4F6F5;
+  background: #f4f6f5;
   border: none;
   cursor: pointer;
   text-align: left;
@@ -2042,27 +1993,27 @@
 }
 
 .km-trend-item:hover {
-  background: #EAEFEA;
+  background: #eaefea;
 }
 
 .km-trend-item.is-active {
-  background: #E6EFEA;
+  background: #e6efea;
 }
 
 .km-trend-item.is-active .km-trend-name {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   font-weight: 600;
 }
 
 .km-trend-item.is-active .km-trend-count {
   background: rgba(26, 56, 43, 0.12);
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-trend-name {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   transition: color 0.15s ease;
 }
 
@@ -2072,11 +2023,10 @@
   padding: 2px 8px;
   border-radius: var(--radius-full, 9999px);
   background: rgba(26, 56, 43, 0.08);
-  color: #4A5D54;
+  color: #4a5d54;
   transition: all 0.15s ease;
 }
 
-/* 4.2 Card Mini Diagram Papan Peringkat (Solid Hijau Gelap & Bebas Border) */
 .km-mini-podium-diagram {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2104,14 +2054,14 @@
   height: 38px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .km-podium-avatar.first {
   width: 46px;
   height: 46px;
-  border-color: #F59E0B;
+  border-color: #f59e0b;
 }
 
 .km-podium-crown {
@@ -2133,20 +2083,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #ffffff;
   border: none;
 }
 
 .km-podium-rank-badge.rank-1 {
-  background: #F59E0B;
+  background: #f59e0b;
 }
 
 .km-podium-rank-badge.rank-2 {
-  background: #71717A;
+  background: #71717a;
 }
 
 .km-podium-rank-badge.rank-3 {
-  background: #BA4E2A;
+  background: #ba4e2a;
 }
 
 .km-podium-bar {
@@ -2158,29 +2108,29 @@
   justify-content: center;
   padding: 8px 4px;
   gap: 2px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
   border: none;
 }
 
 .km-podium-bar.bar-1 {
   height: 78px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .km-podium-bar.bar-2 {
   height: 62px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .km-podium-bar.bar-3 {
   height: 50px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .km-podium-user-name {
   font-size: 11px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2190,7 +2140,7 @@
 .km-podium-points {
   font-size: 10.5px;
   font-weight: 600;
-  color: #A7F3D0;
+  color: #a7f3d0;
 }
 
 .km-sidebar-link {
@@ -2199,7 +2149,7 @@
   justify-content: space-between;
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   text-decoration: none;
   padding: 9px 14px;
   border-radius: 10px;
@@ -2212,11 +2162,10 @@
   background: rgba(26, 56, 43, 0.12);
 }
 
-/* 4.3 Card Target Bersama Kesejukan Denpasar */
 .km-goal-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
-  border: 1px solid var(--color-border, #E2E8E5);
+  border: 1px solid var(--color-border, #e2e8e5);
 }
 
 .km-goal-header {
@@ -2229,7 +2178,7 @@
 .km-goal-tag {
   font-size: 11px;
   font-weight: 500;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   background: rgba(26, 56, 43, 0.07);
   padding: 3px 10px;
   border-radius: var(--radius-full, 9999px);
@@ -2239,13 +2188,13 @@
 .km-goal-percent {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-goal-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0;
   line-height: 1.35;
 }
@@ -2253,14 +2202,14 @@
 .km-goal-desc {
   font-size: 12px;
   line-height: 1.45;
-  color: #71717A;
+  color: #71717a;
   margin: 0;
 }
 
 .km-goal-progress-bar {
   width: 100%;
   height: 8px;
-  background: #F1F4F2;
+  background: #f1f4f2;
   border-radius: var(--radius-full, 9999px);
   overflow: hidden;
   border: none;
@@ -2268,7 +2217,7 @@
 
 .km-goal-progress-fill {
   height: 100%;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
   border-radius: var(--radius-full, 9999px);
   transition: width 0.6s ease;
 }
@@ -2294,13 +2243,13 @@
 .km-goal-metric-val {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-goal-metric-lbl {
   font-size: 10px;
   font-weight: 400;
-  color: #71717A;
+  color: #71717a;
 }
 
 .km-goal-cta-btn {
@@ -2308,8 +2257,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
   padding: 10px 16px;
   border-radius: var(--radius-full, 9999px);
   border: none;
@@ -2324,14 +2273,13 @@
   opacity: 0.9;
 }
 
-/* Toast Notifikasi Komunitas */
 #kmToast {
   position: fixed;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(24px);
-  background: #0E1116;
-  color: #FFFFFF;
+  background: #0e1116;
+  color: #ffffff;
   padding: 9px 20px;
   border-radius: 9999px;
   font-size: 12px;
@@ -2342,7 +2290,9 @@
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
 }
 
 #kmToast.is-visible {
@@ -2350,11 +2300,6 @@
   opacity: 1;
 }
 
-/* ==========================================================================
-   5. HALAMAN DETAIL THREAD (community-detail.html)
-   ========================================================================== */
-
-/* Header Navigasi Kembali */
 .km-back-nav-wrapper {
   padding-top: 24px;
   margin-bottom: 8px;
@@ -2364,11 +2309,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
-  background: #FFFFFF;
+  background: #ffffff;
   border: none;
   padding: 8px 16px;
   border-radius: var(--radius-full, 9999px);
@@ -2377,8 +2322,8 @@
 }
 
 .km-back-nav-btn:hover {
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
   transform: translateX(-2px);
 }
 
@@ -2390,9 +2335,8 @@
   transform: translateX(-3px);
 }
 
-/* Detail Thread Main Card */
 .km-detail-thread-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
   border: none;
   padding: 28px;
@@ -2405,7 +2349,7 @@
 .km-detail-narrative {
   font-size: 15px;
   line-height: 1.65;
-  color: #2D3748;
+  color: #2d3748;
   margin: 0;
 }
 
@@ -2417,7 +2361,6 @@
   margin-bottom: 0;
 }
 
-/* Susunan Vertikal Lokasi & Waktu Postingan */
 .km-author-loc-time-stack {
   display: flex;
   flex-direction: column;
@@ -2428,14 +2371,14 @@
 .km-thread-location {
   font-size: 12px;
   font-weight: 500;
-  color: #52635B;
+  color: #52635b;
   line-height: 1.3;
 }
 
 .km-thread-time {
   font-size: 11px;
   font-weight: 400;
-  color: #8A928E;
+  color: #8a928e;
   line-height: 1.3;
 }
 
@@ -2443,7 +2386,7 @@
   border-radius: 16px;
   overflow: hidden;
   border: none;
-  background: #F4F4F5;
+  background: #f4f4f5;
   max-height: 480px;
 }
 
@@ -2454,16 +2397,15 @@
   display: block;
 }
 
-/* Bar Statistik Keterlibatan */
 .km-detail-stats-bar {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 14px 0;
-  border-top: 1px solid #EEF2EF;
-  border-bottom: 1px solid #EEF2EF;
+  border-top: 1px solid #eef2ef;
+  border-bottom: 1px solid #eef2ef;
   font-size: 13px;
-  color: #64748B;
+  color: #64748b;
   flex-wrap: wrap;
 }
 
@@ -2474,13 +2416,12 @@
 }
 
 .km-detail-stat-entry strong {
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   font-weight: 600;
 }
 
-/* Sidebar Penulis di Halaman Detail */
 .km-author-detail-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border: none;
   box-shadow: none;
 }
@@ -2497,12 +2438,12 @@
   height: 52px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--color-primary, #1A382B);
+  border: 2px solid var(--color-primary, #1a382b);
 }
 
 .km-author-detail-bio {
   font-size: 13px;
-  color: #52525B;
+  color: #52525b;
   line-height: 1.55;
   margin: 0 0 16px 0;
 }
@@ -2511,7 +2452,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  background: #F8FAFA;
+  background: #f8fafa;
   border-radius: 12px;
   padding: 12px;
   border: none;
@@ -2526,7 +2467,7 @@
 .km-author-metric-lbl {
   font-size: 11px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -2534,12 +2475,11 @@
 .km-author-metric-val {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
-/* Sidebar Analisis Dampak Aksi Tanam */
 .km-impact-analysis-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border: none;
   box-shadow: none;
   display: flex;
@@ -2549,7 +2489,7 @@
 
 .km-impact-tree-sub {
   font-size: 12px;
-  color: #71717A;
+  color: #71717a;
   font-weight: 500;
   display: block;
   margin-top: 2px;
@@ -2562,7 +2502,7 @@
 }
 
 .km-impact-tile {
-  background: #F4F6F5;
+  background: #f4f6f5;
   border-radius: 12px;
   padding: 12px 14px;
   display: flex;
@@ -2574,7 +2514,7 @@
 .km-impact-lbl {
   font-size: 10.5px;
   font-weight: 600;
-  color: var(--color-text-muted, #64748B);
+  color: var(--color-text-muted, #64748b);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -2582,21 +2522,21 @@
 .km-impact-val {
   font-size: 17px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   line-height: 1.2;
 }
 
 .km-impact-val.accent-temp {
-  color: var(--color-terracotta, #BA4E2A);
+  color: var(--color-terracotta, #ba4e2a);
 }
 
 .km-impact-val.km-points-accent {
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
 }
 
 .km-impact-desc {
   font-size: 10.5px;
-  color: #71717A;
+  color: #71717a;
   line-height: 1.3;
   margin-top: 1px;
 }
@@ -2608,8 +2548,8 @@
   gap: 6px;
   padding: 11px 16px;
   border-radius: var(--radius-full, 9999px);
-  background: var(--color-slate, #0E1116);
-  color: #FFFFFF;
+  background: var(--color-slate, #0e1116);
+  color: #ffffff;
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
@@ -2619,18 +2559,17 @@
 }
 
 .km-impact-action-btn:hover {
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
   transform: translateY(-1px);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-/* Sidebar Cerita Tanam Terkait */
 .km-related-thread-item {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 10px 0;
-  border-bottom: 1px solid #F1F4F2;
+  border-bottom: 1px solid #f1f4f2;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -2650,7 +2589,7 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border: 1px solid #E2E8E5;
+  border: 1px solid #e2e8e5;
 }
 
 .km-related-info {
@@ -2662,24 +2601,21 @@
 .km-related-author {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
 }
 
 .km-related-snippet {
   font-size: 12px;
-  color: #52525B;
+  color: #52525b;
   line-height: 1.4;
   margin: 0;
 }
 
 .km-related-time {
   font-size: 11px;
-  color: #71717A;
+  color: #71717a;
 }
 
-/* ==========================================================================
-   RESPONSIVITAS MOBILE KOMUNITAS (max-width: 768px & max-width: 480px)
-   ========================================================================== */
 @media (max-width: 768px) {
   .km-container {
     padding: 0 16px;
@@ -2853,4 +2789,3 @@
     padding: 5px 8px;
   }
 }
-

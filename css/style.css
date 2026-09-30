@@ -1,30 +1,37 @@
-/* ==========================================================================
-   TEDUH DIGITAL PLATFORM - CORE STYLESHEET
-   Sistem Desain: Editorial Swiss-Modern & Spatial Console (Anti-AI Slop)
-   3 Warna Utama:
-     1. Deep Laurel Pine (#1A382B) - Identitas Vegetasi & Kesejukan
-     2. Obsidian Slate (#0E1116) - Fondasi & Teks di atas Zinc Paper (#F4F4F5)
-     3. Sunbaked Terracotta (#BA4E2A) - Aksen Terik & Peringatan Kritis
-   ========================================================================== */
+/**
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: css/style.css
+ * Deskripsi: Gaya Utilitas Pendukung Antarmuka Platform Teduh
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Tipografi & Ikonografi:
+ *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
+ *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+ * 2. Visual Media & Fotografi (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
+ * 3. Identitas Visual & Grafis Orisinal:
+ *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * ==========================================================================
+ */
 
 :root {
-  --color-pine: #1A382B;
-  --color-pine-hover: #142C22;
-  --color-pine-light: #2D5A47;
-  --color-pine-tint: #EBF3EF;
-  --color-obsidian: #0E1116;
-  --color-obsidian-muted: #272B33;
-  --color-zinc-paper: #F4F4F5;
-  --color-white: #FFFFFF;
-  --color-hairline: #E4E4E7;
+  --color-pine: #1a382b;
+  --color-pine-hover: #142c22;
+  --color-pine-light: #2d5a47;
+  --color-pine-tint: #ebf3ef;
+  --color-obsidian: #0e1116;
+  --color-obsidian-muted: #272b33;
+  --color-zinc-paper: #f4f4f5;
+  --color-white: #ffffff;
+  --color-hairline: #e4e4e7;
   --color-terracotta: #bc4800;
   --color-terracotta-tint: #fdf0e8;
-  --color-dark-surface: #12151B;
-  --color-dark-panel: #181B22;
-  --color-dark-border: #23262D;
+  --color-dark-surface: #12151b;
+  --color-dark-panel: #181b22;
+  --color-dark-border: #23262d;
 }
 
-/* Base Reset & Smooth Rendering */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -32,12 +39,15 @@ html {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Plus Jakarta Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   color: var(--color-obsidian);
   background-color: var(--color-zinc-paper);
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -48,23 +58,22 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4D4D8;
+  background: #d4d4d8;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A1A1AA;
+  background: #a1a1aa;
 }
 
 .dark-console ::-webkit-scrollbar-thumb {
-  background: #2D3139;
+  background: #2d3139;
 }
 
 .dark-console ::-webkit-scrollbar-thumb:hover {
-  background: #3F444E;
+  background: #3f444e;
 }
 
-/* Spatial Grid & Elevation Utilities */
 .hairline-border {
   border: 1px solid var(--color-hairline);
 }
@@ -73,10 +82,9 @@ body {
   border: 1px solid var(--color-dark-border);
 }
 
-/* Leaflet Console Clean Overrides */
 .leaflet-container {
-  background-color: #0E1116 !important;
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  background-color: #0e1116 !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
 .leaflet-control-zoom {
@@ -88,7 +96,7 @@ body {
 
 .leaflet-control-zoom a {
   background-color: var(--color-dark-panel) !important;
-  color: #F4F4F5 !important;
+  color: #f4f4f5 !important;
   border-bottom: 1px solid var(--color-dark-border) !important;
   line-height: 32px !important;
   width: 32px !important;
@@ -97,13 +105,13 @@ body {
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: #23262D !important;
-  color: #FFFFFF !important;
+  background-color: #23262d !important;
+  color: #ffffff !important;
 }
 
 .leaflet-control-attribution {
   background: rgba(14, 17, 22, 0.85) !important;
-  color: #8E929B !important;
+  color: #8e929b !important;
   font-size: 10px !important;
   backdrop-filter: blur(8px);
   border-top-left-radius: 6px;
@@ -113,17 +121,17 @@ body {
 }
 
 .leaflet-control-attribution a {
-  color: #C5C8D0 !important;
+  color: #c5c8d0 !important;
   text-decoration: underline;
 }
 
-/* Marker Animations for Spatial Inspection */
 @keyframes ring-pulse {
   0% {
     transform: scale(0.6);
     opacity: 0.8;
   }
-  70%, 100% {
+  70%,
+  100% {
     transform: scale(2.2);
     opacity: 0;
   }
@@ -152,9 +160,10 @@ body {
   animation: ring-pulse 2.8s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
 }
 
-/* Drawer Transitions */
 .spatial-drawer {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
 }
 
 @media (max-width: 768px) {
@@ -165,7 +174,6 @@ body {
   }
 }
 
-/* Focus indicator for keyboard accessibility */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,

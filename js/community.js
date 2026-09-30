@@ -1,23 +1,35 @@
 /**
- * TEDUH DIGITAL PLATFORM - COMMUNITY JAVASCRIPT (js/community.js)
- * Mengelola Linimasa Sosial Media Warga (Threads/LinkedIn Style), Post Composer
- * dengan Tautan Misi Berpoin (Civic Quests), Sistem Thread Bersarang, dan
- * Integrasi Sinkronisasi Poin & Level Akun secara Real-Time.
- * Bebas Em-Dash (R-02 Compliant) & Disiplin 3 Warna Esensial.
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: js/community.js
+ * Deskripsi: Pengendali Linimasa Komunitas, Composer Unggah Foto, Diskusi & Thread Detail
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Pustaka & Framework Eksternal:
+ *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
+ *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
+ *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+ * 2. Layanan Peta & Citra Satelit:
+ *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
+ *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
+ * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
+ * 4. Identitas Grafis & Ilustrasi Digital:
+ *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * ==========================================================================
  */
 
 let attachedPhotos = [];
-let selectedPostTag = '#AksiTanam';
-let selectedPostLocation = '';
+let selectedPostTag = "#AksiTanam";
+let selectedPostLocation = "";
 let missionRewardPointsPending = 0;
 let isMissionMode = false;
 let currentMissionData = null;
 
-// Kunci penyimpanan lokal untuk simulasi poin warga
-const STORAGE_KEY_POINTS = 'teduh_user_points';
+const STORAGE_KEY_POINTS = "teduh_user_points";
 const DEFAULT_POINTS = 850;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initCommunityPoints();
   initMobileNav();
   initThreadDetailPage();
@@ -26,24 +38,272 @@ document.addEventListener('DOMContentLoaded', () => {
   initCommunityGSAPAnimations();
 });
 
-// Inisialisasi Animasi Masuk Komunitas
 function initCommunityGSAPAnimations() {
-  if (typeof gsap === 'undefined') return;
+  if (typeof gsap === "undefined") return;
 
-  gsap.fromTo('#kmFeedContainer .km-thread-card',
-    { opacity: 0, y: 18 },
-    { opacity: 1, y: 0, stagger: 0.06, duration: 0.5, ease: 'power3.out' }
-  );
+  const isFeedPage = !!document.getElementById("kmFeedContainer");
+  const isDetailPage = !!document.getElementById("detailMainCard");
 
-  gsap.fromTo('.km-sidebar-card, .km-composer-card',
-    { opacity: 0, y: 14 },
-    { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out', delay: 0.1 }
-  );
+  if (isFeedPage) {
+    // 1. Composer Trigger Card Intro
+    const composerCard = document.getElementById("kmComposerTriggerCard");
+    if (composerCard) {
+      gsap.fromTo(
+        composerCard,
+        { opacity: 0, y: 22, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
+      );
+      gsap.fromTo(
+        ".km-trigger-avatar",
+        { scale: 0.75, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.45,
+          ease: "back.out(1.6)",
+          delay: 0.1,
+        },
+      );
+      gsap.fromTo(
+        ".km-trigger-btn",
+        { opacity: 0, y: 8 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.08,
+          duration: 0.4,
+          ease: "power2.out",
+          delay: 0.2,
+        },
+      );
+    }
+
+    // 2. Feed Section Header & Filter Tabs
+    gsap.fromTo(
+      ".km-feed-section-header, .km-feed-section-title",
+      { opacity: 0, x: -16 },
+      { opacity: 1, x: 0, duration: 0.45, ease: "power2.out", delay: 0.15 },
+    );
+
+    // 3. Cascading Thread Cards
+    gsap.fromTo(
+      "#kmFeedContainer .km-thread-card",
+      { opacity: 0, y: 28, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        stagger: 0.08,
+        duration: 0.55,
+        ease: "power3.out",
+        delay: 0.2,
+      },
+    );
+
+    // 4. Staggered Photo Grid Items
+    gsap.fromTo(
+      "#kmFeedContainer .km-photo-item",
+      { opacity: 0, scale: 0.94 },
+      {
+        opacity: 1,
+        scale: 1,
+        stagger: 0.04,
+        duration: 0.45,
+        ease: "power2.out",
+        delay: 0.35,
+      },
+    );
+
+    // 5. Sidebar Cards Stagger
+    gsap.fromTo(
+      ".km-sidebar-card, .km-sidebar-column .km-sidebar-card, .km-profile-card, .km-missions-card, .km-contributors-card",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.55,
+        ease: "power2.out",
+        delay: 0.25,
+      },
+    );
+
+    // 6. Sidebar Progress Bar & Points Count-Up
+    const points = getUserPoints();
+    const targetPoints = 1000;
+    const pct = Math.min(100, Math.round((points / targetPoints) * 100));
+    const sidePoints = document.getElementById("sidebarUserPointsValue");
+    const progressFill = document.getElementById("sidebarProgressFill");
+
+    if (progressFill) {
+      gsap.fromTo(
+        progressFill,
+        { width: "0%" },
+        { width: `${pct}%`, duration: 1.2, ease: "power2.out", delay: 0.4 },
+      );
+    }
+
+    if (sidePoints) {
+      const pCounter = { val: 0 };
+      gsap.to(pCounter, {
+        val: points,
+        duration: 1.25,
+        ease: "power2.out",
+        delay: 0.3,
+        onUpdate: () => {
+          sidePoints.textContent = `${Math.round(pCounter.val).toLocaleString("id-ID")} Poin`;
+        },
+      });
+    }
+  }
+
+  if (isDetailPage) {
+    // 1. Back Navigation Button
+    gsap.fromTo(
+      ".km-back-nav-btn, #kmBackBtn",
+      { opacity: 0, x: -20 },
+      { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" },
+    );
+
+    // 2. Main Detail Card
+    gsap.fromTo(
+      "#detailMainCard",
+      { opacity: 0, y: 28, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.65,
+        ease: "power3.out",
+        delay: 0.05,
+      },
+    );
+
+    // 3. Author Header & Meta
+    gsap.fromTo(
+      "#detailMainCard .km-thread-author-wrap",
+      { opacity: 0, x: -16 },
+      { opacity: 1, x: 0, duration: 0.45, ease: "power2.out", delay: 0.15 },
+    );
+
+    // 4. Narrative Paragraphs Stagger
+    gsap.fromTo(
+      "#detailNarrativeContent p",
+      { opacity: 0, y: 12 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.07,
+        duration: 0.45,
+        ease: "power2.out",
+        delay: 0.25,
+      },
+    );
+
+    // 5. Image Grid Items Pop
+    gsap.fromTo(
+      "#detailImageWrap .km-photo-item",
+      { opacity: 0, scale: 0.92, y: 14 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        stagger: 0.08,
+        duration: 0.5,
+        ease: "back.out(1.25)",
+        delay: 0.35,
+      },
+    );
+
+    // 6. Stats Bar & Counters
+    gsap.fromTo(
+      ".km-detail-stats-bar",
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", delay: 0.4 },
+    );
+
+    const statLikes = document.getElementById("detailStatLikes");
+    const statComments = document.getElementById("detailStatComments");
+
+    if (statLikes) {
+      const targetLikes = parseInt(statLikes.textContent, 10) || 24;
+      const lCounter = { val: 0 };
+      gsap.to(lCounter, {
+        val: targetLikes,
+        duration: 1.1,
+        ease: "power2.out",
+        delay: 0.4,
+        onUpdate: () => {
+          statLikes.textContent = Math.round(lCounter.val);
+        },
+      });
+    }
+
+    if (statComments) {
+      const targetComm = parseInt(statComments.textContent, 10) || 2;
+      const cCounter = { val: 0 };
+      gsap.to(cCounter, {
+        val: targetComm,
+        duration: 0.9,
+        ease: "power2.out",
+        delay: 0.45,
+        onUpdate: () => {
+          statComments.textContent = Math.round(cCounter.val);
+        },
+      });
+    }
+
+    // 7. Action Bar Buttons Stagger
+    gsap.fromTo(
+      "#detailMainCard .km-thread-actions-bar .km-action-btn",
+      { opacity: 0, y: 10 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.06,
+        duration: 0.4,
+        ease: "power2.out",
+        delay: 0.45,
+      },
+    );
+
+    // 8. Comments Section & Tree Cascade
+    gsap.fromTo(
+      ".km-thread-comments-section",
+      { opacity: 0, y: 14 },
+      { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", delay: 0.5 },
+    );
+
+    gsap.fromTo(
+      "#detailCommentsTree .km-comment-branch",
+      { opacity: 0, x: -16, y: 10 },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        stagger: 0.08,
+        duration: 0.45,
+        ease: "power2.out",
+        delay: 0.55,
+      },
+    );
+
+    // 9. Sidebar Cards in Detail Page
+    gsap.fromTo(
+      ".km-sidebar-card, .km-sidebar-column .km-sidebar-card",
+      { opacity: 0, x: 20 },
+      {
+        opacity: 1,
+        x: 0,
+        stagger: 0.1,
+        duration: 0.55,
+        ease: "power2.out",
+        delay: 0.2,
+      },
+    );
+  }
 }
 
-/* ==========================================================================
-   1. SISTEM POIN & LEVEL WARGA (REAL-TIME GAMIFICATION)
-   ========================================================================== */
 function getUserPoints() {
   const saved = localStorage.getItem(STORAGE_KEY_POINTS);
   if (saved !== null) {
@@ -63,19 +323,22 @@ function addPointsWithAnimation(amount) {
   const next = current + amount;
   setUserPoints(next);
 
-  // Efek pulse pada elemen poin di navbar dan sidebar
-  const navPoints = document.getElementById('navUserPointsValue');
-  const sidePoints = document.getElementById('sidebarUserPointsValue');
+  const navPoints = document.getElementById("navUserPointsValue");
+  const sidePoints = document.getElementById("sidebarUserPointsValue");
 
-  [navPoints, sidePoints].forEach(el => {
+  [navPoints, sidePoints].forEach((el) => {
     if (el) {
-      if (typeof gsap !== 'undefined') {
-        gsap.fromTo(el, { scale: 1.25 }, { scale: 1, duration: 0.4, ease: 'back.out(1.8)' });
+      if (typeof gsap !== "undefined") {
+        gsap.fromTo(
+          el,
+          { scale: 1.25 },
+          { scale: 1, duration: 0.4, ease: "back.out(1.8)" },
+        );
       } else {
-        el.style.transform = 'scale(1.2)';
-        el.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transform = "scale(1.2)";
+        el.style.transition = "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
         setTimeout(() => {
-          el.style.transform = 'scale(1)';
+          el.style.transform = "scale(1)";
         }, 400);
       }
     }
@@ -85,19 +348,18 @@ function addPointsWithAnimation(amount) {
 }
 
 function syncPointsDisplay(points) {
-  const navPoints = document.getElementById('navUserPointsValue');
-  const sidePoints = document.getElementById('sidebarUserPointsValue');
-  const progressLabel = document.getElementById('sidebarProgressPointsLabel');
-  const progressFill = document.getElementById('sidebarProgressFill');
+  const navPoints = document.getElementById("navUserPointsValue");
+  const sidePoints = document.getElementById("sidebarUserPointsValue");
+  const progressLabel = document.getElementById("sidebarProgressPointsLabel");
+  const progressFill = document.getElementById("sidebarProgressFill");
 
-  const text = `${points.toLocaleString('id-ID')} Poin`;
+  const text = `${points.toLocaleString("id-ID")} Poin`;
   if (navPoints) navPoints.textContent = text;
   if (sidePoints) sidePoints.textContent = text;
 
-  // Target level 4 adalah 1000 poin
   const targetPoints = 1000;
   if (progressLabel) {
-    progressLabel.textContent = `${points.toLocaleString('id-ID')} / ${targetPoints.toLocaleString('id-ID')} Poin`;
+    progressLabel.textContent = `${points.toLocaleString("id-ID")} / ${targetPoints.toLocaleString("id-ID")} Poin`;
   }
   if (progressFill) {
     const pct = Math.min(100, Math.round((points / targetPoints) * 100));
@@ -110,95 +372,123 @@ function initCommunityPoints() {
   syncPointsDisplay(points);
 }
 
-/* ==========================================================================
-   2. FEED TABS & FILTER LINIMASA
-   ========================================================================== */
 function switchFeedTab(tabEl, filterType) {
-  const tabs = document.querySelectorAll('.km-feed-tab');
-  tabs.forEach(t => t.classList.remove('is-active'));
-  if (tabEl) tabEl.classList.add('is-active');
+  const tabs = document.querySelectorAll(".km-feed-tab");
+  tabs.forEach((t) => t.classList.remove("is-active"));
+  if (tabEl) tabEl.classList.add("is-active");
 
-  const cards = document.querySelectorAll('#kmFeedContainer .km-thread-card');
+  const cards = document.querySelectorAll("#kmFeedContainer .km-thread-card");
   let visibleCards = [];
 
-  cards.forEach(card => {
-    const cardTag = card.getAttribute('data-tag') || '';
+  cards.forEach((card) => {
+    const cardTag = card.getAttribute("data-tag") || "";
 
-    if (filterType === 'all') {
-      card.style.display = 'flex';
+    if (filterType === "all") {
+      card.style.display = "flex";
       visibleCards.push(card);
-    } else if (filterType.startsWith('#')) {
+    } else if (filterType.startsWith("#")) {
       if (cardTag.toLowerCase() === filterType.toLowerCase()) {
-        card.style.display = 'flex';
+        card.style.display = "flex";
         visibleCards.push(card);
       } else {
-        card.style.display = 'none';
+        card.style.display = "none";
       }
     }
   });
 
-  if (typeof gsap !== 'undefined' && visibleCards.length > 0) {
-    gsap.fromTo(visibleCards,
+  if (typeof gsap !== "undefined" && visibleCards.length > 0) {
+    gsap.fromTo(
+      visibleCards,
       { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, stagger: 0.04, duration: 0.35, ease: 'power2.out' }
+      { opacity: 1, y: 0, stagger: 0.04, duration: 0.35, ease: "power2.out" },
     );
   }
 }
 
-/* ==========================================================================
-   3. AUTOCOMPLETE TAGAR (#) & MENTION (@) COMPOSER
-   ========================================================================== */
 const AUTOCOMPLETE_TAGS = [
-  { tag: '#AksiTanam', count: '48 postingan' },
-  { tag: '#DenpasarAdem', count: '36 postingan' },
-  { tag: '#PekaranganSemen', count: '32 postingan' },
-  { tag: '#AmanFondasi', count: '27 postingan' },
-  { tag: '#PeneduhTeras', count: '21 postingan' },
-  { tag: '#TanyaBibit', count: '19 postingan' },
-  { tag: '#BioporiDenpasar', count: '15 postingan' }
+  { tag: "#AksiTanam", count: "48 postingan" },
+  { tag: "#DenpasarAdem", count: "36 postingan" },
+  { tag: "#PekaranganSemen", count: "32 postingan" },
+  { tag: "#AmanFondasi", count: "27 postingan" },
+  { tag: "#PeneduhTeras", count: "21 postingan" },
+  { tag: "#TanyaBibit", count: "19 postingan" },
+  { tag: "#BioporiDenpasar", count: "15 postingan" },
 ];
 
 const AUTOCOMPLETE_MENTIONS = [
-  { mention: '@Mas Bima', name: 'Mas Bima', handle: '@mas_bima', avatar: 'assets/avatars/gede-surya.jpg' },
-  { mention: '@Ibu Desak', name: 'Ibu Desak', handle: '@ibu_desak', avatar: 'assets/avatars/ibu-desak.jpg' },
-  { mention: '@dr. Made Ary', name: 'dr. Made Ary', handle: '@made_ary', avatar: 'assets/avatars/dr-made-ary.jpg' },
-  { mention: '@Pak Wayan', name: 'Pak Wayan', handle: '@wayan_gede', avatar: 'assets/avatars/pak-wayan.jpg' },
-  { mention: '@Komunitas Teduh', name: 'Komunitas Teduh', handle: '@teduh_official', avatar: 'assets/logo/teduh-only.svg' },
-  { mention: '@Kakak Putri', name: 'Kakak Putri', handle: '@putri_lestari', avatar: 'assets/avatars/kakak-putri.jpg' }
+  {
+    mention: "@Mas Bima",
+    name: "Mas Bima",
+    handle: "@mas_bima",
+    avatar: "assets/avatars/gede-surya.jpg",
+  },
+  {
+    mention: "@Ibu Desak",
+    name: "Ibu Desak",
+    handle: "@ibu_desak",
+    avatar: "assets/avatars/ibu-desak.jpg",
+  },
+  {
+    mention: "@dr. Made Ary",
+    name: "dr. Made Ary",
+    handle: "@made_ary",
+    avatar: "assets/avatars/dr-made-ary.jpg",
+  },
+  {
+    mention: "@Pak Wayan",
+    name: "Pak Wayan",
+    handle: "@wayan_gede",
+    avatar: "assets/avatars/pak-wayan.jpg",
+  },
+  {
+    mention: "@Komunitas Teduh",
+    name: "Komunitas Teduh",
+    handle: "@teduh_official",
+    avatar: "assets/logo/teduh-only.svg",
+  },
+  {
+    mention: "@Kakak Putri",
+    name: "Kakak Putri",
+    handle: "@putri_lestari",
+    avatar: "assets/avatars/kakak-putri.jpg",
+  },
 ];
 
 let autocompleteState = {
   isOpen: false,
   mode: null,
-  query: '',
+  query: "",
   tokenStartIndex: 0,
   tokenEndIndex: 0,
   selectedIndex: 0,
-  filteredItems: []
+  filteredItems: [],
 };
 
 function syncComposerHighlight() {
-  const textarea = document.getElementById('modalComposerTextInput');
-  const backdrop = document.getElementById('composerTextBackdrop');
+  const textarea = document.getElementById("modalComposerTextInput");
+  const backdrop = document.getElementById("composerTextBackdrop");
   if (!textarea || !backdrop) return;
 
   const val = textarea.value;
   if (!val) {
-    backdrop.innerHTML = '';
+    backdrop.innerHTML = "";
     return;
   }
 
   let text = escapeHtml(val);
 
-  // Format mention (@dr. Made Ary, @Mas Bima, @Ibu Desak, @Pak Wayan, @Komunitas Teduh, @Kakak Putri, etc.)
-  text = text.replace(/@(dr\.\s[A-Za-z]+(?:\s[A-Za-z]+)?|[A-Za-z0-9_.]+(?:\s[A-Za-z0-9_.]+)?)/g, '<span class="km-editor-mention">$&</span>');
+  text = text.replace(
+    /@(dr\.\s[A-Za-z]+(?:\s[A-Za-z]+)?|[A-Za-z0-9_.]+(?:\s[A-Za-z0-9_.]+)?)/g,
+    '<span class="km-editor-mention">$&</span>',
+  );
 
-  // Format hashtags (#AksiTanam, #DenpasarAdem, etc.)
-  text = text.replace(/#([\w\u00C0-\u024F]+)/g, '<span class="km-editor-tag">$&</span>');
+  text = text.replace(
+    /#([\w\u00C0-\u024F]+)/g,
+    '<span class="km-editor-tag">$&</span>',
+  );
 
-  // Trailing newline handler so height and breaks match accurately
-  if (val.endsWith('\n')) {
-    text += '<br>&nbsp;';
+  if (val.endsWith("\n")) {
+    text += "<br>&nbsp;";
   }
 
   backdrop.innerHTML = text;
@@ -207,34 +497,34 @@ function syncComposerHighlight() {
 }
 
 function initComposerAutocomplete() {
-  const textarea = document.getElementById('modalComposerTextInput');
-  const popup = document.getElementById('composerAutocompletePopup');
-  const backdrop = document.getElementById('composerTextBackdrop');
+  const textarea = document.getElementById("modalComposerTextInput");
+  const popup = document.getElementById("composerAutocompletePopup");
+  const backdrop = document.getElementById("composerTextBackdrop");
   if (!textarea || !popup) return;
 
-  textarea.addEventListener('input', () => {
+  textarea.addEventListener("input", () => {
     handleComposerAutocompleteInput();
     syncComposerHighlight();
     validateMissionComposer();
   });
-  textarea.addEventListener('keyup', () => {
+  textarea.addEventListener("keyup", () => {
     handleComposerAutocompleteInput();
     syncComposerHighlight();
   });
-  textarea.addEventListener('click', handleComposerAutocompleteInput);
-  textarea.addEventListener('keydown', handleComposerAutocompleteKeydown);
-  textarea.addEventListener('scroll', () => {
+  textarea.addEventListener("click", handleComposerAutocompleteInput);
+  textarea.addEventListener("keydown", handleComposerAutocompleteKeydown);
+  textarea.addEventListener("scroll", () => {
     if (backdrop) {
       backdrop.scrollTop = textarea.scrollTop;
       backdrop.scrollLeft = textarea.scrollLeft;
     }
   });
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener("click", (e) => {
     if (!textarea.contains(e.target) && !popup.contains(e.target)) {
       closeAutocompletePopup();
     }
-    const locWrap = document.getElementById('composerLocationPickerWrap');
+    const locWrap = document.getElementById("composerLocationPickerWrap");
     if (locWrap && !locWrap.contains(e.target)) {
       closeLocationPicker();
     }
@@ -242,7 +532,7 @@ function initComposerAutocomplete() {
 }
 
 function handleComposerAutocompleteInput() {
-  const textarea = document.getElementById('modalComposerTextInput');
+  const textarea = document.getElementById("modalComposerTextInput");
   if (!textarea) return;
 
   const selPos = textarea.selectionStart;
@@ -261,26 +551,28 @@ function handleComposerAutocompleteInput() {
   const tokenStartIndex = selPos - rawToken.length;
   const tokenEndIndex = selPos;
 
-  if (triggerChar === '#') {
-    autocompleteState.mode = 'tag';
+  if (triggerChar === "#") {
+    autocompleteState.mode = "tag";
     autocompleteState.query = query;
     autocompleteState.tokenStartIndex = tokenStartIndex;
     autocompleteState.tokenEndIndex = tokenEndIndex;
     autocompleteState.selectedIndex = 0;
-    autocompleteState.filteredItems = AUTOCOMPLETE_TAGS.filter(t => 
-      t.tag.toLowerCase().includes(query) || 
-      t.count.toLowerCase().includes(query)
+    autocompleteState.filteredItems = AUTOCOMPLETE_TAGS.filter(
+      (t) =>
+        t.tag.toLowerCase().includes(query) ||
+        t.count.toLowerCase().includes(query),
     );
     renderAutocompletePopup();
-  } else if (triggerChar === '@') {
-    autocompleteState.mode = 'mention';
+  } else if (triggerChar === "@") {
+    autocompleteState.mode = "mention";
     autocompleteState.query = query;
     autocompleteState.tokenStartIndex = tokenStartIndex;
     autocompleteState.tokenEndIndex = tokenEndIndex;
     autocompleteState.selectedIndex = 0;
-    autocompleteState.filteredItems = AUTOCOMPLETE_MENTIONS.filter(m => 
-      m.name.toLowerCase().includes(query) || 
-      m.handle.toLowerCase().includes(query)
+    autocompleteState.filteredItems = AUTOCOMPLETE_MENTIONS.filter(
+      (m) =>
+        m.name.toLowerCase().includes(query) ||
+        m.handle.toLowerCase().includes(query),
     );
     renderAutocompletePopup();
   } else {
@@ -289,7 +581,7 @@ function handleComposerAutocompleteInput() {
 }
 
 function renderAutocompletePopup() {
-  const popup = document.getElementById('composerAutocompletePopup');
+  const popup = document.getElementById("composerAutocompletePopup");
   if (!popup) return;
 
   const items = autocompleteState.filteredItems;
@@ -303,30 +595,38 @@ function renderAutocompletePopup() {
     autocompleteState.selectedIndex = 0;
   }
 
-  let itemsHtml = '';
-  if (autocompleteState.mode === 'tag') {
-    itemsHtml = items.map((item, idx) => `
-      <div class="km-autocomplete-item ${idx === autocompleteState.selectedIndex ? 'is-selected' : ''}" data-idx="${idx}" onclick="selectAutocompleteItem(${idx})">
+  let itemsHtml = "";
+  if (autocompleteState.mode === "tag") {
+    itemsHtml = items
+      .map(
+        (item, idx) => `
+      <div class="km-autocomplete-item ${idx === autocompleteState.selectedIndex ? "is-selected" : ""}" data-idx="${idx}" onclick="selectAutocompleteItem(${idx})">
         <div class="km-auto-info">
           <strong class="km-auto-title">${escapeHtml(item.tag)}</strong>
           <span class="km-auto-desc">${escapeHtml(item.count)}</span>
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
   } else {
-    itemsHtml = items.map((item, idx) => `
-      <div class="km-autocomplete-item ${idx === autocompleteState.selectedIndex ? 'is-selected' : ''}" data-idx="${idx}" onclick="selectAutocompleteItem(${idx})">
+    itemsHtml = items
+      .map(
+        (item, idx) => `
+      <div class="km-autocomplete-item ${idx === autocompleteState.selectedIndex ? "is-selected" : ""}" data-idx="${idx}" onclick="selectAutocompleteItem(${idx})">
         <img src="${item.avatar}" class="km-auto-avatar" alt="${escapeHtml(item.name)}">
         <div class="km-auto-info">
           <strong class="km-auto-title">${escapeHtml(item.name)}</strong>
           <span class="km-auto-desc">${escapeHtml(item.handle)}</span>
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
   }
 
   popup.innerHTML = itemsHtml;
-  popup.style.display = 'flex';
+  popup.style.display = "flex";
 }
 
 function handleComposerAutocompleteKeydown(e) {
@@ -335,36 +635,40 @@ function handleComposerAutocompleteKeydown(e) {
   const items = autocompleteState.filteredItems;
   if (!items || items.length === 0) return;
 
-  if (e.key === 'ArrowDown') {
+  if (e.key === "ArrowDown") {
     e.preventDefault();
-    autocompleteState.selectedIndex = (autocompleteState.selectedIndex + 1) % items.length;
+    autocompleteState.selectedIndex =
+      (autocompleteState.selectedIndex + 1) % items.length;
     renderAutocompletePopup();
-  } else if (e.key === 'ArrowUp') {
+  } else if (e.key === "ArrowUp") {
     e.preventDefault();
-    autocompleteState.selectedIndex = (autocompleteState.selectedIndex - 1 + items.length) % items.length;
+    autocompleteState.selectedIndex =
+      (autocompleteState.selectedIndex - 1 + items.length) % items.length;
     renderAutocompletePopup();
-  } else if (e.key === 'Enter' || e.key === 'Tab') {
+  } else if (e.key === "Enter" || e.key === "Tab") {
     e.preventDefault();
     selectAutocompleteItem(autocompleteState.selectedIndex);
-  } else if (e.key === 'Escape') {
+  } else if (e.key === "Escape") {
     e.preventDefault();
     closeAutocompletePopup();
   }
 }
 
 function selectAutocompleteItem(idx) {
-  const textarea = document.getElementById('modalComposerTextInput');
+  const textarea = document.getElementById("modalComposerTextInput");
   const items = autocompleteState.filteredItems;
   if (!textarea || !items || !items[idx]) return;
 
   const item = items[idx];
-  const replacementText = (autocompleteState.mode === 'tag' ? item.tag : item.mention) + ' ';
+  const replacementText =
+    (autocompleteState.mode === "tag" ? item.tag : item.mention) + " ";
 
   const currentVal = textarea.value;
   const start = autocompleteState.tokenStartIndex;
   const end = autocompleteState.tokenEndIndex;
 
-  textarea.value = currentVal.slice(0, start) + replacementText + currentVal.slice(end);
+  textarea.value =
+    currentVal.slice(0, start) + replacementText + currentVal.slice(end);
 
   const newCursorPos = start + replacementText.length;
   textarea.setSelectionRange(newCursorPos, newCursorPos);
@@ -380,83 +684,117 @@ function closeAutocompletePopup() {
   autocompleteState.mode = null;
   autocompleteState.filteredItems = [];
   autocompleteState.selectedIndex = 0;
-  const popup = document.getElementById('composerAutocompletePopup');
-  if (popup) popup.style.display = 'none';
+  const popup = document.getElementById("composerAutocompletePopup");
+  if (popup) popup.style.display = "none";
 }
 
-/* ==========================================================================
-   4. MODAL POST COMPOSER ALA LINKEDIN (MULTI-FOTO & POSTING)
-   ========================================================================== */
-function openPostModal(initialAction = 'text') {
-  const modal = document.getElementById('kmPostModal');
-  const dialog = modal ? modal.querySelector('.km-modal-dialog') : null;
-  const input = document.getElementById('modalComposerTextInput');
+function openPostModal(initialAction = "text") {
+  const modal = document.getElementById("kmPostModal");
+  const dialog = modal ? modal.querySelector(".km-modal-dialog") : null;
+  const input = document.getElementById("modalComposerTextInput");
   if (!modal) return;
 
-  modal.classList.add('is-active');
-  document.body.style.overflow = 'hidden';
+  modal.classList.add("is-active");
+  document.body.style.overflow = "hidden";
 
-  if (typeof gsap !== 'undefined' && dialog) {
-    gsap.fromTo(dialog,
-      { scale: 0.9, opacity: 0, y: 16 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.36, ease: 'back.out(1.4)' }
+  if (typeof gsap !== "undefined" && dialog) {
+    // 1. Animasi Backdrop Overlay Fade-In
+    gsap.fromTo(
+      modal,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.32, ease: "power2.out" },
+    );
+
+    // 2. Animasi Pop-up Meluncur Naik dari Bawah ke Atas (Slide Up)
+    const isMobile = window.innerWidth <= 640;
+    const startY = isMobile ? 120 : 75;
+
+    gsap.fromTo(
+      dialog,
+      {
+        y: startY,
+        opacity: 0,
+        scale: 0.95,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.44,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      },
     );
   }
 
   if (!isMissionMode) {
-    selectComposerLocation('');
+    selectComposerLocation("");
   }
 
   syncComposerHighlight();
 
-  if (initialAction === 'photo') {
-    const fileInput = document.getElementById('composerFileInput');
+  if (initialAction === "photo") {
+    const fileInput = document.getElementById("composerFileInput");
     if (fileInput) fileInput.click();
   } else {
     if (input) {
-      setTimeout(() => input.focus(), 150);
+      setTimeout(() => input.focus(), 200);
     }
   }
 }
 
 function closePostModal() {
-  const modal = document.getElementById('kmPostModal');
-  const dialog = modal ? modal.querySelector('.km-modal-dialog') : null;
+  const modal = document.getElementById("kmPostModal");
+  const dialog = modal ? modal.querySelector(".km-modal-dialog") : null;
   if (!modal) return;
 
-  if (typeof gsap !== 'undefined' && dialog && modal.classList.contains('is-active')) {
+  if (
+    typeof gsap !== "undefined" &&
+    dialog &&
+    modal.classList.contains("is-active")
+  ) {
+    const isMobile = window.innerWidth <= 640;
+    const endY = isMobile ? 100 : 60;
+
+    // Animasi Pop-up Turun Bergeser ke Bawah saat Ditutup
     gsap.to(dialog, {
-      scale: 0.92,
+      y: endY,
       opacity: 0,
-      y: 10,
-      duration: 0.2,
-      ease: 'power2.in',
+      scale: 0.95,
+      duration: 0.26,
+      ease: "power2.in",
+    });
+
+    gsap.to(modal, {
+      opacity: 0,
+      duration: 0.26,
+      ease: "power2.in",
       onComplete: () => {
-        modal.classList.remove('is-active');
-        document.body.style.overflow = '';
+        modal.classList.remove("is-active");
+        document.body.style.overflow = "";
         closeAutocompletePopup();
         closeLocationPicker();
-      }
+        gsap.set([modal, dialog], { clearProps: "all" });
+      },
     });
   } else {
-    modal.classList.remove('is-active');
-    document.body.style.overflow = '';
+    modal.classList.remove("is-active");
+    document.body.style.overflow = "";
     closeAutocompletePopup();
     closeLocationPicker();
   }
 }
 
 function handleModalBackdropClick(event) {
-  if (event.target && event.target.id === 'kmPostModal') {
+  if (event.target && event.target.id === "kmPostModal") {
     closePostModal();
   }
 }
 
-// Listener keyboard ESC untuk menutup modal
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    const modal = document.getElementById('kmPostModal');
-    if (modal && modal.classList.contains('is-active')) {
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    const modal = document.getElementById("kmPostModal");
+    if (modal && modal.classList.contains("is-active")) {
       closePostModal();
     }
   }
@@ -469,13 +807,13 @@ function handleMultiPhotoUpload(event) {
   const filesArr = Array.from(files);
   let loadedCount = 0;
 
-  filesArr.forEach(file => {
+  filesArr.forEach((file) => {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       attachedPhotos.push({
         id: `photo-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
         url: e.target.result,
-        name: file.name
+        name: file.name,
       });
       loadedCount++;
       if (loadedCount === filesArr.length) {
@@ -485,7 +823,7 @@ function handleMultiPhotoUpload(event) {
     reader.readAsDataURL(file);
   });
 
-  if (event.target) event.target.value = '';
+  if (event.target) event.target.value = "";
 }
 
 function removeAttachedPhoto(index) {
@@ -501,17 +839,21 @@ function clearAllAttachedPhotos() {
 }
 
 function renderComposerPreviews() {
-  const grid = document.getElementById('composerMediaGrid');
+  const grid = document.getElementById("composerMediaGrid");
   if (!grid) return;
 
-  const thumbsHtml = attachedPhotos.map((photo, idx) => `
+  const thumbsHtml = attachedPhotos
+    .map(
+      (photo, idx) => `
     <div class="km-composer-thumb-item">
-      <img src="${photo.url}" alt="${escapeHtml(photo.name || 'Foto Pekarangan')}" class="km-composer-thumb-img">
+      <img src="${photo.url}" alt="${escapeHtml(photo.name || "Foto Pekarangan")}" class="km-composer-thumb-img">
       <button type="button" class="km-btn-remove-thumb" onclick="removeAttachedPhoto(${idx})" title="Hapus foto ini" aria-label="Hapus foto">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
-  `).join('');
+  `,
+    )
+    .join("");
 
   grid.innerHTML = `
     ${thumbsHtml}
@@ -526,28 +868,66 @@ function renderComposerPreviews() {
   validateMissionComposer();
 }
 
-/* ==========================================================================
-   5. HOVER CARD DIREKTORI TAGAR & MENTION WARGA
-   ========================================================================== */
 const TAG_DIRECTORY = {
-  '#AksiTanam': { tag: '#AksiTanam', count: '48 postingan pekarangan' },
-  '#DenpasarAdem': { tag: '#DenpasarAdem', count: '36 postingan pekarangan' },
-  '#PekaranganSemen': { tag: '#PekaranganSemen', count: '32 postingan pekarangan' },
-  '#AmanFondasi': { tag: '#AmanFondasi', count: '27 postingan pekarangan' },
-  '#PeneduhTeras': { tag: '#PeneduhTeras', count: '21 postingan pekarangan' },
-  '#TanyaBibit': { tag: '#TanyaBibit', count: '19 postingan pekarangan' },
-  '#BioporiDenpasar': { tag: '#BioporiDenpasar', count: '15 postingan pekarangan' },
-  '#SemuaAksi': { tag: '#SemuaAksi', count: '126 postingan pekarangan' }
+  "#AksiTanam": { tag: "#AksiTanam", count: "48 postingan pekarangan" },
+  "#DenpasarAdem": { tag: "#DenpasarAdem", count: "36 postingan pekarangan" },
+  "#PekaranganSemen": {
+    tag: "#PekaranganSemen",
+    count: "32 postingan pekarangan",
+  },
+  "#AmanFondasi": { tag: "#AmanFondasi", count: "27 postingan pekarangan" },
+  "#PeneduhTeras": { tag: "#PeneduhTeras", count: "21 postingan pekarangan" },
+  "#TanyaBibit": { tag: "#TanyaBibit", count: "19 postingan pekarangan" },
+  "#BioporiDenpasar": {
+    tag: "#BioporiDenpasar",
+    count: "15 postingan pekarangan",
+  },
+  "#SemuaAksi": { tag: "#SemuaAksi", count: "126 postingan pekarangan" },
 };
 
 const MENTION_DIRECTORY = {
-  '@Mas Bima': { name: 'Mas Bima', handle: '@mas_bima', count: '24 postingan', avatar: 'assets/avatars/gede-surya.jpg' },
-  '@Ibu Desak': { name: 'Ibu Desak', handle: '@ibu_desak', count: '18 postingan', avatar: 'assets/avatars/ibu-desak.jpg' },
-  '@dr. Made Ary': { name: 'dr. Made Ary', handle: '@made_ary', count: '42 postingan', avatar: 'assets/avatars/dr-made-ary.jpg' },
-  '@Pak Wayan': { name: 'Pak Wayan', handle: '@wayan_gede', count: '15 postingan', avatar: 'assets/avatars/pak-wayan.jpg' },
-  '@Komunitas Teduh': { name: 'Komunitas Teduh', handle: '@teduh_official', count: 'Official Platform', avatar: 'assets/logo/teduh-only.svg' },
-  '@Kakak Putri': { name: 'Kakak Putri', handle: '@putri_lestari', count: '12 postingan', avatar: 'assets/avatars/kakak-putri.jpg' },
-  '@John Doe': { name: 'John Doe', handle: '@johndoe', count: 'Akun Anda', avatar: 'assets/avatars/john-doe.jpg' }
+  "@Mas Bima": {
+    name: "Mas Bima",
+    handle: "@mas_bima",
+    count: "24 postingan",
+    avatar: "assets/avatars/gede-surya.jpg",
+  },
+  "@Ibu Desak": {
+    name: "Ibu Desak",
+    handle: "@ibu_desak",
+    count: "18 postingan",
+    avatar: "assets/avatars/ibu-desak.jpg",
+  },
+  "@dr. Made Ary": {
+    name: "dr. Made Ary",
+    handle: "@made_ary",
+    count: "42 postingan",
+    avatar: "assets/avatars/dr-made-ary.jpg",
+  },
+  "@Pak Wayan": {
+    name: "Pak Wayan",
+    handle: "@wayan_gede",
+    count: "15 postingan",
+    avatar: "assets/avatars/pak-wayan.jpg",
+  },
+  "@Komunitas Teduh": {
+    name: "Komunitas Teduh",
+    handle: "@teduh_official",
+    count: "Official Platform",
+    avatar: "assets/logo/teduh-only.svg",
+  },
+  "@Kakak Putri": {
+    name: "Kakak Putri",
+    handle: "@putri_lestari",
+    count: "12 postingan",
+    avatar: "assets/avatars/kakak-putri.jpg",
+  },
+  "@John Doe": {
+    name: "John Doe",
+    handle: "@johndoe",
+    count: "Akun Anda",
+    avatar: "assets/avatars/john-doe.jpg",
+  },
 };
 
 let hoverCardTimeout = null;
@@ -557,13 +937,16 @@ function showTagHoverCard(event, tag) {
   const target = event.currentTarget;
   if (!target) return;
 
-  const data = TAG_DIRECTORY[tag] || { tag: tag, count: 'Postingan pekarangan warga' };
+  const data = TAG_DIRECTORY[tag] || {
+    tag: tag,
+    count: "Postingan pekarangan warga",
+  };
 
-  let card = document.getElementById('kmFloatingHoverCard');
+  let card = document.getElementById("kmFloatingHoverCard");
   if (!card) {
-    card = document.createElement('div');
-    card.id = 'kmFloatingHoverCard';
-    card.className = 'km-floating-hover-card';
+    card = document.createElement("div");
+    card.id = "kmFloatingHoverCard";
+    card.className = "km-floating-hover-card";
     document.body.appendChild(card);
   }
 
@@ -582,19 +965,19 @@ function showMentionHoverCard(event, mention) {
   const target = event.currentTarget;
   if (!target) return;
 
-  const cleanKey = mention.startsWith('@') ? mention : `@${mention}`;
+  const cleanKey = mention.startsWith("@") ? mention : `@${mention}`;
   const data = MENTION_DIRECTORY[cleanKey] || {
-    name: cleanKey.replace('@', ''),
-    handle: cleanKey.toLowerCase().replace(/\s+/g, '_'),
-    count: 'Warga Komunitas',
-    avatar: 'assets/avatars/john-doe.jpg'
+    name: cleanKey.replace("@", ""),
+    handle: cleanKey.toLowerCase().replace(/\s+/g, "_"),
+    count: "Warga Komunitas",
+    avatar: "assets/avatars/john-doe.jpg",
   };
 
-  let card = document.getElementById('kmFloatingHoverCard');
+  let card = document.getElementById("kmFloatingHoverCard");
   if (!card) {
-    card = document.createElement('div');
-    card.id = 'kmFloatingHoverCard';
-    card.className = 'km-floating-hover-card';
+    card = document.createElement("div");
+    card.id = "kmFloatingHoverCard";
+    card.className = "km-floating-hover-card";
     document.body.appendChild(card);
   }
 
@@ -612,12 +995,12 @@ function showMentionHoverCard(event, mention) {
 }
 
 function positionHoverCard(target, card) {
-  card.style.display = 'block';
+  card.style.display = "block";
   const rect = target.getBoundingClientRect();
   const cardRect = card.getBoundingClientRect();
 
   let top = rect.top - cardRect.height - 8;
-  let left = rect.left + (rect.width / 2) - (cardRect.width / 2);
+  let left = rect.left + rect.width / 2 - cardRect.width / 2;
 
   if (top < 10) {
     top = rect.bottom + 8;
@@ -635,19 +1018,22 @@ function positionHoverCard(target, card) {
 function hideHoverCard() {
   clearTimeout(hoverCardTimeout);
   hoverCardTimeout = setTimeout(() => {
-    const card = document.getElementById('kmFloatingHoverCard');
-    if (card) card.style.display = 'none';
+    const card = document.getElementById("kmFloatingHoverCard");
+    if (card) card.style.display = "none";
   }, 120);
 }
 
 function formatPostContent(text) {
-  if (!text) return '';
-  // Format mention (@dr. Made Ary, @Mas Bima, @Ibu Desak, @Pak Wayan, @Komunitas Teduh, @Kakak Putri, etc.)
-  let formatted = text.replace(/@(dr\.\s[A-Za-z]+(?:\s[A-Za-z]+)?|[A-Za-z0-9_.]+(?:\s[A-Za-z0-9_.]+)?)/g, (match) => {
-    const clean = match.trim();
-    return `<span class="km-inline-mention" data-mention="${escapeHtml(clean)}" onmouseenter="showMentionHoverCard(event, '${escapeHtml(clean)}')" onmouseleave="hideHoverCard()">${escapeHtml(clean)}</span>`;
-  });
-  // Format hashtags (#AksiTanam, #DenpasarAdem, etc.)
+  if (!text) return "";
+
+  let formatted = text.replace(
+    /@(dr\.\s[A-Za-z]+(?:\s[A-Za-z]+)?|[A-Za-z0-9_.]+(?:\s[A-Za-z0-9_.]+)?)/g,
+    (match) => {
+      const clean = match.trim();
+      return `<span class="km-inline-mention" data-mention="${escapeHtml(clean)}" onmouseenter="showMentionHoverCard(event, '${escapeHtml(clean)}')" onmouseleave="hideHoverCard()">${escapeHtml(clean)}</span>`;
+    },
+  );
+
   formatted = formatted.replace(/#([\w\u00C0-\u024F]+)/g, (match) => {
     return `<span class="km-inline-tag" data-tag="${match}" onclick="filterByTag('${match}')" onmouseenter="showTagHoverCard(event, '${match}')" onmouseleave="hideHoverCard()">${match}</span>`;
   });
@@ -659,47 +1045,47 @@ function formatHashtags(text) {
 }
 
 const BALI_LOCATIONS = [
-  'Denpasar Barat',
-  'Denpasar Selatan',
-  'Denpasar Timur',
-  'Denpasar Utara',
-  'Sanur',
-  'Renon',
-  'Panjer',
-  'Sesetan',
-  'Kuta',
-  'Seminyak',
-  'Canggu',
-  'Jimbaran',
-  'Ubud',
-  'Gianyar',
-  'Tabanan'
+  "Denpasar Barat",
+  "Denpasar Selatan",
+  "Denpasar Timur",
+  "Denpasar Utara",
+  "Sanur",
+  "Renon",
+  "Panjer",
+  "Sesetan",
+  "Kuta",
+  "Seminyak",
+  "Canggu",
+  "Jimbaran",
+  "Ubud",
+  "Gianyar",
+  "Tabanan",
 ];
 
 function toggleLocationPicker(e) {
   if (e) {
     e.stopPropagation();
   }
-  const popup = document.getElementById('composerLocationPopup');
-  const searchInput = document.getElementById('composerLocationSearchInput');
+  const popup = document.getElementById("composerLocationPopup");
+  const searchInput = document.getElementById("composerLocationSearchInput");
   if (!popup) return;
 
-  const isVisible = popup.style.display === 'flex';
+  const isVisible = popup.style.display === "flex";
   if (isVisible) {
     closeLocationPicker();
   } else {
-    popup.style.display = 'flex';
+    popup.style.display = "flex";
     if (searchInput) {
-      searchInput.value = '';
-      renderLocationList('');
+      searchInput.value = "";
+      renderLocationList("");
       setTimeout(() => searchInput.focus(), 80);
     }
   }
 }
 
 function closeLocationPicker() {
-  const popup = document.getElementById('composerLocationPopup');
-  if (popup) popup.style.display = 'none';
+  const popup = document.getElementById("composerLocationPopup");
+  if (popup) popup.style.display = "none";
 }
 
 function filterLocationList(query) {
@@ -707,37 +1093,38 @@ function filterLocationList(query) {
 }
 
 function handleLocationInputKeydown(e) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     e.preventDefault();
-    const searchInput = document.getElementById('composerLocationSearchInput');
-    const query = searchInput ? searchInput.value.trim() : '';
+    const searchInput = document.getElementById("composerLocationSearchInput");
+    const query = searchInput ? searchInput.value.trim() : "";
     if (!query) return;
 
-    const matched = BALI_LOCATIONS.find(loc => loc.toLowerCase() === query.toLowerCase());
+    const matched = BALI_LOCATIONS.find(
+      (loc) => loc.toLowerCase() === query.toLowerCase(),
+    );
     if (matched) {
       chooseLocation(matched);
     } else {
       chooseLocation(query);
     }
-  } else if (e.key === 'Escape') {
+  } else if (e.key === "Escape") {
     e.preventDefault();
     closeLocationPicker();
   }
 }
 
-function renderLocationList(query = '') {
-  const listEl = document.getElementById('composerLocationList');
+function renderLocationList(query = "") {
+  const listEl = document.getElementById("composerLocationList");
   if (!listEl) return;
 
-  const q = (query || '').trim().toLowerCase();
-  const matched = BALI_LOCATIONS.filter(loc => loc.toLowerCase().includes(q));
+  const q = (query || "").trim().toLowerCase();
+  const matched = BALI_LOCATIONS.filter((loc) => loc.toLowerCase().includes(q));
 
-  let html = '';
+  let html = "";
 
-  // Jika pengguna mengetik teks pencarian dan bukan exact match, berikan opsi gunakan lokasi kustom
   if (q.length > 0) {
     const customLoc = query.trim();
-    const isExact = matched.some(m => m.toLowerCase() === q);
+    const isExact = matched.some((m) => m.toLowerCase() === q);
     if (!isExact) {
       html += `
         <div class="km-location-item" onclick="chooseLocation('${escapeHtml(customLoc)}')">
@@ -749,22 +1136,24 @@ function renderLocationList(query = '') {
   }
 
   if (matched.length > 0) {
-    html += matched.map(loc => {
-      const isSelected = selectedPostLocation.toLowerCase() === loc.toLowerCase();
-      return `
-        <div class="km-location-item ${isSelected ? 'is-selected' : ''}" onclick="chooseLocation('${escapeHtml(loc)}')">
+    html += matched
+      .map((loc) => {
+        const isSelected =
+          selectedPostLocation.toLowerCase() === loc.toLowerCase();
+        return `
+        <div class="km-location-item ${isSelected ? "is-selected" : ""}" onclick="chooseLocation('${escapeHtml(loc)}')">
           <span>${escapeHtml(loc)}</span>
-          ${isSelected ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
+          ${isSelected ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ""}
         </div>
       `;
-    }).join('');
+      })
+      .join("");
   }
 
   if (!html && matched.length === 0 && !query.trim()) {
     html = `<div class="km-location-empty-state">Ketik untuk mencari kecamatan atau menambah lokasi kustom</div>`;
   }
 
-  // Tambahkan opsi hapus lokasi jika ada lokasi yang sedang dipilih
   if (selectedPostLocation) {
     html += `
       <div class="km-location-clear-item" onclick="chooseLocation('')">
@@ -783,30 +1172,30 @@ function chooseLocation(loc) {
 }
 
 function selectComposerLocation(loc) {
-  selectedPostLocation = loc || '';
-  const trigger = document.getElementById('modalLocationTrigger');
-  const textEl = document.getElementById('modalLocationText');
+  selectedPostLocation = loc || "";
+  const trigger = document.getElementById("modalLocationTrigger");
+  const textEl = document.getElementById("modalLocationText");
 
-  if (textEl) textEl.textContent = loc || 'Tambahkan Lokasi';
+  if (textEl) textEl.textContent = loc || "Tambahkan Lokasi";
   if (trigger) {
     if (loc) {
-      trigger.classList.remove('is-empty');
+      trigger.classList.remove("is-empty");
     } else {
-      trigger.classList.add('is-empty');
+      trigger.classList.add("is-empty");
     }
   }
 }
 
 function removeComposerLocation() {
-  selectedPostLocation = '';
-  const trigger = document.getElementById('modalLocationTrigger');
-  const textEl = document.getElementById('modalLocationText');
-  if (textEl) textEl.textContent = 'Tambahkan Lokasi';
-  if (trigger) trigger.classList.add('is-empty');
+  selectedPostLocation = "";
+  const trigger = document.getElementById("modalLocationTrigger");
+  const textEl = document.getElementById("modalLocationText");
+  if (textEl) textEl.textContent = "Tambahkan Lokasi";
+  if (trigger) trigger.classList.add("is-empty");
 }
 
 function buildPhotoGridHtml(photos, threadId) {
-  if (!photos || photos.length === 0) return '';
+  if (!photos || photos.length === 0) return "";
 
   const count = photos.length;
   if (count === 1) {
@@ -851,21 +1240,23 @@ function buildPhotoGridHtml(photos, threadId) {
   const firstFour = photos.slice(0, 4);
   const remainingCount = count - 4;
 
-  const itemsHtml = firstFour.map((photoUrl, i) => {
-    if (i === 3 && remainingCount > 0) {
-      return `
+  const itemsHtml = firstFour
+    .map((photoUrl, i) => {
+      if (i === 3 && remainingCount > 0) {
+        return `
         <a href="community-detail.html?id=${threadId}" class="km-photo-item" aria-label="Lihat ${remainingCount} foto lainnya">
           <img src="${photoUrl}" alt="Dokumentasi Pekarangan 4" loading="lazy">
           <div class="km-photo-more-overlay">+${remainingCount} Foto</div>
         </a>
       `;
-    }
-    return `
+      }
+      return `
       <a href="community-detail.html?id=${threadId}" class="km-photo-item" aria-label="Lihat foto ${i + 1}">
         <img src="${photoUrl}" alt="Dokumentasi Pekarangan ${i + 1}" loading="lazy">
       </a>
     `;
-  }).join('');
+    })
+    .join("");
 
   return `
     <div class="km-photo-grid km-photo-grid-4">
@@ -875,12 +1266,12 @@ function buildPhotoGridHtml(photos, threadId) {
 }
 
 function validateMissionComposer() {
-  const input = document.getElementById('modalComposerTextInput');
-  const submitBtn = document.getElementById('modalSubmitBtn');
+  const input = document.getElementById("modalComposerTextInput");
+  const submitBtn = document.getElementById("modalSubmitBtn");
 
   if (!isMissionMode) {
     if (submitBtn) {
-      submitBtn.classList.remove('is-locked');
+      submitBtn.classList.remove("is-locked");
       submitBtn.innerHTML = `
         <span>Bagikan Cerita</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -889,13 +1280,13 @@ function validateMissionComposer() {
     return true;
   }
 
-  const text = input ? input.value.trim() : '';
+  const text = input ? input.value.trim() : "";
   const hasPhotos = attachedPhotos && attachedPhotos.length > 0;
   const hasText = text.length > 0;
 
   if (hasPhotos && hasText) {
     if (submitBtn) {
-      submitBtn.classList.remove('is-locked');
+      submitBtn.classList.remove("is-locked");
       submitBtn.innerHTML = `
         <span>Bagikan Cerita</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -904,7 +1295,7 @@ function validateMissionComposer() {
     return true;
   } else if (!hasPhotos) {
     if (submitBtn) {
-      submitBtn.classList.add('is-locked');
+      submitBtn.classList.add("is-locked");
       submitBtn.innerHTML = `
         <span>Lengkapi Foto Aksi</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -913,7 +1304,7 @@ function validateMissionComposer() {
     return false;
   } else {
     if (submitBtn) {
-      submitBtn.classList.add('is-locked');
+      submitBtn.classList.add("is-locked");
       submitBtn.innerHTML = `
         <span>Lengkapi Cerita Aksi</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -925,147 +1316,166 @@ function validateMissionComposer() {
 
 function checkMissionUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
-  const action = urlParams.get('action');
+  const action = urlParams.get("action");
 
-  if (action === 'complete-mission') {
+  if (action === "complete-mission") {
     isMissionMode = true;
-    const rawZone = urlParams.get('zone') || 'Jl. Teuku Umar Barat';
-    const rawTree = urlParams.get('tree') || 'Pohon Tanjung';
-    const rawPoints = parseInt(urlParams.get('points'), 10);
-    const collabs = urlParams.get('collabs') || '';
+    const rawZone = urlParams.get("zone") || "Jl. Teuku Umar Barat";
+    const rawTree = urlParams.get("tree") || "Pohon Tanjung";
+    const rawPoints = parseInt(urlParams.get("points"), 10);
+    const collabs = urlParams.get("collabs") || "";
 
-    // Tetapkan poin reward misi
-    missionRewardPointsPending = (!isNaN(rawPoints) && rawPoints > 0) ? rawPoints : 250;
+    missionRewardPointsPending =
+      !isNaN(rawPoints) && rawPoints > 0 ? rawPoints : 250;
 
     const zoneName = decodeURIComponent(rawZone);
     const treeName = decodeURIComponent(rawTree);
-    currentMissionData = { zoneName, treeName, points: missionRewardPointsPending, collabs };
+    currentMissionData = {
+      zoneName,
+      treeName,
+      points: missionRewardPointsPending,
+      collabs,
+    };
 
-    // Penentuan distrik/kecamatan berdasarkan nama kawasan misi
-    let district = 'Denpasar Barat';
+    let district = "Denpasar Barat";
     const lowerZone = zoneName.toLowerCase();
-    if (lowerZone.includes('sesetan') || lowerZone.includes('selatan')) {
-      district = 'Denpasar Selatan';
-    } else if (lowerZone.includes('renon') || lowerZone.includes('puputan')) {
-      district = 'Renon';
-    } else if (lowerZone.includes('sanur')) {
-      district = 'Sanur';
-    } else if (lowerZone.includes('gatot subroto') || lowerZone.includes('gatsu') || lowerZone.includes('utara')) {
-      district = 'Denpasar Utara';
-    } else if (lowerZone.includes('hayam wuruk') || lowerZone.includes('tohpati') || lowerZone.includes('timur')) {
-      district = 'Denpasar Timur';
-    } else if (lowerZone.includes('kuta')) {
-      district = 'Kuta';
-    } else if (lowerZone.includes('ubud')) {
-      district = 'Ubud';
-    } else if (lowerZone.includes('tabanan')) {
-      district = 'Tabanan';
-    } else if (lowerZone.includes('gianyar')) {
-      district = 'Gianyar';
+    if (lowerZone.includes("sesetan") || lowerZone.includes("selatan")) {
+      district = "Denpasar Selatan";
+    } else if (lowerZone.includes("renon") || lowerZone.includes("puputan")) {
+      district = "Renon";
+    } else if (lowerZone.includes("sanur")) {
+      district = "Sanur";
+    } else if (
+      lowerZone.includes("gatot subroto") ||
+      lowerZone.includes("gatsu") ||
+      lowerZone.includes("utara")
+    ) {
+      district = "Denpasar Utara";
+    } else if (
+      lowerZone.includes("hayam wuruk") ||
+      lowerZone.includes("tohpati") ||
+      lowerZone.includes("timur")
+    ) {
+      district = "Denpasar Timur";
+    } else if (lowerZone.includes("kuta")) {
+      district = "Kuta";
+    } else if (lowerZone.includes("ubud")) {
+      district = "Ubud";
+    } else if (lowerZone.includes("tabanan")) {
+      district = "Tabanan";
+    } else if (lowerZone.includes("gianyar")) {
+      district = "Gianyar";
     }
 
-    // Set lokasi otomatis
     selectComposerLocation(district);
 
-    // Tentukan foto bibit pohon
-    let photoPath = 'assets/trees/pohon-tanjung.jpg';
+    let photoPath = "assets/trees/pohon-tanjung.jpg";
     const lowerTree = treeName.toLowerCase();
-    if (lowerTree.includes('kiara')) {
-      photoPath = 'assets/trees/pohon-kiara-payung.jpg';
-    } else if (lowerTree.includes('ketapang')) {
-      photoPath = 'assets/trees/ketapang-kencana.jpg';
-    } else if (lowerTree.includes('tabebuia')) {
-      photoPath = 'assets/trees/tabebuia-pink.jpg';
+    if (lowerTree.includes("kiara")) {
+      photoPath = "assets/trees/pohon-kiara-payung.jpg";
+    } else if (lowerTree.includes("ketapang")) {
+      photoPath = "assets/trees/ketapang-kencana.jpg";
+    } else if (lowerTree.includes("tabebuia")) {
+      photoPath = "assets/trees/tabebuia-pink.jpg";
     } else {
-      photoPath = 'assets/trees/pohon-tanjung.jpg';
+      photoPath = "assets/trees/pohon-tanjung.jpg";
     }
 
-    attachedPhotos = [{
-      id: `photo-mission-${Date.now()}`,
-      url: photoPath,
-      name: `Bibit ${treeName}`
-    }];
+    attachedPhotos = [
+      {
+        id: `photo-mission-${Date.now()}`,
+        url: photoPath,
+        name: `Bibit ${treeName}`,
+      },
+    ];
     renderComposerPreviews();
 
-    // Susun narasi sederhana ramah warga dengan tagar #AksiTanam di dalam teks
-    let collabText = '';
+    let collabText = "";
     if (collabs) {
-      const collabArr = collabs.split(',').filter(Boolean);
+      const collabArr = collabs.split(",").filter(Boolean);
       if (collabArr.length > 0) {
-        collabText = ` bersama rekan relawan (${collabArr.join(', ')})`;
+        collabText = ` bersama rekan relawan (${collabArr.join(", ")})`;
       }
     }
 
     const narrative = `Hari ini saya telah menanam bibit ${treeName} di pekarangan kawasan ${zoneName}${collabText}. Jarak aman dinding dan pipa saluran air sudah dipastikan terjaga. Pekarangan lingkungan kini makin sejuk dan asri. #AksiTanam`;
 
-    const input = document.getElementById('modalComposerTextInput');
+    const input = document.getElementById("modalComposerTextInput");
     if (input) {
       input.value = narrative;
       syncComposerHighlight();
     }
 
-    // Perbarui judul dialog dengan format ramah
-    const modalTitle = document.getElementById('modalPostTitle');
+    const modalTitle = document.getElementById("modalPostTitle");
     if (modalTitle) {
-      modalTitle.textContent = 'Bagikan Postingan';
+      modalTitle.textContent = "Bagikan Postingan";
     }
 
-    // Jalankan validasi awal
     validateMissionComposer();
 
-    // Buka modal secara otomatis setelah jeda singkat
     setTimeout(() => {
-      openPostModal('text');
+      openPostModal("text");
     }, 400);
   }
 }
 
 function submitNewPost() {
-  const input = document.getElementById('modalComposerTextInput') || document.getElementById('composerTextInput');
+  const input =
+    document.getElementById("modalComposerTextInput") ||
+    document.getElementById("composerTextInput");
   if (!input) return;
 
   const content = input.value.trim();
 
-  // Validasi khusus mode misi
   if (isMissionMode) {
     const isValid = validateMissionComposer();
     if (!isValid) {
       if (attachedPhotos.length === 0) {
-        showKmToast('Sertakan foto tanaman di pekarangan Anda untuk menyelesaikan misi');
-        const fileInput = document.getElementById('composerFileInput');
+        showKmToast(
+          "Sertakan foto tanaman di pekarangan Anda untuk menyelesaikan misi",
+        );
+        const fileInput = document.getElementById("composerFileInput");
         if (fileInput) fileInput.click();
       } else {
-        showKmToast('Tuliskan cerita singkat aksi pekarangan Anda');
+        showKmToast("Tuliskan cerita singkat aksi pekarangan Anda");
         input.focus();
       }
       return;
     }
   } else {
     if (!content && attachedPhotos.length === 0) {
-      showKmToast('Tuliskan cerita pekarangan atau lampirkan foto terlebih dahulu.');
+      showKmToast(
+        "Tuliskan cerita pekarangan atau lampirkan foto terlebih dahulu.",
+      );
       input.focus();
       return;
     }
   }
 
-  const container = document.getElementById('kmFeedContainer');
+  const container = document.getElementById("kmFeedContainer");
   if (!container) return;
 
   const newThreadId = `thread-user-${Date.now()}`;
   const safeText = escapeHtml(content);
-  const tag = selectedPostTag || '#AksiTanam';
-  const locationHtml = selectedPostLocation ? `<span class="km-thread-location">${selectedPostLocation}</span>` : '';
+  const tag = selectedPostTag || "#AksiTanam";
+  const locationHtml = selectedPostLocation
+    ? `<span class="km-thread-location">${selectedPostLocation}</span>`
+    : "";
   const timeHtml = `<span class="km-thread-time">Baru saja</span>`;
 
-  const photoUrls = attachedPhotos.map(p => p.url);
+  const photoUrls = attachedPhotos.map((p) => p.url);
   const photoGridHtml = buildPhotoGridHtml(photoUrls, newThreadId);
 
-  const pointsAwarded = isMissionMode ? (missionRewardPointsPending > 0 ? missionRewardPointsPending : 250) : 25;
+  const pointsAwarded = isMissionMode
+    ? missionRewardPointsPending > 0
+      ? missionRewardPointsPending
+      : 250
+    : 25;
 
-  const newCard = document.createElement('article');
-  newCard.className = 'km-thread-card';
+  const newCard = document.createElement("article");
+  newCard.className = "km-thread-card";
   newCard.id = newThreadId;
-  newCard.setAttribute('data-tag', tag);
+  newCard.setAttribute("data-tag", tag);
 
   newCard.innerHTML = `
     <div class="km-thread-header">
@@ -1084,7 +1494,7 @@ function submitNewPost() {
     </div>
 
     <div class="km-thread-body">
-      ${safeText ? `<p class="km-thread-text">${formatHashtags(safeText)}</p>` : ''}
+      ${safeText ? `<p class="km-thread-text">${formatHashtags(safeText)}</p>` : ""}
       ${photoGridHtml}
     </div>
 
@@ -1113,45 +1523,52 @@ function submitNewPost() {
     </div>
   `;
 
-  // Sisipkan di paling atas feed
   container.insertBefore(newCard, container.firstChild);
 
-  // Berikan poin
+  if (typeof gsap !== "undefined") {
+    gsap.fromTo(
+      newCard,
+      { opacity: 0, y: -24, scale: 0.96 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.4)" },
+    );
+  }
+
   addPointsWithAnimation(pointsAwarded);
 
-  // Sinkronkan ke TEDUH_DATA jika tersedia
-  if (typeof TEDUH_DATA !== 'undefined' && TEDUH_DATA.updateUserPoints) {
+  if (typeof TEDUH_DATA !== "undefined" && TEDUH_DATA.updateUserPoints) {
     TEDUH_DATA.updateUserPoints(pointsAwarded);
   }
 
   if (isMissionMode) {
-    showKmToast(`Selamat! Aksi tanam berhasil diverifikasi (+${pointsAwarded} Poin Berhasil Diklaim)`);
-    
-    // Perbarui status misi di localStorage
-    if (typeof localStorage !== 'undefined') {
-      const savedMission = localStorage.getItem('teduh_active_mission');
+    showKmToast(
+      `Selamat! Aksi tanam berhasil diverifikasi (+${pointsAwarded} Poin Berhasil Diklaim)`,
+    );
+
+    if (typeof localStorage !== "undefined") {
+      const savedMission = localStorage.getItem("teduh_active_mission");
       if (savedMission) {
         try {
           const parsed = JSON.parse(savedMission);
           parsed.isCompleted = true;
           parsed.completedAt = Date.now();
-          localStorage.setItem('teduh_active_mission', JSON.stringify(parsed));
-        } catch(e) {
-          localStorage.removeItem('teduh_active_mission');
+          localStorage.setItem("teduh_active_mission", JSON.stringify(parsed));
+        } catch (e) {
+          localStorage.removeItem("teduh_active_mission");
         }
       }
 
-      // Catat ke riwayat aktivitas pengguna
-      if (typeof TEDUH_DATA !== 'undefined') {
+      if (typeof TEDUH_DATA !== "undefined") {
         const u = TEDUH_DATA.getUserData();
         if (u && u.activities) {
-          const missionName = currentMissionData ? currentMissionData.zoneName : 'Pekarangan';
+          const missionName = currentMissionData
+            ? currentMissionData.zoneName
+            : "Pekarangan";
           u.activities.unshift({
             title: `Aksi Tanam: ${missionName}`,
             badge: `+${pointsAwarded} Poin`,
-            icon: 'tree'
+            icon: "tree",
           });
-          localStorage.setItem('teduh_user_data', JSON.stringify(u));
+          localStorage.setItem("teduh_user_data", JSON.stringify(u));
         }
       }
     }
@@ -1164,41 +1581,57 @@ function submitNewPost() {
     missionRewardPointsPending = 0;
     currentMissionData = null;
 
-    const modalTitle = document.getElementById('modalPostTitle');
+    const modalTitle = document.getElementById("modalPostTitle");
     if (modalTitle) {
-      modalTitle.textContent = 'Bagikan Postingan';
+      modalTitle.textContent = "Bagikan Postingan";
     }
   } else {
-    showKmToast('Cerita pekarangan berhasil dibagikan');
+    showKmToast("Cerita pekarangan berhasil dibagikan");
   }
 
-  // Reset input form & pratinjau foto & lokasi
-  input.value = '';
+  input.value = "";
   syncComposerHighlight();
   clearAllAttachedPhotos();
-  selectComposerLocation('');
+  selectComposerLocation("");
   validateMissionComposer();
   closePostModal();
 }
 
-/* ==========================================================================
-   4. INTERAKSI THREAD (LIKE & KOMENTAR BERSARANG)
-   ========================================================================== */
 function toggleThreadLike(threadId, btn) {
   if (!btn) return;
-  const countEl = btn.querySelector('.like-count');
-  const icon = btn.querySelector('svg');
+  const countEl = btn.querySelector(".like-count");
+  const icon = btn.querySelector("svg");
   if (!countEl) return;
 
   let currentCount = parseInt(countEl.textContent, 10) || 0;
-  if (btn.classList.contains('is-liked')) {
-    btn.classList.remove('is-liked');
+  if (btn.classList.contains("is-liked")) {
+    btn.classList.remove("is-liked");
     countEl.textContent = Math.max(0, currentCount - 1);
+    if (typeof gsap !== "undefined" && icon) {
+      gsap.fromTo(
+        icon,
+        { scale: 0.85 },
+        { scale: 1, duration: 0.2, ease: "power1.out" },
+      );
+    }
   } else {
-    btn.classList.add('is-liked');
+    btn.classList.add("is-liked");
     countEl.textContent = currentCount + 1;
-    if (typeof gsap !== 'undefined' && icon) {
-      gsap.fromTo(icon, { scale: 1.35 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' });
+    if (typeof gsap !== "undefined") {
+      if (icon) {
+        gsap.fromTo(
+          icon,
+          { scale: 1.4, rotation: -12 },
+          { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2)" },
+        );
+      }
+      if (countEl) {
+        gsap.fromTo(
+          countEl,
+          { y: -4, opacity: 0.5 },
+          { y: 0, opacity: 1, duration: 0.25, ease: "power2.out" },
+        );
+      }
     }
   }
 }
@@ -1206,14 +1639,14 @@ function toggleThreadLike(threadId, btn) {
 function focusCommentInput(threadId) {
   const card = document.getElementById(threadId);
   if (!card) return;
-  const input = card.querySelector('.km-inline-comment-input');
+  const input = card.querySelector(".km-inline-comment-input");
   if (input) {
     input.focus();
   }
 }
 
 function handleCommentKey(e, threadId) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     e.preventDefault();
     submitInlineComment(threadId);
   }
@@ -1223,9 +1656,11 @@ function submitInlineComment(threadId) {
   const card = document.getElementById(threadId);
   if (!card) return;
 
-  const input = card.querySelector('.km-inline-comment-input');
-  const tree = card.querySelector(`#comments-list-${threadId}`) || card.querySelector('.km-comments-tree');
-  const countEl = card.querySelector('.comment-count');
+  const input = card.querySelector(".km-inline-comment-input");
+  const tree =
+    card.querySelector(`#comments-list-${threadId}`) ||
+    card.querySelector(".km-comments-tree");
+  const countEl = card.querySelector(".comment-count");
 
   if (!input || !tree) return;
 
@@ -1233,8 +1668,8 @@ function submitInlineComment(threadId) {
   if (!text) return;
 
   const branchId = `${threadId}-c-${Date.now()}`;
-  const branch = document.createElement('div');
-  branch.className = 'km-comment-branch';
+  const branch = document.createElement("div");
+  branch.className = "km-comment-branch";
   branch.id = `branch-${branchId}`;
   branch.innerHTML = `
     <div class="km-comment-node">
@@ -1271,18 +1706,31 @@ function submitInlineComment(threadId) {
   `;
 
   tree.appendChild(branch);
-  input.value = '';
+  input.value = "";
+
+  if (typeof gsap !== "undefined") {
+    gsap.fromTo(
+      branch,
+      { opacity: 0, y: 14, scale: 0.98 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" },
+    );
+  }
 
   if (countEl) {
     const currentCount = parseInt(countEl.textContent, 10) || 0;
     countEl.textContent = currentCount + 1;
+    if (typeof gsap !== "undefined") {
+      gsap.fromTo(
+        countEl,
+        { scale: 1.25 },
+        { scale: 1, duration: 0.3, ease: "back.out(1.8)" },
+      );
+    }
   }
 
-  // Tambahkan bonus poin komentar
   addPointsWithAnimation(10);
 }
 
-/* FUNGSI BALAS KOMENTAR INLINE BERSARANG */
 function toggleInlineReplyForm(branchId, authorName) {
   const box = document.getElementById(`reply-box-${branchId}`);
   const targetLabel = document.getElementById(`reply-target-${branchId}`);
@@ -1290,25 +1738,25 @@ function toggleInlineReplyForm(branchId, authorName) {
 
   if (!box) return;
 
-  if (box.style.display === 'none' || box.style.display === '') {
-    box.style.display = 'flex';
+  if (box.style.display === "none" || box.style.display === "") {
+    box.style.display = "flex";
     if (targetLabel) targetLabel.textContent = `@${authorName}`;
     if (input) {
       input.placeholder = `Tulis balasan untuk ${authorName}...`;
       input.focus();
     }
   } else {
-    box.style.display = 'none';
+    box.style.display = "none";
   }
 }
 
 function closeInlineReplyForm(branchId) {
   const box = document.getElementById(`reply-box-${branchId}`);
-  if (box) box.style.display = 'none';
+  if (box) box.style.display = "none";
 }
 
 function handleNestedReplyKey(e, threadId, branchId) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     e.preventDefault();
     submitNestedReply(threadId, branchId);
   }
@@ -1324,8 +1772,8 @@ function submitNestedReply(threadId, branchId) {
   const text = input.value.trim();
   if (!text) return;
 
-  const replyNode = document.createElement('div');
-  replyNode.className = 'km-comment-node is-reply';
+  const replyNode = document.createElement("div");
+  replyNode.className = "km-comment-node is-reply";
   replyNode.innerHTML = `
     <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
     <div class="km-comment-content">
@@ -1337,101 +1785,118 @@ function submitNestedReply(threadId, branchId) {
     </div>
   `;
 
-  // Sisipkan balasan di atas kotak form reply
   repliesContainer.insertBefore(replyNode, box);
-  input.value = '';
-  if (box) box.style.display = 'none';
+  input.value = "";
+  if (box) box.style.display = "none";
 
-  // Update total komentar di kartu thread induk
+  if (typeof gsap !== "undefined") {
+    gsap.fromTo(
+      replyNode,
+      { opacity: 0, x: -12 },
+      { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" },
+    );
+  }
+
   const card = document.getElementById(threadId);
   if (card) {
-    const countEl = card.querySelector('.comment-count');
+    const countEl = card.querySelector(".comment-count");
     if (countEl) {
       const currentCount = parseInt(countEl.textContent, 10) || 0;
       countEl.textContent = currentCount + 1;
+      if (typeof gsap !== "undefined") {
+        gsap.fromTo(
+          countEl,
+          { scale: 1.25 },
+          { scale: 1, duration: 0.3, ease: "back.out(1.8)" },
+        );
+      }
     }
   }
 
   addPointsWithAnimation(10);
 }
 
-/* ==========================================================================
-   5. FILTER TAG SIDEBAR
-   ========================================================================== */
 function filterByTag(tag) {
-  const cards = document.querySelectorAll('#kmFeedContainer .km-thread-card');
-  const items = document.querySelectorAll('.km-trend-item, .km-x-trend-item');
+  const cards = document.querySelectorAll("#kmFeedContainer .km-thread-card");
+  const items = document.querySelectorAll(".km-trend-item, .km-x-trend-item");
 
-  items.forEach(item => {
-    if (item.getAttribute('data-tag') === tag) {
-      item.classList.add('is-active');
+  items.forEach((item) => {
+    if (item.getAttribute("data-tag") === tag) {
+      item.classList.add("is-active");
     } else {
-      item.classList.remove('is-active');
+      item.classList.remove("is-active");
     }
   });
 
-  const isAll = tag === 'all';
+  const isAll = tag === "all";
 
-  cards.forEach(card => {
-    const cardTag = card.getAttribute('data-tag') || '';
+  cards.forEach((card) => {
+    const cardTag = card.getAttribute("data-tag") || "";
     if (isAll) {
-      card.style.display = 'flex';
+      card.style.display = "flex";
     } else if (cardTag.toLowerCase() === tag.toLowerCase()) {
-      card.style.display = 'flex';
+      card.style.display = "flex";
     } else {
-      card.style.display = 'none';
+      card.style.display = "none";
     }
   });
 }
 
-/* ==========================================================================
-   6. UTILITIES & TOAST
-   ========================================================================== */
 let kmToastTimeout = null;
 function showKmToast(msg) {
-  const toast = document.getElementById('kmToast');
+  const toast = document.getElementById("kmToast");
   if (!toast) return;
   clearTimeout(kmToastTimeout);
   toast.textContent = msg;
-  toast.classList.add('is-visible');
+  toast.classList.add("is-visible");
   kmToastTimeout = setTimeout(() => {
-    toast.classList.remove('is-visible');
+    toast.classList.remove("is-visible");
   }, 2500);
 }
 
 function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+  if (!str) return "";
+  return str.replace(
+    /[&<>"']/g,
+    (m) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      })[m],
+  );
 }
 
 function initMobileNav() {
-  const hamburger = document.getElementById('navbarHamburger');
-  const overlay = document.getElementById('mobileNavOverlay');
-  const menu = document.getElementById('mobileNavMenu');
-  const closeBtn = document.getElementById('mobileNavClose');
+  const hamburger = document.getElementById("navbarHamburger");
+  const overlay = document.getElementById("mobileNavOverlay");
+  const menu = document.getElementById("mobileNavMenu");
+  const closeBtn = document.getElementById("mobileNavClose");
 
   if (!hamburger || !menu) return;
 
   function openMenu() {
-    menu.classList.add('is-open', 'active');
-    if (overlay) overlay.classList.add('is-visible', 'active');
-    hamburger.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
+    menu.classList.add("is-open", "active");
+    if (overlay) overlay.classList.add("is-visible", "active");
+    hamburger.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
   }
 
   function closeMenu() {
-    menu.classList.remove('is-open', 'active');
-    if (overlay) overlay.classList.remove('is-visible', 'active');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    menu.classList.remove("is-open", "active");
+    if (overlay) overlay.classList.remove("is-visible", "active");
+    hamburger.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
   }
 
-  hamburger.addEventListener('click', openMenu);
-  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-  if (overlay) overlay.addEventListener('click', closeMenu);
+  hamburger.addEventListener("click", openMenu);
+  if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+  if (overlay) overlay.addEventListener("click", closeMenu);
 
-  menu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeMenu);
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
   });
 }
 
@@ -1440,187 +1905,192 @@ function initMobileNav() {
    ========================================================================== */
 
 const MOCK_DETAIL_THREADS = {
-  'thread-1': {
-    authorName: 'Gede Surya',
-    authorAvatar: 'assets/avatars/gede-surya.jpg',
-    authorLevel: 'Perintis Teduh',
-    authorHandle: '@gede_surya',
-    location: 'Renon, Denpasar Selatan',
-    time: '2 jam yang lalu',
-    locationTime: 'Renon, Denpasar Selatan &bull; 2 jam yang lalu',
+  "thread-1": {
+    authorName: "Gede Surya",
+    authorAvatar: "assets/avatars/gede-surya.jpg",
+    authorLevel: "Perintis Teduh",
+    authorHandle: "@gede_surya",
+    location: "Renon, Denpasar Selatan",
+    time: "2 jam yang lalu",
+    locationTime: "Renon, Denpasar Selatan &bull; 2 jam yang lalu",
     narrativeHtml: `
-      <p>Pagi tadi sekitar jam 07.30 WITA, saya selesai menanam 1 bibit Pohon Tanjung (Mimusops elengi) setinggi 1.5 meter di sudut barat pekarangan rumah.</p>
+      <p>Pagi tadi sekitar jam 07.30 WITA, saya selesai menanam 1 bibit Pohon Tanjung setinggi 1.5 meter di sudut barat pekarangan rumah.</p>
       <p>Jarak tanam dipatok 2.2 meter dari dinding pagar utama dan 3.1 meter dari pipa saluran air bersih. Di sekeliling lubang tanam dipasang pipa biopori PVC vertikal sedalam 80 cm agar akar langsung tumbuh menghujam ke bawah tanpa meretakkan semen lantai teras.</p>
       <p>Sebelum ditanam, suhu pantulan semen teras rumah saat tengah hari bisa menyentuh 38.8°C dan hawa panasnya bertahan sampai jam 8 malam. Setelah 2 minggu proses adaptasi bibit ini, naungan awal mulai menahan radiasi langsung. Tanah humus subak Denpasar sangat cocok untuk mempercepat penguatan akar tunggang bibit muda. <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span> <span class="km-inline-tag" data-tag="#DenpasarAdem" onclick="filterByTag('#DenpasarAdem')" onmouseenter="showTagHoverCard(event, '#DenpasarAdem')" onmouseleave="hideHoverCard()">#DenpasarAdem</span></p>
     `,
     photos: [
-      'assets/feed/feed-ubud-garden.jpg',
-      'assets/feed/feed-gatsu-roadside.jpg',
-      'assets/feed/feed-gotong-royong.jpg'
+      "assets/feed/feed-ubud-garden.jpg",
+      "assets/feed/feed-gatsu-roadside.jpg",
+      "assets/feed/feed-gotong-royong.jpg",
     ],
-    tags: ['#AksiTanam', '#DenpasarAdem'],
+    tags: ["#AksiTanam", "#DenpasarAdem"],
     likes: 24,
     commentsCount: 2,
-    views: '1.420',
-    authorBio: 'Warga Renon, Denpasar Selatan. Aktif menata pekarangan semen sempit menjadi koridor sejuk dengan pohon peneduh berakar tunggang dan biopori mandiri.',
-    authorTrees: '3 Pohon',
-    authorPoints: '1.450 Poin',
-    treeName: 'Pohon Tanjung',
-    treeBotanical: 'Mimusops elengi',
-    impactTemp: '-3.8°C',
-    impactCanopy: '14.2 m²',
-    impactRoot: 'Aman',
-    impactPoints: '+120 Poin',
+    views: "1.420",
+    authorBio:
+      "Warga Renon, Denpasar Selatan. Aktif menata pekarangan semen sempit menjadi koridor sejuk dengan pohon peneduh berakar tunggang dan biopori mandiri.",
+    authorTrees: "3 Pohon",
+    authorPoints: "1.450 Poin",
+    treeName: "Pohon Tanjung",
+    treeBotanical: "Mimusops elengi",
+    impactTemp: "-3.8°C",
+    impactCanopy: "14.2 m²",
+    impactRoot: "Aman",
+    impactPoints: "+120 Poin",
     comments: [
       {
-        id: 'detail-c-1',
-        author: 'Ibu Desak',
-        avatar: 'assets/avatars/ibu-desak.jpg',
-        time: '1 jam lalu',
-        text: 'Bagus sekali Gede Surya. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?',
+        id: "detail-c-1",
+        author: "Ibu Desak",
+        avatar: "assets/avatars/ibu-desak.jpg",
+        time: "1 jam lalu",
+        text: "Bagus sekali Gede Surya. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?",
         replies: [
           {
-            author: 'Gede Surya (Penulis)',
-            avatar: 'assets/avatars/gede-surya.jpg',
-            time: '45 menit lalu',
-            text: 'Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.'
-          }
-        ]
-      }
-    ]
+            author: "Gede Surya (Penulis)",
+            avatar: "assets/avatars/gede-surya.jpg",
+            time: "45 menit lalu",
+            text: "Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.",
+          },
+        ],
+      },
+    ],
   },
-  'thread-2': {
-    authorName: 'Ibu Desak',
-    authorAvatar: 'assets/avatars/ibu-desak.jpg',
-    authorLevel: 'Penanam Aktif',
-    authorHandle: '@desak_sesetan',
-    location: 'Sesetan, Denpasar Selatan',
-    time: '5 jam yang lalu',
-    locationTime: 'Sesetan, Denpasar Selatan &bull; 5 jam yang lalu',
+  "thread-2": {
+    authorName: "Ibu Desak",
+    authorAvatar: "assets/avatars/ibu-desak.jpg",
+    authorLevel: "Penanam Aktif",
+    authorHandle: "@desak_sesetan",
+    location: "Sesetan, Denpasar Selatan",
+    time: "5 jam yang lalu",
+    locationTime: "Sesetan, Denpasar Selatan &bull; 5 jam yang lalu",
     narrativeHtml: `
-      <p>Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana (Terminalia mantaly) benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga.</p>
+      <p>Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga.</p>
       <p>Pohon ditanam dengan jarak 1.8 meter dari selokan gang. Tajuknya dipangkas tipis bertingkat (stratified layering) sehingga sirkulasi angin sejuk tetap bebas masuk ke dalam rumah.</p>
       <p>Suhu permukaan teras yang semula 37.5°C turun menjadi 31.2°C saat diukur menggunakan termometer inframerah jam 2 siang kemarin. <span class="km-inline-tag" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')" onmouseenter="showTagHoverCard(event, '#PekaranganSemen')" onmouseleave="hideHoverCard()">#PekaranganSemen</span> <span class="km-inline-tag" data-tag="#DenpasarAdem" onclick="filterByTag('#DenpasarAdem')" onmouseenter="showTagHoverCard(event, '#DenpasarAdem')" onmouseleave="hideHoverCard()">#DenpasarAdem</span></p>
     `,
     photos: [
-      'assets/feed/feed-sesetan-gang.jpg',
-      'assets/feed/feed-teuku-umar.jpg'
+      "assets/feed/feed-sesetan-gang.jpg",
+      "assets/feed/feed-teuku-umar.jpg",
     ],
-    tags: ['#PekaranganSemen', '#DenpasarAdem'],
+    tags: ["#PekaranganSemen", "#DenpasarAdem"],
     likes: 19,
     commentsCount: 1,
-    views: '980',
-    authorBio: 'Warga Sesetan Denpasar Selatan. Mengoptimalkan lahan teras sempit tepi gang padat dengan peneduh tajuk bertingkat.',
-    authorTrees: '2 Pohon',
-    authorPoints: '1.220 Poin',
-    treeName: 'Ketapang Kencana',
-    treeBotanical: 'Terminalia mantaly',
-    impactTemp: '-2.9°C',
-    impactCanopy: '8.5 m²',
-    impactRoot: 'Aman',
-    impactPoints: '+100 Poin',
+    views: "980",
+    authorBio:
+      "Warga Sesetan Denpasar Selatan. Mengoptimalkan lahan teras sempit tepi gang padat dengan peneduh tajuk bertingkat.",
+    authorTrees: "2 Pohon",
+    authorPoints: "1.220 Poin",
+    treeName: "Ketapang Kencana",
+    treeBotanical: "Terminalia mantaly",
+    impactTemp: "-2.9°C",
+    impactCanopy: "8.5 m²",
+    impactRoot: "Aman",
+    impactPoints: "+100 Poin",
     comments: [
       {
-        id: 'detail-c-2',
-        author: 'Pak Wayan',
-        avatar: 'assets/avatars/pak-wayan.jpg',
-        time: '3 jam lalu',
-        text: 'Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.',
+        id: "detail-c-2",
+        author: "Pak Wayan",
+        avatar: "assets/avatars/pak-wayan.jpg",
+        time: "3 jam lalu",
+        text: "Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.",
         replies: [
           {
-            author: 'Ibu Desak (Penulis)',
-            avatar: 'assets/avatars/ibu-desak.jpg',
-            time: '2 jam lalu',
-            text: 'Betul Pak Wayan, guguran daunnya kecil-kecil jadi langsung masuk ke kompos biopori.'
-          }
-        ]
-      }
-    ]
+            author: "Ibu Desak (Penulis)",
+            avatar: "assets/avatars/ibu-desak.jpg",
+            time: "2 jam lalu",
+            text: "Betul Pak Wayan, guguran daunnya kecil-kecil jadi langsung masuk ke kompos biopori.",
+          },
+        ],
+      },
+    ],
   },
-  'thread-3': {
-    authorName: 'dr. Made Ary',
-    authorAvatar: 'assets/avatars/dr-made-ary.jpg',
-    authorLevel: 'Ahli Sanitasi & Pohon',
-    authorHandle: '@dr_ary_denpasar',
-    location: 'Gatot Subroto Barat',
-    time: '1 hari yang lalu',
-    locationTime: 'Gatot Subroto Barat &bull; 1 hari yang lalu',
+  "thread-3": {
+    authorName: "dr. Made Ary",
+    authorAvatar: "assets/avatars/dr-made-ary.jpg",
+    authorLevel: "Ahli Sanitasi & Pohon",
+    authorHandle: "@dr_ary_denpasar",
+    location: "Gatot Subroto Barat",
+    time: "1 hari yang lalu",
+    locationTime: "Gatot Subroto Barat &bull; 1 hari yang lalu",
     narrativeHtml: `
       <p>Banyak tetangga ragu menanam pohon karena takut tembok pagar retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang (seperti Tabebuia Pink atau Tanjung), bukan akar serabut liar seperti Beringin atau Kersen.</p>
       <p>Akar tunggang tumbuh memanjang secara gravitropik vertikal ke bawah mencari sumber air tanah dalam. Tambahkan pipa biopori vertikal berlubang sedalam 80-100 cm di dekat akar muda agar air hujan dan nutrisi terserap ke lapisan bawah tanah.</p>
       <p>Dengan teknik ini, fondasi tembok dan pipa sanitasi rumah tetap utuh 100% aman hingga belasan tahun ke depan. <span class="km-inline-tag" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')" onmouseenter="showTagHoverCard(event, '#AmanFondasi')" onmouseleave="hideHoverCard()">#AmanFondasi</span> <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span></p>
     `,
     photos: [
-      'assets/feed/feed-biopori-action.jpg',
-      'assets/feed/feed-gotong-royong.jpg',
-      'assets/feed/feed-sesetan-gang.jpg'
+      "assets/feed/feed-biopori-action.jpg",
+      "assets/feed/feed-gotong-royong.jpg",
+      "assets/feed/feed-sesetan-gang.jpg",
     ],
-    tags: ['#TabebuiaPink', '#EdukasiBiopori'],
+    tags: ["#TabebuiaPink", "#EdukasiBiopori"],
     likes: 42,
     commentsCount: 1,
-    views: '2.150',
-    authorBio: 'Pemerhati sanitasi lingkungan dan ruang hijau pemukiman Denpasar Barat. Rutin membimbing warga memilih bibit tanaman ramah fondasi.',
-    authorTrees: '5 Pohon',
-    authorPoints: '1.850 Poin',
-    treeName: 'Tabebuia Pink',
-    treeBotanical: 'Handroanthus heptaphyllus',
-    impactTemp: '-3.4°C',
-    impactCanopy: '12.0 m²',
-    impactRoot: 'Aman',
-    impactPoints: '+110 Poin',
+    views: "2.150",
+    authorBio:
+      "Pemerhati sanitasi lingkungan dan ruang hijau pemukiman Denpasar Barat. Rutin membimbing warga memilih bibit tanaman ramah fondasi.",
+    authorTrees: "5 Pohon",
+    authorPoints: "1.850 Poin",
+    treeName: "Tabebuia Pink",
+    treeBotanical: "Handroanthus heptaphyllus",
+    impactTemp: "-3.4°C",
+    impactCanopy: "12.0 m²",
+    impactRoot: "Aman",
+    impactPoints: "+110 Poin",
     comments: [
       {
-        id: 'detail-c-3',
-        author: 'John Doe',
-        avatar: 'assets/avatars/john-doe.jpg',
-        time: '12 jam lalu',
-        text: 'Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.',
+        id: "detail-c-3",
+        author: "John Doe",
+        avatar: "assets/avatars/john-doe.jpg",
+        time: "12 jam lalu",
+        text: "Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.",
         replies: [
           {
-            author: 'dr. Made Ary (Penulis)',
-            avatar: 'assets/avatars/dr-made-ary.jpg',
-            time: '10 jam lalu',
-            text: 'Sama-sama Mas John. Kuncinya jangan pernah tanam beringin di dekat dinding teras ya.'
-          }
-        ]
-      }
-    ]
-  }
+            author: "dr. Made Ary (Penulis)",
+            avatar: "assets/avatars/dr-made-ary.jpg",
+            time: "10 jam lalu",
+            text: "Sama-sama Mas John. Kuncinya jangan pernah tanam beringin di dekat dinding teras ya.",
+          },
+        ],
+      },
+    ],
+  },
 };
 
-let currentDetailThreadId = 'thread-1';
+let currentDetailThreadId = "thread-1";
 
 function initThreadDetailPage() {
-  const detailCard = document.getElementById('detailMainCard');
+  const detailCard = document.getElementById("detailMainCard");
   if (!detailCard) return;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const threadId = urlParams.get('id') || 'thread-1';
+  const threadId = urlParams.get("id") || "thread-1";
   currentDetailThreadId = threadId;
 
   renderThreadDetail(threadId);
 }
 
 function renderThreadDetail(threadId) {
-  const data = MOCK_DETAIL_THREADS[threadId] || MOCK_DETAIL_THREADS['thread-1'];
+  const data = MOCK_DETAIL_THREADS[threadId] || MOCK_DETAIL_THREADS["thread-1"];
   if (!data) return;
 
   // Render Header Penulis
-  const avatarEl = document.getElementById('detailAuthorAvatar');
-  const nameEl = document.getElementById('detailAuthorName');
-  const locEl = document.getElementById('detailLocationText');
-  const timeEl = document.getElementById('detailTimeText');
-  const locTimeEl = document.getElementById('detailLocationTime');
+  const avatarEl = document.getElementById("detailAuthorAvatar");
+  const nameEl = document.getElementById("detailAuthorName");
+  const locEl = document.getElementById("detailLocationText");
+  const timeEl = document.getElementById("detailTimeText");
+  const locTimeEl = document.getElementById("detailLocationTime");
 
   if (avatarEl) avatarEl.src = data.authorAvatar;
   if (nameEl) nameEl.textContent = data.authorName;
-  if (locEl) locEl.textContent = data.location || 'Renon, Denpasar Selatan';
-  if (timeEl) timeEl.textContent = data.time || '2 jam yang lalu';
-  if (locTimeEl) locTimeEl.innerHTML = data.locationTime || `${data.location} &bull; ${data.time}`;
+  if (locEl) locEl.textContent = data.location || "Renon, Denpasar Selatan";
+  if (timeEl) timeEl.textContent = data.time || "2 jam yang lalu";
+  if (locTimeEl)
+    locTimeEl.innerHTML =
+      data.locationTime || `${data.location} &bull; ${data.time}`;
 
   // Render Narasi & Galeri Foto
-  const narrativeEl = document.getElementById('detailNarrativeContent');
-  const imageWrapEl = document.getElementById('detailImageWrap');
+  const narrativeEl = document.getElementById("detailNarrativeContent");
+  const imageWrapEl = document.getElementById("detailImageWrap");
 
   if (narrativeEl) narrativeEl.innerHTML = data.narrativeHtml;
   if (imageWrapEl && data.photos && data.photos.length > 0) {
@@ -1628,22 +2098,22 @@ function renderThreadDetail(threadId) {
   }
 
   // Render Statistik
-  const statLikesEl = document.getElementById('detailStatLikes');
-  const statCommentsEl = document.getElementById('detailStatComments');
-  const actionLikeCountEl = document.getElementById('detailActionLikeCount');
+  const statLikesEl = document.getElementById("detailStatLikes");
+  const statCommentsEl = document.getElementById("detailStatComments");
+  const actionLikeCountEl = document.getElementById("detailActionLikeCount");
 
   if (statLikesEl) statLikesEl.textContent = data.likes;
   if (actionLikeCountEl) actionLikeCountEl.textContent = data.likes;
   if (statCommentsEl) statCommentsEl.textContent = data.commentsCount;
 
   // Render Sidebar Author
-  const sideAuthorAvatar = document.getElementById('sidebarAuthorAvatar');
-  const sideAuthorName = document.getElementById('sidebarAuthorName');
-  const sideAuthorBadge = document.getElementById('sidebarAuthorBadge');
-  const sideAuthorHandle = document.getElementById('sidebarAuthorHandle');
-  const sideAuthorBio = document.getElementById('sidebarAuthorBio');
-  const sideAuthorTrees = document.getElementById('sidebarAuthorTrees');
-  const sideAuthorPoints = document.getElementById('sidebarAuthorPoints');
+  const sideAuthorAvatar = document.getElementById("sidebarAuthorAvatar");
+  const sideAuthorName = document.getElementById("sidebarAuthorName");
+  const sideAuthorBadge = document.getElementById("sidebarAuthorBadge");
+  const sideAuthorHandle = document.getElementById("sidebarAuthorHandle");
+  const sideAuthorBio = document.getElementById("sidebarAuthorBio");
+  const sideAuthorTrees = document.getElementById("sidebarAuthorTrees");
+  const sideAuthorPoints = document.getElementById("sidebarAuthorPoints");
 
   if (sideAuthorAvatar) sideAuthorAvatar.src = data.authorAvatar;
   if (sideAuthorName) sideAuthorName.textContent = data.authorName;
@@ -1654,28 +2124,35 @@ function renderThreadDetail(threadId) {
   if (sideAuthorPoints) sideAuthorPoints.textContent = data.authorPoints;
 
   // Render Sidebar Impact Analysis
-  const treeNameEl = document.getElementById('sidebarTreeName');
-  const impactTempEl = document.getElementById('sidebarImpactTemp');
-  const impactCanopyEl = document.getElementById('sidebarImpactCanopy');
-  const impactRootEl = document.getElementById('sidebarImpactRoot');
-  const impactPointsEl = document.getElementById('sidebarImpactPoints');
+  const treeNameEl = document.getElementById("sidebarTreeName");
+  const impactTempEl = document.getElementById("sidebarImpactTemp");
+  const impactCanopyEl = document.getElementById("sidebarImpactCanopy");
+  const impactRootEl = document.getElementById("sidebarImpactRoot");
+  const impactPointsEl = document.getElementById("sidebarImpactPoints");
 
-  if (treeNameEl) treeNameEl.textContent = `${data.treeName} (${data.treeBotanical || ''})`;
-  if (impactTempEl) impactTempEl.textContent = data.impactTemp || data.treeTemp || '-3.8°C';
-  if (impactCanopyEl) impactCanopyEl.textContent = data.impactCanopy || '14.2 m²';
-  if (impactRootEl) impactRootEl.textContent = data.impactRoot || 'Aman';
-  if (impactPointsEl) impactPointsEl.textContent = data.impactPoints || '+120 Poin';
+  if (treeNameEl)
+    treeNameEl.textContent = `${data.treeName} (${data.treeBotanical || ""})`;
+  if (impactTempEl)
+    impactTempEl.textContent = data.impactTemp || data.treeTemp || "-3.8°C";
+  if (impactCanopyEl)
+    impactCanopyEl.textContent = data.impactCanopy || "14.2 m²";
+  if (impactRootEl) impactRootEl.textContent = data.impactRoot || "Aman";
+  if (impactPointsEl)
+    impactPointsEl.textContent = data.impactPoints || "+120 Poin";
 
   // Render Comments Tree
   renderDetailCommentsTree(data.comments);
 }
 
 function renderDetailCommentsTree(commentsList) {
-  const treeContainer = document.getElementById('detailCommentsTree');
+  const treeContainer = document.getElementById("detailCommentsTree");
   if (!treeContainer || !commentsList) return;
 
-  treeContainer.innerHTML = commentsList.map(c => {
-    const repliesHtml = (c.replies || []).map(r => `
+  treeContainer.innerHTML = commentsList
+    .map((c) => {
+      const repliesHtml = (c.replies || [])
+        .map(
+          (r) => `
       <div class="km-comment-node is-reply">
         <img src="${r.avatar}" alt="${escapeHtml(r.author)}" class="km-comment-avatar">
         <div class="km-comment-content">
@@ -1690,9 +2167,11 @@ function renderDetailCommentsTree(commentsList) {
           </button>
         </div>
       </div>
-    `).join('');
+    `,
+        )
+        .join("");
 
-    return `
+      return `
       <div class="km-comment-branch" id="branch-${c.id}">
         <div class="km-comment-node">
           <img src="${c.avatar}" alt="${escapeHtml(c.author)}" class="km-comment-avatar">
@@ -1728,69 +2207,106 @@ function renderDetailCommentsTree(commentsList) {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join("");
 }
 
 function toggleDetailThreadLike(btn) {
   if (!btn) return;
-  const countEl = btn.querySelector('.like-count');
-  const statLikes = document.getElementById('detailStatLikes');
+  const countEl = btn.querySelector(".like-count");
+  const statLikes = document.getElementById("detailStatLikes");
+  const icon = btn.querySelector("svg");
   if (!countEl) return;
 
   let current = parseInt(countEl.textContent, 10) || 0;
-  if (btn.classList.contains('is-liked')) {
-    btn.classList.remove('is-liked');
+  if (btn.classList.contains("is-liked")) {
+    btn.classList.remove("is-liked");
     const next = Math.max(0, current - 1);
     countEl.textContent = next;
     if (statLikes) statLikes.textContent = next;
+    if (typeof gsap !== "undefined" && icon) {
+      gsap.fromTo(
+        icon,
+        { scale: 0.85 },
+        { scale: 1, duration: 0.2, ease: "power1.out" },
+      );
+    }
   } else {
-    btn.classList.add('is-liked');
+    btn.classList.add("is-liked");
     const next = current + 1;
     countEl.textContent = next;
     if (statLikes) statLikes.textContent = next;
+
+    if (typeof gsap !== "undefined") {
+      if (icon) {
+        gsap.fromTo(
+          icon,
+          { scale: 1.4, rotation: -12 },
+          { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2)" },
+        );
+      }
+      if (countEl) {
+        gsap.fromTo(
+          countEl,
+          { y: -4, opacity: 0.5 },
+          { y: 0, opacity: 1, duration: 0.25, ease: "power2.out" },
+        );
+      }
+      if (statLikes) {
+        gsap.fromTo(
+          statLikes,
+          { scale: 1.3 },
+          { scale: 1, duration: 0.35, ease: "back.out(1.8)" },
+        );
+      }
+    }
+
     addPointsWithAnimation(2);
   }
 }
 
 function focusDetailCommentInput() {
-  const input = document.getElementById('detailCommentInput');
+  const input = document.getElementById("detailCommentInput");
   if (input) {
     input.focus();
-    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 }
 
 function copyDetailShareLink() {
-  navigator.clipboard.writeText(window.location.href).then(() => {
-    showKmToast('Tautan postingan berhasil disalin ke papan klip');
-  }).catch(() => {
-    showKmToast('Tautan postingan siap dibagikan');
-  });
+  navigator.clipboard
+    .writeText(window.location.href)
+    .then(() => {
+      showKmToast("Tautan postingan berhasil disalin ke papan klip");
+    })
+    .catch(() => {
+      showKmToast("Tautan postingan siap dibagikan");
+    });
 }
 
 function handleDetailCommentKey(e) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     e.preventDefault();
     submitDetailComment();
   }
 }
 
 function submitDetailComment() {
-  const input = document.getElementById('detailCommentInput');
-  const tree = document.getElementById('detailCommentsTree');
-  const statComments = document.getElementById('detailStatComments');
+  const input = document.getElementById("detailCommentInput");
+  const tree = document.getElementById("detailCommentsTree");
+  const statComments = document.getElementById("detailStatComments");
 
   if (!input || !tree) return;
   const text = input.value.trim();
   if (!text) {
-    showKmToast('Tuliskan tanggapan Anda terlebih dahulu');
+    showKmToast("Tuliskan tanggapan Anda terlebih dahulu");
     input.focus();
     return;
   }
 
   const branchId = `detail-c-user-${Date.now()}`;
-  const branch = document.createElement('div');
-  branch.className = 'km-comment-branch';
+  const branch = document.createElement("div");
+  branch.className = "km-comment-branch";
   branch.id = `branch-${branchId}`;
   branch.innerHTML = `
     <div class="km-comment-node">
@@ -1826,18 +2342,33 @@ function submitDetailComment() {
   `;
 
   tree.appendChild(branch);
-  input.value = '';
+  input.value = "";
+
+  if (typeof gsap !== "undefined") {
+    gsap.fromTo(
+      branch,
+      { opacity: 0, y: 16, scale: 0.98 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "power2.out" },
+    );
+  }
 
   if (statComments) {
     const current = parseInt(statComments.textContent, 10) || 0;
     statComments.textContent = current + 1;
+    if (typeof gsap !== "undefined") {
+      gsap.fromTo(
+        statComments,
+        { scale: 1.3 },
+        { scale: 1, duration: 0.35, ease: "back.out(1.8)" },
+      );
+    }
   }
 
   addPointsWithAnimation(10);
 }
 
 function handleDetailNestedReplyKey(e, branchId) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     e.preventDefault();
     submitDetailNestedReply(branchId);
   }
@@ -1847,14 +2378,14 @@ function submitDetailNestedReply(branchId) {
   const box = document.getElementById(`reply-box-${branchId}`);
   const input = document.getElementById(`reply-input-${branchId}`);
   const repliesContainer = document.getElementById(`replies-${branchId}`);
-  const statComments = document.getElementById('detailStatComments');
+  const statComments = document.getElementById("detailStatComments");
 
   if (!input || !repliesContainer) return;
   const text = input.value.trim();
   if (!text) return;
 
-  const replyNode = document.createElement('div');
-  replyNode.className = 'km-comment-node is-reply';
+  const replyNode = document.createElement("div");
+  replyNode.className = "km-comment-node is-reply";
   replyNode.innerHTML = `
     <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
     <div class="km-comment-content">
@@ -1867,12 +2398,27 @@ function submitDetailNestedReply(branchId) {
   `;
 
   repliesContainer.insertBefore(replyNode, box);
-  input.value = '';
-  if (box) box.style.display = 'none';
+  input.value = "";
+  if (box) box.style.display = "none";
+
+  if (typeof gsap !== "undefined") {
+    gsap.fromTo(
+      replyNode,
+      { opacity: 0, x: -14 },
+      { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" },
+    );
+  }
 
   if (statComments) {
     const current = parseInt(statComments.textContent, 10) || 0;
     statComments.textContent = current + 1;
+    if (typeof gsap !== "undefined") {
+      gsap.fromTo(
+        statComments,
+        { scale: 1.3 },
+        { scale: 1, duration: 0.35, ease: "back.out(1.8)" },
+      );
+    }
   }
 
   addPointsWithAnimation(10);
@@ -1923,5 +2469,3 @@ window.formatHashtags = formatHashtags;
 window.showTagHoverCard = showTagHoverCard;
 window.showMentionHoverCard = showMentionHoverCard;
 window.hideHoverCard = hideHoverCard;
-
-

@@ -1,821 +1,1964 @@
-<!DOCTYPE html>
+<!--
+  TEDUH DIGITAL PLATFORM
+  Berkas: community.html
+  Deskripsi: Halaman Komunitas Warga, Linimasa Aksi Tanam & Gotong Royong Lingkungan
+
+  ==========================================================================
+  SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+  1. Fotografi & Dokumentasi Lapangan (Seluruh aset memiliki Open License / Bebas Hak Cipta Komersial):
+     - Potret Avatar Warga & Profil (assets/avatars/*): Unsplash & Pexels (Open License / Free for Commercial Use).
+     - Direktori Pohon & Botani Peneduh (assets/trees/*): Wikimedia Commons & Open Flora Archive (Creative Commons CC BY-SA 4.0).
+     - Dokumentasi Aksi Pekarangan (assets/feed/*): Unsplash & Freepik (Open License with Free Commercial Rights).
+     - Katalog Reward & Voucher Ekologis (assets/vouchers/*): Freepik & Unsplash (Open License).
+     - Lanskap Perkotaan & Kanopi Hijau (assets/landing/*): Unsplash (Open License / Free to Use).
+  2. Ilustrasi & Identitas Visual Orisinal:
+     - Maskot Interaktif Teduh Bot (assets/bot/*): Ilustrasi Digital Orisinal Tim Pengembang Teduh.
+     - Logo & Brandmark Teduh (assets/logo/*): Desain Vektor Orisinal Tim Pengembang Teduh.
+     - Logo Institusi & Mitra Ekologis (assets/mitra/*): Aset Vektor Resmi Domain Publik / Mitra Terkait.
+  3. Peta Spasial & Citra Satelit:
+     - Citra Satelit Google Hybrid: Google Maps / Earth Tile Server.
+     - CartoDB Dark Matter & Voyager: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
+  4. Tipografi, Ikonografi & Pustaka Eksternal:
+     - Google Fonts Plus Jakarta Sans: Tokyo Type Directors Club & Tokotype (SIL Open Font License 1.1).
+     - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+     - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
+     - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
+     - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+  ==========================================================================
+-->
+
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teduh: Komunitas Warga &amp; Linimasa Aksi Tanam</title>
-  <meta name="description" content="Forum komunitas warga Teduh untuk berbagi dokumentasi penanaman pohon peneduh pekarangan, panduan akar aman fondasi, dan diskusi lingkungan sejuk di Denpasar.">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teduh: Komunitas Warga &amp; Linimasa Aksi Tanam</title>
+    <meta
+      name="description"
+      content="Forum komunitas warga Teduh untuk berbagi dokumentasi penanaman pohon peneduh pekarangan, panduan akar aman fondasi, dan diskusi lingkungan sejuk di Denpasar."
+    />
 
-  <!-- Google Fonts: Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Stylesheets Murni -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/community.css">
-  <link rel="stylesheet" href="css/chatbot.css">
-</head>
-<body>
+    <link rel="icon" type="image/svg+xml" href="assets/logo/teduh-cloud.svg" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/community.css" />
+    <link rel="stylesheet" href="css/chatbot.css" />
+  </head>
+  <body>
+    <nav class="navbar" aria-label="Navigasi Utama">
+      <div class="navbar-inner">
+        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <img
+            src="assets/logo/teduh-logo.svg"
+            alt="Teduh"
+            class="navbar-brand-logo"
+          />
+          <img
+            src="assets/logo/teduh-only.svg"
+            alt="Teduh"
+            class="navbar-brand-logo-mobile"
+          />
+        </a>
 
-  <!-- TOP FLOATING CAPSULE NAVIGATION -->
-  <nav class="navbar" aria-label="Navigasi Utama">
-    <div class="navbar-inner">
-      <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
-        <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
-        <img src="assets/logo/teduh-only.svg" alt="Teduh" class="navbar-brand-logo-mobile">
-      </a>
-
-      <div class="navbar-links">
-        <a href="index.html" class="navbar-link">Beranda</a>
-        <a href="map.html" class="navbar-link">Konsol Peta</a>
-        <a href="community.html" class="navbar-link active" aria-current="page">Komunitas</a>
-        <a href="reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
-      </div>
-
-      <div class="navbar-actions">
-        <!-- Pemicu Notifikasi Dropdown Ala NutriNesia -->
-        <div class="nav-notif-wrapper">
-          <button type="button" class="nav-notif-trigger" aria-label="Notifikasi Pengguna" aria-expanded="false">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            <span class="nav-notif-dot"></span>
-          </button>
-
-          <!-- Pop-up Dropdown Notifikasi -->
-          <div class="nav-notif-popup" role="menu">
-            <div class="nav-notif-header">
-              <h4 class="nav-notif-title">Notifikasi</h4>
-              <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
-            </div>
-            <div class="nav-notif-list">
-              <!-- Diisi secara dinamis oleh js/main.js -->
-            </div>
-            <div class="nav-notif-footer">
-              <button type="button" class="nav-notif-view-all-btn">Lihat Semua Notifikasi</button>
-            </div>
-          </div>
+        <div class="navbar-links">
+          <a href="index.html" class="navbar-link">Beranda</a>
+          <a href="map.html" class="navbar-link">Konsol Peta</a>
+          <a
+            href="community.html"
+            class="navbar-link active"
+            aria-current="page"
+            >Komunitas</a
+          >
+          <a href="reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
         </div>
 
-        <!-- Pemicu Avatar Profil Bulat & Arrow Chevron -->
-        <div class="nav-profile-wrapper">
-          <button type="button" class="nav-profile-trigger" aria-label="Menu Profil John Doe" aria-expanded="false">
-            <div class="nav-profile-avatar">
-              <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
-            </div>
-            <div class="nav-profile-arrow">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-          </button>
+        <div class="navbar-actions">
+          <div class="nav-notif-wrapper">
+            <button
+              type="button"
+              class="nav-notif-trigger"
+              aria-label="Notifikasi Pengguna"
+              aria-expanded="false"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span class="nav-notif-dot"></span>
+            </button>
 
-          <!-- Pop-up Menu Profil John Doe -->
-          <div class="nav-profile-popup" role="menu">
-            <div class="nav-popup-header">
-              <div class="nav-popup-avatar">
-                <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
+            <div class="nav-notif-popup" role="menu">
+              <div class="nav-notif-header">
+                <h4 class="nav-notif-title">Notifikasi</h4>
+                <span class="nav-notif-mark-read-badge">Tandai Dibaca</span>
               </div>
-              <div class="nav-popup-user-meta">
-                <span class="nav-popup-name">John Doe</span>
-                <span class="nav-popup-username">@johndoe</span>
+              <div class="nav-notif-list"></div>
+              <div class="nav-notif-footer">
+                <button type="button" class="nav-notif-view-all-btn">
+                  Lihat Semua Notifikasi
+                </button>
               </div>
             </div>
+          </div>
 
-            <!-- Metrik Level & Poin Sederhana -->
-            <div class="nav-popup-metrics">
-              <div class="nav-popup-metrics-row">
-                <span class="nav-popup-level-badge">Level 3: Perintis Teduh</span>
-                <div class="nav-popup-points-badge">
-                  <span class="nav-popup-points-value" id="navUserPointsValue">850 Poin</span>
+          <div class="nav-profile-wrapper">
+            <button
+              type="button"
+              class="nav-profile-trigger"
+              aria-label="Menu Profil John Doe"
+              aria-expanded="false"
+            >
+              <div class="nav-profile-avatar">
+                <img
+                  src="assets/avatars/john-doe.jpg"
+                  alt="Avatar John Doe"
+                  onerror="
+                    this.style.display = 'none';
+                    this.parentElement.innerText = 'JD';
+                  "
+                />
+              </div>
+              <div class="nav-profile-arrow">
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </button>
+
+            <div class="nav-profile-popup" role="menu">
+              <div class="nav-popup-header">
+                <div class="nav-popup-avatar">
+                  <img
+                    src="assets/avatars/john-doe.jpg"
+                    alt="Avatar John Doe"
+                    onerror="
+                      this.style.display = 'none';
+                      this.parentElement.innerText = 'JD';
+                    "
+                  />
+                </div>
+                <div class="nav-popup-user-meta">
+                  <span class="nav-popup-name">John Doe</span>
+                  <span class="nav-popup-username">@johndoe</span>
                 </div>
               </div>
 
-              <div class="nav-popup-progress-track">
-                <div class="nav-popup-progress-fill" style="width: 70%;"></div>
+              <div class="nav-popup-metrics">
+                <div class="nav-popup-metrics-row">
+                  <span class="nav-popup-level-badge"
+                    >Level 3: Perintis Teduh</span
+                  >
+                  <div class="nav-popup-points-badge">
+                    <span class="nav-popup-points-value" id="navUserPointsValue"
+                      >850 Poin</span
+                    >
+                  </div>
+                </div>
+
+                <div class="nav-popup-progress-track">
+                  <div class="nav-popup-progress-fill" style="width: 70%"></div>
+                </div>
+              </div>
+
+              <div class="nav-popup-menu">
+                <a href="profile.html" class="nav-popup-item" role="menuitem">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                    <circle
+                      cx="12"
+                      cy="7"
+                      r="4"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></circle>
+                  </svg>
+                  <span>Profil Saya</span>
+                </a>
+                <div class="nav-popup-divider"></div>
+                <button
+                  type="button"
+                  class="nav-popup-logout-btn"
+                  onclick="handleNavLogout()"
+                  role="menuitem"
+                >
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="navbarHamburger"
+            class="navbar-hamburger"
+            type="button"
+            aria-label="Buka Menu Navigasi"
+            aria-expanded="false"
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="3.5" y1="6" x2="20.5" y2="6"></line>
+              <line x1="3.5" y1="12" x2="20.5" y2="12"></line>
+              <line x1="3.5" y1="18" x2="20.5" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      id="mobileNavOverlay"
+      class="mobile-nav-overlay"
+      aria-hidden="true"
+    ></div>
+    <aside
+      id="mobileNavMenu"
+      class="mobile-nav-menu"
+      aria-label="Menu Navigasi Mobile"
+    >
+      <div class="mobile-nav-top">
+        <div class="mobile-nav-header">
+          <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+            <img
+              src="assets/logo/teduh-logo.svg"
+              alt="Teduh"
+              class="navbar-brand-logo"
+            />
+          </a>
+          <button
+            id="mobileNavClose"
+            class="mobile-nav-close"
+            type="button"
+            aria-label="Tutup Menu"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="mobile-nav-links">
+          <a href="index.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Beranda</span>
+          </a>
+          <a href="map.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+              ></polygon>
+              <line x1="8" y1="2" x2="8" y2="18"></line>
+              <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <span>Konsol Peta</span>
+          </a>
+          <a href="community.html" class="mobile-nav-link active">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Komunitas</span>
+          </a>
+          <a href="reward.html" class="mobile-nav-link">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="8" r="7"></circle>
+              <polyline
+                points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"
+              ></polyline>
+            </svg>
+            <span>Peringkat &amp; Hadiah</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="mobile-nav-footer">
+        <a
+          href="profile.html"
+          class="mobile-nav-profile"
+          aria-label="Buka Profil John Doe"
+        >
+          <img
+            src="assets/avatars/john-doe.jpg"
+            alt="Avatar John Doe"
+            onerror="
+              this.style.display = 'none';
+              this.parentElement.innerText = 'JD';
+            "
+          />
+          <div class="mobile-nav-profile-info">
+            <strong>John Doe</strong>
+            <span id="mobileUserPoints">Level 3 • 850 Poin</span>
+          </div>
+          <svg
+            class="mobile-nav-profile-arrow"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          class="mobile-nav-logout"
+          onclick="handleNavLogout()"
+        >
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span>Keluar dari Akun</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="km-page-wrapper">
+      <div class="km-container">
+        <div class="km-layout-grid km-layout-grid-top">
+          <div class="km-feed-stream">
+            <div class="km-composer-trigger-card" id="kmComposerTriggerCard">
+              <div class="km-trigger-top-row">
+                <img
+                  src="assets/avatars/john-doe.jpg"
+                  alt="Avatar John Doe"
+                  class="km-trigger-avatar"
+                />
+                <button
+                  type="button"
+                  class="km-trigger-fake-input"
+                  onclick="openPostModal('text')"
+                >
+                  <span
+                    >Bagikan kondisi pekarangan atau tanya bibit
+                    peneduh...</span
+                  >
+                </button>
+              </div>
+              <div class="km-trigger-bottom-row">
+                <button
+                  type="button"
+                  class="km-trigger-btn"
+                  onclick="openPostModal('photo')"
+                >
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                  <span>Foto</span>
+                </button>
+                <button
+                  type="button"
+                  class="km-trigger-btn"
+                  onclick="openPostModal('video')"
+                >
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect
+                      x="1"
+                      y="5"
+                      width="15"
+                      height="14"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                  </svg>
+                  <span>Video</span>
+                </button>
               </div>
             </div>
 
-            <!-- Menu Tautan Profil -->
-            <div class="nav-popup-menu">
-              <a href="profile.html" class="nav-popup-item" role="menuitem">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
-                <span>Profil Saya</span>
-              </a>
-              <div class="nav-popup-divider"></div>
-              <button type="button" class="nav-popup-logout-btn" onclick="handleNavLogout()" role="menuitem">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                <span>Logout</span>
-              </button>
+            <div class="km-feed-section-header">
+              <h2 class="km-feed-section-title">On Trending</h2>
             </div>
-          </div>
-        </div>
 
-        <button id="navbarHamburger" class="navbar-hamburger" type="button" aria-label="Buka Menu Navigasi" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Drawer Overlay & Menu -->
-  <div id="mobileNavOverlay" class="mobile-nav-overlay" aria-hidden="true"></div>
-  <aside id="mobileNavMenu" class="mobile-nav-menu" aria-label="Menu Navigasi Mobile">
-    <div class="mobile-nav-top">
-      <div class="mobile-nav-header">
-        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
-          <img src="assets/logo/teduh-logo.svg" alt="Teduh" class="navbar-brand-logo">
-        </a>
-        <button id="mobileNavClose" class="mobile-nav-close" type="button" aria-label="Tutup Menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-      </div>
-
-      <div class="mobile-nav-profile">
-        <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" onerror="this.style.display='none'; this.parentElement.innerText='JD';">
-        <div class="mobile-nav-profile-info">
-          <strong>John Doe</strong>
-          <span>Level 3: Perintis Teduh (850 Poin)</span>
-        </div>
-      </div>
-
-      <nav class="mobile-nav-links">
-        <a href="index.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-          <span>Beranda</span>
-        </a>
-        <a href="map.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-          <span>Konsol Peta</span>
-        </a>
-        <a href="community.html" class="mobile-nav-link active">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          <span>Komunitas</span>
-        </a>
-        <a href="reward.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-          <span>Peringkat &amp; Hadiah</span>
-        </a>
-        <a href="profile.html" class="mobile-nav-link">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          <span>Profil Saya</span>
-        </a>
-      </nav>
-    </div>
-
-    <div class="mobile-nav-footer">
-      <button type="button" class="mobile-nav-logout" onclick="handleNavLogout()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        <span>Keluar dari Akun</span>
-      </button>
-    </div>
-  </aside>
-
-  <!-- MAIN WRAPPER -->
-  <main class="km-page-wrapper">
-    <div class="km-container">
-
-      <!-- ====================================================================
-           KOMUNITAS SOSIAL WARGA: FEED LINIMASA & MISI BERPOIN
-           ==================================================================== -->
-      <div class="km-layout-grid km-layout-grid-top">
-
-        <!-- KOLOM KIRI: FEED THREAD STREAM -->
-        <div class="km-feed-stream">
-
-          <!-- FEED TRIGGER CARD (LINKEDIN STYLE) -->
-          <div class="km-composer-trigger-card" id="kmComposerTriggerCard">
-            <div class="km-trigger-top-row">
-              <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" class="km-trigger-avatar">
-              <button type="button" class="km-trigger-fake-input" onclick="openPostModal('text')">
-                <span>Bagikan kondisi pekarangan atau tanya bibit peneduh...</span>
-              </button>
-            </div>
-            <div class="km-trigger-bottom-row">
-              <button type="button" class="km-trigger-btn" onclick="openPostModal('photo')">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                <span>Foto Pekarangan</span>
-              </button>
-              <button type="button" class="km-trigger-btn" onclick="openPostModal('location')">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span>Tandai Lokasi</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- SEKSI HEADER FEED: ON TRENDING -->
-          <div class="km-feed-section-header">
-            <h2 class="km-feed-section-title">On Trending</h2>
-          </div>
-
-          <!-- DAFTAR THREAD FEED (Diisi Dinamis & Default 3 Thread) -->
-          <div id="kmFeedContainer" class="km-feed-stream">
-            
-            <!-- Thread 1: Gede Surya -->
-            <article class="km-thread-card" id="thread-1" data-tag="#AksiTanam">
-              <div class="km-thread-header">
-                <div class="km-thread-author-wrap">
-                  <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-thread-avatar">
-                  <div class="km-thread-meta">
-                    <div class="km-author-title-row">
-                      <span class="km-thread-author-name">Gede Surya</span>
-                    </div>
-                    <div class="km-author-loc-time-stack">
-                      <span class="km-thread-location">Renon, Denpasar Selatan</span>
-                      <span class="km-thread-time">2 jam yang lalu</span>
+            <div id="kmFeedContainer" class="km-feed-stream">
+              <article
+                class="km-thread-card"
+                id="thread-1"
+                data-tag="#AksiTanam"
+              >
+                <div class="km-thread-header">
+                  <div class="km-thread-author-wrap">
+                    <img
+                      src="assets/avatars/gede-surya.jpg"
+                      alt="Gede Surya"
+                      class="km-thread-avatar"
+                    />
+                    <div class="km-thread-meta">
+                      <div class="km-author-title-row">
+                        <span class="km-thread-author-name">Gede Surya</span>
+                      </div>
+                      <div class="km-author-loc-time-stack">
+                        <span class="km-thread-location"
+                          >Renon, Denpasar Selatan</span
+                        >
+                        <span class="km-thread-time">2 jam yang lalu</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="km-thread-body">
-                <p class="km-thread-text">Pagi tadi selesai menanam 1 bibit Pohon Tanjung di sudut barat pekarangan rumah. Teras depan yang dulunya kena radiasi pantulan semen 38°C sekarang mulai teduh. Jarak ke pagar 2.2 meter, aman dari saluran got. <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span></p>
-                
-                <!-- Multi-Foto Grid 3 Gambar -->
-                <div class="km-photo-grid km-photo-grid-3">
-                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat dokumentasi pekarangan">
-                    <img src="assets/feed/feed-ubud-garden.jpg" alt="Dokumentasi pekarangan" loading="lazy">
-                  </a>
-                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat kondisi adaptasi bibit">
-                    <img src="assets/feed/feed-gatsu-roadside.jpg" alt="Kondisi adaptasi bibit pekarangan" loading="lazy">
-                  </a>
-                  <a href="community-detail.html?id=thread-1" class="km-photo-item" aria-label="Lihat gotong royong penanaman">
-                    <img src="assets/feed/feed-gotong-royong.jpg" alt="Gotong royong penanaman pekarangan" loading="lazy">
+                <div class="km-thread-body">
+                  <p class="km-thread-text">
+                    Pagi tadi selesai menanam 1 bibit Pohon Tanjung di sudut
+                    barat pekarangan rumah. Teras depan yang dulunya kena
+                    radiasi pantulan semen 38°C sekarang mulai teduh. Jarak ke
+                    pagar 2.2 meter, aman dari saluran got.
+                    <span
+                      class="km-inline-tag"
+                      data-tag="#AksiTanam"
+                      onclick="filterByTag('#AksiTanam')"
+                      onmouseenter="showTagHoverCard(event, '#AksiTanam')"
+                      onmouseleave="hideHoverCard()"
+                      >#AksiTanam</span
+                    >
+                  </p>
+
+                  <div class="km-photo-grid km-photo-grid-3">
+                    <a
+                      href="community-detail.html?id=thread-1"
+                      class="km-photo-item"
+                      aria-label="Lihat dokumentasi pekarangan"
+                    >
+                      <img
+                        src="assets/feed/feed-ubud-garden.jpg"
+                        alt="Dokumentasi pekarangan"
+                        loading="lazy"
+                      />
+                    </a>
+                    <a
+                      href="community-detail.html?id=thread-1"
+                      class="km-photo-item"
+                      aria-label="Lihat kondisi adaptasi bibit"
+                    >
+                      <img
+                        src="assets/feed/feed-gatsu-roadside.jpg"
+                        alt="Kondisi adaptasi bibit pekarangan"
+                        loading="lazy"
+                      />
+                    </a>
+                    <a
+                      href="community-detail.html?id=thread-1"
+                      class="km-photo-item"
+                      aria-label="Lihat gotong royong penanaman"
+                    >
+                      <img
+                        src="assets/feed/feed-gotong-royong.jpg"
+                        alt="Gotong royong penanaman pekarangan"
+                        loading="lazy"
+                      />
+                    </a>
+                  </div>
+                </div>
+
+                <div class="km-thread-actions-bar">
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="toggleThreadLike('thread-1', this)"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      ></path>
+                    </svg>
+                    <span class="like-count">24</span> Suka
+                  </button>
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="focusCommentInput('thread-1')"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                      ></path>
+                    </svg>
+                    <span class="comment-count">2</span> Komentar
+                  </button>
+                  <a
+                    href="community-detail.html?id=thread-1"
+                    class="km-action-btn km-detail-link-btn"
+                    title="Buka Detail Thread"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    <span>Buka Thread</span>
                   </a>
                 </div>
-              </div>
 
-              <div class="km-thread-actions-bar">
-                <button type="button" class="km-action-btn" onclick="toggleThreadLike('thread-1', this)">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                  <span class="like-count">24</span> Suka
-                </button>
-                <button type="button" class="km-action-btn" onclick="focusCommentInput('thread-1')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  <span class="comment-count">2</span> Komentar
-                </button>
-                <a href="community-detail.html?id=thread-1" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                  <span>Buka Thread</span>
-                </a>
-              </div>
+                <div class="km-thread-comments-section">
+                  <div class="km-comment-input-row">
+                    <input
+                      type="text"
+                      class="km-inline-comment-input"
+                      placeholder="Tulis komentar untuk postingan Gede Surya..."
+                      onkeydown="handleCommentKey(event, 'thread-1')"
+                    />
+                    <button
+                      type="button"
+                      class="km-btn-send-comment"
+                      onclick="submitInlineComment('thread-1')"
+                    >
+                      Kirim
+                    </button>
+                  </div>
 
-              <!-- Inline Comments Section -->
-              <div class="km-thread-comments-section">
-                <!-- Input Balas Komentar di ATAS -->
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan Gede Surya..." onkeydown="handleCommentKey(event, 'thread-1')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-1')">Kirim</button>
-                </div>
-
-                <!-- Pohon Komentar (Branch Tree Graph) -->
-                <div class="km-comments-tree" id="comments-list-thread-1">
-                  <div class="km-comment-branch" id="branch-thread-1-comment-1">
-                    <div class="km-comment-node">
-                      <img src="assets/avatars/ibu-desak.jpg" alt="Ibu Desak" class="km-comment-avatar">
-                      <div class="km-comment-content">
-                        <div class="km-comment-header">
-                          <span class="km-comment-author">Ibu Desak</span>
-                          <span class="km-comment-time">1 jam lalu</span>
-                        </div>
-                        <p class="km-comment-text">Bagus sekali Bli Surya. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?</p>
-                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-1-comment-1', 'Ibu Desak')">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                          <span>Balas</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Sub-Branch Replies -->
-                    <div class="km-comment-replies" id="replies-thread-1-comment-1">
-                      <div class="km-comment-node is-reply">
-                        <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-comment-avatar">
+                  <div class="km-comments-tree" id="comments-list-thread-1">
+                    <div
+                      class="km-comment-branch"
+                      id="branch-thread-1-comment-1"
+                    >
+                      <div class="km-comment-node">
+                        <img
+                          src="assets/avatars/ibu-desak.jpg"
+                          alt="Ibu Desak"
+                          class="km-comment-avatar"
+                        />
                         <div class="km-comment-content">
                           <div class="km-comment-header">
-                            <span class="km-comment-author">Gede Surya</span>
-                            <span class="km-comment-time">45 menit lalu</span>
+                            <span class="km-comment-author">Ibu Desak</span>
+                            <span class="km-comment-time">1 jam lalu</span>
                           </div>
-                          <p class="km-comment-text">Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.</p>
-                          <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-1-comment-1', 'Gede Surya')">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
+                          <p class="km-comment-text">
+                            Bagus sekali Bli Surya. Ditanam dari bibit ukuran
+                            berapa meter kemarin? Akarnya langsung tunggang ke
+                            bawah ya?
+                          </p>
+                          <button
+                            type="button"
+                            class="km-comment-reply-btn"
+                            onclick="
+                              toggleInlineReplyForm(
+                                'thread-1-comment-1',
+                                'Ibu Desak',
+                              )
+                            "
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                            >
+                              <polyline points="9 17 4 12 9 7"></polyline>
+                              <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                            </svg>
                             <span>Balas</span>
                           </button>
                         </div>
                       </div>
 
-                      <!-- Wadah Container Form Balas Komentar Bersarang -->
-                      <div class="km-reply-composer-box" id="reply-box-thread-1-comment-1" style="display: none;">
-                        <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
-                        <div class="km-reply-composer-content">
-                          <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-1-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@Ibu Desak')" onmouseleave="hideHoverCard()">@Ibu Desak</strong></span>
-                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-1-comment-1')">Batal</button>
+                      <div
+                        class="km-comment-replies"
+                        id="replies-thread-1-comment-1"
+                      >
+                        <div class="km-comment-node is-reply">
+                          <img
+                            src="assets/avatars/gede-surya.jpg"
+                            alt="Gede Surya"
+                            class="km-comment-avatar"
+                          />
+                          <div class="km-comment-content">
+                            <div class="km-comment-header">
+                              <span class="km-comment-author">Gede Surya</span>
+                              <span class="km-comment-time">45 menit lalu</span>
+                            </div>
+                            <p class="km-comment-text">
+                              Pakai bibit 1.5 meter Bu. Langsung disiram air
+                              cucian beras dan tanah humus subak, cepat kokoh
+                              akarnya.
+                            </p>
+                            <button
+                              type="button"
+                              class="km-comment-reply-btn"
+                              onclick="
+                                toggleInlineReplyForm(
+                                  'thread-1-comment-1',
+                                  'Gede Surya',
+                                )
+                              "
+                            >
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                              >
+                                <polyline points="9 17 4 12 9 7"></polyline>
+                                <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                              </svg>
+                              <span>Balas</span>
+                            </button>
                           </div>
-                          <div class="km-reply-input-group">
-                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-1-comment-1" placeholder="Tulis balasan untuk Ibu Desak..." onkeydown="handleNestedReplyKey(event, 'thread-1', 'thread-1-comment-1')">
-                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-1', 'thread-1-comment-1')">Balas</button>
+                        </div>
+
+                        <div
+                          class="km-reply-composer-box"
+                          id="reply-box-thread-1-comment-1"
+                          style="display: none"
+                        >
+                          <img
+                            src="assets/avatars/john-doe.jpg"
+                            alt="Avatar Anda"
+                            class="km-reply-user-avatar"
+                          />
+                          <div class="km-reply-composer-content">
+                            <div class="km-reply-composer-header">
+                              <span class="km-replying-to-label"
+                                >Membalas
+                                <strong
+                                  id="reply-target-thread-1-comment-1"
+                                  class="km-inline-mention"
+                                  onmouseenter="
+                                    showMentionHoverCard(event, '@Ibu Desak')
+                                  "
+                                  onmouseleave="hideHoverCard()"
+                                  >@Ibu Desak</strong
+                                ></span
+                              >
+                              <button
+                                type="button"
+                                class="km-reply-cancel-btn"
+                                onclick="
+                                  closeInlineReplyForm('thread-1-comment-1')
+                                "
+                              >
+                                Batal
+                              </button>
+                            </div>
+                            <div class="km-reply-input-group">
+                              <input
+                                type="text"
+                                class="km-nested-reply-input"
+                                id="reply-input-thread-1-comment-1"
+                                placeholder="Tulis balasan untuk Ibu Desak..."
+                                onkeydown="
+                                  handleNestedReplyKey(
+                                    event,
+                                    'thread-1',
+                                    'thread-1-comment-1',
+                                  )
+                                "
+                              />
+                              <button
+                                type="button"
+                                class="km-btn-send-nested-reply"
+                                onclick="
+                                  submitNestedReply(
+                                    'thread-1',
+                                    'thread-1-comment-1',
+                                  )
+                                "
+                              >
+                                Balas
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
 
-            <!-- Thread 2: Ibu Desak -->
-            <article class="km-thread-card" id="thread-2" data-tag="#PekaranganSemen">
-              <div class="km-thread-header">
-                <div class="km-thread-author-wrap">
-                  <img src="assets/avatars/ibu-desak.jpg" alt="Ibu Desak" class="km-thread-avatar">
-                  <div class="km-thread-meta">
-                    <div class="km-author-title-row">
-                      <span class="km-thread-author-name">Ibu Desak</span>
-                    </div>
-                    <div class="km-author-loc-time-stack">
-                      <span class="km-thread-location">Sesetan, Denpasar Selatan</span>
-                      <span class="km-thread-time">5 jam yang lalu</span>
+              <article
+                class="km-thread-card"
+                id="thread-2"
+                data-tag="#PekaranganSemen"
+              >
+                <div class="km-thread-header">
+                  <div class="km-thread-author-wrap">
+                    <img
+                      src="assets/avatars/ibu-desak.jpg"
+                      alt="Ibu Desak"
+                      class="km-thread-avatar"
+                    />
+                    <div class="km-thread-meta">
+                      <div class="km-author-title-row">
+                        <span class="km-thread-author-name">Ibu Desak</span>
+                      </div>
+                      <div class="km-author-loc-time-stack">
+                        <span class="km-thread-location"
+                          >Sesetan, Denpasar Selatan</span
+                        >
+                        <span class="km-thread-time">5 jam yang lalu</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="km-thread-body">
-                <p class="km-thread-text">Untuk gang sempit selebar 3 meter di Sesetan, Ketapang Kencana benar-benar penyelamat. Tajuk bertingkatnya menyaring sinar matahari sore tanpa bikin sempit jalan masuk motor warga. <span class="km-inline-tag" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')" onmouseenter="showTagHoverCard(event, '#PekaranganSemen')" onmouseleave="hideHoverCard()">#PekaranganSemen</span></p>
-                
-                <!-- Multi-Foto Grid 2 Gambar -->
-                <div class="km-photo-grid km-photo-grid-2">
-                  <a href="community-detail.html?id=thread-2" class="km-photo-item" aria-label="Lihat Ketapang Kencana di pekarangan">
-                    <img src="assets/feed/feed-sesetan-gang.jpg" alt="Ketapang Kencana di pekarangan" loading="lazy">
+                <div class="km-thread-body">
+                  <p class="km-thread-text">
+                    Untuk gang sempit selebar 3 meter di Sesetan, Ketapang
+                    Kencana benar-benar penyelamat. Tajuk bertingkatnya
+                    menyaring sinar matahari sore tanpa bikin sempit jalan masuk
+                    motor warga.
+                    <span
+                      class="km-inline-tag"
+                      data-tag="#PekaranganSemen"
+                      onclick="filterByTag('#PekaranganSemen')"
+                      onmouseenter="showTagHoverCard(event, '#PekaranganSemen')"
+                      onmouseleave="hideHoverCard()"
+                      >#PekaranganSemen</span
+                    >
+                  </p>
+
+                  <div class="km-photo-grid km-photo-grid-2">
+                    <a
+                      href="community-detail.html?id=thread-2"
+                      class="km-photo-item"
+                      aria-label="Lihat Ketapang Kencana di pekarangan"
+                    >
+                      <img
+                        src="assets/feed/feed-sesetan-gang.jpg"
+                        alt="Ketapang Kencana di pekarangan"
+                        loading="lazy"
+                      />
+                    </a>
+                    <a
+                      href="community-detail.html?id=thread-2"
+                      class="km-photo-item"
+                      aria-label="Lihat suasana gang sejuk"
+                    >
+                      <img
+                        src="assets/feed/feed-teuku-umar.jpg"
+                        alt="Suasana gang sejuk"
+                        loading="lazy"
+                      />
+                    </a>
+                  </div>
+                </div>
+
+                <div class="km-thread-actions-bar">
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="toggleThreadLike('thread-2', this)"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      ></path>
+                    </svg>
+                    <span class="like-count">19</span> Suka
+                  </button>
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="focusCommentInput('thread-2')"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                      ></path>
+                    </svg>
+                    <span class="comment-count">1</span> Komentar
+                  </button>
+                  <a
+                    href="community-detail.html?id=thread-2"
+                    class="km-action-btn km-detail-link-btn"
+                    title="Buka Detail Thread"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    <span>Buka Thread</span>
                   </a>
-                  <a href="community-detail.html?id=thread-2" class="km-photo-item" aria-label="Lihat suasana gang sejuk">
-                    <img src="assets/feed/feed-teuku-umar.jpg" alt="Suasana gang sejuk" loading="lazy">
+                </div>
+
+                <div class="km-thread-comments-section">
+                  <div class="km-comment-input-row">
+                    <input
+                      type="text"
+                      class="km-inline-comment-input"
+                      placeholder="Tulis komentar untuk postingan Ibu Desak..."
+                      onkeydown="handleCommentKey(event, 'thread-2')"
+                    />
+                    <button
+                      type="button"
+                      class="km-btn-send-comment"
+                      onclick="submitInlineComment('thread-2')"
+                    >
+                      Kirim
+                    </button>
+                  </div>
+
+                  <div class="km-comments-tree" id="comments-list-thread-2">
+                    <div
+                      class="km-comment-branch"
+                      id="branch-thread-2-comment-1"
+                    >
+                      <div class="km-comment-node">
+                        <img
+                          src="assets/avatars/pak-wayan.jpg"
+                          alt="Pak Wayan"
+                          class="km-comment-avatar"
+                        />
+                        <div class="km-comment-content">
+                          <div class="km-comment-header">
+                            <span class="km-comment-author">Pak Wayan</span>
+                            <span class="km-comment-time">3 jam lalu</span>
+                          </div>
+                          <p class="km-comment-text">
+                            Setuju Bu Desak! Daunnya juga mudah disapu tiap
+                            pagi, tidak bikin becek got.
+                          </p>
+                          <button
+                            type="button"
+                            class="km-comment-reply-btn"
+                            onclick="
+                              toggleInlineReplyForm(
+                                'thread-2-comment-1',
+                                'Pak Wayan',
+                              )
+                            "
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                            >
+                              <polyline points="9 17 4 12 9 7"></polyline>
+                              <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                            </svg>
+                            <span>Balas</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div
+                        class="km-comment-replies"
+                        id="replies-thread-2-comment-1"
+                      >
+                        <div
+                          class="km-reply-composer-box"
+                          id="reply-box-thread-2-comment-1"
+                          style="display: none"
+                        >
+                          <img
+                            src="assets/avatars/john-doe.jpg"
+                            alt="Avatar Anda"
+                            class="km-reply-user-avatar"
+                          />
+                          <div class="km-reply-composer-content">
+                            <div class="km-reply-composer-header">
+                              <span class="km-replying-to-label"
+                                >Membalas
+                                <strong
+                                  id="reply-target-thread-2-comment-1"
+                                  class="km-inline-mention"
+                                  onmouseenter="
+                                    showMentionHoverCard(event, '@Pak Wayan')
+                                  "
+                                  onmouseleave="hideHoverCard()"
+                                  >@Pak Wayan</strong
+                                ></span
+                              >
+                              <button
+                                type="button"
+                                class="km-reply-cancel-btn"
+                                onclick="
+                                  closeInlineReplyForm('thread-2-comment-1')
+                                "
+                              >
+                                Batal
+                              </button>
+                            </div>
+                            <div class="km-reply-input-group">
+                              <input
+                                type="text"
+                                class="km-nested-reply-input"
+                                id="reply-input-thread-2-comment-1"
+                                placeholder="Tulis balasan untuk Pak Wayan..."
+                                onkeydown="
+                                  handleNestedReplyKey(
+                                    event,
+                                    'thread-2',
+                                    'thread-2-comment-1',
+                                  )
+                                "
+                              />
+                              <button
+                                type="button"
+                                class="km-btn-send-nested-reply"
+                                onclick="
+                                  submitNestedReply(
+                                    'thread-2',
+                                    'thread-2-comment-1',
+                                  )
+                                "
+                              >
+                                Balas
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="km-thread-card"
+                id="thread-3"
+                data-tag="#AmanFondasi"
+              >
+                <div class="km-thread-header">
+                  <div class="km-thread-author-wrap">
+                    <img
+                      src="assets/avatars/dr-made-ary.jpg"
+                      alt="dr. Made Ary"
+                      class="km-thread-avatar"
+                    />
+                    <div class="km-thread-meta">
+                      <div class="km-author-title-row">
+                        <span class="km-thread-author-name">dr. Made Ary</span>
+                      </div>
+                      <div class="km-author-loc-time-stack">
+                        <span class="km-thread-location"
+                          >Gatot Subroto Barat</span
+                        >
+                        <span class="km-thread-time">1 hari yang lalu</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="km-thread-body">
+                  <p class="km-thread-text">
+                    Banyak tetangga ragu menanam pohon karena takut tembok pagar
+                    retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang
+                    (seperti Tanjung atau Tabebuia), bukan akar serabut liar
+                    seperti Beringin. Tambahkan pipa biopori vertikal agar air
+                    mengalir ke bawah.
+                    <span
+                      class="km-inline-tag"
+                      data-tag="#AmanFondasi"
+                      onclick="filterByTag('#AmanFondasi')"
+                      onmouseenter="showTagHoverCard(event, '#AmanFondasi')"
+                      onmouseleave="hideHoverCard()"
+                      >#AmanFondasi</span
+                    >
+                  </p>
+
+                  <div class="km-photo-grid km-photo-grid-3">
+                    <a
+                      href="community-detail.html?id=thread-3"
+                      class="km-photo-item"
+                      aria-label="Lihat biopori vertikal dan lubang resapan"
+                    >
+                      <img
+                        src="assets/feed/feed-biopori-action.jpg"
+                        alt="Instalasi biopori vertikal dan lubang resapan"
+                        loading="lazy"
+                      />
+                    </a>
+                    <a
+                      href="community-detail.html?id=thread-3"
+                      class="km-photo-item"
+                      aria-label="Lihat aksi penanaman bersama warga"
+                    >
+                      <img
+                        src="assets/feed/feed-gotong-royong.jpg"
+                        alt="Aksi gotong royong penanaman pekarangan"
+                        loading="lazy"
+                      />
+                    </a>
+                    <a
+                      href="community-detail.html?id=thread-3"
+                      class="km-photo-item"
+                      aria-label="Lihat kondisi gang pekarangan teduh"
+                    >
+                      <img
+                        src="assets/feed/feed-sesetan-gang.jpg"
+                        alt="Kondisi gang pekarangan teduh"
+                        loading="lazy"
+                      />
+                    </a>
+                  </div>
+                </div>
+
+                <div class="km-thread-actions-bar">
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="toggleThreadLike('thread-3', this)"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                      ></path>
+                    </svg>
+                    <span class="like-count">42</span> Suka
+                  </button>
+                  <button
+                    type="button"
+                    class="km-action-btn"
+                    onclick="focusCommentInput('thread-3')"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                      ></path>
+                    </svg>
+                    <span class="comment-count">1</span> Komentar
+                  </button>
+                  <a
+                    href="community-detail.html?id=thread-3"
+                    class="km-action-btn km-detail-link-btn"
+                    title="Buka Detail Thread"
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                      ></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    <span>Buka Thread</span>
                   </a>
+                </div>
+
+                <div class="km-thread-comments-section">
+                  <div class="km-comment-input-row">
+                    <input
+                      type="text"
+                      class="km-inline-comment-input"
+                      placeholder="Tulis komentar untuk postingan dr. Made Ary..."
+                      onkeydown="handleCommentKey(event, 'thread-3')"
+                    />
+                    <button
+                      type="button"
+                      class="km-btn-send-comment"
+                      onclick="submitInlineComment('thread-3')"
+                    >
+                      Kirim
+                    </button>
+                  </div>
+
+                  <div class="km-comments-tree" id="comments-list-thread-3">
+                    <div
+                      class="km-comment-branch"
+                      id="branch-thread-3-comment-1"
+                    >
+                      <div class="km-comment-node">
+                        <img
+                          src="assets/avatars/john-doe.jpg"
+                          alt="John Doe"
+                          class="km-comment-avatar"
+                        />
+                        <div class="km-comment-content">
+                          <div class="km-comment-header">
+                            <span class="km-comment-author">John Doe</span>
+                            <span class="km-comment-time">12 jam lalu</span>
+                          </div>
+                          <p class="km-comment-text">
+                            Terima kasih infonya Dokter, sangat berguna untuk
+                            warga yang pekarangannya full semen.
+                          </p>
+                          <button
+                            type="button"
+                            class="km-comment-reply-btn"
+                            onclick="
+                              toggleInlineReplyForm(
+                                'thread-3-comment-1',
+                                'John Doe',
+                              )
+                            "
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                            >
+                              <polyline points="9 17 4 12 9 7"></polyline>
+                              <path d="M20 18v-2a4 4 0 0 0-4-4H4"></path>
+                            </svg>
+                            <span>Balas</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div
+                        class="km-comment-replies"
+                        id="replies-thread-3-comment-1"
+                      >
+                        <div
+                          class="km-reply-composer-box"
+                          id="reply-box-thread-3-comment-1"
+                          style="display: none"
+                        >
+                          <img
+                            src="assets/avatars/john-doe.jpg"
+                            alt="Avatar Anda"
+                            class="km-reply-user-avatar"
+                          />
+                          <div class="km-reply-composer-content">
+                            <div class="km-reply-composer-header">
+                              <span class="km-replying-to-label"
+                                >Membalas
+                                <strong
+                                  id="reply-target-thread-3-comment-1"
+                                  class="km-inline-mention"
+                                  onmouseenter="
+                                    showMentionHoverCard(event, '@John Doe')
+                                  "
+                                  onmouseleave="hideHoverCard()"
+                                  >@John Doe</strong
+                                ></span
+                              >
+                              <button
+                                type="button"
+                                class="km-reply-cancel-btn"
+                                onclick="
+                                  closeInlineReplyForm('thread-3-comment-1')
+                                "
+                              >
+                                Batal
+                              </button>
+                            </div>
+                            <div class="km-reply-input-group">
+                              <input
+                                type="text"
+                                class="km-nested-reply-input"
+                                id="reply-input-thread-3-comment-1"
+                                placeholder="Tulis balasan untuk John Doe..."
+                                onkeydown="
+                                  handleNestedReplyKey(
+                                    event,
+                                    'thread-3',
+                                    'thread-3-comment-1',
+                                  )
+                                "
+                              />
+                              <button
+                                type="button"
+                                class="km-btn-send-nested-reply"
+                                onclick="
+                                  submitNestedReply(
+                                    'thread-3',
+                                    'thread-3-comment-1',
+                                  )
+                                "
+                              >
+                                Balas
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="km-feed-load-more-wrap">
+              <button
+                type="button"
+                class="km-btn-view-more-posts"
+                aria-label="Lihat postingan lengkap"
+              >
+                <span>Lihat Postingan Lengkap</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <aside class="km-sidebar" aria-label="Sidebar Informasi">
+            <div class="km-sidebar-card km-sidebar-profile-card">
+              <div class="km-side-profile-header">
+                <img
+                  src="assets/avatars/john-doe.jpg"
+                  alt="Avatar John Doe"
+                  class="km-side-profile-avatar"
+                />
+                <div class="km-side-profile-info">
+                  <strong class="km-side-profile-name">John Doe</strong>
+                  <span class="km-side-profile-handle">@johndoe</span>
                 </div>
               </div>
 
-              <div class="km-thread-actions-bar">
-                <button type="button" class="km-action-btn" onclick="toggleThreadLike('thread-2', this)">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                  <span class="like-count">19</span> Suka
+              <div class="km-side-profile-stats">
+                <div class="km-side-stat-item">
+                  <span class="km-side-stat-label">Level Akun</span>
+                  <strong class="km-side-stat-value" id="sidebarUserLevelText"
+                    >Perintis Teduh</strong
+                  >
+                </div>
+                <div class="km-side-stat-item">
+                  <span class="km-side-stat-label">Total Poin</span>
+                  <strong
+                    class="km-side-stat-value km-points-accent"
+                    id="sidebarUserPointsValue"
+                    >850 Poin</strong
+                  >
+                </div>
+              </div>
+
+              <div class="km-side-level-progress">
+                <div class="km-side-progress-meta">
+                  <span>Progress ke Level 4</span>
+                  <span id="sidebarProgressPointsLabel">850 / 1.000 Poin</span>
+                </div>
+                <div class="km-side-progress-track">
+                  <div
+                    class="km-side-progress-fill"
+                    id="sidebarProgressFill"
+                    style="width: 85%"
+                  ></div>
+                </div>
+              </div>
+
+              <a href="reward.html" class="km-side-reward-btn">
+                <span>Tukar Poin Hadiah</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <div class="km-sidebar-card km-x-trend-card">
+              <div class="km-sidebar-card-header">
+                <h3 class="km-sidebar-title">Tren untuk Anda</h3>
+              </div>
+              <div class="km-x-trend-list" id="kmTagFilterList">
+                <button
+                  type="button"
+                  class="km-x-trend-item is-active"
+                  data-tag="all"
+                  onclick="filterByTag('all')"
+                >
+                  <span class="km-x-trend-tag">#SemuaAksi</span>
+                  <span class="km-x-trend-count">126 postingan</span>
                 </button>
-                <button type="button" class="km-action-btn" onclick="focusCommentInput('thread-2')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  <span class="comment-count">1</span> Komentar
+                <button
+                  type="button"
+                  class="km-x-trend-item"
+                  data-tag="#AksiTanam"
+                  onclick="filterByTag('#AksiTanam')"
+                >
+                  <span class="km-x-trend-tag">#AksiTanam</span>
+                  <span class="km-x-trend-count">48 postingan</span>
                 </button>
-                <a href="community-detail.html?id=thread-2" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                  <span>Buka Thread</span>
-                </a>
+                <button
+                  type="button"
+                  class="km-x-trend-item"
+                  data-tag="#PekaranganSemen"
+                  onclick="filterByTag('#PekaranganSemen')"
+                >
+                  <span class="km-x-trend-tag">#PekaranganSemen</span>
+                  <span class="km-x-trend-count">32 postingan</span>
+                </button>
+                <button
+                  type="button"
+                  class="km-x-trend-item"
+                  data-tag="#AmanFondasi"
+                  onclick="filterByTag('#AmanFondasi')"
+                >
+                  <span class="km-x-trend-tag">#AmanFondasi</span>
+                  <span class="km-x-trend-count">27 postingan</span>
+                </button>
+                <button
+                  type="button"
+                  class="km-x-trend-item"
+                  data-tag="#TanyaBibit"
+                  onclick="filterByTag('#TanyaBibit')"
+                >
+                  <span class="km-x-trend-tag">#TanyaBibit</span>
+                  <span class="km-x-trend-count">19 postingan</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="km-sidebar-card">
+              <div class="km-sidebar-card-header">
+                <h3 class="km-sidebar-title">Perintis Kesejukan</h3>
+                <span class="km-sidebar-badge">Bulan Ini</span>
               </div>
 
-              <!-- Inline Comments Section -->
-              <div class="km-thread-comments-section">
-                <!-- Input Balas Komentar di ATAS -->
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan Ibu Desak..." onkeydown="handleCommentKey(event, 'thread-2')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-2')">Kirim</button>
+              <div class="km-mini-podium-diagram">
+                <div class="km-podium-col col-2">
+                  <div class="km-podium-avatar-wrap">
+                    <img
+                      src="assets/avatars/ibu-desak.jpg"
+                      alt="Desak Made"
+                      class="km-podium-avatar"
+                    />
+                    <span class="km-podium-rank-badge rank-2">2</span>
+                  </div>
+                  <div class="km-podium-bar bar-2">
+                    <span class="km-podium-user-name">Desak M.</span>
+                    <span class="km-podium-points">1,220 P</span>
+                  </div>
                 </div>
 
-                <!-- Pohon Komentar (Branch Tree Graph) -->
-                <div class="km-comments-tree" id="comments-list-thread-2">
-                  <div class="km-comment-branch" id="branch-thread-2-comment-1">
-                    <div class="km-comment-node">
-                      <img src="assets/avatars/pak-wayan.jpg" alt="Pak Wayan" class="km-comment-avatar">
-                      <div class="km-comment-content">
-                        <div class="km-comment-header">
-                          <span class="km-comment-author">Pak Wayan</span>
-                          <span class="km-comment-time">3 jam lalu</span>
-                        </div>
-                        <p class="km-comment-text">Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.</p>
-                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-2-comment-1', 'Pak Wayan')">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                          <span>Balas</span>
-                        </button>
-                      </div>
-                    </div>
+                <div class="km-podium-col col-1">
+                  <div class="km-podium-avatar-wrap">
+                    <span class="km-podium-crown" aria-hidden="true"
+                      >&#x1F451;</span
+                    >
+                    <img
+                      src="assets/avatars/gede-surya.jpg"
+                      alt="Gede Surya"
+                      class="km-podium-avatar first"
+                    />
+                    <span class="km-podium-rank-badge rank-1">1</span>
+                  </div>
+                  <div class="km-podium-bar bar-1">
+                    <span class="km-podium-user-name">Gede Surya</span>
+                    <span class="km-podium-points">1,450 P</span>
+                  </div>
+                </div>
 
-                    <!-- Sub-Branch Replies -->
-                    <div class="km-comment-replies" id="replies-thread-2-comment-1">
-                      <div class="km-reply-composer-box" id="reply-box-thread-2-comment-1" style="display: none;">
-                        <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
-                        <div class="km-reply-composer-content">
-                          <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-2-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@Pak Wayan')" onmouseleave="hideHoverCard()">@Pak Wayan</strong></span>
-                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-2-comment-1')">Batal</button>
-                          </div>
-                          <div class="km-reply-input-group">
-                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-2-comment-1" placeholder="Tulis balasan untuk Pak Wayan..." onkeydown="handleNestedReplyKey(event, 'thread-2', 'thread-2-comment-1')">
-                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-2', 'thread-2-comment-1')">Balas</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="km-podium-col col-3">
+                  <div class="km-podium-avatar-wrap">
+                    <img
+                      src="assets/avatars/pak-wayan.jpg"
+                      alt="Wayan Gede"
+                      class="km-podium-avatar"
+                    />
+                    <span class="km-podium-rank-badge rank-3">3</span>
+                  </div>
+                  <div class="km-podium-bar bar-3">
+                    <span class="km-podium-user-name">Wayan G.</span>
+                    <span class="km-podium-points">980 P</span>
                   </div>
                 </div>
               </div>
-            </article>
 
-            <!-- Thread 3: dr. Made Ary -->
-            <article class="km-thread-card" id="thread-3" data-tag="#AmanFondasi">
-              <div class="km-thread-header">
-                <div class="km-thread-author-wrap">
-                  <img src="assets/avatars/dr-made-ary.jpg" alt="dr. Made Ary" class="km-thread-avatar">
-                  <div class="km-thread-meta">
-                    <div class="km-author-title-row">
-                      <span class="km-thread-author-name">dr. Made Ary</span>
-                    </div>
-                    <div class="km-author-loc-time-stack">
-                      <span class="km-thread-location">Gatot Subroto Barat</span>
-                      <span class="km-thread-time">1 hari yang lalu</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <a href="reward.html" class="km-sidebar-link">
+                <span>Buka Peringkat &amp; Hadiah</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
 
-              <div class="km-thread-body">
-                <p class="km-thread-text">Banyak tetangga ragu menanam pohon karena takut tembok pagar retak. Ingat kuncinya: pilih pohon dengan tipe akar tunggang (seperti Tanjung atau Tabebuia), bukan akar serabut liar seperti Beringin. Tambahkan pipa biopori vertikal agar air mengalir ke bawah. <span class="km-inline-tag" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')" onmouseenter="showTagHoverCard(event, '#AmanFondasi')" onmouseleave="hideHoverCard()">#AmanFondasi</span></p>
-                
-                <!-- Multi-Foto Grid 3 Gambar -->
-                <div class="km-photo-grid km-photo-grid-3">
-                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat biopori vertikal dan lubang resapan">
-                    <img src="assets/feed/feed-biopori-action.jpg" alt="Instalasi biopori vertikal dan lubang resapan" loading="lazy">
-                  </a>
-                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat aksi penanaman bersama warga">
-                    <img src="assets/feed/feed-gotong-royong.jpg" alt="Aksi gotong royong penanaman pekarangan" loading="lazy">
-                  </a>
-                  <a href="community-detail.html?id=thread-3" class="km-photo-item" aria-label="Lihat kondisi gang pekarangan teduh">
-                    <img src="assets/feed/feed-sesetan-gang.jpg" alt="Kondisi gang pekarangan teduh" loading="lazy">
-                  </a>
-                </div>
-              </div>
+    <div
+      id="kmPostModal"
+      class="km-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalPostTitle"
+      onclick="handleModalBackdropClick(event)"
+    >
+      <div class="km-modal-dialog" onclick="event.stopPropagation()">
+        <div class="km-modal-header">
+          <h2 class="km-modal-title" id="modalPostTitle">Bagikan Postingan</h2>
+          <button
+            type="button"
+            class="km-modal-close-btn"
+            onclick="closePostModal()"
+            aria-label="Tutup Dialog"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
 
-              <div class="km-thread-actions-bar">
-                <button type="button" class="km-action-btn" onclick="toggleThreadLike('thread-3', this)">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                  <span class="like-count">42</span> Suka
+        <div class="km-modal-body">
+          <div class="km-modal-author-row">
+            <img
+              src="assets/avatars/john-doe.jpg"
+              alt="John Doe"
+              class="km-modal-author-avatar"
+            />
+            <div class="km-modal-author-info">
+              <span class="km-modal-author-name">John Doe</span>
+              <div
+                class="km-location-picker-wrap"
+                id="composerLocationPickerWrap"
+              >
+                <button
+                  type="button"
+                  class="km-modal-location-trigger is-empty"
+                  id="modalLocationTrigger"
+                  onclick="toggleLocationPicker(event)"
+                  title="Pilih lokasi aksi pekarangan"
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+                    ></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span id="modalLocationText">Tambahkan Lokasi</span>
                 </button>
-                <button type="button" class="km-action-btn" onclick="focusCommentInput('thread-3')">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  <span class="comment-count">1</span> Komentar
-                </button>
-                <a href="community-detail.html?id=thread-3" class="km-action-btn km-detail-link-btn" title="Buka Detail Thread">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                  <span>Buka Thread</span>
-                </a>
-              </div>
 
-              <!-- Inline Comments Section -->
-              <div class="km-thread-comments-section">
-                <!-- Input Balas Komentar di ATAS -->
-                <div class="km-comment-input-row">
-                  <input type="text" class="km-inline-comment-input" placeholder="Tulis komentar untuk postingan dr. Made Ary..." onkeydown="handleCommentKey(event, 'thread-3')">
-                  <button type="button" class="km-btn-send-comment" onclick="submitInlineComment('thread-3')">Kirim</button>
-                </div>
-
-                <!-- Pohon Komentar (Branch Tree Graph) -->
-                <div class="km-comments-tree" id="comments-list-thread-3">
-                  <div class="km-comment-branch" id="branch-thread-3-comment-1">
-                    <div class="km-comment-node">
-                      <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
-                      <div class="km-comment-content">
-                        <div class="km-comment-header">
-                          <span class="km-comment-author">John Doe</span>
-                          <span class="km-comment-time">12 jam lalu</span>
-                        </div>
-                        <p class="km-comment-text">Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.</p>
-                        <button type="button" class="km-comment-reply-btn" onclick="toggleInlineReplyForm('thread-3-comment-1', 'John Doe')">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"></polyline><path d="M20 18v-2a4 4 0 0 0-4-4H4"></path></svg>
-                          <span>Balas</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Sub-Branch Replies -->
-                    <div class="km-comment-replies" id="replies-thread-3-comment-1">
-                      <div class="km-reply-composer-box" id="reply-box-thread-3-comment-1" style="display: none;">
-                        <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
-                        <div class="km-reply-composer-content">
-                          <div class="km-reply-composer-header">
-                            <span class="km-replying-to-label">Membalas <strong id="reply-target-thread-3-comment-1" class="km-inline-mention" onmouseenter="showMentionHoverCard(event, '@John Doe')" onmouseleave="hideHoverCard()">@John Doe</strong></span>
-                            <button type="button" class="km-reply-cancel-btn" onclick="closeInlineReplyForm('thread-3-comment-1')">Batal</button>
-                          </div>
-                          <div class="km-reply-input-group">
-                            <input type="text" class="km-nested-reply-input" id="reply-input-thread-3-comment-1" placeholder="Tulis balasan untuk John Doe..." onkeydown="handleNestedReplyKey(event, 'thread-3', 'thread-3-comment-1')">
-                            <button type="button" class="km-btn-send-nested-reply" onclick="submitNestedReply('thread-3', 'thread-3-comment-1')">Balas</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div
+                  id="composerLocationPopup"
+                  class="km-location-popup"
+                  style="display: none"
+                  role="dialog"
+                  aria-label="Pilih Lokasi"
+                >
+                  <div class="km-location-search-box">
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input
+                      type="text"
+                      id="composerLocationSearchInput"
+                      class="km-location-input"
+                      placeholder="Cari kecamatan atau ketik jalan kustom..."
+                      oninput="filterLocationList(this.value)"
+                      onkeydown="handleLocationInputKeydown(event)"
+                    />
                   </div>
+                  <div class="km-location-list" id="composerLocationList"></div>
                 </div>
               </div>
-            </article>
-
-          </div>
-
-          <!-- TOMBOL LIHAT POSTINGAN LENGKAP -->
-          <div class="km-feed-load-more-wrap">
-            <button type="button" class="km-btn-view-more-posts" aria-label="Lihat postingan lengkap">
-              <span>Lihat Postingan Lengkap</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- KOLOM KANAN: SIDEBAR PROFIL, MISI BERPOIN, TOPIK, & PERINGKAT -->
-        <aside class="km-sidebar" aria-label="Sidebar Informasi">
-
-          <!-- Card 0: Profil & Poin Pengguna Anda -->
-          <div class="km-sidebar-card km-sidebar-profile-card">
-            <div class="km-side-profile-header">
-              <img src="assets/avatars/john-doe.jpg" alt="Avatar John Doe" class="km-side-profile-avatar">
-              <div class="km-side-profile-info">
-                <strong class="km-side-profile-name">John Doe</strong>
-                <span class="km-side-profile-handle">@johndoe</span>
-              </div>
-            </div>
-            
-            <div class="km-side-profile-stats">
-              <div class="km-side-stat-item">
-                <span class="km-side-stat-label">Level Akun</span>
-                <strong class="km-side-stat-value" id="sidebarUserLevelText">Perintis Teduh (Tk. 3)</strong>
-              </div>
-              <div class="km-side-stat-item">
-                <span class="km-side-stat-label">Total Poin</span>
-                <strong class="km-side-stat-value km-points-accent" id="sidebarUserPointsValue">850 Poin</strong>
-              </div>
-            </div>
-
-            <div class="km-side-level-progress">
-              <div class="km-side-progress-meta">
-                <span>Progress ke Level 4</span>
-                <span id="sidebarProgressPointsLabel">850 / 1.000 Poin</span>
-              </div>
-              <div class="km-side-progress-track">
-                <div class="km-side-progress-fill" id="sidebarProgressFill" style="width: 85%;"></div>
-              </div>
-            </div>
-
-            <a href="reward.html" class="km-side-reward-btn">
-              <span>Tukar Poin Hadiah Bibit</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-          </div>
-
-          <!-- Card 2: Tren Pekarangan untuk Anda -->
-          <div class="km-sidebar-card km-x-trend-card">
-            <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Tren untuk Anda</h3>
-            </div>
-            <div class="km-x-trend-list" id="kmTagFilterList">
-              <button type="button" class="km-x-trend-item is-active" data-tag="all" onclick="filterByTag('all')">
-                <span class="km-x-trend-tag">#SemuaAksi</span>
-                <span class="km-x-trend-count">126 postingan</span>
-              </button>
-              <button type="button" class="km-x-trend-item" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')">
-                <span class="km-x-trend-tag">#AksiTanam</span>
-                <span class="km-x-trend-count">48 postingan</span>
-              </button>
-              <button type="button" class="km-x-trend-item" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')">
-                <span class="km-x-trend-tag">#PekaranganSemen</span>
-                <span class="km-x-trend-count">32 postingan</span>
-              </button>
-              <button type="button" class="km-x-trend-item" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')">
-                <span class="km-x-trend-tag">#AmanFondasi</span>
-                <span class="km-x-trend-count">27 postingan</span>
-              </button>
-              <button type="button" class="km-x-trend-item" data-tag="#TanyaBibit" onclick="filterByTag('#TanyaBibit')">
-                <span class="km-x-trend-tag">#TanyaBibit</span>
-                <span class="km-x-trend-count">19 postingan</span>
-              </button>
             </div>
           </div>
 
-          <!-- Card 3: Mini Diagram Papan Peringkat (Top 3 Perintis) -->
-          <div class="km-sidebar-card">
-            <div class="km-sidebar-card-header">
-              <h3 class="km-sidebar-title">Perintis Kesejukan</h3>
-              <span class="km-sidebar-badge">Bulan Ini</span>
-            </div>
+          <div class="km-modal-textarea-wrap">
+            <div
+              id="composerTextBackdrop"
+              class="km-composer-backdrop"
+              aria-hidden="true"
+            ></div>
+            <textarea
+              id="modalComposerTextInput"
+              class="km-modal-textarea"
+              placeholder="Apa yang ingin Anda bagikan seputar kondisi pekarangan atau bibit hari ini? (Ketik # untuk tagar atau @ untuk mention)"
+              rows="4"
+              aria-label="Tulis narasi postingan"
+              oninput="
+                syncComposerHighlight();
+                validateMissionComposer();
+              "
+            ></textarea>
 
-            <!-- Visual Diagram Podium 3 Besar -->
-            <div class="km-mini-podium-diagram">
-              
-              <!-- Juara 2 (Kiri) -->
-              <div class="km-podium-col col-2">
-                <div class="km-podium-avatar-wrap">
-                  <img src="assets/avatars/ibu-desak.jpg" alt="Desak Made" class="km-podium-avatar">
-                  <span class="km-podium-rank-badge rank-2">2</span>
-                </div>
-                <div class="km-podium-bar bar-2">
-                  <span class="km-podium-user-name">Desak M.</span>
-                  <span class="km-podium-points">1,220 P</span>
-                </div>
-              </div>
-
-              <!-- Juara 1 (Tengah - Paling Menonjol) -->
-              <div class="km-podium-col col-1">
-                <div class="km-podium-avatar-wrap">
-                  <span class="km-podium-crown" aria-hidden="true">&#x1F451;</span>
-                  <img src="assets/avatars/gede-surya.jpg" alt="Gede Surya" class="km-podium-avatar first">
-                  <span class="km-podium-rank-badge rank-1">1</span>
-                </div>
-                <div class="km-podium-bar bar-1">
-                  <span class="km-podium-user-name">Gede Surya</span>
-                  <span class="km-podium-points">1,450 P</span>
-                </div>
-              </div>
-
-              <!-- Juara 3 (Kanan) -->
-              <div class="km-podium-col col-3">
-                <div class="km-podium-avatar-wrap">
-                  <img src="assets/avatars/pak-wayan.jpg" alt="Wayan Gede" class="km-podium-avatar">
-                  <span class="km-podium-rank-badge rank-3">3</span>
-                </div>
-                <div class="km-podium-bar bar-3">
-                  <span class="km-podium-user-name">Wayan G.</span>
-                  <span class="km-podium-points">980 P</span>
-                </div>
-              </div>
-
-            </div>
-
-            <a href="reward.html" class="km-sidebar-link">
-              <span>Buka Peringkat &amp; Hadiah</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
+            <div
+              id="composerAutocompletePopup"
+              class="km-autocomplete-popup"
+              role="listbox"
+              style="display: none"
+            ></div>
           </div>
 
-        </aside>
-
-      </div>
-
-    </div>
-  <!-- MODAL DIALOG BUAT POSTINGAN (LINKEDIN STYLE) -->
-  <div id="kmPostModal" class="km-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalPostTitle" onclick="handleModalBackdropClick(event)">
-    <div class="km-modal-dialog" onclick="event.stopPropagation()">
-      
-      <!-- Header Modal -->
-      <div class="km-modal-header">
-        <h2 class="km-modal-title" id="modalPostTitle">Bagikan Postingan</h2>
-        <button type="button" class="km-modal-close-btn" onclick="closePostModal()" aria-label="Tutup Dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
-      </div>
-
-      <!-- Body Modal -->
-      <div class="km-modal-body">
-        
-        <!-- Profil Penulis Mini -->
-        <div class="km-modal-author-row">
-          <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-modal-author-avatar">
-          <div class="km-modal-author-info">
-            <span class="km-modal-author-name">John Doe</span>
-            <div class="km-location-picker-wrap" id="composerLocationPickerWrap">
-              <button type="button" class="km-modal-location-trigger is-empty" id="modalLocationTrigger" onclick="toggleLocationPicker(event)" title="Pilih lokasi aksi pekarangan">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span id="modalLocationText">Tambahkan Lokasi</span>
-              </button>
-
-              <!-- Pop-up Dropdown Pencarian & Pemilihan Lokasi -->
-              <div id="composerLocationPopup" class="km-location-popup" style="display: none;" role="dialog" aria-label="Pilih Lokasi">
-                <div class="km-location-search-box">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                  <input type="text" id="composerLocationSearchInput" class="km-location-input" placeholder="Cari kecamatan atau ketik jalan kustom..." oninput="filterLocationList(this.value)" onkeydown="handleLocationInputKeydown(event)">
+          <div class="km-composer-media-section" id="composerPhotoSection">
+            <div id="composerMediaGrid" class="km-composer-media-grid">
+              <label
+                class="km-composer-upload-card"
+                id="composerUploadCard"
+                title="Unggah Foto Pekarangan"
+              >
+                <input
+                  type="file"
+                  id="composerFileInput"
+                  accept="image/*"
+                  multiple
+                  class="km-file-input-hidden"
+                  onchange="handleMultiPhotoUpload(event)"
+                />
+                <div class="km-upload-plus-icon">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
                 </div>
-                <div class="km-location-list" id="composerLocationList"></div>
-              </div>
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Textarea Utama dengan Autocomplete Tagar (#) & Mention (@) & Highlight Realtime -->
-        <div class="km-modal-textarea-wrap">
-          <div id="composerTextBackdrop" class="km-composer-backdrop" aria-hidden="true"></div>
-          <textarea 
-            id="modalComposerTextInput" 
-            class="km-modal-textarea" 
-            placeholder="Apa yang ingin Anda bagikan seputar kondisi pekarangan atau bibit hari ini? (Ketik # untuk tagar atau @ untuk mention)"
-            rows="4"
-            aria-label="Tulis narasi postingan"
-            oninput="syncComposerHighlight(); validateMissionComposer()"
-          ></textarea>
-
-          <!-- Dropdown Pop-up Autocomplete Tagar & Mention -->
-          <div id="composerAutocompletePopup" class="km-autocomplete-popup" role="listbox" style="display: none;"></div>
-        </div>
-
-        <!-- Area Unggah & Pratinjau Foto Pekarangan (Card Gray + Plus Sederhana) -->
-        <div class="km-composer-media-section" id="composerPhotoSection">
-          <div id="composerMediaGrid" class="km-composer-media-grid">
-            <label class="km-composer-upload-card" id="composerUploadCard" title="Unggah Foto Pekarangan">
-              <input type="file" id="composerFileInput" accept="image/*" multiple class="km-file-input-hidden" onchange="handleMultiPhotoUpload(event)">
-              <div class="km-upload-plus-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              </div>
-            </label>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Footer Modal Toolbar -->
-      <div class="km-modal-footer">
-        <button type="button" class="km-modal-btn-submit" id="modalSubmitBtn" onclick="submitNewPost()">
-          <span>Bagikan Cerita</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- TOAST NOTIFIKASI -->
-  <div id="kmToast" role="status" aria-live="polite"></div>
-
-  <!-- FLOATING CHATBOT ASISTEN TEDUH -->
-  <div class="td-chatbot-wrapper">
-    <!-- Tooltip Sambutan Otomatis -->
-    <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">Tanyakan Teduh Bot! 😉</div>
-
-    <!-- Tombol FAB Bulat dengan Page-Mascot Cursor Frame Follower -->
-    <button id="tdChatFab" class="td-chatbot-fab" type="button" aria-label="Buka Chatbot Asisten Teduh" aria-expanded="false">
-      <div class="td-mascot-viewport">
-        <div class="td-mascot-head" id="tdMascotHead" role="img" aria-label="Maskot Asisten Teduh"></div>
-        <div class="td-mascot-boop-fx" id="tdMascotBoopFx" aria-hidden="true"></div>
-      </div>
-      <!-- Expressive Reaction Mascot (When Active / Clicked) -->
-      <div class="td-reaction-viewport" aria-hidden="true">
-        <div class="td-mascot-reaction" id="tdMascotReaction" role="img" aria-label="Reaksi Maskot Asisten Teduh"></div>
-      </div>
-    </button>
-
-    <!-- Jendela Chat Pop-up -->
-    <div id="tdChatWindow" class="td-chatbot-window" role="dialog" aria-label="Percakapan Asisten Teduh">
-      <!-- Header -->
-      <div class="td-chat-header">
-        <div class="td-chat-header-profile">
-          <div class="td-chat-header-avatar">
-            <img src="assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh">
-            <span class="td-chat-status-dot" aria-hidden="true"></span>
-          </div>
-          <div class="td-chat-header-info">
-            <span class="td-chat-header-name">Teduh Bot</span>
-          </div>
-        </div>
-        <button id="tdChatClose" class="td-chat-close-btn" type="button" aria-label="Tutup Obrolan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Isi Pesan Chat -->
-      <div id="tdChatBody" class="td-chat-body">
-        <div class="td-msg-row bot">
-          <div class="td-msg-avatar bot-avatar" aria-hidden="true">
-            <img src="assets/bot/teduh-bot.png" alt="Teduh Bot">
-          </div>
-          <div class="td-msg-content">
-            <div class="td-bubble">
-              <p style="margin: 0 0 10px 0;">Halo! Saya <strong>Teduh Bot</strong>. Tanyakan apa saja seputar alasan ilmiah pohon menurunkan suhu lingkungan, rekomendasi pohon ramah fondasi, atau ketik pertanyaan Anda di bawah.</p>
-              <div class="td-chat-chips">
-                <button type="button" class="td-chip-btn" data-topic-id="kenapa_pohon_sejuk">Kenapa pohon bikin sejuk?</button>
-                <button type="button" class="td-chip-btn" data-topic-id="pohon_cepat_teduh">Pohon cepat bikin teduh</button>
-                <button type="button" class="td-chip-btn" data-topic-id="kenapa_akar_aman">Kenapa akar aman fondasi?</button>
-                <button type="button" class="td-chip-btn" data-topic-id="efek_semen_panas">Kenapa pekarangan semen panas?</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Form Input -->
-      <div class="td-chat-footer">
-        <form id="tdChatForm" class="td-chat-form">
-          <input type="text" id="tdChatInput" class="td-chat-input" placeholder="Tanyakan seputar cuaca, pohon teduh, akar..." autocomplete="off" aria-label="Ketik pesan pertanyaan">
-          <button type="submit" class="td-chat-send-btn" aria-label="Kirim Pesan">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <div class="km-modal-footer">
+          <button
+            type="button"
+            class="km-modal-btn-submit"
+            id="modalSubmitBtn"
+            onclick="submitNewPost()"
+          >
+            <span>Bagikan Cerita</span>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
           </button>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- GSAP & ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <div id="kmToast" role="status" aria-live="polite"></div>
 
-  <!-- SCRIPT ENGINE -->
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/scroll-animations.js"></script>
-  <script src="js/community.js"></script>
-  <script src="js/chatbot.js"></script>
-</body>
+    <div class="td-chatbot-wrapper">
+      <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
+        Tanyakan Teduh Bot! 😉
+      </div>
+
+      <button
+        id="tdChatFab"
+        class="td-chatbot-fab"
+        type="button"
+        aria-label="Buka Chatbot Asisten Teduh"
+        aria-expanded="false"
+      >
+        <div class="td-mascot-viewport">
+          <div
+            class="td-mascot-head"
+            id="tdMascotHead"
+            role="img"
+            aria-label="Maskot Asisten Teduh"
+          ></div>
+          <div
+            class="td-mascot-boop-fx"
+            id="tdMascotBoopFx"
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        <div class="td-reaction-viewport" aria-hidden="true">
+          <div
+            class="td-mascot-reaction"
+            id="tdMascotReaction"
+            role="img"
+            aria-label="Reaksi Maskot Asisten Teduh"
+          ></div>
+        </div>
+      </button>
+
+      <div
+        id="tdChatWindow"
+        class="td-chatbot-window"
+        role="dialog"
+        aria-label="Percakapan Asisten Teduh"
+      >
+        <div class="td-chat-header">
+          <div class="td-chat-header-profile">
+            <div class="td-chat-header-avatar">
+              <img src="assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh" />
+              <span class="td-chat-status-dot" aria-hidden="true"></span>
+            </div>
+            <div class="td-chat-header-info">
+              <span class="td-chat-header-name">Teduh Bot</span>
+            </div>
+          </div>
+          <button
+            id="tdChatClose"
+            class="td-chat-close-btn"
+            type="button"
+            aria-label="Tutup Obrolan"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div id="tdChatBody" class="td-chat-body">
+          <div class="td-msg-row bot">
+            <div class="td-msg-avatar bot-avatar" aria-hidden="true">
+              <img src="assets/bot/teduh-bot.png" alt="Teduh Bot" />
+            </div>
+            <div class="td-msg-content">
+              <div class="td-bubble">
+                <p style="margin: 0 0 10px 0">
+                  Halo! Saya <strong>Teduh Bot</strong> 👋🌿. Tanyakan apa saja
+                  seputar alasan ilmiah pohon menurunkan suhu lingkungan,
+                  rekomendasi pohon ramah fondasi, atau ketik pertanyaan Anda di
+                  bawah.
+                </p>
+                <div class="td-chat-chips">
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="kenapa_pohon_sejuk"
+                  >
+                    Kenapa pohon bikin sejuk?
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="pohon_cepat_teduh"
+                  >
+                    Pohon cepat bikin teduh
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="kenapa_akar_aman"
+                  >
+                    Kenapa akar aman fondasi?
+                  </button>
+                  <button
+                    type="button"
+                    class="td-chip-btn"
+                    data-topic-id="efek_semen_panas"
+                  >
+                    Kenapa pekarangan semen panas?
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="td-chat-footer">
+          <form id="tdChatForm" class="td-chat-form">
+            <input
+              type="text"
+              id="tdChatInput"
+              class="td-chat-input"
+              placeholder="Tanyakan seputar cuaca, pohon teduh, akar..."
+              autocomplete="off"
+              aria-label="Ketik pesan pertanyaan"
+            />
+            <button
+              type="submit"
+              class="td-chat-send-btn"
+              aria-label="Kirim Pesan"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/chatbot.js"></script>
+  </body>
 </html>

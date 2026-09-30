@@ -1,10 +1,20 @@
-/* ==========================================================================
-   TEDUH DIGITAL PLATFORM - REWARD & LEADERBOARD STYLESHEET (css/reward.css)
-   Papan Peringkat Warga (Leaderboard) & Katalog Penukaran Voucher Bibit.
-   Disiplin Desain: 3 Warna Esensial, Hairline Border 1px, 0 Em-Dash (R-02)
-   ========================================================================== */
+/**
+ * TEDUH DIGITAL PLATFORM
+ * Berkas: css/reward.css
+ * Deskripsi: Gaya Tampilan Peringkat Kesejukan Warga, Diagram Podium & Katalog Hadiah
+ *
+ * ==========================================================================
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
+ * 1. Tipografi & Ikonografi:
+ *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
+ *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
+ * 2. Visual Media & Fotografi (assets/*):
+ *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
+ * 3. Identitas Visual & Grafis Orisinal:
+ *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * ==========================================================================
+ */
 
-/* Kanvas Halaman Reward */
 .rw-page-wrapper {
   background-color: var(--color-background, #f2f0e4);
   min-height: 100vh;
@@ -16,9 +26,9 @@
   max-width: var(--container-max, 1200px);
   margin: 0 auto;
   padding: 0 24px;
+  box-sizing: border-box;
 }
 
-/* Header Section */
 .rw-header-section {
   padding: 36px 0 24px 0;
   display: flex;
@@ -31,46 +41,50 @@
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0;
 }
 
 .rw-header-subtitle {
   font-size: 14.5px;
   line-height: 1.55;
-  color: var(--color-text-body, #474E4A);
+  color: var(--color-text-body, #474e4a);
   margin: 0;
   max-width: 62ch;
 }
 
-/* User Sticky Metric Card (Bebas Border & Bebas Shadow) */
 .rw-user-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-2xl, 24px);
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(26, 56, 43, 0.08);
+  box-shadow: 0 2px 10px rgba(26, 56, 43, 0.03);
   padding: 22px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 32px;
-  flex-wrap: wrap;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast, 0.2s ease),
+    box-shadow var(--transition-fast, 0.2s ease);
 }
 
 .rw-user-info-left {
   display: flex;
   align-items: center;
   gap: 16px;
+  min-width: 0;
 }
 
 .rw-user-avatar-wrap {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 2px solid var(--color-primary, #1A382B);
+  border: 2px solid var(--color-primary, #1a382b);
   padding: 2px;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .rw-user-avatar {
@@ -84,19 +98,22 @@
 .rw-user-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-width: 0;
 }
 
 .rw-user-name-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .rw-user-name {
   font-size: 16.5px;
   font-weight: 700;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
+  letter-spacing: -0.01em;
 }
 
 .rw-user-level-badge {
@@ -105,13 +122,15 @@
   padding: 3px 10px;
   border-radius: var(--radius-full, 9999px);
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
+  white-space: nowrap;
 }
 
 .rw-user-progress-bar {
   width: 180px;
+  max-width: 100%;
   height: 6px;
-  background: rgba(221, 217, 177, 0.4);
+  background: rgba(221, 217, 177, 0.45);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -120,12 +139,14 @@
   height: 100%;
   background: var(--color-btn-primary, #5c8437);
   border-radius: 9999px;
+  transition: width 0.3s ease;
 }
 
 .rw-user-stats-right {
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 .rw-user-points-box {
@@ -137,38 +158,43 @@
 .rw-user-points-lbl {
   font-size: 11px;
   font-weight: 600;
-  color: #71717A;
+  color: #71717a;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .rw-user-points-val {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary, #1a382b);
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .rw-btn-get-points {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: var(--color-btn-primary, #5c8437);
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 12px 22px;
   border-radius: var(--radius-full, 9999px);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   text-decoration: none;
   transition: all var(--transition-fast, 0.2s ease);
+  white-space: nowrap;
+  box-shadow: none;
+  border: none;
 }
 
 .rw-btn-get-points:hover {
   background: var(--color-btn-primary-hover, #6ea842);
   transform: translateY(-1px);
+  color: #ffffff;
 }
 
-/* SEGMENTED TAB SWITCHER */
 .rw-tabs-nav {
   display: flex;
   align-items: center;
@@ -186,10 +212,10 @@
   gap: 8px;
   padding: 9px 22px;
   border-radius: var(--radius-full, 9999px);
-  font-family: var(--font-family, 'Plus Jakarta Sans', sans-serif);
+  font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: #52525B;
+  color: #52525b;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -197,15 +223,12 @@
 }
 
 .rw-tab-btn.is-active {
-  background: #FFFFFF;
-  color: var(--color-primary, #1A382B);
+  background: #ffffff;
+  color: var(--color-primary, #1a382b);
   font-weight: 700;
   box-shadow: none;
 }
 
-/* ==========================================================================
-   TAB 1: PAPAN PERINGKAT WARGA (LEADERBOARD PODIUM DIAGRAM)
-   ========================================================================== */
 .rw-tab-content {
   display: none;
 }
@@ -214,7 +237,6 @@
   display: block;
 }
 
-/* PODIUM DIAGRAM TERPADU (BEBAS BACKGROUND, RENGGANG & LUAS) */
 .rw-podium-diagram-card {
   background: transparent;
   border-radius: 0;
@@ -262,20 +284,20 @@
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3.5px solid #FFFFFF;
-  background: #E8ECE9;
+  border: 3.5px solid #ffffff;
+  background: #e8ece9;
 }
 
 .rw-podium-avatar.first {
   width: 90px;
   height: 90px;
-  border: 4px solid #F59E0B;
+  border: 4px solid #f59e0b;
 }
 
 .rw-podium-crown {
   position: absolute;
   top: -26px;
-  color: #F59E0B;
+  color: #f59e0b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,24 +316,24 @@
   height: 26px;
   border-radius: 50%;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
-  border: 2px solid #FFFFFF;
+  color: #ffffff;
+  border: 2px solid #ffffff;
 }
 
 .rw-podium-rank-badge.rank-1 {
-  background: #F59E0B;
+  background: #f59e0b;
 }
 
 .rw-podium-rank-badge.rank-2 {
-  background: #71717A;
+  background: #71717a;
 }
 
 .rw-podium-rank-badge.rank-3 {
-  background: #BA4E2A;
+  background: #ba4e2a;
 }
 
 .rw-podium-bar {
@@ -323,37 +345,38 @@
   justify-content: center;
   padding: 18px 12px;
   gap: 6px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
   border: none;
-  color: #FFFFFF;
+  color: #ffffff;
   box-sizing: border-box;
   transition: transform 0.2s ease;
 }
 
 .rw-podium-bar.bar-1 {
   height: 210px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .rw-podium-bar.bar-2 {
   height: 160px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .rw-podium-bar.bar-3 {
   height: 125px;
-  background: var(--color-primary, #1A382B);
+  background: var(--color-primary, #1a382b);
 }
 
 .rw-podium-user-name {
   font-size: 16.5px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .rw-podium-loc {
   font-size: 12px;
-  color: #A8C4B5;
+  color: #a8c4b5;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -361,21 +384,24 @@
 }
 
 .rw-podium-points-badge {
-  font-size: 13px;
-  font-weight: 800;
-  color: #FFFFFF;
-  background: rgba(255, 255, 255, 0.16);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
   padding: 4px 14px;
   border-radius: var(--radius-full, 9999px);
   margin-top: 4px;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* LEADERBOARD TABLE LIST */
 .rw-table-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(26, 56, 43, 0.08);
+  box-shadow: 0 2px 10px rgba(26, 56, 43, 0.03);
   overflow: hidden;
 }
 
@@ -384,7 +410,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
-  border-bottom: 1px solid #F1F4F2;
+  border-bottom: 1px solid #f1f4f2;
   gap: 16px;
   transition: background var(--transition-fast, 0.2s ease);
 }
@@ -394,21 +420,24 @@
 }
 
 .rw-table-row.is-current-user {
-  background: #F2F7F4;
+  background: #f2f7f4;
 }
 
 .rw-table-left {
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0;
+  flex: 1;
 }
 
 .rw-table-rank-num {
   font-size: 13px;
   font-weight: 700;
-  color: #71717A;
+  color: #71717a;
   width: 24px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .rw-table-avatar {
@@ -416,22 +445,27 @@
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #E2E8E5;
+  border: 1px solid #e2e8e5;
+  flex-shrink: 0;
 }
 
 .rw-table-user-meta {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  flex: 1;
 }
 
 .rw-table-name {
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  letter-spacing: -0.01em;
 }
 
 .rw-badge-you {
@@ -439,22 +473,28 @@
   font-weight: 700;
   padding: 2px 8px;
   border-radius: var(--radius-full, 9999px);
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
+  white-space: nowrap;
 }
 
 .rw-table-loc {
   font-size: 11.5px;
-  color: #71717A;
+  color: #71717a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rw-table-points {
   font-size: 14px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
+  font-weight: 700;
+  color: var(--color-primary, #1a382b);
+  flex-shrink: 0;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
-/* TOMBOL LIHAT PERINGKAT LAINNYA */
 .rw-load-more-wrap {
   display: flex;
   width: 100%;
@@ -468,8 +508,8 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  background: #FFFFFF;
-  color: var(--color-slate, #0E1116);
+  background: #ffffff;
+  color: var(--color-slate, #0e1116);
   font-size: 13.5px;
   font-weight: 600;
   padding: 14px 20px;
@@ -482,22 +522,16 @@
 }
 
 .rw-btn-load-more:hover {
-  background: #E8EFEA;
-  color: var(--color-primary, #1A382B);
+  background: #e8efea;
+  color: var(--color-primary, #1a382b);
 }
 
-/* ==========================================================================
-   TAB 2: KATALOG VOUCHER BENTO HIERARKI (KIRI BESAR + KANAN 2 STACKED)
-   ========================================================================== */
-
-/* CONTAINER SEKSI VOUCHER */
 .rw-vouchers-catalog-wrap {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-/* BENTO HIGHLIGHT SECTION: 2 KOLOM ASIMETRIS */
 .rw-vouchers-bento-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -512,12 +546,11 @@
   }
 }
 
-/* KIRI: CARD PALING BESAR (HERO VOUCHER) */
 .rw-voucher-bento-hero {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-2xl, 24px);
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(26, 56, 43, 0.08);
+  box-shadow: 0 2px 10px rgba(26, 56, 43, 0.03);
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -540,7 +573,7 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  background: #E8ECE9;
+  background: #e8ece9;
 }
 
 .rw-bento-hero-img {
@@ -556,10 +589,15 @@
 }
 
 .rw-bento-hero-img-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.75) 85%, #FFFFFF 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.75) 85%,
+    #ffffff 100%
+  );
   pointer-events: none;
 }
 
@@ -583,7 +621,7 @@
 .rw-voucher-hero-tag {
   font-size: 11px;
   font-weight: 700;
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
   padding: 3px 10px;
   border-radius: var(--radius-full, 9999px);
@@ -592,15 +630,16 @@
 .rw-bento-hero-title {
   font-size: 19px;
   font-weight: 700;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0 0 6px 0;
   line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .rw-bento-hero-desc {
   font-size: 13px;
   line-height: 1.5;
-  color: var(--color-text-body, #474E4A);
+  color: var(--color-text-body, #474e4a);
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -618,12 +657,13 @@
 }
 
 .rw-bento-hero-points {
-  font-size: 14.5px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary, #1a382b);
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
   padding: 6px 14px;
   border-radius: var(--radius-full, 9999px);
+  letter-spacing: -0.01em;
 }
 
 .rw-btn-claim-hero {
@@ -631,7 +671,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-btn-primary, #5c8437);
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 10px 26px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13.5px;
@@ -647,7 +687,6 @@
   transform: translateY(-1px);
 }
 
-/* KANAN: 2 CARD STACKED VERTICAL */
 .rw-vouchers-bento-stack {
   display: flex;
   flex-direction: column;
@@ -661,7 +700,6 @@
   height: 170px;
 }
 
-/* SUB-HEADER SECTION */
 .rw-vouchers-section-header {
   padding: 10px 2px 2px 2px;
   margin-top: 4px;
@@ -670,12 +708,11 @@
 .rw-vouchers-section-title {
   font-size: 18px;
   font-weight: 700;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   letter-spacing: -0.01em;
   margin: 0;
 }
 
-/* TIER 3: REGULAR VOUCHERS GRID */
 .rw-vouchers-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -691,10 +728,10 @@
 }
 
 .rw-voucher-card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: var(--radius-xl, 20px);
-  border: none;
-  box-shadow: none;
+  border: 1px solid rgba(26, 56, 43, 0.08);
+  box-shadow: 0 2px 10px rgba(26, 56, 43, 0.03);
   padding: 0;
   display: flex;
   flex-direction: row;
@@ -716,7 +753,7 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  background: #E8ECE9;
+  background: #e8ece9;
 }
 
 .rw-voucher-img {
@@ -731,12 +768,16 @@
   transform: scale(1.04);
 }
 
-/* Fade gradient halus di pinggiran gambar kanan */
 .rw-voucher-img-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.85) 85%, #FFFFFF 100%);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0.85) 85%,
+    #ffffff 100%
+  );
   pointer-events: none;
 }
 
@@ -761,7 +802,7 @@
 .rw-voucher-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--color-slate, #0E1116);
+  color: var(--color-slate, #0e1116);
   margin: 0;
   line-height: 1.3;
   height: 38px;
@@ -769,12 +810,13 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  letter-spacing: -0.01em;
 }
 
 .rw-voucher-desc {
   font-size: 12px;
   line-height: 1.45;
-  color: var(--color-text-body, #474E4A);
+  color: var(--color-text-body, #474e4a);
   margin: 0;
   height: 35px;
   display: -webkit-box;
@@ -793,12 +835,13 @@
 
 .rw-voucher-points-tag {
   font-size: 13px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
+  font-weight: 700;
+  color: var(--color-primary, #1a382b);
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
   padding: 4px 12px;
   border-radius: var(--radius-full, 9999px);
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .rw-btn-claim-voucher {
@@ -806,7 +849,7 @@
   align-items: center;
   justify-content: center;
   background: var(--color-btn-primary, #5c8437);
-  color: #FFFFFF;
+  color: #ffffff;
   padding: 8px 22px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
@@ -823,10 +866,9 @@
   transform: translateY(-1px);
 }
 
-/* CARD 6: + LAINNYA DISCOVERY CARD */
 .rw-voucher-card.is-more-card {
   cursor: default;
-  background: #FFFFFF;
+  background: #ffffff;
   user-select: none;
 }
 
@@ -845,8 +887,8 @@
 
 .rw-voucher-more-title {
   font-size: 20px;
-  font-weight: 800;
-  color: var(--color-primary, #1A382B);
+  font-weight: 700;
+  color: var(--color-primary, #1a382b);
   margin: 0;
   letter-spacing: -0.01em;
   display: flex;
@@ -859,89 +901,23 @@
   height: 32px;
   border-radius: 50%;
   background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
-  color: var(--color-primary, #1A382B);
+  color: var(--color-primary, #1a382b);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
   flex-shrink: 0;
 }
 
 .rw-voucher-card.is-more-card:hover .rw-voucher-more-arrow {
   transform: translateX(4px);
-  background: var(--color-primary, #1A382B);
-  color: #FFFFFF;
+  background: var(--color-primary, #1a382b);
+  color: #ffffff;
 }
 
-@media (max-width: 640px) {
-  .rw-voucher-bento-hero {
-    min-height: auto;
-  }
-  .rw-bento-hero-img-wrap {
-    height: 155px;
-  }
-  .rw-bento-hero-content {
-    padding: 14px 16px 16px 16px;
-    gap: 10px;
-  }
-  .rw-bento-hero-title {
-    font-size: 15.5px;
-    margin-bottom: 4px;
-  }
-  .rw-bento-hero-desc {
-    font-size: 11.5px;
-  }
-  .rw-bento-hero-points {
-    font-size: 12.5px;
-    padding: 4px 10px;
-  }
-  .rw-btn-claim-hero {
-    padding: 8px 18px;
-    font-size: 12.5px;
-  }
-  .rw-voucher-card.is-bento-stacked,
-  .rw-voucher-card {
-    height: 144px;
-  }
-  .rw-voucher-img-wrap {
-    width: 38%;
-  }
-  .rw-voucher-content {
-    padding: 12px 14px 12px 6px;
-  }
-  .rw-voucher-title {
-    font-size: 13.5px;
-    height: 35px;
-  }
-  .rw-voucher-desc {
-    font-size: 11.5px;
-    line-height: 1.4;
-    height: 32px;
-  }
-  .rw-voucher-points-tag {
-    font-size: 11.5px;
-    padding: 3px 8px;
-  }
-  .rw-btn-claim-voucher {
-    padding: 6px 16px;
-    font-size: 12px;
-  }
-  .rw-voucher-more-content {
-    padding: 12px 14px 12px 8px;
-  }
-  .rw-voucher-more-title {
-    font-size: 16px;
-    gap: 8px;
-  }
-  .rw-voucher-more-arrow {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-/* ==========================================================================
-   MODAL KLAIM VOUCHER
-   ========================================================================== */
 .rw-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -963,7 +939,16 @@
 }
 
 .rw-modal-card {
-  background: #FFFFFF;
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14, 17, 22, 0.22) 0%,
+      rgba(92, 132, 55, 0.36) 15%,
+      rgba(92, 132, 55, 0.12) 26%,
+      rgba(255, 255, 255, 0) 36%
+    ),
+    #ffffff;
   border-radius: var(--radius-2xl, 24px);
   max-width: 440px;
   width: 100%;
@@ -973,8 +958,11 @@
   align-items: center;
   text-align: center;
   gap: 16px;
-  box-shadow: none;
-  border: none;
+  box-shadow:
+    0 24px 48px -12px rgba(14, 17, 22, 0.2),
+    0 4px 16px rgba(92, 132, 55, 0.1);
+  border: 1px solid rgba(92, 132, 55, 0.2);
+  overflow: hidden;
   transform: translateY(20px);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -984,33 +972,150 @@
 }
 
 .rw-modal-icon {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: #EFF3F0;
-  color: var(--color-primary, #1A382B);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(16px) saturate(190%);
+  -webkit-backdrop-filter: blur(16px) saturate(190%);
+  color: #5c8437;
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 2px;
+}
+
+.rw-confirm-icon {
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(16px) saturate(190%);
+  -webkit-backdrop-filter: blur(16px) saturate(190%);
+  color: #5c8437;
+  border: none;
+  box-shadow: none;
 }
 
 .rw-modal-title {
   font-size: 19px;
-  font-weight: 800;
-  color: var(--color-slate, #0E1116);
+  font-weight: 700;
+  color: var(--color-slate, #0e1116);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .rw-modal-desc {
   font-size: 13px;
   line-height: 1.5;
-  color: #52525B;
+  color: #52525b;
   margin: 0;
 }
 
+.rw-modal-desc strong {
+  color: #0e1116;
+  font-weight: 700;
+}
+
+.rw-confirm-detail-box {
+  background: #f8faf9;
+  border: 1px solid #e4eae6;
+  border-radius: 14px;
+  padding: 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.rw-confirm-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.rw-confirm-detail-label {
+  color: #71717a;
+  font-weight: 500;
+}
+
+.rw-confirm-detail-val {
+  color: #0e1116;
+  font-weight: 600;
+}
+
+.rw-confirm-cost {
+  color: #ba4e2a;
+  font-weight: 700;
+}
+
+.rw-confirm-remaining {
+  color: #5c8437;
+  font-weight: 700;
+}
+
+.rw-confirm-detail-divider {
+  height: 1px;
+  background: #e4eae6;
+  width: 100%;
+  margin: 2px 0;
+}
+
+.rw-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.rw-modal-btn-cancel {
+  width: 100%;
+  background: #f4f4f5;
+  color: #52525b;
+  padding: 12px 16px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #e4e4e7;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-modal-btn-cancel:hover {
+  background: #e4e4e7;
+  color: #0e1116;
+}
+
+.rw-modal-btn-confirm {
+  width: 100%;
+  background: #5c8437;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(92, 132, 55, 0.25);
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.rw-modal-btn-confirm:hover {
+  background: #4d702d;
+  box-shadow: 0 6px 16px rgba(92, 132, 55, 0.35);
+  transform: translateY(-1px);
+}
+
+.rw-modal-btn-confirm:active {
+  transform: translateY(0);
+}
+
 .rw-modal-code-box {
-  background: #F4F4F5;
-  border: 1px dashed #CBD5E1;
+  background: #f8faf9;
+  border: 1.5px dashed #a3c485;
   border-radius: 12px;
   padding: 12px 20px;
   width: 100%;
@@ -1020,36 +1125,42 @@
 .rw-modal-code {
   font-family: monospace;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--color-primary, #1A382B);
+  color: #5c8437;
 }
 
 .rw-modal-btn-close {
   width: 100%;
-  background: var(--color-slate, #0E1116);
-  color: #FFFFFF;
+  background: #5c8437;
+  color: #ffffff;
   padding: 12px 20px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: background var(--transition-fast, 0.2s ease);
+  box-shadow: 0 4px 12px rgba(92, 132, 55, 0.25);
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .rw-modal-btn-close:hover {
-  background: var(--color-primary, #1A382B);
+  background: #4d702d;
+  box-shadow: 0 6px 16px rgba(92, 132, 55, 0.35);
+  transform: translateY(-1px);
 }
 
-/* Toast Notifikasi Reward */
+.rw-modal-btn-close:active {
+  transform: translateY(0);
+}
+
 #rwToast {
   position: fixed;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(24px);
-  background: #0E1116;
-  color: #FFFFFF;
+  background: #0e1116;
+  color: #ffffff;
   padding: 9px 20px;
   border-radius: 9999px;
   font-size: 12px;
@@ -1060,7 +1171,9 @@
   z-index: 2100;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
 }
 
 #rwToast.is-visible {
@@ -1068,32 +1181,24 @@
   opacity: 1;
 }
 
-@media (max-width: 640px) {
-  .rw-container {
-    padding: 0 16px;
-  }
-  
-  .rw-header-section {
-    padding: 24px 0 16px 0;
-  }
-
+@media (max-width: 859px) {
   .rw-user-card {
-    padding: 18px 16px;
-    flex-direction: column;
-    align-items: stretch;
+    padding: 18px 22px;
     gap: 16px;
-    margin-bottom: 20px;
-    border-radius: var(--radius-xl, 20px);
+    margin-bottom: 24px;
   }
 
-  .rw-user-info-left {
-    width: 100%;
+  .rw-user-avatar-wrap {
+    width: 48px;
+    height: 48px;
+  }
+
+  .rw-user-progress-bar {
+    width: 140px;
   }
 
   .rw-user-stats-right {
-    width: 100%;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 14px;
   }
 
   .rw-user-points-val {
@@ -1103,6 +1208,103 @@
   .rw-btn-get-points {
     padding: 10px 18px;
     font-size: 12.5px;
+  }
+
+  .rw-podium-diagram {
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .rw-vouchers-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .rw-vouchers-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .rw-container {
+    padding: 0 16px;
+  }
+
+  .rw-header-section {
+    padding: 24px 0 16px 0;
+  }
+
+  .rw-header-title {
+    font-size: 24px;
+  }
+
+  .rw-user-card {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-xl, 20px);
+  }
+
+  .rw-user-info-left {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .rw-user-avatar-wrap {
+    width: 46px;
+    height: 46px;
+  }
+
+  .rw-user-meta {
+    flex: 1;
+    min-width: 0;
+    gap: 4px;
+  }
+
+  .rw-user-name {
+    font-size: 15.5px;
+  }
+
+  .rw-user-level-badge {
+    font-size: 10.5px;
+    padding: 2.5px 8px;
+  }
+
+  .rw-user-progress-bar {
+    width: 100%;
+    max-width: 220px;
+    height: 5px;
+  }
+
+  .rw-user-stats-right {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(26, 56, 43, 0.08);
+  }
+
+  .rw-user-points-box {
+    align-items: flex-start;
+  }
+
+  .rw-user-points-lbl {
+    font-size: 10px;
+  }
+
+  .rw-user-points-val {
+    font-size: 19px;
+  }
+
+  .rw-btn-get-points {
+    padding: 9.5px 16px;
+    font-size: 12px;
+    gap: 6px;
   }
 
   .rw-tabs-nav {
@@ -1124,65 +1326,65 @@
     padding: 6px 0 20px 0;
     margin-bottom: 20px;
   }
-  
+
   .rw-podium-diagram {
     gap: 10px;
     padding-top: 16px;
   }
-  
+
   .rw-podium-avatar {
     width: 48px;
     height: 48px;
     border-width: 2px;
   }
-  
+
   .rw-podium-avatar.first {
     width: 62px;
     height: 62px;
     border-width: 2.5px;
   }
-  
+
   .rw-podium-crown {
     top: -20px;
   }
-  
+
   .rw-podium-crown svg {
     width: 22px;
     height: 22px;
   }
-  
+
   .rw-podium-rank-badge {
     width: 20px;
     height: 20px;
     font-size: 10px;
   }
-  
+
   .rw-podium-bar {
     padding: 12px 6px;
     border-radius: 14px 14px 8px 8px;
     gap: 4px;
   }
-  
+
   .rw-podium-bar.bar-1 {
-    height: 160px;
+    height: 155px;
   }
-  
+
   .rw-podium-bar.bar-2 {
     height: 120px;
   }
-  
+
   .rw-podium-bar.bar-3 {
     height: 95px;
   }
-  
+
   .rw-podium-user-name {
     font-size: 12.5px;
   }
-  
+
   .rw-podium-loc {
     font-size: 10px;
   }
-  
+
   .rw-podium-points-badge {
     font-size: 11px;
     padding: 3px 8px;
@@ -1195,27 +1397,178 @@
 
   .rw-table-left {
     gap: 10px;
+    min-width: 0;
+    flex: 1;
   }
 
   .rw-table-rank-num {
     width: 18px;
     font-size: 12px;
+    flex-shrink: 0;
   }
 
   .rw-table-avatar {
     width: 32px;
     height: 32px;
+    flex-shrink: 0;
+  }
+
+  .rw-table-user-meta {
+    min-width: 0;
+    flex: 1;
   }
 
   .rw-table-name {
     font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .rw-table-loc {
     font-size: 10.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .rw-table-points {
+    font-size: 12.5px;
+    flex-shrink: 0;
+  }
+
+  .rw-vouchers-catalog-wrap {
+    gap: 16px;
+  }
+
+  .rw-voucher-bento-hero {
+    min-height: auto;
+  }
+
+  .rw-bento-hero-img-wrap {
+    height: 155px;
+  }
+
+  .rw-bento-hero-content {
+    padding: 14px 16px 16px 16px;
+    gap: 10px;
+  }
+
+  .rw-bento-hero-title {
+    font-size: 15.5px;
+    margin-bottom: 4px;
+  }
+
+  .rw-bento-hero-desc {
+    font-size: 11.5px;
+  }
+
+  .rw-bento-hero-points {
+    font-size: 12.5px;
+    padding: 4px 10px;
+  }
+
+  .rw-btn-claim-hero {
+    padding: 8px 18px;
+    font-size: 12.5px;
+  }
+
+  .rw-voucher-card.is-bento-stacked,
+  .rw-voucher-card {
+    height: 140px;
+  }
+
+  .rw-voucher-img-wrap {
+    width: 38%;
+  }
+
+  .rw-voucher-content {
+    padding: 12px 14px 12px 6px;
+  }
+
+  .rw-voucher-title {
+    font-size: 13.5px;
+    height: 35px;
+  }
+
+  .rw-voucher-desc {
+    font-size: 11.5px;
+    line-height: 1.4;
+    height: 32px;
+  }
+
+  .rw-voucher-points-tag {
+    font-size: 11.5px;
+    padding: 3px 8px;
+  }
+
+  .rw-btn-claim-voucher {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+
+  .rw-voucher-more-content {
+    padding: 12px 14px 12px 8px;
+  }
+
+  .rw-voucher-more-title {
+    font-size: 16px;
+    gap: 8px;
+  }
+
+  .rw-voucher-more-arrow {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 440px) {
+  .rw-user-card {
+    padding: 14px 12px;
+    gap: 12px;
+    border-radius: 18px;
+  }
+
+  .rw-user-avatar-wrap {
+    width: 42px;
+    height: 42px;
+  }
+
+  .rw-user-name {
+    font-size: 14.5px;
+  }
+
+  .rw-user-level-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .rw-user-stats-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .rw-user-points-box {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+  }
+
+  .rw-user-points-lbl {
+    font-size: 10px;
+  }
+
+  .rw-user-points-val {
+    font-size: 18px;
+  }
+
+  .rw-btn-get-points {
+    width: 100%;
+    justify-content: center;
+    padding: 10.5px 14px;
     font-size: 12.5px;
   }
 }
@@ -1225,8 +1578,39 @@
     gap: 6px;
   }
 
+  .rw-podium-avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .rw-podium-avatar.first {
+    width: 54px;
+    height: 54px;
+  }
+
+  .rw-podium-crown {
+    top: -16px;
+  }
+
+  .rw-podium-crown svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .rw-podium-bar {
     padding: 10px 4px;
+  }
+
+  .rw-podium-bar.bar-1 {
+    height: 140px;
+  }
+
+  .rw-podium-bar.bar-2 {
+    height: 110px;
+  }
+
+  .rw-podium-bar.bar-3 {
+    height: 85px;
   }
 
   .rw-podium-user-name {
@@ -1242,11 +1626,12 @@
     padding: 2px 6px;
   }
 
-  .rw-user-name {
-    font-size: 14.5px;
+  .rw-table-row {
+    padding: 10px 8px;
+    gap: 6px;
   }
 
-  .rw-user-progress-bar {
-    width: 120px;
+  .rw-badge-you {
+    display: none;
   }
 }
