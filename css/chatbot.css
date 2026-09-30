@@ -4,16 +4,12 @@
  * Deskripsi: Gaya Tampilan Widget Asisten Cerdas Teduh Bot
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Tipografi & Ikonografi:
- *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
- *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
- * 2. Visual Media & Fotografi (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
- * 3. Identitas Visual & Grafis Orisinal:
- *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Tipografi: Google Fonts Plus Jakarta Sans (SIL OFL 1.1).
+ * 2. Identitas Visual: Maskot Teduh Bot orisinal, Foto via Generative AI (Banana AI).
  * ==========================================================================
  */
+
 
 .td-chatbot-wrapper {
   position: fixed;
@@ -228,7 +224,7 @@
   right: 14px;
   background: var(--color-btn-primary, #5c8437);
   color: #ffffff;
-  padding: 9px 18px;
+  padding: 8.5px 18px;
   border-radius: 9999px;
   box-shadow:
     0 10px 24px rgba(92, 132, 55, 0.28),
@@ -244,21 +240,70 @@
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px) scale(0.94);
-  transform-origin: bottom right;
-  transition:
-    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0.35s;
+  transform: translateY(12px) scale(0.4);
+  transform-origin: calc(100% - 32px) 100%;
   user-select: none;
   -webkit-user-select: none;
   z-index: 10;
+  will-change: transform, opacity, filter;
 }
 
-.td-chatbot-tooltip.visible {
+.td-chatbot-tooltip.visible:not(.is-hiding) {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0) scale(1);
+  animation: td-tooltip-pop-in 0.46s cubic-bezier(0.16, 1.25, 0.3, 1) forwards;
+}
+
+.td-chatbot-tooltip.is-hiding {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  animation: td-tooltip-pop-out 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes td-tooltip-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.35);
+    filter: blur(4px);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.03);
+    filter: blur(0);
+  }
+  85% {
+    transform: translateY(1px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes td-tooltip-pop-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  30% {
+    opacity: 0.95;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.4);
+    filter: blur(3px);
+  }
+}
+
+.td-chatbot-tooltip:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow:
+    0 14px 28px rgba(92, 132, 55, 0.35),
+    0 3px 8px rgba(14, 17, 22, 0.06);
 }
 
 .td-chatbot-tooltip::after {
@@ -310,28 +355,28 @@
   opacity: 1;
   visibility: visible;
   pointer-events: none;
-  animation: td-window-spring-close 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: td-window-spring-close 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes td-window-spring-open {
   0% {
     opacity: 0;
-    transform: scale(0.32) translateY(36px) rotate(1.5deg);
+    transform: scale(0.32) translateY(36px);
     border-radius: 36px;
     filter: blur(4px);
   }
   65% {
     opacity: 1;
-    transform: scale(1.025) translateY(-3px) rotate(-0.25deg);
+    transform: scale(1.025) translateY(-3px);
     border-radius: 22px;
     filter: blur(0);
   }
   85% {
-    transform: scale(0.992) translateY(1px) rotate(0deg);
+    transform: scale(0.992) translateY(1px);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0) rotate(0deg);
+    transform: scale(1) translateY(0);
     border-radius: 24px;
     filter: blur(0);
   }
@@ -340,17 +385,20 @@
 @keyframes td-window-spring-close {
   0% {
     opacity: 1;
-    transform: scale(1) translateY(0) rotate(0deg);
+    transform: scale(1) translateY(0);
     filter: blur(0);
+    border-radius: 24px;
   }
-  30% {
-    transform: scale(0.98) translateY(-4px);
-    opacity: 0.92;
+  35% {
+    opacity: 0.95;
+    transform: scale(1.015) translateY(-3px);
+    border-radius: 26px;
   }
   100% {
     opacity: 0;
-    transform: scale(0.38) translateY(32px) rotate(1.2deg);
-    filter: blur(3px);
+    transform: scale(0.35) translateY(32px);
+    filter: blur(4px);
+    border-radius: 36px;
   }
 }
 
@@ -654,7 +702,7 @@
   color: #ffffff;
   text-decoration: none;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 8px 15px;
   border-radius: 9999px;
   transition:
@@ -837,10 +885,6 @@
     font-size: 12px;
     padding: 7px 14px;
     white-space: nowrap;
-  }
-
-  .td-chatbot-tooltip.visible {
-    transform: translateY(0) scale(1);
   }
 
   .td-chatbot-window {

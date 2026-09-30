@@ -4,21 +4,12 @@
  * Deskripsi: Pengendali Dashboard Profil Warga, Status Kesejukan & Manajemen Pekarangan
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual (assets/*): Dihasilkan via Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
-
 let profileToastTimeout = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,88 +22,34 @@ function initProfilePage() {
   const user = TEDUH_DATA.getUserData();
   const level = TEDUH_DATA.getUserLevelInfo(user.points);
 
-  // 1. Render Identitas Pengguna (Kolom Kiri Atas)
   renderUserIdentity(user, level);
 
-  // 2. Render Jadwal & Agenda Aksi Pekarangan (Kolom Kiri Bawah)
   renderScheduleAgendas(user);
 
-  // 3. Render Kubah Kesejukan & Metrik Mikro (Kolom Kanan Atas)
   renderClimateStats(user);
 
-  // 4. Render Dompet Poin & Kupon Aktif
   renderWalletAndCoupons(user);
 
-  // 5. Render Linimasa Riwayat Aktivitas (Maksimal 4)
   renderActivityTimeline(user);
 
-  // 6. Inisialisasi Mikro-Interaksi & Feedback Animasi
   initProfileInteractions(user);
 
-  // 7. Jalankan Animasi Sinematik GSAP Masuk Halaman Profil
-  initProfileGSAPAnimations(user);
+  initProfileEntranceAnimations(user);
 }
 
-// Inisialisasi Animasi GSAP Masuk Halaman Profil
-function initProfileGSAPAnimations(user) {
-  if (typeof gsap === "undefined") return;
+function initProfileEntranceAnimations(user) {
+  $(".pf-card, .pf-account-actions-stack").each(function (idx) {
+    const $card = $(this);
+    $card.css({ opacity: 0, transform: "translateY(20px)" });
+    setTimeout(() => {
+      $card.css({
+        opacity: 1,
+        transform: "translateY(0)",
+        transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+      });
+    }, 60 + idx * 70);
+  });
 
-  // 1. Bento Grid Columns & Cards Entrance
-  gsap.fromTo(
-    ".pf-col:first-child .pf-card, .pf-col:first-child .pf-account-actions-stack",
-    { opacity: 0, y: 24, scale: 0.98 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      stagger: 0.1,
-      duration: 0.6,
-      ease: "power3.out",
-    },
-  );
-
-  gsap.fromTo(
-    ".pf-col:last-child .pf-card",
-    { opacity: 0, y: 24, scale: 0.98 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      stagger: 0.12,
-      duration: 0.65,
-      ease: "power3.out",
-      delay: 0.08,
-    },
-  );
-
-  // 2. Avatar Circle Elastic Pop
-  gsap.fromTo(
-    ".pf-avatar-circle",
-    { scale: 0.7, opacity: 0 },
-    {
-      scale: 1,
-      opacity: 1,
-      duration: 0.55,
-      ease: "back.out(1.8)",
-      delay: 0.12,
-    },
-  );
-
-  // 3. Identity Details Cascade
-  gsap.fromTo(
-    "#pfUserName, #pfUserTag, #pfLevelBadge, .pf-location-badge-box, .pf-target-box",
-    { opacity: 0, x: -16 },
-    {
-      opacity: 1,
-      x: 0,
-      stagger: 0.06,
-      duration: 0.45,
-      ease: "power2.out",
-      delay: 0.2,
-    },
-  );
-
-  // 4. Climate Dome Score Ring Gauge & Live Counter
   const home = user && user.homeZone ? user.homeZone : {};
   const scoreVal = home.coolingScore || 86;
   const ringFg = document.getElementById("pfRingFg");
@@ -121,222 +58,143 @@ function initProfileGSAPAnimations(user) {
   if (ringFg) {
     const circumference = 377;
     const targetOffset = circumference - (scoreVal / 100) * circumference;
-    gsap.fromTo(
-      ringFg,
-      { strokeDashoffset: circumference },
-      {
-        strokeDashoffset: targetOffset,
-        duration: 1.3,
-        ease: "power2.out",
-        delay: 0.25,
-      },
-    );
+    ringFg.style.strokeDashoffset = circumference;
+    setTimeout(() => {
+      ringFg.style.transition = "stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1)";
+      ringFg.style.strokeDashoffset = targetOffset;
+    }, 200);
   }
 
   if (scoreEl) {
-    const scoreCounter = { val: 0 };
-    gsap.to(scoreCounter, {
-      val: scoreVal,
-      duration: 1.25,
-      ease: "power2.out",
-      delay: 0.25,
-      onUpdate: () => {
-        scoreEl.textContent = Math.round(scoreCounter.val);
-      },
-    });
+    const startTime = performance.now();
+    const duration = 1100;
+    function countScore(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - p, 3);
+      scoreEl.textContent = Math.round(scoreVal * ease);
+      if (p < 1) requestAnimationFrame(countScore);
+      else scoreEl.textContent = scoreVal;
+    }
+    setTimeout(() => requestAnimationFrame(countScore), 200);
   }
 
-  // 5. Points Balance Live Count-Up
   const pointsEl = document.getElementById("pfWalletPointsNumber");
   if (pointsEl) {
     const targetPoints = user.points || 850;
-    const pCounter = { val: 0 };
-    gsap.to(pCounter, {
-      val: targetPoints,
-      duration: 1.2,
-      ease: "power2.out",
-      delay: 0.3,
-      onUpdate: () => {
-        pointsEl.textContent = `${Math.round(pCounter.val).toLocaleString("id-ID")} Poin`;
-      },
-    });
+    const startTime = performance.now();
+    const duration = 1100;
+    function countPoints(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const current = Math.round(targetPoints * ease);
+      pointsEl.textContent = `${current.toLocaleString("id-ID")} Poin`;
+      if (p < 1) requestAnimationFrame(countPoints);
+      else pointsEl.textContent = `${targetPoints.toLocaleString("id-ID")} Poin`;
+    }
+    setTimeout(() => requestAnimationFrame(countPoints), 250);
   }
-
-  // 6. 2x2 Metric Tiles Stagger
-  gsap.fromTo(
-    ".pf-metric-tile",
-    { opacity: 0, y: 14, scale: 0.94 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      stagger: 0.06,
-      duration: 0.45,
-      ease: "back.out(1.4)",
-      delay: 0.35,
-    },
-  );
-
-  // 7. Schedule Rows & Date Badges Stagger
-  gsap.fromTo(
-    ".pf-schedule-row",
-    { opacity: 0, x: -14 },
-    {
-      opacity: 1,
-      x: 0,
-      stagger: 0.08,
-      duration: 0.45,
-      ease: "power2.out",
-      delay: 0.3,
-    },
-  );
-
-  // 8. Timeline Items & Icons Stagger
-  gsap.fromTo(
-    ".pf-timeline-item",
-    { opacity: 0, y: 12 },
-    {
-      opacity: 1,
-      y: 0,
-      stagger: 0.06,
-      duration: 0.45,
-      ease: "power2.out",
-      delay: 0.4,
-    },
-  );
-
-  gsap.fromTo(
-    ".pf-timeline-icon",
-    { scale: 0.75, opacity: 0 },
-    {
-      scale: 1,
-      opacity: 1,
-      stagger: 0.06,
-      duration: 0.4,
-      ease: "back.out(1.7)",
-      delay: 0.42,
-    },
-  );
 }
 
-// Inisialisasi Mikro-Interaksi Lengkap Pada Seluruh Elemen Interaktif
 function initProfileInteractions(user) {
-  // 1. Interaksi Avatar (3D Tilt & Spring Bounce)
   const avatarContainer = document.querySelector(".pf-avatar-container");
   if (avatarContainer) {
     avatarContainer.style.cursor = "pointer";
     avatarContainer.setAttribute("title", "Ketuk untuk animasi avatar");
     avatarContainer.addEventListener("click", () => {
-      if (typeof gsap === "undefined") return;
-      const tl = gsap.timeline();
-      tl.to(".pf-avatar-circle", {
-        scale: 1.15,
-        rotation: -7,
-        duration: 0.18,
-        ease: "power2.out",
-      })
-        .to(".pf-avatar-circle", {
-          rotation: 7,
-          duration: 0.16,
-          ease: "power2.inOut",
-        })
-        .to(".pf-avatar-circle", {
-          scale: 1,
-          rotation: 0,
-          duration: 0.35,
-          ease: "back.out(2)",
-        });
+      const circle = document.querySelector(".pf-avatar-circle");
+      if (circle) {
+        circle.style.transform = "scale(1.15) rotate(-7deg)";
+        circle.style.transition = "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)";
+        setTimeout(() => {
+          circle.style.transform = "scale(1) rotate(0deg)";
+        }, 220);
+      }
     });
   }
 
-  // 2. Interaksi Kubah Kesejukan (Re-Trigger Spin & Score Count-Up)
   const climateDome = document.querySelector(".pf-climate-dome");
   if (climateDome) {
     climateDome.style.cursor = "pointer";
     climateDome.setAttribute("title", "Ketuk untuk refresh skor sejuk");
     climateDome.addEventListener("click", () => {
-      if (typeof gsap === "undefined") return;
       const home = user && user.homeZone ? user.homeZone : {};
       const scoreVal = home.coolingScore || 86;
       const ringFg = document.getElementById("pfRingFg");
       const scoreEl = document.getElementById("pfCoolingScore");
 
-      gsap.fromTo(
-        climateDome,
-        { scale: 0.97 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
+      climateDome.style.transform = "scale(0.97)";
+      climateDome.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        climateDome.style.transform = "scale(1)";
+      }, 250);
 
       if (ringFg) {
         const circumference = 377;
         const targetOffset = circumference - (scoreVal / 100) * circumference;
-        gsap.fromTo(
-          ringFg,
-          { strokeDashoffset: circumference },
-          { strokeDashoffset: targetOffset, duration: 0.9, ease: "power2.out" },
-        );
+        ringFg.style.strokeDashoffset = circumference;
+        ringFg.style.transition = "stroke-dashoffset 0.9s cubic-bezier(0.16, 1, 0.3, 1)";
+        requestAnimationFrame(() => {
+          ringFg.style.strokeDashoffset = targetOffset;
+        });
       }
 
       if (scoreEl) {
-        const scoreCounter = { val: 0 };
-        gsap.to(scoreCounter, {
-          val: scoreVal,
-          duration: 0.85,
-          ease: "power2.out",
-          onUpdate: () => {
-            scoreEl.textContent = Math.round(scoreCounter.val);
-          },
-        });
+        let current = 0;
+        const step = () => {
+          current += (scoreVal - current) * 0.15;
+          if (Math.abs(scoreVal - current) < 0.5) {
+            scoreEl.textContent = scoreVal;
+          } else {
+            scoreEl.textContent = Math.round(current);
+            requestAnimationFrame(step);
+          }
+        };
+        requestAnimationFrame(step);
       }
     });
   }
 
-  // 3. Interaksi Dompet Poin (Bounce & Refresh Balance)
   const walletBox = document.querySelector(".pf-wallet-side-box");
   if (walletBox) {
     walletBox.style.cursor = "pointer";
     walletBox.setAttribute("title", "Ketuk untuk animasi poin");
     walletBox.addEventListener("click", (e) => {
       if (e.target.closest(".pf-wallet-redeem-action-btn")) return;
-      if (typeof gsap === "undefined") return;
       const pointsEl = document.getElementById("pfWalletPointsNumber");
-      gsap.fromTo(
-        walletBox,
-        { scale: 0.97 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
+      walletBox.style.transform = "scale(0.97)";
+      walletBox.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        walletBox.style.transform = "scale(1)";
+      }, 250);
       if (pointsEl) {
-        gsap.fromTo(
-          pointsEl,
-          { scale: 1.22 },
-          { scale: 1, duration: 0.4, ease: "back.out(2)" },
-        );
+        pointsEl.style.transform = "scale(1.2)";
+        pointsEl.style.transition = "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+        setTimeout(() => {
+          pointsEl.style.transform = "scale(1)";
+        }, 300);
       }
     });
   }
 
-  // 4. Interaksi Tile Metrik Mikro (Tactile Click Pop & Value Bump)
   document.querySelectorAll(".pf-metric-tile").forEach((tile) => {
     tile.style.cursor = "pointer";
     tile.addEventListener("click", () => {
-      if (typeof gsap === "undefined") return;
-      gsap.fromTo(
-        tile,
-        { scale: 0.94 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
+      tile.style.transform = "scale(0.95)";
+      tile.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        tile.style.transform = "scale(1)";
+      }, 250);
       const val = tile.querySelector(".pf-metric-val");
       if (val) {
-        gsap.fromTo(
-          val,
-          { scale: 1.2 },
-          { scale: 1, duration: 0.35, ease: "back.out(2)" },
-        );
+        val.style.transform = "scale(1.15)";
+        val.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+        setTimeout(() => {
+          val.style.transform = "scale(1)";
+        }, 250);
       }
     });
   });
 
-  // 5. Interaksi Pill Level, Lokasi & Target Pekarangan
   const tactileElements = [
     document.querySelector(".pf-location-badge-box"),
     document.querySelector(".pf-target-box"),
@@ -346,81 +204,74 @@ function initProfileInteractions(user) {
     if (el) {
       el.style.cursor = "pointer";
       el.addEventListener("click", () => {
-        if (typeof gsap === "undefined") return;
-        gsap.fromTo(
-          el,
-          { scale: 0.97 },
-          { scale: 1, duration: 0.3, ease: "back.out(2)" },
-        );
+        el.style.transform = "scale(0.96)";
+        el.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+        setTimeout(() => {
+          el.style.transform = "scale(1)";
+        }, 250);
       });
     }
   });
 
-  // 6. Interaksi Tombol Edit Profil (Micro Spin + Text Field Glow + Toast, Tanpa Direct)
   const editBtn = document.querySelector(".pf-action-settings");
   if (editBtn) {
     editBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          editBtn,
-          { scale: 0.92 },
-          { scale: 1, duration: 0.35, ease: "back.out(2)" },
-        );
-        const icon = editBtn.querySelector("svg");
-        if (icon) {
-          gsap.to(icon, {
-            rotation: "+=360",
-            duration: 0.5,
-            ease: "power2.out",
-          });
-        }
-        const editableFields = document.querySelectorAll(
-          "#pfUserName, #pfLocationText, #pfTargetText",
-        );
-        gsap.fromTo(
-          editableFields,
-          { backgroundColor: "#EEF5EB", borderRadius: "6px" },
-          {
-            backgroundColor: "transparent",
-            duration: 0.9,
-            ease: "power2.out",
-          },
-        );
+      editBtn.style.transform = "scale(0.92)";
+      editBtn.style.transition = "transform 0.25s ease";
+      setTimeout(() => {
+        editBtn.style.transform = "scale(1)";
+      }, 250);
+
+      const icon = editBtn.querySelector("svg");
+      if (icon) {
+        icon.style.transform = "rotate(360deg)";
+        icon.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+        setTimeout(() => {
+          icon.style.transform = "rotate(0deg)";
+          icon.style.transition = "none";
+        }, 650);
       }
+
+      const editableFields = document.querySelectorAll(
+        "#pfUserName, #pfLocationText, #pfTargetText",
+      );
+      editableFields.forEach((field) => {
+        field.style.backgroundColor = "#EEF5EB";
+        field.style.borderRadius = "6px";
+        field.style.transition = "background-color 0.8s ease";
+        setTimeout(() => {
+          field.style.backgroundColor = "transparent";
+        }, 800);
+      });
+
       showProfileToast("Mode pengaturan profil siap ditinjau");
     });
   }
 
-  // 7. Interaksi Tombol Tukar Poin & Link Semua Agenda
   const redeemBtn = document.querySelector(".pf-wallet-redeem-action-btn");
   if (redeemBtn) {
     redeemBtn.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          redeemBtn,
-          { scale: 0.93 },
-          { scale: 1, duration: 0.3, ease: "back.out(2)" },
-        );
-      }
+      redeemBtn.style.transform = "scale(0.93)";
+      redeemBtn.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        redeemBtn.style.transform = "scale(1)";
+      }, 250);
     });
   }
 
   const allScheduleLink = document.querySelector(".pf-schedule-all-link");
   if (allScheduleLink) {
     allScheduleLink.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          allScheduleLink,
-          { x: 4 },
-          { x: 0, duration: 0.3, ease: "back.out(2)" },
-        );
-      }
+      allScheduleLink.style.transform = "translateX(4px)";
+      allScheduleLink.style.transition = "transform 0.25s ease";
+      setTimeout(() => {
+        allScheduleLink.style.transform = "translateX(0)";
+      }, 250);
     });
   }
 }
 
-// 1. Render Identitas Pengguna
 function renderUserIdentity(user, level) {
   const nameEl = document.getElementById("pfUserName");
   const userEl = document.getElementById("pfUserTag");
@@ -447,7 +298,6 @@ function renderUserIdentity(user, level) {
       user.target || "Bikin teras lebih sejuk dan jaga pipa air tetap aman.";
 }
 
-// 2. Render Kubah Kesejukan & Metrik Mikro
 function renderClimateStats(user) {
   const home = user.homeZone || {};
   const scoreVal = home.coolingScore || 86;
@@ -462,7 +312,6 @@ function renderClimateStats(user) {
     ringFg.style.strokeDashoffset = offset;
   }
 
-  // Tile Metrik Mikro
   const tempDropEl = document.getElementById("pfMetricTempDrop");
   const treesCountEl = document.getElementById("pfMetricTreesCount");
   const shadeAreaEl = document.getElementById("pfMetricShadeArea");
@@ -476,13 +325,21 @@ function renderClimateStats(user) {
     friendsCountEl.textContent = `${home.friendsInvited || 2} Orang`;
 }
 
-// 3. Render Dompet Poin
 function renderWalletAndCoupons(user) {
   const pointsEl = document.getElementById("pfWalletPointsNumber");
   if (pointsEl) pointsEl.textContent = `${user.points || 850} Poin`;
 }
 
-// 4. Render Linimasa Riwayat Aktivitas (Maksimal 4 - Tampilan Bersih & Tenang)
+function escapeHtml(str) {
+  if (typeof str !== "string") return str || "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function renderActivityTimeline(user) {
   const container = document.getElementById("pfTimelineContainer");
   if (!container) return;
@@ -501,33 +358,81 @@ function renderActivityTimeline(user) {
 
   activities.forEach((act) => {
     let iconSvg = "";
-    if (act.icon === "tree") {
-      iconSvg =
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 12h4v8h8v-8h4L12 2z"></path><path d="M12 12v8"></path></svg>';
-    } else if (act.icon === "friends") {
-      iconSvg =
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
-    } else if (act.icon === "voucher") {
-      iconSvg =
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"></path><path d="M13 5v2"></path><path d="M13 11v2"></path><path d="M13 17v2"></path></svg>';
-    } else if (act.icon === "biopori" || act.icon === "water") {
-      iconSvg =
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>';
+    let iconClass = "is-tree";
+    const type = (act.icon || "").toLowerCase();
+
+    if (type === "tree" || type.includes("tanam") || type.includes("pohon")) {
+      iconClass = "is-tree";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2L4 11h4v7h8v-7h4L12 2z"></path>
+          <path d="M12 18v4"></path>
+        </svg>
+      `;
+    } else if (type === "friends" || type.includes("gotong") || type.includes("relawan")) {
+      iconClass = "is-friends";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      `;
+    } else if (type === "voucher" || type.includes("kupon") || type.includes("tukar") || type.includes("hadiah")) {
+      iconClass = "is-voucher";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"></path>
+          <line x1="12" y1="9" x2="12" y2="15"></line>
+        </svg>
+      `;
+    } else if (type === "biopori" || type.includes("resapan") || type.includes("lubang")) {
+      iconClass = "is-biopori";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+          <path d="M12 12v6"></path>
+          <path d="M9 15l3 3 3-3"></path>
+        </svg>
+      `;
+    } else if (type === "water" || type.includes("siram") || type.includes("rawat")) {
+      iconClass = "is-water";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      `;
+    } else if (type === "temp" || type.includes("suhu") || type.includes("termal") || type.includes("panas")) {
+      iconClass = "is-temp";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+        </svg>
+      `;
     } else {
-      iconSvg =
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+      iconClass = "is-award";
+      iconSvg = `
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      `;
     }
+
+    const isNegativeBadge = (act.badge || "").includes("-");
+    const badgeClass = isNegativeBadge ? "is-negative" : "is-positive";
 
     const item = document.createElement("div");
     item.className = "pf-timeline-item";
     item.innerHTML = `
-      <div class="pf-timeline-icon">
+      <div class="pf-timeline-icon ${iconClass}">
         ${iconSvg}
       </div>
       <div class="pf-timeline-content">
         <div class="pf-timeline-top">
-          <span class="pf-timeline-title">${act.title}</span>
-          <span class="pf-timeline-badge">${act.badge}</span>
+          <span class="pf-timeline-title">${escapeHtml(act.title)}</span>
+          <span class="pf-timeline-badge ${badgeClass}">${escapeHtml(act.badge)}</span>
         </div>
       </div>
     `;
@@ -535,7 +440,6 @@ function renderActivityTimeline(user) {
   });
 }
 
-// 5. Render Jadwal & Agenda Aksi Pekarangan (Hover Murni Alami via CSS)
 function renderScheduleAgendas(user) {
   const container = document.getElementById("pfScheduleContainer");
   if (!container) return;
@@ -558,7 +462,6 @@ function renderScheduleAgendas(user) {
     }
   }
 
-  // Base care agendas (Pemupukan, Mulsa, Cek Resapan)
   const baseCareAgendas = (user.scheduleAgendas || []).filter(
     (ag) => !ag.isMission && !ag.title.includes("Tanam"),
   );
@@ -679,7 +582,6 @@ function renderScheduleAgendas(user) {
         </div>
       `;
     }
-    // Remove button for today’s agenda to keep pure hover experience
     if (isToday) {
       actionBtnHtml = "";
     }
@@ -723,7 +625,6 @@ function renderScheduleAgendas(user) {
   });
 }
 
-// Toast Notifikasi Minimalis
 function showProfileToast(message) {
   let toast = document.getElementById("teduhToast");
   if (!toast) {
@@ -737,33 +638,12 @@ function showProfileToast(message) {
   toast.textContent = message;
   toast.classList.add("is-visible");
 
-  if (typeof gsap !== "undefined") {
-    gsap.fromTo(
-      toast,
-      { y: 24, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.8)" },
-    );
-  }
-
   if (profileToastTimeout) clearTimeout(profileToastTimeout);
   profileToastTimeout = setTimeout(() => {
-    if (typeof gsap !== "undefined") {
-      gsap.to(toast, {
-        y: 16,
-        opacity: 0,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => {
-          toast.classList.remove("is-visible");
-        },
-      });
-    } else {
-      toast.classList.remove("is-visible");
-    }
+    toast.classList.remove("is-visible");
   }, 2400);
 }
 
-// Global Exports
 window.initProfilePage = initProfilePage;
 window.renderUserIdentity = renderUserIdentity;
 window.renderClimateStats = renderClimateStats;

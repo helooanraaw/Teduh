@@ -14,14 +14,16 @@ Teduh adalah aplikasi web berbasis peta satelit interaktif untuk memetakan titik
 ```
 Teduh/
 ├── assets/             # Aset logo, ikon, dan foto tajuk pohon
-├── images/             # Visual pendukung dan testimoni warga
 ├── css/                # Lembar gaya global, peta, komunitas, hadiah, dan profil
-├── js/                 # Data model, engine spasial leaflet, dan logika interaktif
-├── index.html          # Halaman beranda
-├── map.html            # Konsol peta spasial
-├── community.html      # Ruang kolaborasi & feed cerita warga
-├── reward.html         # Papan peringkat & penukaran voucher hadiah
-└── profile.html        # Dashboard profil pengguna
+├── js/                 # Data model, engine spasial, dan logika interaktif
+├── pages/              # Halaman web aplikasi
+│   ├── map.html            # Konsol peta spasial
+│   ├── community.html      # Ruang kolaborasi & feed cerita warga
+│   ├── community-detail.html # Detail diskusi komunitas
+│   ├── reward.html         # Papan peringkat & penukaran voucher hadiah
+│   └── profile.html        # Dashboard profil pengguna
+├── index.html          # Halaman beranda utama
+└── README.md
 ```
 
 ## Teknologi

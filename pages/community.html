@@ -4,28 +4,21 @@
   Deskripsi: Halaman Komunitas Warga, Linimasa Aksi Tanam & Gotong Royong Lingkungan
 
   ==========================================================================
-  SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
-  1. Fotografi & Dokumentasi Lapangan (Seluruh aset memiliki Open License / Bebas Hak Cipta Komersial):
-     - Potret Avatar Warga & Profil (assets/avatars/*): Unsplash & Pexels (Open License / Free for Commercial Use).
-     - Direktori Pohon & Botani Peneduh (assets/trees/*): Wikimedia Commons & Open Flora Archive (Creative Commons CC BY-SA 4.0).
-     - Dokumentasi Aksi Pekarangan (assets/feed/*): Unsplash & Freepik (Open License with Free Commercial Rights).
-     - Katalog Reward & Voucher Ekologis (assets/vouchers/*): Freepik & Unsplash (Open License).
-     - Lanskap Perkotaan & Kanopi Hijau (assets/landing/*): Unsplash (Open License / Free to Use).
-  2. Ilustrasi & Identitas Visual Orisinal:
-     - Maskot Interaktif Teduh Bot (assets/bot/*): Ilustrasi Digital Orisinal Tim Pengembang Teduh.
-     - Logo & Brandmark Teduh (assets/logo/*): Desain Vektor Orisinal Tim Pengembang Teduh.
-     - Logo Institusi & Mitra Ekologis (assets/mitra/*): Aset Vektor Resmi Domain Publik / Mitra Terkait.
-  3. Peta Spasial & Citra Satelit:
-     - Citra Satelit Google Hybrid: Google Maps / Earth Tile Server.
-     - CartoDB Dark Matter & Voyager: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
-  4. Tipografi, Ikonografi & Pustaka Eksternal:
-     - Google Fonts Plus Jakarta Sans: Tokyo Type Directors Club & Tokotype (SIL Open Font License 1.1).
-     - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
-     - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
-     - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
-     - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+  SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+  1. Aset Visual, Fotografi & Dokumentasi Aksi Warga (assets/*):
+     - Seluruh foto linimasa aksi gotong royong, avatar warga, dan foto tanaman
+       dihasilkan secara orisinal menggunakan Generative AI (AI Image Generator / Banana AI).
+  2. Logo, Brandmark & Maskot:
+     - Logo & Identitas Brand Teduh: Didesain mandiri menggunakan Canva oleh tim pengembang.
+     - Maskot Interaktif Teduh Bot: Ilustrasi karakter digital orisinal pengembang.
+  3. Pustaka Eksternal, Tipografi & Ikon:
+     - Tipografi: Google Fonts Plus Jakarta Sans (SIL Open Font License 1.1).
+     - Ikonografi: Lucide Icons (MIT License).
+     - JavaScript Library: jQuery 3.7.1 CDN (OpenJS Foundation / MIT License).
+     - Framework Gaya: Tailwind CSS CDN.
   ==========================================================================
 -->
+
 
 <!doctype html>
 <html lang="id">
@@ -45,29 +38,29 @@
       rel="stylesheet"
     />
 
-    <link rel="icon" type="image/svg+xml" href="assets/logo/teduh-cloud.svg" />
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/community.css" />
-    <link rel="stylesheet" href="css/chatbot.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/logo/teduh-cloud.svg" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/community.css" />
+    <link rel="stylesheet" href="../css/chatbot.css" />
   </head>
   <body>
     <nav class="navbar" aria-label="Navigasi Utama">
       <div class="navbar-inner">
-        <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+        <a href="../index.html" class="navbar-brand" aria-label="Teduh Beranda">
           <img
-            src="assets/logo/teduh-logo.svg"
+            src="../assets/logo/teduh-logo.svg"
             alt="Teduh"
             class="navbar-brand-logo"
           />
           <img
-            src="assets/logo/teduh-only.svg"
+            src="../assets/logo/teduh-only.svg"
             alt="Teduh"
             class="navbar-brand-logo-mobile"
           />
         </a>
 
         <div class="navbar-links">
-          <a href="index.html" class="navbar-link">Beranda</a>
+          <a href="../index.html" class="navbar-link">Beranda</a>
           <a href="map.html" class="navbar-link">Konsol Peta</a>
           <a
             href="community.html"
@@ -126,7 +119,7 @@
             >
               <div class="nav-profile-avatar">
                 <img
-                  src="assets/avatars/john-doe.jpg"
+                  src="../assets/avatars/john-doe.jpg"
                   alt="Avatar John Doe"
                   onerror="
                     this.style.display = 'none';
@@ -155,7 +148,7 @@
               <div class="nav-popup-header">
                 <div class="nav-popup-avatar">
                   <img
-                    src="assets/avatars/john-doe.jpg"
+                    src="../assets/avatars/john-doe.jpg"
                     alt="Avatar John Doe"
                     onerror="
                       this.style.display = 'none';
@@ -266,9 +259,9 @@
     >
       <div class="mobile-nav-top">
         <div class="mobile-nav-header">
-          <a href="index.html" class="navbar-brand" aria-label="Teduh Beranda">
+          <a href="../index.html" class="navbar-brand" aria-label="Teduh Beranda">
             <img
-              src="assets/logo/teduh-logo.svg"
+              src="../assets/logo/teduh-logo.svg"
               alt="Teduh"
               class="navbar-brand-logo"
             />
@@ -296,7 +289,7 @@
         </div>
 
         <nav class="mobile-nav-links">
-          <a href="index.html" class="mobile-nav-link">
+          <a href="../index.html" class="mobile-nav-link">
             <svg
               width="18"
               height="18"
@@ -377,7 +370,7 @@
           aria-label="Buka Profil John Doe"
         >
           <img
-            src="assets/avatars/john-doe.jpg"
+            src="../assets/avatars/john-doe.jpg"
             alt="Avatar John Doe"
             onerror="
               this.style.display = 'none';
@@ -434,7 +427,7 @@
             <div class="km-composer-trigger-card" id="kmComposerTriggerCard">
               <div class="km-trigger-top-row">
                 <img
-                  src="assets/avatars/john-doe.jpg"
+                  src="../assets/avatars/john-doe.jpg"
                   alt="Avatar John Doe"
                   class="km-trigger-avatar"
                 />
@@ -521,7 +514,7 @@
                 <div class="km-thread-header">
                   <div class="km-thread-author-wrap">
                     <img
-                      src="assets/avatars/gede-surya.jpg"
+                      src="../assets/avatars/gede-surya.jpg"
                       alt="Gede Surya"
                       class="km-thread-avatar"
                     />
@@ -556,39 +549,42 @@
                   </p>
 
                   <div class="km-photo-grid km-photo-grid-3">
-                    <a
-                      href="community-detail.html?id=thread-1"
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat dokumentasi pekarangan"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-ubud-garden.jpg"
+                        src="../assets/feed/feed-ubud-garden.jpg"
                         alt="Dokumentasi pekarangan"
                         loading="lazy"
                       />
-                    </a>
-                    <a
-                      href="community-detail.html?id=thread-1"
+                    </button>
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat kondisi adaptasi bibit"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-gatsu-roadside.jpg"
+                        src="../assets/feed/feed-gatsu-roadside.jpg"
                         alt="Kondisi adaptasi bibit pekarangan"
                         loading="lazy"
                       />
-                    </a>
-                    <a
-                      href="community-detail.html?id=thread-1"
+                    </button>
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat gotong royong penanaman"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-gotong-royong.jpg"
+                        src="../assets/feed/feed-gotong-royong.jpg"
                         alt="Gotong royong penanaman pekarangan"
                         loading="lazy"
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -631,10 +627,11 @@
                     </svg>
                     <span class="comment-count">2</span> Komentar
                   </button>
-                  <a
-                    href="community-detail.html?id=thread-1"
-                    class="km-action-btn km-detail-link-btn"
-                    title="Buka Detail Thread"
+                  <button
+                    type="button"
+                    class="km-action-btn km-share-btn"
+                    onclick="shareThread('thread-1', event)"
+                    title="Bagikan Cerita"
                   >
                     <svg
                       width="15"
@@ -646,14 +643,14 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path
-                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                      ></path>
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                     </svg>
-                    <span>Buka Thread</span>
-                  </a>
+                    <span>Bagikan</span>
+                  </button>
                 </div>
 
                 <div class="km-thread-comments-section">
@@ -680,7 +677,7 @@
                     >
                       <div class="km-comment-node">
                         <img
-                          src="assets/avatars/ibu-desak.jpg"
+                          src="../assets/avatars/ibu-desak.jpg"
                           alt="Ibu Desak"
                           class="km-comment-avatar"
                         />
@@ -726,7 +723,7 @@
                       >
                         <div class="km-comment-node is-reply">
                           <img
-                            src="assets/avatars/gede-surya.jpg"
+                            src="../assets/avatars/gede-surya.jpg"
                             alt="Gede Surya"
                             class="km-comment-avatar"
                           />
@@ -772,7 +769,7 @@
                           style="display: none"
                         >
                           <img
-                            src="assets/avatars/john-doe.jpg"
+                            src="../assets/avatars/john-doe.jpg"
                             alt="Avatar Anda"
                             class="km-reply-user-avatar"
                           />
@@ -843,7 +840,7 @@
                 <div class="km-thread-header">
                   <div class="km-thread-author-wrap">
                     <img
-                      src="assets/avatars/ibu-desak.jpg"
+                      src="../assets/avatars/ibu-desak.jpg"
                       alt="Ibu Desak"
                       class="km-thread-avatar"
                     />
@@ -878,28 +875,30 @@
                   </p>
 
                   <div class="km-photo-grid km-photo-grid-2">
-                    <a
-                      href="community-detail.html?id=thread-2"
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat Ketapang Kencana di pekarangan"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-sesetan-gang.jpg"
+                        src="../assets/feed/feed-sesetan-gang.jpg"
                         alt="Ketapang Kencana di pekarangan"
                         loading="lazy"
                       />
-                    </a>
-                    <a
-                      href="community-detail.html?id=thread-2"
+                    </button>
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat suasana gang sejuk"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-teuku-umar.jpg"
+                        src="../assets/feed/feed-teuku-umar.jpg"
                         alt="Suasana gang sejuk"
                         loading="lazy"
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -942,10 +941,11 @@
                     </svg>
                     <span class="comment-count">1</span> Komentar
                   </button>
-                  <a
-                    href="community-detail.html?id=thread-2"
-                    class="km-action-btn km-detail-link-btn"
-                    title="Buka Detail Thread"
+                  <button
+                    type="button"
+                    class="km-action-btn km-share-btn"
+                    onclick="shareThread('thread-2', event)"
+                    title="Bagikan Cerita"
                   >
                     <svg
                       width="15"
@@ -957,14 +957,14 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path
-                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                      ></path>
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                     </svg>
-                    <span>Buka Thread</span>
-                  </a>
+                    <span>Bagikan</span>
+                  </button>
                 </div>
 
                 <div class="km-thread-comments-section">
@@ -991,7 +991,7 @@
                     >
                       <div class="km-comment-node">
                         <img
-                          src="assets/avatars/pak-wayan.jpg"
+                          src="../assets/avatars/pak-wayan.jpg"
                           alt="Pak Wayan"
                           class="km-comment-avatar"
                         />
@@ -1040,7 +1040,7 @@
                           style="display: none"
                         >
                           <img
-                            src="assets/avatars/john-doe.jpg"
+                            src="../assets/avatars/john-doe.jpg"
                             alt="Avatar Anda"
                             class="km-reply-user-avatar"
                           />
@@ -1111,7 +1111,7 @@
                 <div class="km-thread-header">
                   <div class="km-thread-author-wrap">
                     <img
-                      src="assets/avatars/dr-made-ary.jpg"
+                      src="../assets/avatars/dr-made-ary.jpg"
                       alt="dr. Made Ary"
                       class="km-thread-avatar"
                     />
@@ -1147,39 +1147,42 @@
                   </p>
 
                   <div class="km-photo-grid km-photo-grid-3">
-                    <a
-                      href="community-detail.html?id=thread-3"
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat biopori vertikal dan lubang resapan"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-biopori-action.jpg"
+                        src="../assets/feed/feed-biopori-action.jpg"
                         alt="Instalasi biopori vertikal dan lubang resapan"
                         loading="lazy"
                       />
-                    </a>
-                    <a
-                      href="community-detail.html?id=thread-3"
+                    </button>
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat aksi penanaman bersama warga"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-gotong-royong.jpg"
+                        src="../assets/feed/feed-gotong-royong.jpg"
                         alt="Aksi gotong royong penanaman pekarangan"
                         loading="lazy"
                       />
-                    </a>
-                    <a
-                      href="community-detail.html?id=thread-3"
+                    </button>
+                    <button
+                      type="button"
                       class="km-photo-item"
                       aria-label="Lihat kondisi gang pekarangan teduh"
+                      onclick="openPhotoLightbox(this, event)"
                     >
                       <img
-                        src="assets/feed/feed-sesetan-gang.jpg"
+                        src="../assets/feed/feed-sesetan-gang.jpg"
                         alt="Kondisi gang pekarangan teduh"
                         loading="lazy"
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -1222,10 +1225,11 @@
                     </svg>
                     <span class="comment-count">1</span> Komentar
                   </button>
-                  <a
-                    href="community-detail.html?id=thread-3"
-                    class="km-action-btn km-detail-link-btn"
-                    title="Buka Detail Thread"
+                  <button
+                    type="button"
+                    class="km-action-btn km-share-btn"
+                    onclick="shareThread('thread-3', event)"
+                    title="Bagikan Cerita"
                   >
                     <svg
                       width="15"
@@ -1237,14 +1241,14 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
-                      <path
-                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                      ></path>
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                     </svg>
-                    <span>Buka Thread</span>
-                  </a>
+                    <span>Bagikan</span>
+                  </button>
                 </div>
 
                 <div class="km-thread-comments-section">
@@ -1271,7 +1275,7 @@
                     >
                       <div class="km-comment-node">
                         <img
-                          src="assets/avatars/john-doe.jpg"
+                          src="../assets/avatars/john-doe.jpg"
                           alt="John Doe"
                           class="km-comment-avatar"
                         />
@@ -1320,7 +1324,7 @@
                           style="display: none"
                         >
                           <img
-                            src="assets/avatars/john-doe.jpg"
+                            src="../assets/avatars/john-doe.jpg"
                             alt="Avatar Anda"
                             class="km-reply-user-avatar"
                           />
@@ -1412,7 +1416,7 @@
             <div class="km-sidebar-card km-sidebar-profile-card">
               <div class="km-side-profile-header">
                 <img
-                  src="assets/avatars/john-doe.jpg"
+                  src="../assets/avatars/john-doe.jpg"
                   alt="Avatar John Doe"
                   class="km-side-profile-avatar"
                 />
@@ -1531,7 +1535,7 @@
                 <div class="km-podium-col col-2">
                   <div class="km-podium-avatar-wrap">
                     <img
-                      src="assets/avatars/ibu-desak.jpg"
+                      src="../assets/avatars/ibu-desak.jpg"
                       alt="Desak Made"
                       class="km-podium-avatar"
                     />
@@ -1549,7 +1553,7 @@
                       >&#x1F451;</span
                     >
                     <img
-                      src="assets/avatars/gede-surya.jpg"
+                      src="../assets/avatars/gede-surya.jpg"
                       alt="Gede Surya"
                       class="km-podium-avatar first"
                     />
@@ -1564,7 +1568,7 @@
                 <div class="km-podium-col col-3">
                   <div class="km-podium-avatar-wrap">
                     <img
-                      src="assets/avatars/pak-wayan.jpg"
+                      src="../assets/avatars/pak-wayan.jpg"
                       alt="Wayan Gede"
                       class="km-podium-avatar"
                     />
@@ -1601,12 +1605,12 @@
         <div class="footer-row-top">
           <div class="footer-brand-col">
             <a
-              href="index.html"
+              href="../index.html"
               class="footer-logo-link"
               aria-label="Teduh Beranda"
             >
               <img
-                src="assets/logo/teduh-logo.svg"
+                src="../assets/logo/teduh-logo.svg"
                 alt="Teduh"
                 style="height: 44px; width: auto; display: block"
               />
@@ -1725,10 +1729,10 @@
             <div class="footer-nav-group">
               <h5>Dukungan</h5>
               <ul>
-                <li><a href="index.html#faq">Pusat Bantuan</a></li>
+                <li><a href="../index.html#faq">Pusat Bantuan</a></li>
                 <li><a href="community.html">Komunitas Warga</a></li>
                 <li><a href="reward.html">Klaim Bibit Gratis</a></li>
-                <li><a href="index.html#faq">Ketentuan Layanan</a></li>
+                <li><a href="../index.html#faq">Ketentuan Layanan</a></li>
               </ul>
             </div>
 
@@ -1844,7 +1848,7 @@
         <div class="km-modal-body">
           <div class="km-modal-author-row">
             <img
-              src="assets/avatars/john-doe.jpg"
+              src="../assets/avatars/john-doe.jpg"
               alt="John Doe"
               class="km-modal-author-avatar"
             />
@@ -2007,7 +2011,7 @@
 
     <div class="td-chatbot-wrapper">
       <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
-        Tanyakan Teduh Bot! 😉
+        Ada yang bisa saya bantu? 😊
       </div>
 
       <button
@@ -2050,7 +2054,7 @@
         <div class="td-chat-header">
           <div class="td-chat-header-profile">
             <div class="td-chat-header-avatar">
-              <img src="assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh" />
+              <img src="../assets/bot/teduh-bot.png" alt="Mascot Asisten Teduh" />
               <span class="td-chat-status-dot" aria-hidden="true"></span>
             </div>
             <div class="td-chat-header-info">
@@ -2080,10 +2084,10 @@
           </button>
         </div>
 
-        <div id="tdChatBody" class="td-chat-body" data-lenis-prevent>
+        <div id="tdChatBody" class="td-chat-body">
           <div class="td-msg-row bot">
             <div class="td-msg-avatar bot-avatar" aria-hidden="true">
-              <img src="assets/bot/teduh-bot.png" alt="Teduh Bot" />
+              <img src="../assets/bot/teduh-bot.png" alt="Teduh Bot" />
             </div>
             <div class="td-msg-content">
               <div class="td-bubble">
@@ -2163,14 +2167,67 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    
+    <div
+      id="kmPhotoLightboxModal"
+      class="km-lightbox-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Penampil Galeri Foto Komunitas"
+      style="display: none;"
+      onclick="closePhotoLightbox(event)"
+    >
+      <div class="km-lightbox-wrapper" onclick="event.stopPropagation()">
+        <button
+          type="button"
+          class="km-lightbox-close"
+          onclick="closePhotoLightbox()"
+          aria-label="Tutup Galeri"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
 
-    <script src="js/data.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/scroll-animations.js"></script>
-    <script src="js/community.js"></script>
-    <script src="js/chatbot.js"></script>
+        <div class="km-lightbox-counter" id="kmLightboxCounter">1 / 1</div>
+
+        <button
+          type="button"
+          class="km-lightbox-nav km-lightbox-prev"
+          id="kmLightboxPrevBtn"
+          onclick="prevLightboxPhoto(event)"
+          aria-label="Foto Sebelumnya"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="km-lightbox-slide-area" id="kmLightboxSlideArea">
+          <img id="kmLightboxImage" src="" alt="Dokumentasi Komunitas Teduh" class="km-lightbox-img" />
+        </div>
+
+        <button
+          type="button"
+          class="km-lightbox-nav km-lightbox-next"
+          id="kmLightboxNextBtn"
+          onclick="nextLightboxPhoto(event)"
+          aria-label="Foto Selanjutnya"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/scroll-animations.js"></script>
+    <script src="../js/community.js"></script>
+    <script src="../js/chatbot.js"></script>
   </body>
 </html>

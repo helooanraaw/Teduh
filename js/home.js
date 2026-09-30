@@ -4,21 +4,12 @@
  * Deskripsi: Pengendali Halaman Beranda, Transisi Testimoni, Hero Visual & Interaksi UI
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual & Foto (assets/*): Dihasilkan via Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
-
 document.addEventListener("DOMContentLoaded", () => {
   initStatsCounter();
   initAboutChecklistAccordion();
@@ -36,7 +27,7 @@ function syncHomeUserProfile() {
     const user = TEDUH_DATA.getUserData();
     const pointsEl = document.getElementById("indexNavPointsValue");
     if (pointsEl && user && user.points !== undefined) {
-      pointsEl.textContent = `${user.points.toLocaleString()} Poin`;
+      pointsEl.textContent = `${user.points.toLocaleString("id-ID")} Poin`;
     }
   }
 }
@@ -72,7 +63,7 @@ function initStatsCounter() {
             } else if (isDecimal) {
               displayVal = currentVal.toFixed(1);
             } else {
-              displayVal = Math.floor(currentVal).toLocaleString();
+              displayVal = Math.floor(currentVal).toLocaleString("id-ID");
             }
 
             el.textContent = `${prefix}${displayVal}${suffix}`;
@@ -84,7 +75,7 @@ function initStatsCounter() {
                 ? (target / 1000).toFixed(1) + "K"
                 : isDecimal
                   ? target.toFixed(1)
-                  : target.toLocaleString();
+                  : target.toLocaleString("id-ID");
               el.textContent = `${prefix}${finalVal}${suffix}`;
             }
           }
@@ -143,10 +134,15 @@ function initProblemSwitcher() {
 function initFeaturesAccordion() {
   const items = document.querySelectorAll(".acc-item");
   const previewImg = document.getElementById("featureImagePreview");
-  if (!items.length) return;
+  const nextImg = document.getElementById("featureImageNext");
+  if (!items.length || !previewImg) return;
+
+  let isSwitching = false;
+  let switchTimeout = null;
 
   function activateFeature(item) {
     const newImg = item.getAttribute("data-img");
+    if (!newImg) return;
 
     items.forEach((i) => {
       const isCurrent = i === item;
@@ -154,13 +150,32 @@ function initFeaturesAccordion() {
       i.setAttribute("aria-expanded", isCurrent ? "true" : "false");
     });
 
-    if (previewImg && newImg && previewImg.getAttribute("src") !== newImg) {
+    const currentSrc = previewImg.getAttribute("src");
+    if (newImg === currentSrc && (!nextImg || !nextImg.classList.contains("is-entering"))) {
+      return;
+    }
+
+    if (nextImg) {
+      if (switchTimeout) clearTimeout(switchTimeout);
+      isSwitching = true;
+      nextImg.src = newImg;
+      requestAnimationFrame(() => {
+        nextImg.classList.add("is-entering");
+      });
+
+      switchTimeout = setTimeout(() => {
+        previewImg.src = newImg;
+        nextImg.style.transition = "none";
+        nextImg.classList.remove("is-entering");
+        void nextImg.offsetWidth;
+        nextImg.style.transition = "";
+        isSwitching = false;
+      }, 340);
+    } else {
       previewImg.style.opacity = "0";
-      previewImg.style.transform = "scale(0.98)";
       setTimeout(() => {
         previewImg.src = newImg;
         previewImg.style.opacity = "1";
-        previewImg.style.transform = "scale(1)";
       }, 160);
     }
   }
@@ -202,8 +217,6 @@ function initTestimonialGallery() {
   const nameEl = document.querySelector("[data-testimonial-name]");
   const roleEl = document.querySelector("[data-testimonial-role]");
   const contentEl = document.querySelector("[data-testimonial-quote-content]");
-  const quoteCard = document.querySelector(".testimonial__quote-card");
-  const quoteMark = document.querySelector(".testimonial__quote-mark");
 
   if (
     !gallery ||
@@ -223,9 +236,9 @@ function initTestimonialGallery() {
   );
   if (activeIndex < 0) activeIndex = 0;
   let isTransitioning = false;
+  let transitionTimeout = null;
 
   function updateSlots(index, direction = "next", isInitial = false) {
-    const hasGSAP = typeof gsap !== "undefined";
     const count = items.length;
     const active = ((index % count) + count) % count;
     const previous = (active - 1 + count) % count;
@@ -253,198 +266,27 @@ function initTestimonialGallery() {
       nameEl.textContent = activeItem.dataset.name;
       roleEl.textContent = activeItem.dataset.role;
       activeIndex = active;
-
-      if (hasGSAP) {
-        gsap.set(activeItem, {
-          scale: 1,
-          rotateY: 0,
-          z: 0,
-          filter: "brightness(1) contrast(1)",
-        });
-        const activeImg = activeItem.querySelector("img");
-        if (activeImg) {
-          gsap.set(activeImg, { scale: 1, xPercent: 0, rotate: 0 });
-        }
-
-        items.forEach((item, i) => {
-          if (i === active) return;
-          const img = item.querySelector("img");
-          const isPrev = i === previous;
-          const isNxt = i === next;
-
-          gsap.set(item, {
-            scale: 0.92,
-            rotateY: isPrev ? -10 : isNxt ? 10 : 0,
-            z: -20,
-            filter: "grayscale(0.18) brightness(0.85)",
-          });
-
-          if (img) {
-            gsap.set(img, {
-              scale: 1.08,
-              xPercent: isPrev ? -6 : isNxt ? 6 : 0,
-              rotate: 0,
-            });
-          }
-        });
-      }
       return;
     }
 
-    // 1. GSAP 3D Cinematic Perspective & Shutter Parallax pada Foto Galeri Warga
-    if (hasGSAP) {
+    contentEl.classList.add("is-changing");
+    if (transitionTimeout) clearTimeout(transitionTimeout);
+
+    setTimeout(() => {
       const activeItem = items[active];
-      const activeImg = activeItem.querySelector("img");
+      quoteEl.textContent = activeItem.dataset.quote;
+      nameEl.textContent = activeItem.dataset.name;
+      roleEl.textContent = activeItem.dataset.role;
+      contentEl.classList.remove("is-changing");
+    }, 160);
 
-      // A. Animasi Kartu Foto Utama (Active Pop & 3D Depth Settle)
-      gsap.fromTo(
-        activeItem,
-        {
-          scale: 0.88,
-          rotateY: direction === "next" ? 16 : -16,
-          z: 40,
-          filter: "brightness(1.18) contrast(1.05)",
-        },
-        {
-          scale: 1,
-          rotateY: 0,
-          z: 0,
-          filter: "brightness(1) contrast(1)",
-          duration: 0.85,
-          ease: "power4.out",
-        },
-      );
-
-      // B. Counter-Parallax Shutter & Zoom Sweep pada Gambar Foto Aktif
-      if (activeImg) {
-        gsap.fromTo(
-          activeImg,
-          {
-            scale: 1.28,
-            xPercent: direction === "next" ? 22 : -22,
-            rotate: direction === "next" ? 2 : -2,
-          },
-          {
-            scale: 1,
-            xPercent: 0,
-            rotate: 0,
-            duration: 0.9,
-            ease: "expo.out",
-          },
-        );
-      }
-
-      // C. Kartu Samping (Previous, Next, & Hidden) Menyesuaikan Posisi 3D
-      items.forEach((item, i) => {
-        if (i === active) return;
-        const img = item.querySelector("img");
-        const isPrev = i === previous;
-        const isNxt = i === next;
-
-        gsap.to(item, {
-          scale: 0.92,
-          rotateY: isPrev ? -10 : isNxt ? 10 : 0,
-          z: -20,
-          filter: "grayscale(0.18) brightness(0.85)",
-          duration: 0.75,
-          ease: "power3.out",
-        });
-
-        if (img) {
-          gsap.to(img, {
-            scale: 1.08,
-            xPercent: isPrev ? -6 : isNxt ? 6 : 0,
-            rotate: 0,
-            duration: 0.75,
-            ease: "power3.out",
-          });
-        }
-      });
-
-      // D. Kontainer Kartu Ulasan Teks Tetap Stabil (Tanpa Skala/Perubahan Bentuk)
-
-
-      // E. Animasi Tanda Kutip Dekoratif (Elastic Spin & Settle)
-      if (quoteMark) {
-        gsap.fromTo(
-          quoteMark,
-          {
-            scale: 1.25,
-            rotate: direction === "next" ? 14 : -14,
-            opacity: 0.08,
-          },
-          {
-            scale: 1,
-            rotate: 0,
-            opacity: 0.04,
-            duration: 0.75,
-            ease: "back.out(1.8)",
-          },
-        );
-      }
-
-      // 2. Transisi Teks & Nama Warga yang Halus dan Diam di Tempat
-      gsap.to([quoteEl, nameEl, roleEl], {
-        opacity: 0,
-        duration: 0.18,
-        ease: "power2.in",
-        onComplete: () => {
-          const activeItemData = items[active];
-          quoteEl.textContent = activeItemData.dataset.quote;
-          nameEl.textContent = activeItemData.dataset.name;
-          roleEl.textContent = activeItemData.dataset.role;
-
-          gsap.fromTo(
-            quoteEl,
-            { opacity: 0, y: direction === "next" ? 8 : -8 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.45,
-              ease: "power2.out",
-            },
-          );
-          gsap.fromTo(
-            nameEl,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.4,
-              ease: "power2.out",
-              delay: 0.04,
-            },
-          );
-          gsap.fromTo(
-            roleEl,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.4,
-              ease: "power2.out",
-              delay: 0.08,
-              onComplete: () => {
-                isTransitioning = false;
-              },
-            },
-          );
-        },
-      });
-    } else {
-      contentEl.classList.add("is-changing");
-      setTimeout(() => {
-        const activeItem = items[active];
-        quoteEl.textContent = activeItem.dataset.quote;
-        nameEl.textContent = activeItem.dataset.name;
-        roleEl.textContent = activeItem.dataset.role;
-        contentEl.classList.remove("is-changing");
-        isTransitioning = false;
-      }, 180);
-    }
+    transitionTimeout = setTimeout(() => {
+      isTransitioning = false;
+    }, 520);
 
     activeIndex = active;
   }
 
-  // Interaktivitas Klik Foto
   items.forEach((item, i) => {
     item.addEventListener("click", () => {
       if (i === activeIndex || isTransitioning) return;
@@ -458,64 +300,68 @@ function initTestimonialGallery() {
     });
   });
 
-  // Tombol Ulasan Sebelumnya
-  prevBtn.addEventListener("click", () => {
-    if (isTransitioning) return;
-    isTransitioning = true;
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      updateSlots(activeIndex - 1, "previous");
+    });
+  }
 
-    // Animasi tombol bounce & icon nudge
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        prevBtn,
-        { scale: 0.86 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
-      const icon = prevBtn.querySelector("svg");
-      if (icon) {
-        gsap.fromTo(
-          icon,
-          { x: -5 },
-          { x: 0, duration: 0.35, ease: "power2.out" },
-        );
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      updateSlots(activeIndex + 1, "next");
+    });
+  }
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  gallery.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
       }
-    }
+    },
+    { passive: true },
+  );
 
-    updateSlots(activeIndex - 1, "previous");
-  });
-
-  // Tombol Ulasan Berikutnya
-  nextBtn.addEventListener("click", () => {
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    // Animasi tombol bounce & icon nudge
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        nextBtn,
-        { scale: 0.86 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
-      const icon = nextBtn.querySelector("svg");
-      if (icon) {
-        gsap.fromTo(
-          icon,
-          { x: 5 },
-          { x: 0, duration: 0.35, ease: "power2.out" },
-        );
+  gallery.addEventListener(
+    "touchend",
+    (e) => {
+      if (e.changedTouches && e.changedTouches.length === 1) {
+        const deltaX = touchStartX - e.changedTouches[0].clientX;
+        const deltaY = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+          if (isTransitioning) return;
+          isTransitioning = true;
+          if (deltaX > 0) {
+            updateSlots(activeIndex + 1, "next");
+          } else {
+            updateSlots(activeIndex - 1, "previous");
+          }
+        }
       }
-    }
+    },
+    { passive: true },
+  );
 
-    updateSlots(activeIndex + 1, "next");
+  gallery.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      updateSlots(activeIndex - 1, "previous");
+    } else if (e.key === "ArrowRight") {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      updateSlots(activeIndex + 1, "next");
+    }
   });
 
   updateSlots(activeIndex, "next", true);
-}
-
-function initMobileNav() {}
-
-function initScrollReveal() {
-  const revealElements = document.querySelectorAll("[data-reveal]");
-  revealElements.forEach((el) => el.classList.add("is-revealed"));
 }
 
 function initAboutChecklistAccordion() {
@@ -571,4 +417,11 @@ function initAboutChecklistAccordion() {
   checklist.addEventListener("mouseleave", () => {
     deactivateAll();
   });
+}
+
+function initMobileNav() {}
+
+function initScrollReveal() {
+  const revealElements = document.querySelectorAll("[data-reveal]");
+  revealElements.forEach((el) => el.classList.add("is-revealed"));
 }

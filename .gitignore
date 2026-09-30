@@ -1,4 +1,4 @@
-﻿# Project Exclusions
+# Project Exclusions
 docs/
 AGENTS.md
 PRD.md
@@ -16,3 +16,5 @@ screenshot.png
 .vscode/
 .DS_Store
 Thumbs.db
+scratch/
+

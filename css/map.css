@@ -4,16 +4,12 @@
  * Deskripsi: Gaya Tampilan Konsol Peta Spasial, Panel Analisis & Popup Titik Tanam
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Tipografi & Ikonografi:
- *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
- *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
- * 2. Visual Media & Fotografi (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
- * 3. Identitas Visual & Grafis Orisinal:
- *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Tipografi: Google Fonts Plus Jakarta Sans (SIL OFL 1.1).
+ * 2. Identitas Visual: Logo via Canva, Maskot Teduh Bot orisinal, Foto via Generative AI (Banana AI).
  * ==========================================================================
  */
+
 
 html,
 body {
@@ -619,7 +615,38 @@ b {
   stroke-opacity: 0.14 !important;
 }
 
-.custom-leaflet-popup .leaflet-popup-content-wrapper {
+.leaflet-popup {
+  position: absolute;
+  text-align: left !important;
+  transform: translate(-50%, -100%);
+  pointer-events: auto;
+  filter: drop-shadow(0 12px 28px rgba(14, 17, 22, 0.16));
+}
+
+.leaflet-popup-tip-container {
+  width: 32px;
+  height: 14px;
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+  margin-left: -16px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.leaflet-popup-tip {
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  margin: -8px auto 0;
+  transform: rotate(45deg);
+  background: var(--color-surface, #faf9f4) !important;
+  border: 1px solid var(--color-border, #d4d0bc) !important;
+}
+
+.custom-leaflet-popup .leaflet-popup-content-wrapper,
+.custom-teduh-popup .leaflet-popup-content-wrapper,
+.community-teduh-popup .leaflet-popup-content-wrapper {
   background: var(--color-surface, #faf9f4) !important;
   color: var(--color-slate, #0e1116) !important;
   border-radius: var(--radius-lg, 20px) !important;
@@ -632,7 +659,16 @@ b {
   transform-origin: bottom center;
 }
 
-.custom-leaflet-popup .leaflet-popup-tip {
+.custom-leaflet-popup.is-sliding-out .leaflet-popup-content-wrapper,
+.custom-teduh-popup.is-sliding-out .leaflet-popup-content-wrapper,
+.community-teduh-popup.is-sliding-out .leaflet-popup-content-wrapper {
+  animation: popupCardSlideOut 0.18s cubic-bezier(0.4, 0, 1, 1) forwards !important;
+  pointer-events: none !important;
+}
+
+.custom-leaflet-popup .leaflet-popup-tip,
+.custom-teduh-popup .leaflet-popup-tip,
+.community-teduh-popup .leaflet-popup-tip {
   background: var(--color-surface, #faf9f4) !important;
   box-shadow: 0 4px 12px rgba(14, 17, 22, 0.1) !important;
   border: 1px solid var(--color-border, #d4d0bc) !important;
@@ -649,17 +685,39 @@ b {
   }
 }
 
+@keyframes popupCardSlideOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.93) translateY(8px);
+  }
+}
+
 .leaflet-popup-content {
   margin: 12px 14px !important;
   line-height: 1.5 !important;
   font-family: var(--font-family) !important;
+  text-align: left !important;
 }
 
 .map-popup-card {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 230px;
+  width: 224px;
+  max-width: 236px;
+  text-align: left !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box;
+}
+
+.user-active-mission-popup {
+  width: 224px;
+  max-width: 236px;
 }
 
 .map-popup-header {
@@ -667,6 +725,7 @@ b {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100%;
 }
 
 .map-popup-badge {
@@ -674,6 +733,9 @@ b {
   font-weight: 600;
   padding: 3px 8px;
   border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
 }
 
 .map-popup-badge.hot {
@@ -694,6 +756,7 @@ b {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 140px;
+  text-align: right !important;
 }
 
 .map-popup-title {
@@ -702,6 +765,7 @@ b {
   color: var(--color-slate);
   margin: 0;
   line-height: 1.25;
+  text-align: left !important;
 }
 
 .map-popup-grid {
@@ -709,6 +773,8 @@ b {
   grid-template-columns: 1fr 1fr;
   gap: 6px;
   margin-top: 2px;
+  width: 100%;
+  text-align: left !important;
 }
 
 .map-popup-mini-stat {
@@ -718,6 +784,8 @@ b {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start !important;
+  text-align: left !important;
 }
 
 .map-popup-mini-stat span {
@@ -725,6 +793,8 @@ b {
   color: var(--color-text-muted);
   font-weight: 500;
   line-height: 1.2;
+  text-align: left !important;
+  width: 100%;
 }
 
 .map-popup-mini-stat strong {
@@ -733,6 +803,8 @@ b {
   font-weight: 700;
   line-height: 1.3;
   margin-top: 2px;
+  text-align: left !important;
+  width: 100%;
 }
 
 .map-popup-btn,
@@ -1110,28 +1182,29 @@ b {
 
 .map-floating-controls {
   position: absolute;
-  bottom: 88px;
+  bottom: 120px;
   right: 20px;
-  z-index: 400;
+  z-index: 500;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 .map-gps-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(228, 228, 231, 0.85);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(228, 228, 231, 0.9);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #1e293b;
   cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   outline: none;
 }
@@ -1189,11 +1262,47 @@ b {
 
 @media (max-width: 860px) {
   .map-floating-controls {
-    bottom: 80px;
-    right: 16px;
+    bottom: auto !important;
+    top: max(74px, calc(env(safe-area-inset-top, 0px) + 66px));
+    right: 14px;
+    z-index: 1000;
+    transition:
+      opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  .map-gps-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  }
+
   .map-gps-tooltip {
     display: none;
+  }
+
+  .teduh-control-zoom {
+    display: none !important;
+  }
+
+  body.drawer-open .map-floating-controls {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-20px) !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .map-floating-controls {
+    top: max(68px, calc(env(safe-area-inset-top, 0px) + 60px));
+    right: 10px;
+  }
+
+  .map-gps-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
   }
 }
 
@@ -1462,7 +1571,13 @@ b {
 }
 
 .drawer-loading-state {
-  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--color-background, #f4f4f5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1470,22 +1585,27 @@ b {
   text-align: center;
   padding: 32px 24px;
   gap: 16px;
-  width: 100%;
-  height: 100%;
   box-sizing: border-box;
-  margin: auto 0;
   will-change: transform, opacity;
-  animation: drawerLoadingFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: drawerLoadingFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: auto;
+}
+
+.drawer-loading-state.is-fading-out {
+  opacity: 0 !important;
+  transform: scale(0.97) !important;
+  pointer-events: none !important;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 @keyframes drawerLoadingFadeIn {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.97);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -2782,22 +2902,29 @@ b {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(24px);
+  transform: translateX(-50%) translateY(16px);
   z-index: 9999;
-  background: #0e1116;
+  background: rgba(14, 17, 22, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #ffffff;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
+  line-height: 1.35;
   letter-spacing: 0.01em;
-  padding: 9px 20px;
+  padding: 6px 14px;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  max-width: min(340px, calc(100vw - 32px));
+  text-align: center;
+  box-sizing: border-box;
   transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.25s ease;
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.22s ease;
   opacity: 0;
   pointer-events: none;
+  white-space: normal;
 }
 
 #teduhToast.is-visible {
@@ -2806,7 +2933,7 @@ b {
   pointer-events: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .map-desktop-topbar {
     display: none !important;
   }
@@ -2996,11 +3123,19 @@ b {
   .map-mobile-bottom-dock {
     display: inline-flex !important;
     align-items: center;
+    justify-content: center;
     gap: 4px;
     position: absolute;
     bottom: max(78px, calc(env(safe-area-inset-bottom, 0px) + 62px));
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: -webkit-fit-content !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    width: max-content !important;
+    max-width: calc(100vw - 20px);
     z-index: 1200;
     background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(16px);
@@ -3009,14 +3144,14 @@ b {
     border-radius: var(--radius-full);
     border: 1px solid rgba(228, 231, 229, 0.9);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
-    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
     transition: all var(--transition-base);
   }
 
   body.drawer-open .map-mobile-bottom-dock {
     opacity: 0 !important;
     pointer-events: none !important;
-    transform: translateX(-50%) translateY(30px) !important;
+    transform: translateY(30px) !important;
   }
 
   body.drawer-open .map-mobile-search-capsule {
@@ -3161,6 +3296,13 @@ b {
     gap: 6px;
   }
 
+  #teduhToast {
+    bottom: max(86px, calc(env(safe-area-inset-bottom, 0px) + 72px));
+    font-size: 11px;
+    padding: 5px 12px;
+    max-width: min(300px, calc(100vw - 28px));
+  }
+
   @keyframes popupSlideInMobile {
     0% {
       opacity: 0;
@@ -3187,25 +3329,39 @@ b {
     }
   }
 
-  .custom-leaflet-popup .leaflet-popup-content-wrapper {
+  .custom-leaflet-popup .leaflet-popup-content-wrapper,
+  .custom-teduh-popup .leaflet-popup-content-wrapper,
+  .community-teduh-popup .leaflet-popup-content-wrapper {
     animation: popupSlideInMobile 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-    border-radius: 22px !important;
+    border-radius: 20px !important;
     border: 1px solid #ececee !important;
     background: #ffffff !important;
     box-shadow:
       0 18px 40px -4px rgba(14, 17, 22, 0.22),
       0 6px 16px rgba(14, 17, 22, 0.08) !important;
-    max-width: min(320px, calc(100vw - 32px)) !important;
+    padding: 2px !important;
+    box-sizing: border-box !important;
+    max-width: min(252px, calc(100vw - 32px)) !important;
   }
 
-  .custom-leaflet-popup.is-sliding-out .leaflet-popup-content-wrapper {
+  .custom-leaflet-popup.is-sliding-out .leaflet-popup-content-wrapper,
+  .custom-teduh-popup.is-sliding-out .leaflet-popup-content-wrapper,
+  .community-teduh-popup.is-sliding-out .leaflet-popup-content-wrapper {
     animation: popupCardSlideOut 0.16s cubic-bezier(0.4, 0, 1, 1) forwards !important;
     pointer-events: none !important;
   }
 
-  .custom-leaflet-popup .leaflet-popup-tip {
+  .custom-leaflet-popup .leaflet-popup-tip,
+  .custom-teduh-popup .leaflet-popup-tip,
+  .community-teduh-popup .leaflet-popup-tip {
     background: #ffffff !important;
     border: 1px solid #ececee !important;
+  }
+
+  .leaflet-popup-content {
+    margin: 10px 12px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .map-popup-card {
@@ -3213,10 +3369,28 @@ b {
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     transition: transform 0.15s ease;
+    text-align: left !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 220px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .map-popup-card:active {
     transform: scale(0.985);
+  }
+
+  .map-popup-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 2px !important;
   }
 
   .map-popup-title {
@@ -3226,18 +3400,32 @@ b {
     letter-spacing: -0.25px !important;
     line-height: 1.3 !important;
     margin: 4px 0 8px 0 !important;
+    text-align: left !important;
   }
 
   .map-popup-badge {
     font-size: 11px !important;
     font-weight: 700 !important;
     letter-spacing: 0.1px !important;
+    flex-shrink: 0 !important;
   }
 
   .map-popup-location {
     font-size: 11px !important;
     font-weight: 600 !important;
     color: #71717a !important;
+    text-align: right !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .map-popup-grid {
+    text-align: left !important;
   }
 
   .map-popup-mini-stat {
@@ -3245,18 +3433,24 @@ b {
     border: 1px solid #ececee !important;
     border-radius: 10px !important;
     padding: 7px 10px !important;
+    text-align: left !important;
+    align-items: flex-start !important;
   }
 
   .map-popup-mini-stat span {
     font-size: 10px !important;
     font-weight: 600 !important;
     color: #71717a !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
   .map-popup-mini-stat strong {
     font-size: 12.5px !important;
     font-weight: 700 !important;
     color: #0e1116 !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
   .user-active-mission-popup .map-popup-btn {
@@ -3383,6 +3577,23 @@ b {
     padding: 6px 8px;
     font-size: 10.5px;
     gap: 3px;
+  }
+
+  @media (max-width: 360px) {
+    .map-mobile-bottom-dock {
+      padding: 4px 6px;
+      max-width: calc(100vw - 8px);
+      gap: 1px;
+    }
+    .map-dock-item {
+      padding: 5px 6px;
+      font-size: 9.5px;
+      gap: 2px;
+    }
+    .map-dock-item svg {
+      width: 13px;
+      height: 13px;
+    }
   }
 
   .drawer-header {
@@ -4158,8 +4369,8 @@ b {
   right: 530px;
   top: 96px;
   z-index: 1040;
-  width: 310px;
-  max-width: calc(100vw - 560px);
+  width: 300px;
+  max-width: 320px;
   background: #ffffff;
   border: 1px solid #ececee;
   border-radius: 20px;
@@ -4630,11 +4841,12 @@ b {
 @media (max-width: 860px) {
   .map-side-notice-toast {
     position: fixed;
-    right: 12px;
-    left: 12px;
     top: max(16px, calc(env(safe-area-inset-top, 0px) + 12px));
-    width: auto;
-    max-width: none;
+    left: 16px;
+    right: 16px;
+    margin: 0 auto;
+    width: calc(100% - 32px);
+    max-width: 360px;
     z-index: 1060;
     padding: 13px 15px;
     border-radius: 18px;
@@ -4696,8 +4908,11 @@ b {
 
 @media (max-width: 480px) {
   .map-side-notice-toast {
-    right: 10px;
-    left: 10px;
+    left: 16px;
+    right: 16px;
+    margin: 0 auto;
+    width: calc(100% - 32px);
+    max-width: 325px;
     top: max(12px, calc(env(safe-area-inset-top, 0px) + 8px));
     padding: 11px 13px;
     border-radius: 16px;
@@ -5139,7 +5354,7 @@ b {
   color: #ffffff;
   border: none;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(92, 132, 55, 0.25);
   transition: all var(--transition-fast, 0.2s ease);
@@ -5166,7 +5381,7 @@ b {
   color: #ffffff;
   border: none;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(186, 78, 42, 0.25);
   transition: all var(--transition-fast, 0.2s ease);

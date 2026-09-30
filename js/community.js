@@ -18,7 +18,6 @@
  *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
  * ==========================================================================
  */
-
 let attachedPhotos = [];
 let selectedPostTag = "#AksiTanam";
 let selectedPostLocation = "";
@@ -45,7 +44,7 @@ function initCommunityGSAPAnimations() {
   const isDetailPage = !!document.getElementById("detailMainCard");
 
   if (isFeedPage) {
-    // 1. Composer Trigger Card Intro
+    
     const composerCard = document.getElementById("kmComposerTriggerCard");
     if (composerCard) {
       gsap.fromTo(
@@ -78,14 +77,12 @@ function initCommunityGSAPAnimations() {
       );
     }
 
-    // 2. Feed Section Header & Filter Tabs
     gsap.fromTo(
       ".km-feed-section-header, .km-feed-section-title",
       { opacity: 0, x: -16 },
       { opacity: 1, x: 0, duration: 0.45, ease: "power2.out", delay: 0.15 },
     );
 
-    // 3. Cascading Thread Cards
     gsap.fromTo(
       "#kmFeedContainer .km-thread-card",
       { opacity: 0, y: 28, scale: 0.98 },
@@ -100,7 +97,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 4. Staggered Photo Grid Items
     gsap.fromTo(
       "#kmFeedContainer .km-photo-item",
       { opacity: 0, scale: 0.94 },
@@ -114,7 +110,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 5. Sidebar Cards Stagger
     gsap.fromTo(
       ".km-sidebar-card, .km-sidebar-column .km-sidebar-card, .km-profile-card, .km-missions-card, .km-contributors-card",
       { opacity: 0, y: 20 },
@@ -128,7 +123,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 6. Sidebar Progress Bar & Points Count-Up
     const points = getUserPoints();
     const targetPoints = 1000;
     const pct = Math.min(100, Math.round((points / targetPoints) * 100));
@@ -158,14 +152,13 @@ function initCommunityGSAPAnimations() {
   }
 
   if (isDetailPage) {
-    // 1. Back Navigation Button
+    
     gsap.fromTo(
       ".km-back-nav-btn, #kmBackBtn",
       { opacity: 0, x: -20 },
       { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" },
     );
 
-    // 2. Main Detail Card
     gsap.fromTo(
       "#detailMainCard",
       { opacity: 0, y: 28, scale: 0.98 },
@@ -179,14 +172,12 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 3. Author Header & Meta
     gsap.fromTo(
       "#detailMainCard .km-thread-author-wrap",
       { opacity: 0, x: -16 },
       { opacity: 1, x: 0, duration: 0.45, ease: "power2.out", delay: 0.15 },
     );
 
-    // 4. Narrative Paragraphs Stagger
     gsap.fromTo(
       "#detailNarrativeContent p",
       { opacity: 0, y: 12 },
@@ -200,7 +191,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 5. Image Grid Items Pop
     gsap.fromTo(
       "#detailImageWrap .km-photo-item",
       { opacity: 0, scale: 0.92, y: 14 },
@@ -215,7 +205,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 6. Stats Bar & Counters
     gsap.fromTo(
       ".km-detail-stats-bar",
       { opacity: 0, y: 10 },
@@ -253,7 +242,6 @@ function initCommunityGSAPAnimations() {
       });
     }
 
-    // 7. Action Bar Buttons Stagger
     gsap.fromTo(
       "#detailMainCard .km-thread-actions-bar .km-action-btn",
       { opacity: 0, y: 10 },
@@ -267,7 +255,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 8. Comments Section & Tree Cascade
     gsap.fromTo(
       ".km-thread-comments-section",
       { opacity: 0, y: 14 },
@@ -288,7 +275,6 @@ function initCommunityGSAPAnimations() {
       },
     );
 
-    // 9. Sidebar Cards in Detail Page
     gsap.fromTo(
       ".km-sidebar-card, .km-sidebar-column .km-sidebar-card",
       { opacity: 0, x: 20 },
@@ -698,14 +684,13 @@ function openPostModal(initialAction = "text") {
   document.body.style.overflow = "hidden";
 
   if (typeof gsap !== "undefined" && dialog) {
-    // 1. Animasi Backdrop Overlay Fade-In
+    
     gsap.fromTo(
       modal,
       { opacity: 0 },
       { opacity: 1, duration: 0.32, ease: "power2.out" },
     );
 
-    // 2. Animasi Pop-up Meluncur Naik dari Bawah ke Atas (Slide Up)
     const isMobile = window.innerWidth <= 640;
     const startY = isMobile ? 120 : 75;
 
@@ -756,7 +741,6 @@ function closePostModal() {
     const isMobile = window.innerWidth <= 640;
     const endY = isMobile ? 100 : 60;
 
-    // Animasi Pop-up Turun Bergeser ke Bawah saat Ditutup
     gsap.to(dialog, {
       y: endY,
       opacity: 0,

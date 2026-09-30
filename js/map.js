@@ -4,20 +4,1370 @@
  * Deskripsi: Mesin Spasial Peta Satelit Hybrid, Geolokasi, Analisis Titik Tanam & Misi Gotong Royong
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual (assets/*): Dihasilkan via Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Mesin Peta Spasial: Teduh Spatial Canvas Engine (Native JS + jQuery).
+ * 4. Peta Spasial: Google Hybrid Satellite Tile Server & CartoDB Dark Matter.
+ * 5. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
+const L = (function ($) {
+  "use strict";
+
+  function project(lat, lng, zoom) {
+    const d = Math.PI / 180;
+    const max = 85.0511287798;
+    const clampedLat = Math.max(Math.min(max, lat), -max);
+    const sin = Math.sin(clampedLat * d);
+    const scale = 256 * Math.pow(2, zoom);
+    const x = (scale * (lng + 180)) / 360;
+    const y = (scale * (1 - Math.log((1 + sin) / (1 - sin)) / (2 * Math.PI))) / 2;
+    return { x, y };
+  }
+
+  function unproject(x, y, zoom) {
+    const scale = 256 * Math.pow(2, zoom);
+    const lng = (x / scale) * 360 - 180;
+    const n = Math.PI - (2 * Math.PI * y) / scale;
+    const lat = (180 / Math.PI) * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
+    return { lat, lng };
+  }
+
+  function metersPerPixel(lat, zoom) {
+    return (156543.03392 * Math.cos((lat * Math.PI) / 180)) / Math.pow(2, zoom);
+  }
+
+  class LatLng {
+    constructor(lat, lng) {
+      if (Array.isArray(lat)) {
+        this.lat = Number(lat[0]);
+        this.lng = Number(lat[1]);
+      } else if (typeof lat === "object" && lat !== null) {
+        this.lat = Number(lat.lat !== undefined ? lat.lat : lat[0]);
+        this.lng = Number(lat.lng !== undefined ? lat.lng : lat[1]);
+      } else {
+        this.lat = Number(lat);
+        this.lng = Number(lng);
+      }
+    }
+    distanceTo(other) {
+      const o = new LatLng(other);
+      const R = 6371e3;
+      const phi1 = (this.lat * Math.PI) / 180;
+      const phi2 = (o.lat * Math.PI) / 180;
+      const deltaPhi = ((o.lat - this.lat) * Math.PI) / 180;
+      const deltaLambda = ((o.lng - this.lng) * Math.PI) / 180;
+      const a =
+        Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+        Math.cos(phi1) *
+          Math.cos(phi2) *
+          Math.sin(deltaLambda / 2) *
+          Math.sin(deltaLambda / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+  }
+
+  class LatLngBounds {
+    constructor(sw, ne) {
+      this.sw = new LatLng(sw);
+      this.ne = new LatLng(ne);
+    }
+    contains(latlng) {
+      const p = new LatLng(latlng);
+      const minLat = Math.min(this.sw.lat, this.ne.lat);
+      const maxLat = Math.max(this.sw.lat, this.ne.lat);
+      const minLng = Math.min(this.sw.lng, this.ne.lng);
+      const maxLng = Math.max(this.sw.lng, this.ne.lng);
+      return (
+        p.lat >= minLat && p.lat <= maxLat && p.lng >= minLng && p.lng <= maxLng
+      );
+    }
+    getCenter() {
+      return new LatLng(
+        (this.sw.lat + this.ne.lat) / 2,
+        (this.sw.lng + this.ne.lng) / 2,
+      );
+    }
+  }
+
+  class TileLayer {
+    constructor(urlTemplate, options) {
+      this.urlTemplate = urlTemplate;
+      this.options = Object.assign(
+        {
+          maxZoom: 20,
+          minZoom: 2,
+          subdomains: ["mt0", "mt1", "mt2", "mt3"],
+          attribution: "",
+        },
+        options,
+      );
+      this._map = null;
+    }
+    addTo(map) {
+      this._map = map;
+      map._setTileLayer(this);
+      return this;
+    }
+    setUrl(newUrl) {
+      this.urlTemplate = newUrl;
+      if (this._map) this._map._renderTiles();
+      return this;
+    }
+    getTileUrl(x, y, z) {
+      const sub = this.options.subdomains
+        ? this.options.subdomains[
+            Math.abs(x + y) % this.options.subdomains.length
+          ]
+        : "mt0";
+      return this.urlTemplate
+        .replace("{s}", sub)
+        .replace("{x}", x)
+        .replace("{y}", y)
+        .replace("{z}", z)
+        .replace("{r}", "");
+    }
+  }
+
+  class MapEngine {
+    constructor(id, options) {
+      this.$container = $("#" + id);
+      this.options = Object.assign(
+        {
+          center: [-8.675, 115.215],
+          zoom: 13,
+          minZoom: 10,
+          maxZoom: 20,
+          attributionControl: true,
+        },
+        options,
+      );
+
+      this.center = new LatLng(this.options.center);
+      this.zoom = this.options.zoom;
+      this.maxBounds = null;
+      this._layers = new Set();
+      this._tileLayer = null;
+      this._tiles = new Map();
+      this._handlers = {};
+      this._activePopup = null;
+      this._activePopupMarker = null;
+
+      this._setupDOM();
+      this._bindEvents();
+    }
+
+    _setupDOM() {
+      this.$container.addClass("leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom teduh-map-container");
+      this.$container.css({ position: "relative", overflow: "hidden" });
+      this.$container.empty();
+
+      this.$pane = $(
+        '<div class="leaflet-pane leaflet-map-pane teduh-map-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>',
+      ).appendTo(this.$container);
+      this.$tilePane = $(
+        '<div class="leaflet-pane leaflet-tile-pane teduh-map-tile-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:200;"></div>',
+      ).appendTo(this.$pane);
+      this.$svgPane = $(
+        '<svg class="leaflet-pane leaflet-overlay-pane leaflet-zoom-animated teduh-map-svg-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:400;"></svg>',
+      ).appendTo(this.$pane);
+      this.$markerPane = $(
+        '<div class="leaflet-pane leaflet-marker-pane teduh-map-marker-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:600;"></div>',
+      ).appendTo(this.$pane);
+      this.$popupPane = $(
+        '<div class="leaflet-pane leaflet-popup-pane teduh-map-popup-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:700;"></div>',
+      ).appendTo(this.$pane);
+      this.$tooltipPane = $(
+        '<div class="leaflet-pane leaflet-tooltip-pane teduh-map-tooltip-pane" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:800;"></div>',
+      ).appendTo(this.$pane);
+
+      this.$attribution = $(
+        '<div class="leaflet-control-attribution leaflet-control teduh-control-attribution teduh-control" style="position:absolute;bottom:0;right:0;margin:0;padding:2px 8px;font-size:10px;background:rgba(14,17,22,0.7);color:rgba(255,255,255,0.6);border-top-left-radius:6px;z-index:900;">Citra Satelit &copy; Google Maps / Earth | Platform Teduh</div>',
+      ).appendTo(this.$container);
+    }
+
+    _setTileLayer(tileLayer) {
+      this._tileLayer = tileLayer;
+      this._renderTiles();
+    }
+
+    _bindEvents() {
+      const self = this;
+      let isDragging = false;
+      let startX, startY;
+      let startCenterPoint;
+      let hasDragged = false;
+      let moveHistory = [];
+      let momentumRaf = null;
+
+      function stopMomentum() {
+        if (momentumRaf) {
+          cancelAnimationFrame(momentumRaf);
+          momentumRaf = null;
+        }
+      }
+
+      this.$container.on("mousedown", function (e) {
+        if (
+          $(e.target).closest(
+            ".custom-marker-wrapper, .custom-spatial-marker, .community-map-pin, .teduh-popup-content-wrapper, .map-popup-btn, button, input, a, .teduh-control-zoom",
+          ).length
+        ) {
+          return;
+        }
+        stopMomentum();
+        isDragging = true;
+        hasDragged = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        startCenterPoint = project(self.center.lat, self.center.lng, self.zoom);
+        moveHistory = [{ time: performance.now(), x: e.clientX, y: e.clientY }];
+        self.$container.css("cursor", "grabbing");
+      });
+
+      $(window).on("mousemove", function (e) {
+        if (!isDragging) return;
+        const now = performance.now();
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+          hasDragged = true;
+        }
+
+        moveHistory.push({ time: now, x: e.clientX, y: e.clientY });
+        while (moveHistory.length > 1 && now - moveHistory[0].time > 90) {
+          moveHistory.shift();
+        }
+
+        const newX = startCenterPoint.x - dx;
+        const newY = startCenterPoint.y - dy;
+        const newCenter = unproject(newX, newY, self.zoom);
+
+        if (self.maxBounds && !self.maxBounds.contains(newCenter)) {
+          return;
+        }
+        self.center = new LatLng(newCenter);
+        self._updateView();
+        self._renderTiles();
+        self._fire("move");
+      });
+
+      $(window).on("mouseup", function (e) {
+        if (!isDragging) return;
+        isDragging = false;
+        self.$container.css("cursor", "");
+
+        const now = performance.now();
+        const recent = moveHistory.filter((h) => now - h.time <= 80);
+        if (recent.length >= 2 && hasDragged) {
+          const first = recent[0];
+          const last = recent[recent.length - 1];
+          const dt = Math.max(16, last.time - first.time);
+          let vx = (last.x - first.x) / dt;
+          let vy = (last.y - first.y) / dt;
+          const speed = Math.hypot(vx, vy);
+
+          if (speed > 0.25) {
+            let curP = project(self.center.lat, self.center.lng, self.zoom);
+            const friction = 0.91;
+            function glide() {
+              vx *= friction;
+              vy *= friction;
+              if (Math.hypot(vx, vy) < 0.04) {
+                self._renderTiles();
+                self._fire("moveend");
+                return;
+              }
+              curP.x -= vx * 16;
+              curP.y -= vy * 16;
+              const nextCenter = unproject(curP.x, curP.y, self.zoom);
+              if (self.maxBounds && !self.maxBounds.contains(nextCenter)) {
+                self._renderTiles();
+                self._fire("moveend");
+                return;
+              }
+              self.center = new LatLng(nextCenter);
+              self._updateView();
+              self._renderTiles();
+              self._fire("move");
+              momentumRaf = requestAnimationFrame(glide);
+            }
+            momentumRaf = requestAnimationFrame(glide);
+          } else {
+            self._renderTiles();
+            self._fire("moveend");
+          }
+        } else {
+          self._renderTiles();
+          self._fire("moveend");
+        }
+      });
+
+      let touchStartDist = 0;
+      this.$container.on("touchstart", function (e) {
+        if (
+          $(e.target).closest(
+            ".custom-marker-wrapper, .custom-spatial-marker, .community-map-pin, .teduh-popup-content-wrapper, .map-popup-btn, button, input, a, .teduh-control-zoom",
+          ).length
+        ) {
+          return;
+        }
+        stopMomentum();
+        const touches = e.originalEvent.touches;
+        if (touches.length === 1) {
+          isDragging = true;
+          hasDragged = false;
+          startX = touches[0].clientX;
+          startY = touches[0].clientY;
+          startCenterPoint = project(self.center.lat, self.center.lng, self.zoom);
+          moveHistory = [
+            { time: performance.now(), x: startX, y: startY },
+          ];
+        } else if (touches.length === 2) {
+          isDragging = false;
+          touchStartDist = Math.hypot(
+            touches[0].clientX - touches[1].clientX,
+            touches[0].clientY - touches[1].clientY,
+          );
+        }
+      });
+
+      this.$container.on("touchmove", function (e) {
+        const touches = e.originalEvent.touches;
+        if (isDragging && touches.length === 1) {
+          const now = performance.now();
+          const dx = touches[0].clientX - startX;
+          const dy = touches[0].clientY - startY;
+          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasDragged = true;
+
+          moveHistory.push({
+            time: now,
+            x: touches[0].clientX,
+            y: touches[0].clientY,
+          });
+          while (moveHistory.length > 1 && now - moveHistory[0].time > 90) {
+            moveHistory.shift();
+          }
+
+          const newX = startCenterPoint.x - dx;
+          const newY = startCenterPoint.y - dy;
+          const newCenter = unproject(newX, newY, self.zoom);
+          if (self.maxBounds && !self.maxBounds.contains(newCenter)) return;
+
+          self.center = new LatLng(newCenter);
+          self._updateView();
+          self._renderTiles();
+          self._fire("move");
+        } else if (touches.length === 2 && touchStartDist > 0) {
+          const dist = Math.hypot(
+            touches[0].clientX - touches[1].clientX,
+            touches[0].clientY - touches[1].clientY,
+          );
+          if (dist - touchStartDist > 40) {
+            self.setZoom(self.zoom + 1);
+            touchStartDist = dist;
+          } else if (touchStartDist - dist > 40) {
+            self.setZoom(self.zoom - 1);
+            touchStartDist = dist;
+          }
+        }
+      });
+
+      this.$container.on("touchend", function (e) {
+        if (isDragging) {
+          isDragging = false;
+          self._renderTiles();
+          self._fire("moveend");
+        }
+        touchStartDist = 0;
+      });
+
+      let wheelAccumulator = 0;
+      let wheelTimer = null;
+      this.$container.on("wheel", function (e) {
+        e.preventDefault();
+        wheelAccumulator += e.originalEvent.deltaY;
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(() => {
+          if (wheelAccumulator < -25) {
+            self.setZoom(self.zoom + 1);
+          } else if (wheelAccumulator > 25) {
+            self.setZoom(self.zoom - 1);
+          }
+          wheelAccumulator = 0;
+        }, 35);
+      });
+
+      this.$container.on("dblclick", function (e) {
+        if (
+          $(e.target).closest(
+            ".custom-marker-wrapper, .custom-spatial-marker, .community-map-pin, .teduh-popup-content-wrapper, .map-popup-btn, button, input, a, .teduh-control-zoom",
+          ).length
+        ) {
+          return;
+        }
+        const offset = self.$container.offset();
+        const clickPt = { x: e.pageX - offset.left, y: e.pageY - offset.top };
+        const targetLatLng = self.containerPointToLatLng(clickPt);
+        self.panTo(targetLatLng, { duration: 0.35 });
+        self.setZoom(self.zoom + 1);
+      });
+
+      this.$container.on("click", function (e) {
+        if (hasDragged) return;
+        if (
+          $(e.target).closest(
+            ".custom-marker-wrapper, .custom-spatial-marker, .community-map-pin, .teduh-popup-content-wrapper, .map-popup-btn, button, input, a, .teduh-control-zoom",
+          ).length
+        ) {
+          return;
+        }
+        const offset = self.$container.offset();
+        const clickX = e.pageX - offset.left;
+        const clickY = e.pageY - offset.top;
+        const latlng = self.containerPointToLatLng({ x: clickX, y: clickY });
+        self._fire("click", { latlng: latlng, originalEvent: e });
+      });
+
+      this.$container.on("mousemove", function (e) {
+        const offset = self.$container.offset();
+        const mouseX = e.pageX - offset.left;
+        const mouseY = e.pageY - offset.top;
+        const latlng = self.containerPointToLatLng({ x: mouseX, y: mouseY });
+        self._fire("mousemove", { latlng: latlng, originalEvent: e });
+      });
+
+      $(window).on("resize", function () {
+        self._updateView();
+        self._renderTiles();
+      });
+    }
+
+    latLngToContainerPoint(latlng) {
+      const p = new LatLng(latlng);
+      const centerP = project(this.center.lat, this.center.lng, this.zoom);
+      const pointP = project(p.lat, p.lng, this.zoom);
+      const width = this.$container.width() || window.innerWidth;
+      const height = this.$container.height() || window.innerHeight;
+      return {
+        x: width / 2 + (pointP.x - centerP.x),
+        y: height / 2 + (pointP.y - centerP.y),
+      };
+    }
+
+    containerPointToLatLng(point) {
+      const centerP = project(this.center.lat, this.center.lng, this.zoom);
+      const width = this.$container.width() || window.innerWidth;
+      const height = this.$container.height() || window.innerHeight;
+      const targetX = centerP.x + (point.x - width / 2);
+      const targetY = centerP.y + (point.y - height / 2);
+      return new LatLng(unproject(targetX, targetY, this.zoom));
+    }
+
+    setView(center, zoom) {
+      if (center) this.center = new LatLng(center);
+      if (zoom !== undefined)
+        this.zoom = Math.max(
+          this.options.minZoom,
+          Math.min(this.options.maxZoom, zoom),
+        );
+      this._updateView();
+      this._renderTiles();
+      this._fire("move");
+      this._fire("moveend");
+      this._fire("zoom");
+      this._fire("zoomend");
+      return this;
+    }
+
+    panTo(center, options) {
+      const self = this;
+      const targetCenter = new LatLng(center);
+      const startCenter = self.center;
+      const duration =
+        options && options.duration ? options.duration * 1000 : 400;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const ease =
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        self.center = new LatLng(
+          startCenter.lat + (targetCenter.lat - startCenter.lat) * ease,
+          startCenter.lng + (targetCenter.lng - startCenter.lng) * ease,
+        );
+        self._updateView();
+        self._renderTiles();
+        self._fire("move");
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          self.center = targetCenter;
+          self._updateView();
+          self._renderTiles();
+          self._fire("moveend");
+        }
+      }
+      requestAnimationFrame(step);
+      return this;
+    }
+
+    flyTo(center, zoom, options) {
+      if (zoom === undefined || zoom === this.zoom) {
+        return this.panTo(center, options);
+      }
+      const self = this;
+      const targetCenter = new LatLng(center);
+      const targetZoom = Math.max(
+        self.options.minZoom,
+        Math.min(self.options.maxZoom, zoom),
+      );
+      const startCenter = self.center;
+      const startZoom = self.zoom;
+      const duration =
+        options && options.duration ? options.duration * 1000 : 650;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const ease =
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        self.center = new LatLng(
+          startCenter.lat + (targetCenter.lat - startCenter.lat) * ease,
+          startCenter.lng + (targetCenter.lng - startCenter.lng) * ease,
+        );
+        const curZ = Math.round(startZoom + (targetZoom - startZoom) * ease);
+        if (curZ !== self.zoom) {
+          self.zoom = curZ;
+          self._fire("zoom");
+        }
+        self._updateView();
+        self._renderTiles();
+        self._fire("move");
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          self.center = targetCenter;
+          self.zoom = targetZoom;
+          self._updateView();
+          self._renderTiles();
+          self._fire("moveend");
+          self._fire("zoomend");
+        }
+      }
+      requestAnimationFrame(step);
+      return this;
+    }
+
+    setZoom(zoom) {
+      return this.setView(this.center, zoom);
+    }
+    getZoom() {
+      return this.zoom;
+    }
+    getCenter() {
+      return this.center;
+    }
+    getBounds() {
+      const width = this.$container.width() || window.innerWidth;
+      const height = this.$container.height() || window.innerHeight;
+      return new LatLngBounds(
+        this.containerPointToLatLng({ x: 0, y: height }),
+        this.containerPointToLatLng({ x: width, y: 0 }),
+      );
+    }
+    setMaxBounds(bounds) {
+      this.maxBounds = bounds
+        ? new LatLngBounds(bounds[0] || bounds.sw, bounds[1] || bounds.ne)
+        : null;
+      return this;
+    }
+
+    addLayer(layer) {
+      this._layers.add(layer);
+      layer._addToMap(this);
+      return this;
+    }
+
+    removeLayer(layer) {
+      if (layer) {
+        this._layers.delete(layer);
+        layer._removeFromMap(this);
+      }
+      return this;
+    }
+
+    closePopup() {
+      if (this._activePopup) {
+        this._activePopup.css({
+          transform: "translate(-50%, -100%) scale(0.92)",
+          opacity: 0,
+        });
+        const p = this._activePopup;
+        setTimeout(() => p.remove(), 200);
+        this._activePopup = null;
+        this._activePopupMarker = null;
+      }
+      this.$popupPane.find(".teduh-popup").remove();
+      return this;
+    }
+
+    on(event, fn) {
+      if (!this._handlers[event]) this._handlers[event] = [];
+      this._handlers[event].push(fn);
+      return this;
+    }
+
+    off(event, fn) {
+      if (this._handlers[event]) {
+        this._handlers[event] = this._handlers[event].filter((h) => h !== fn);
+      }
+      return this;
+    }
+
+    _fire(event, data) {
+      if (this._handlers[event]) {
+        this._handlers[event].forEach((fn) => fn(data || {}));
+      }
+    }
+
+    _updateView() {
+      this._layers.forEach((layer) => {
+        if (layer._update) layer._update();
+      });
+
+      if (this._activePopup && this._activePopupMarker) {
+        const pt = this.latLngToContainerPoint(this._activePopupMarker.latlng);
+        const offset =
+          (this._activePopupMarker._popupOptions &&
+            this._activePopupMarker._popupOptions.offset) || [0, 0];
+        let anchorY = 0;
+        if (
+          this._activePopupMarker.options.icon &&
+          this._activePopupMarker.options.icon.options &&
+          this._activePopupMarker.options.icon.options.iconAnchor
+        ) {
+          anchorY = this._activePopupMarker.options.icon.options.iconAnchor[1];
+        }
+        this._activePopup.css({
+          left: pt.x + offset[0] + "px",
+          top: pt.y - anchorY + offset[1] + "px",
+        });
+      }
+    }
+
+    _renderTiles() {
+      if (!this._tileLayer) return;
+      const width = this.$container.width() || window.innerWidth;
+      const height = this.$container.height() || window.innerHeight;
+      const centerPoint = project(this.center.lat, this.center.lng, this.zoom);
+
+      const minX = centerPoint.x - width / 2;
+      const maxX = centerPoint.x + width / 2;
+      const minY = centerPoint.y - height / 2;
+      const maxY = centerPoint.y + height / 2;
+
+      const numTiles = Math.pow(2, this.zoom);
+      const minTileX = Math.floor(minX / 256) - 1;
+      const maxTileX = Math.floor(maxX / 256) + 1;
+      const minTileY = Math.floor(minY / 256) - 1;
+      const maxTileY = Math.floor(maxY / 256) + 1;
+
+      const activeKeys = new Set();
+
+      for (let tx = minTileX; tx <= maxTileX; tx++) {
+        for (let ty = minTileY; ty <= maxTileY; ty++) {
+          if (ty < 0 || ty >= numTiles) continue;
+          const wrappedX = ((tx % numTiles) + numTiles) % numTiles;
+          const key = `${this.zoom}:${wrappedX}:${ty}`;
+          activeKeys.add(key);
+
+          const posX = Math.round(width / 2 + (tx * 256 - centerPoint.x));
+          const posY = Math.round(height / 2 + (ty * 256 - centerPoint.y));
+
+          if (this._tiles.has(key)) {
+            const tileObj = this._tiles.get(key);
+            tileObj.el.style.left = posX + "px";
+            tileObj.el.style.top = posY + "px";
+          } else {
+            const tileUrl = this._tileLayer.getTileUrl(wrappedX, ty, this.zoom);
+            const img = document.createElement("img");
+            img.className = "teduh-tile";
+            img.alt = "";
+            img.style.position = "absolute";
+            img.style.left = posX + "px";
+            img.style.top = posY + "px";
+            img.style.width = "256px";
+            img.style.height = "256px";
+            img.style.pointerEvents = "none";
+            img.style.userSelect = "none";
+            img.style.display = "block";
+            img.style.opacity = "0";
+            img.style.transition = "opacity 0.16s ease-in";
+            img.onload = () => {
+              img.style.opacity = "1";
+            };
+            img.onerror = () => {
+              img.style.opacity = "0";
+            };
+            img.src = tileUrl;
+            this.$tilePane[0].appendChild(img);
+            this._tiles.set(key, { el: img, z: this.zoom, x: wrappedX, y: ty });
+          }
+        }
+      }
+
+      for (const [key, tileObj] of this._tiles.entries()) {
+        if (!activeKeys.has(key)) {
+          if (tileObj.z !== this.zoom || !tileObj.el.parentElement) {
+            if (tileObj.el.parentElement) tileObj.el.remove();
+            this._tiles.delete(key);
+          }
+        }
+      }
+    }
+  }
+
+  class Marker {
+    constructor(latlng, options) {
+      this.latlng = new LatLng(latlng);
+      this.options = Object.assign({ icon: null, zIndexOffset: 0 }, options);
+      this._map = null;
+      this._popupContent = null;
+      this._popupOptions = {};
+      this._popupEl = null;
+      this._popupInstance = null;
+      this._tooltipText = null;
+      this._handlers = {};
+      this.$el = null;
+    }
+
+    addTo(map) {
+      map.addLayer(this);
+      return this;
+    }
+
+    _addToMap(map) {
+      this._map = map;
+      const self = this;
+      let html = '<div class="teduh-default-pin"></div>';
+      if (this.options.icon && this.options.icon.options) {
+        html = this.options.icon.options.html || html;
+      }
+      const iconClass =
+        (this.options.icon &&
+          this.options.icon.options &&
+          this.options.icon.options.className) ||
+        "";
+      this.$el = $(
+        `<div class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive custom-marker-wrapper ${iconClass}" style="position:absolute;pointer-events:auto;cursor:pointer;z-index:${500 + (this.options.zIndexOffset || 0)};">${html}</div>`,
+      );
+      this.$el.appendTo(map.$markerPane);
+
+      this.$el.on("click", function (e) {
+        e.stopPropagation();
+        if (
+          self._popupContent &&
+          (!self._handlers["click"] || self._handlers["click"].length === 0)
+        ) {
+          self.openPopup();
+        }
+        self._fire("click", { originalEvent: e, latlng: self.latlng });
+      });
+
+      this.$el.on("mouseenter mouseover", function (e) {
+        self._fire("mouseover", { originalEvent: e, latlng: self.latlng });
+      });
+
+      this.$el.on("mouseleave mouseout", function (e) {
+        self._fire("mouseout", { originalEvent: e, latlng: self.latlng });
+      });
+
+      this._update();
+    }
+
+    _removeFromMap(map) {
+      if (this._popupEl) this._popupEl.remove();
+      if (this.$el) this.$el.remove();
+      this._map = null;
+    }
+
+    _update() {
+      if (!this._map || !this.$el) return;
+      const pt = this._map.latLngToContainerPoint(this.latlng);
+      let anchorX = 0,
+        anchorY = 0;
+      if (
+        this.options.icon &&
+        this.options.icon.options &&
+        this.options.icon.options.iconAnchor
+      ) {
+        anchorX = this.options.icon.options.iconAnchor[0];
+        anchorY = this.options.icon.options.iconAnchor[1];
+      }
+      this.$el.css({
+        left: pt.x - anchorX + "px",
+        top: pt.y - anchorY + "px",
+      });
+
+      if (this._popupEl && this._popupEl.parent().length) {
+        const offset =
+          (this._popupOptions && this._popupOptions.offset) || [0, 0];
+        let anchorY = 0;
+        if (
+          this.options.icon &&
+          this.options.icon.options &&
+          this.options.icon.options.iconAnchor
+        ) {
+          anchorY = this.options.icon.options.iconAnchor[1];
+        }
+        this._popupEl.css({
+          left: pt.x + offset[0] + "px",
+          top: pt.y - anchorY + offset[1] + "px",
+        });
+      }
+    }
+
+    setLatLng(latlng) {
+      this.latlng = new LatLng(latlng);
+      this._update();
+      return this;
+    }
+
+    getLatLng() {
+      return this.latlng;
+    }
+
+    setIcon(icon) {
+      this.options.icon = icon;
+      if (this.$el && icon && icon.options) {
+        this.$el.html(icon.options.html);
+      }
+      this._update();
+      return this;
+    }
+
+    bindPopup(content, options) {
+      this._popupContent = content;
+      this._popupOptions = options || {};
+      return this;
+    }
+
+    openPopup() {
+      if (!this._map || !this._popupContent) return this;
+      this._map.closePopup();
+      const pt = this._map.latLngToContainerPoint(this.latlng);
+      const customClass =
+        (this._popupOptions && this._popupOptions.className) || "";
+      const offset =
+        (this._popupOptions && this._popupOptions.offset) || [0, 0];
+      let anchorY = 0;
+      if (
+        this.options.icon &&
+        this.options.icon.options &&
+        this.options.icon.options.iconAnchor
+      ) {
+        anchorY = this.options.icon.options.iconAnchor[1];
+      }
+      const posX = pt.x + offset[0];
+      const posY = pt.y - anchorY + offset[1];
+
+      const $popup = $(`
+        <div class="leaflet-popup custom-leaflet-popup custom-teduh-popup ${customClass}" style="position:absolute;left:${posX}px;top:${posY}px;pointer-events:auto;z-index:900;">
+          <div class="leaflet-popup-content-wrapper teduh-popup-content-wrapper">
+            <div class="leaflet-popup-content teduh-popup-content">${this._popupContent}</div>
+          </div>
+          <div class="leaflet-popup-tip-container teduh-popup-tip-container"><div class="leaflet-popup-tip teduh-popup-tip"></div></div>
+        </div>
+      `).appendTo(this._map.$popupPane);
+
+      this._popupEl = $popup;
+      this._map._activePopup = $popup;
+      this._map._activePopupMarker = this;
+
+      const self = this;
+      const popupObj = {
+        getElement: () => $popup[0],
+        isOpen: () => !!$popup.parent().length,
+        remove: () => {
+          $popup.addClass("is-sliding-out");
+          setTimeout(() => $popup.remove(), 160);
+        },
+      };
+      this._popupInstance = popupObj;
+
+      this._fire("popupopen", { popup: popupObj });
+      if (this._map) this._map._fire("popupopen", { popup: popupObj });
+      return this;
+    }
+
+    closePopup() {
+      if (this._popupEl) {
+        this._popupEl.addClass("is-sliding-out");
+        const p = this._popupEl;
+        setTimeout(() => p.remove(), 160);
+        this._popupEl = null;
+        this._popupInstance = null;
+        if (this._map && this._map._activePopupMarker === this) {
+          this._map._activePopup = null;
+          this._map._activePopupMarker = null;
+        }
+        this._fire("popupclose", {});
+      }
+      return this;
+    }
+
+    isPopupOpen() {
+      return !!(
+        this._popupEl &&
+        this._popupEl.parent().length &&
+        this._map &&
+        this._map._activePopupMarker === this
+      );
+    }
+
+    bindTooltip(text, options) {
+      this._tooltipText = text;
+      return this;
+    }
+
+    bringToFront() {
+      if (this.$el) this.$el.css("z-index", 850);
+      return this;
+    }
+
+    bringToBack() {
+      if (this.$el) this.$el.css("z-index", 450);
+      return this;
+    }
+
+    on(event, fn) {
+      if (!this._handlers[event]) this._handlers[event] = [];
+      this._handlers[event].push(fn);
+      return this;
+    }
+
+    off(event, fn) {
+      if (this._handlers[event]) {
+        this._handlers[event] = this._handlers[event].filter((h) => h !== fn);
+      }
+      return this;
+    }
+
+    _fire(event, data) {
+      if (this._handlers[event]) {
+        this._handlers[event].forEach((fn) => fn(data || {}));
+      }
+    }
+
+    getElement() {
+      return this.$el ? this.$el[0] : null;
+    }
+
+    remove() {
+      if (this._map) this._map.removeLayer(this);
+    }
+  }
+
+  class Circle {
+    constructor(latlng, options) {
+      this.latlng = new LatLng(latlng);
+      this.options = Object.assign(
+        {
+          radius: 10,
+          color: "#1a382b",
+          fillColor: "#1a382b",
+          fillOpacity: 0.25,
+          weight: 2,
+          dashArray: null,
+          interactive: false,
+        },
+        options,
+      );
+      this._map = null;
+      this.$svgEl = null;
+      this._path = null;
+    }
+
+    addTo(map) {
+      map.addLayer(this);
+      return this;
+    }
+
+    _addToMap(map) {
+      this._map = map;
+      this.$svgEl = $(
+        document.createElementNS("http://www.w3.org/2000/svg", "circle"),
+      );
+      this._path = this.$svgEl[0];
+      if (this.options.interactive) {
+        this.$svgEl.css("pointer-events", "auto");
+      } else {
+        this.$svgEl.css("pointer-events", "none");
+      }
+      this.$svgEl.appendTo(map.$svgPane);
+      this._applyStyle();
+      this._update();
+    }
+
+    _removeFromMap(map) {
+      if (this.$svgEl) this.$svgEl.remove();
+      this._map = null;
+      this._path = null;
+    }
+
+    _applyStyle() {
+      if (!this.$svgEl) return;
+      const strokeVal =
+        this.options.stroke === false
+          ? "none"
+          : this.options.color || "none";
+      const strokeWidth =
+        this.options.stroke === false ? 0 : this.options.weight || 1;
+      this.$svgEl.attr({
+        stroke: strokeVal,
+        "stroke-width": strokeWidth,
+        "stroke-dasharray": this.options.dashArray || "none",
+        fill: this.options.fillColor || "none",
+        "fill-opacity":
+          this.options.fillOpacity !== undefined
+            ? this.options.fillOpacity
+            : 0.2,
+      });
+      if (this.options.className) {
+        this.$svgEl.attr("class", this.options.className);
+      }
+    }
+
+    setStyle(opts) {
+      Object.assign(this.options, opts);
+      this._applyStyle();
+      return this;
+    }
+
+    setRadius(r) {
+      this.options.radius = r;
+      this._update();
+      return this;
+    }
+
+    getRadius() {
+      return this.options.radius;
+    }
+
+    setLatLng(latlng) {
+      this.latlng = new LatLng(latlng);
+      this._update();
+      return this;
+    }
+
+    getLatLng() {
+      return this.latlng;
+    }
+
+    _update() {
+      if (!this._map || !this.$svgEl) return;
+      const pt = this._map.latLngToContainerPoint(this.latlng);
+      const mpp = metersPerPixel(this.latlng.lat, this._map.zoom);
+      const rPx = Math.max(3, this.options.radius / mpp);
+      this.$svgEl.attr({
+        cx: pt.x,
+        cy: pt.y,
+        r: rPx,
+      });
+    }
+
+    remove() {
+      if (this._map) this._map.removeLayer(this);
+    }
+  }
+
+  class Polygon {
+    constructor(latlngs, options) {
+      this.latlngs = latlngs.map((pt) => new LatLng(pt));
+      this.options = Object.assign(
+        {
+          color: "#ba4e2a",
+          fillColor: "#ba4e2a",
+          fillOpacity: 0.2,
+          weight: 1,
+          interactive: true,
+        },
+        options,
+      );
+      this._map = null;
+      this.$svgEl = null;
+      this._path = null;
+      this._handlers = {};
+      this._tooltipContent = null;
+      this._tooltipOptions = {};
+      this.$tooltipEl = null;
+    }
+
+    addTo(map) {
+      map.addLayer(this);
+      return this;
+    }
+
+    _addToMap(map) {
+      this._map = map;
+      const self = this;
+      this.$svgEl = $(
+        document.createElementNS("http://www.w3.org/2000/svg", "polygon"),
+      );
+      this._path = this.$svgEl[0];
+      if (this.options.interactive) {
+        this.$svgEl.css("pointer-events", "auto");
+        this.$svgEl.css("cursor", "pointer");
+      }
+      this.$svgEl.appendTo(map.$svgPane);
+      this._applyStyle();
+      this._update();
+
+      this.$svgEl.on("click", function (e) {
+        e.stopPropagation();
+        self._fire("click", { originalEvent: e });
+      });
+
+      this.$svgEl.on("mouseenter mouseover", function (e) {
+        self._showTooltip(e);
+        self._fire("mouseover", { originalEvent: e });
+      });
+
+      this.$svgEl.on("mousemove", function (e) {
+        self._moveTooltip(e);
+      });
+
+      this.$svgEl.on("mouseleave mouseout", function (e) {
+        self._hideTooltip();
+        self._fire("mouseout", { originalEvent: e });
+      });
+    }
+
+    _removeFromMap(map) {
+      if (this.$tooltipEl) this.$tooltipEl.remove();
+      if (this.$svgEl) this.$svgEl.remove();
+      this._map = null;
+      this._path = null;
+    }
+
+    _applyStyle() {
+      if (!this.$svgEl) return;
+      const strokeVal =
+        this.options.stroke === false
+          ? "none"
+          : this.options.color || "none";
+      const strokeWidth =
+        this.options.stroke === false ? 0 : this.options.weight || 0;
+      this.$svgEl.attr({
+        stroke: strokeVal,
+        "stroke-width": strokeWidth,
+        fill: this.options.fillColor || "#BA4E2A",
+        "fill-opacity":
+          this.options.fillOpacity !== undefined
+            ? this.options.fillOpacity
+            : 0.001,
+      });
+      if (this.options.className) {
+        this.$svgEl.attr("class", this.options.className);
+      }
+    }
+
+    setStyle(opts) {
+      Object.assign(this.options, opts);
+      this._applyStyle();
+      return this;
+    }
+
+    bindTooltip(content, options) {
+      this._tooltipContent = content;
+      this._tooltipOptions = options || {};
+      return this;
+    }
+
+    getTooltip() {
+      const self = this;
+      return {
+        getElement: () => (self.$tooltipEl ? self.$tooltipEl[0] : null),
+      };
+    }
+
+    _showTooltip(e) {
+      if (!this._map || !this._tooltipContent) return;
+      if (!this.$tooltipEl) {
+        const customClass =
+          (this._tooltipOptions && this._tooltipOptions.className) || "";
+        this.$tooltipEl = $(`
+          <div class="teduh-tooltip ${customClass}" style="position:absolute;pointer-events:none;z-index:950;transition:opacity 0.2s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1);">
+            <div class="teduh-tooltip-inner">${this._tooltipContent}</div>
+          </div>
+        `).appendTo(this._map.$tooltipPane);
+      }
+      this._moveTooltip(e);
+      this.$tooltipEl.css({ opacity: 1, transform: "scale(1)" });
+      this._fire("tooltipopen", { tooltip: this.getTooltip() });
+    }
+
+    _moveTooltip(e) {
+      if (!this._map || !this.$tooltipEl) return;
+      const offset = this._map.$container.offset();
+      const mouseX = e.pageX - offset.left;
+      const mouseY = e.pageY - offset.top;
+      this.$tooltipEl.css({
+        left: mouseX + 12 + "px",
+        top: mouseY + 12 + "px",
+      });
+    }
+
+    _hideTooltip() {
+      if (this.$tooltipEl) {
+        this.$tooltipEl.css({ opacity: 0, transform: "scale(0.95)" });
+        const t = this.$tooltipEl;
+        setTimeout(() => t.remove(), 200);
+        this.$tooltipEl = null;
+      }
+    }
+
+    _update() {
+      if (!this._map || !this.$svgEl) return;
+      const points = this.latlngs
+        .map((pt) => {
+          const p = this._map.latLngToContainerPoint(pt);
+          return `${p.x},${p.y}`;
+        })
+        .join(" ");
+      this.$svgEl.attr("points", points);
+    }
+
+    on(event, fn) {
+      if (!this._handlers[event]) this._handlers[event] = [];
+      this._handlers[event].push(fn);
+      return this;
+    }
+
+    off(event, fn) {
+      if (this._handlers[event]) {
+        this._handlers[event] = this._handlers[event].filter((h) => h !== fn);
+      }
+      return this;
+    }
+
+    _fire(event, data) {
+      if (this._handlers[event]) {
+        this._handlers[event].forEach((fn) => fn(data || {}));
+      }
+    }
+
+    remove() {
+      if (this._map) this._map.removeLayer(this);
+    }
+  }
+
+  const DomEvent = {
+    stopPropagation: function (e) {
+      if (!e) return;
+      if (e.stopPropagation) e.stopPropagation();
+      if (e.originalEvent && e.originalEvent.stopPropagation) {
+        e.originalEvent.stopPropagation();
+      }
+      if (e.preventDefault) e.preventDefault();
+      if (e.cancelBubble !== undefined) e.cancelBubble = true;
+    },
+    disableClickPropagation: function (el) {
+      if (!el) return;
+      $(el).on(
+        "click dblclick mousedown mouseup touchstart touchend pointerdown pointerup",
+        function (e) {
+          e.stopPropagation();
+        },
+      );
+    },
+    disableScrollPropagation: function (el) {
+      if (!el) return;
+      $(el).on("wheel scroll touchmove", function (e) {
+        e.stopPropagation();
+      });
+    },
+  };
+
+  return {
+    map: function (id, options) {
+      return new MapEngine(id, options);
+    },
+    tileLayer: function (url, options) {
+      return new TileLayer(url, options);
+    },
+    marker: function (latlng, options) {
+      return new Marker(latlng, options);
+    },
+    circle: function (latlng, options) {
+      return new Circle(latlng, options);
+    },
+    polygon: function (latlngs, options) {
+      return new Polygon(latlngs, options);
+    },
+    divIcon: function (options) {
+      return { options: options };
+    },
+    latLng: function (lat, lng) {
+      return new LatLng(lat, lng);
+    },
+    latLngBounds: function (sw, ne) {
+      return new LatLngBounds(sw, ne);
+    },
+    DomEvent: DomEvent,
+    control: {
+      zoom: function (options) {
+        return {
+          addTo: function (map) {
+            const $ctrl = $(`
+              <div class="teduh-control-zoom teduh-bar" style="position:absolute;bottom:24px;right:20px;z-index:500;display:flex;flex-direction:column;gap:5px;box-shadow:0 4px 18px rgba(0,0,0,0.15);">
+                <button type="button" class="teduh-zoom-btn teduh-zoom-in" aria-label="Perbesar Peta" title="Perbesar Peta" style="width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border:1px solid rgba(228,228,231,0.9);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:700;color:#0e1116;transition:all 0.2s cubic-bezier(0.16,1,0.3,1);user-select:none;">+</button>
+                <button type="button" class="teduh-zoom-btn teduh-zoom-out" aria-label="Perkecil Peta" title="Perkecil Peta" style="width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);border:1px solid rgba(228,228,231,0.9);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;font-weight:700;color:#0e1116;transition:all 0.2s cubic-bezier(0.16,1,0.3,1);user-select:none;">&minus;</button>
+              </div>
+            `).appendTo(map.$container);
+
+            $ctrl.find(".teduh-zoom-in").on("click", (e) => {
+              e.stopPropagation();
+              map.setZoom(map.getZoom() + 1);
+            });
+            $ctrl.find(".teduh-zoom-out").on("click", (e) => {
+              e.stopPropagation();
+              map.setZoom(map.getZoom() - 1);
+            });
+            $ctrl.find(".teduh-zoom-btn").hover(
+              function () {
+                $(this).css({
+                  transform: "scale(1.08)",
+                  background: "#ffffff",
+                  color: "#1a382b",
+                  borderColor: "rgba(26,56,43,0.3)",
+                });
+              },
+              function () {
+                $(this).css({
+                  transform: "scale(1)",
+                  background: "rgba(255,255,255,0.96)",
+                  color: "#0e1116",
+                  borderColor: "rgba(228,228,231,0.9)",
+                });
+              },
+            );
+            return this;
+          },
+        };
+      },
+    },
+  };
+})(jQuery);
 
 let mapInstance = null;
 let activeZone = null;
@@ -36,9 +1386,9 @@ let selectedMissionFriends = [];
 let isPollutionLayerActive = false;
 let activeTreeSimCount = 1;
 let completedActionSteps = new Set();
+let currentDrawerStage = 1;
 let activeFactorIndex = null;
 let activeAnalysisTimeout = null;
-let activeGsapTimeline = null;
 let userLocationMarker = null;
 let userLocationAccuracyCircle = null;
 let isRequestingLocation = false;
@@ -56,119 +1406,33 @@ document.addEventListener("DOMContentLoaded", () => {
   initUserGeolocation();
 });
 
-// Animasi Masuk Kontrol Konsol Peta Saat Halaman Dibuka
 function initMapConsoleEntranceAnimation() {
-  if (typeof gsap === "undefined") return;
+  $(".map-desktop-topbar, .map-mobile-search-capsule").addClass("animate-hero-down");
+  $(".map-brand-logo-desktop, .map-mobile-brand-logo").addClass("animate-hero-scale");
+  $(".map-statusbar, .map-status-pill, .map-floating-controls").addClass("animate-hero-up");
+  $(".map-mobile-bottom-dock").addClass("animate-hero-up");
 
-  // 1. Bilah atas masuk dari atas dengan efek halus
-  gsap.fromTo(
-    ".map-desktop-topbar, .map-mobile-search-capsule",
-    { y: -28, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" },
-  );
-
-  // 2. Logo brand dan elemen navigasi atas stagger
-  gsap.fromTo(
-    ".map-brand-logo-desktop, .map-mobile-brand-logo",
-    { scale: 0.8, opacity: 0 },
-    { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.8)", delay: 0.1 },
-  );
-
-  gsap.fromTo(
-    ".map-desktop-nav .map-nav-link",
-    { opacity: 0, y: -8 },
-    {
-      opacity: 1,
-      y: 0,
-      stagger: 0.05,
-      duration: 0.45,
-      ease: "power2.out",
-      delay: 0.18,
-    },
-  );
-
-  // 3. Status bar kursor koordinat dan tombol floating GPS masuk dari bawah
-  gsap.fromTo(
-    ".map-statusbar, .map-status-pill, .map-floating-controls",
-    { y: 24, opacity: 0, scale: 0.95 },
-    {
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      duration: 0.55,
-      ease: "back.out(1.5)",
-      delay: 0.25,
-    },
-  );
-
-  // 4. Bilah navigasi bawah mobile
-  gsap.fromTo(
-    ".map-mobile-bottom-dock",
-    { y: 35, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.65, ease: "power3.out", delay: 0.15 },
-  );
-
-  gsap.fromTo(
-    ".map-dock-item",
-    { scale: 0.8, opacity: 0 },
-    {
-      scale: 1,
-      opacity: 1,
-      stagger: 0.05,
-      duration: 0.4,
-      ease: "back.out(1.6)",
-      delay: 0.25,
-    },
-  );
-
-  // 5. Onboarding banner jika ada
   const banner = document.getElementById("onboardingBanner");
   if (banner && !banner.classList.contains("hidden")) {
-    gsap.fromTo(
-      banner,
-      { y: -20, opacity: 0, scale: 0.98 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.6,
-        ease: "power3.out",
-        delay: 0.3,
-      },
-    );
-    gsap.fromTo(
-      ".map-onboarding-icon",
-      { scale: 0.6, rotation: -15 },
-      {
-        scale: 1,
-        rotation: 0,
-        duration: 0.5,
-        ease: "back.out(2)",
-        delay: 0.45,
-      },
-    );
+    $(banner).addClass("animate-hero-down");
   }
 }
 
-// Inisialisasi Peta Leaflet dengan Google Satellite Hybrid
 function initMap() {
   const mapElement = document.getElementById("map");
   if (!mapElement) return;
 
-  // Koordinat awal Denpasar Pusat
   mapInstance = L.map("map", {
     zoomControl: false,
     attributionControl: true,
   }).setView([-8.675, 115.215], 13);
 
-  // Layer Citra Satelit Hybrid Google (Bebas API Key, Citra Satelit + Label Wilayah Bersih)
   L.tileLayer("https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", {
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"],
     attribution: "Citra Satelit &copy; Google Maps / Earth | Platform Teduh",
   }).addTo(mapInstance);
 
-  // Batasi jangkauan geser kamera agar tetap fokus di sekitar Pulau Bali
   const baliBounds = L.latLngBounds(
     L.latLng(-9.25, 114.2),
     L.latLng(-7.85, 115.95),
@@ -176,19 +1440,16 @@ function initMap() {
   mapInstance.setMaxBounds(baliBounds);
   mapInstance.options.minZoom = 10;
 
-  // Zoom Control di Sudut Kanan Bawah
   L.control
     .zoom({
       position: "bottomright",
     })
     .addTo(mapInstance);
 
-  // Tangani Klik Bebas Pengguna pada Peta Satelit
   mapInstance.on("click", (e) => {
     handleMapFreeClick(e.latlng.lat, e.latlng.lng);
   });
 
-  // Pembaruan Koordinat Kursor di Bar Bawah
   mapInstance.on("mousemove", (e) => {
     const coordsDisplay = document.getElementById("mapCoordinates");
     if (coordsDisplay) {
@@ -196,28 +1457,20 @@ function initMap() {
     }
   });
 
-  // Tampilkan lapisan poligon area termal organik
+  mapInstance.on("zoom", () => {
+    updateThermalZoomState();
+  });
+  mapInstance.on("zoomend", () => {
+    updateThermalZoomState();
+  });
+
   renderPollutionLayers();
 
-  // Tampilkan pin misi gotong royong warga sekitar
   renderCitizenMissions();
 
-  // Tampilkan pin misi aktif pengguna jika tersimpan di localStorage
   renderUserActiveMissionPin();
-
-  // Pasang listener adaptasi zoom termal real-time
-  mapInstance.on("zoom", updateThermalZoomState);
-  mapInstance.on("zoomend", updateThermalZoomState);
-  updateThermalZoomState();
 }
 
-/**
- * ====================================================================
- * SISTEM AKSES LOKASI & GEOLOCATION PENGGUNA (GPS REAL-TIME)
- * Meminta izin lokasi pengguna saat pertama kali membuka peta dan
- * langsung memusatkan kamera ke pekarangan/koordinat langsung pengguna.
- * ====================================================================
- */
 function initUserGeolocation() {
   const gpsBtn = document.getElementById("mapGpsBtn");
   if (gpsBtn) {
@@ -227,8 +1480,6 @@ function initUserGeolocation() {
     });
   }
 
-  // Jika URL tidak memiliki parameter khusus kawasan/analisis,
-  // langsung minta izin lokasi secara halus saat pengunjung pertama kali membuka peta
   const urlParams = new URLSearchParams(window.location.search);
   const hasSpecificZone = urlParams.get("zone") || urlParams.get("analyze");
 
@@ -274,29 +1525,21 @@ function requestUserLocation(isUserInitiated = false) {
       const inBali = isWithinBali(lat, lng);
 
       if (inBali) {
-        mapInstance.flyTo([lat, lng], 17, {
-          duration: 1.5,
-          easeLinearity: 0.25,
-        });
+        mapInstance.panTo([lat, lng], { duration: 0.5 });
 
         showToast(
           "📍 Lokasi Anda terdeteksi. Memindai iklim pekarangan Anda...",
         );
 
-        // Buka popup pin lokasi dan otomatis lakukan pemindaian iklim pekarangan
         setTimeout(() => {
           if (userLocationMarker) {
             userLocationMarker.openPopup();
           }
           handleMapFreeClick(lat, lng);
-        }, 1200);
+        }, 500);
       } else {
-        // Jika sedang diakses/diuji di luar batas Pulau Bali
         mapInstance.setMaxBounds(null);
-        mapInstance.flyTo([lat, lng], 16, {
-          duration: 1.5,
-          easeLinearity: 0.25,
-        });
+        mapInstance.panTo([lat, lng], { duration: 0.5 });
         showToast(
           `📍 Lokasi Anda terdeteksi (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
         );
@@ -304,7 +1547,7 @@ function requestUserLocation(isUserInitiated = false) {
           if (userLocationMarker) {
             userLocationMarker.openPopup();
           }
-        }, 1000);
+        }, 500);
       }
     },
     (error) => {
@@ -336,7 +1579,6 @@ function requestUserLocation(isUserInitiated = false) {
 function renderUserLocationMarker(lat, lng, accuracy) {
   if (!mapInstance) return;
 
-  // Bersihkan marker atau lingkaran akurasi sebelumnya
   if (userLocationMarker) {
     mapInstance.removeLayer(userLocationMarker);
     userLocationMarker = null;
@@ -346,7 +1588,6 @@ function renderUserLocationMarker(lat, lng, accuracy) {
     userLocationAccuracyCircle = null;
   }
 
-  // Lingkaran Akurasi Area GPS
   userLocationAccuracyCircle = L.circle([lat, lng], {
     radius: Math.min(accuracy, 120),
     color: "#5C8437",
@@ -356,7 +1597,6 @@ function renderUserLocationMarker(lat, lng, accuracy) {
     dashArray: "4, 6",
   }).addTo(mapInstance);
 
-  // Pinpoint Radar Lokasi Pengguna Kustom
   const userIcon = L.divIcon({
     className: "user-gps-marker-container",
     html: `
@@ -376,7 +1616,7 @@ function renderUserLocationMarker(lat, lng, accuracy) {
   }).addTo(mapInstance);
 
   const popupContent = `
-    <div class="map-popup-card" style="min-width: 230px;">
+    <div class="map-popup-card">
       <div class="map-popup-header">
         <span class="map-popup-badge cool">📍 Lokasi Anda</span>
         <span class="map-popup-location">Akurasi ±${Math.round(accuracy)}m</span>
@@ -393,50 +1633,46 @@ function renderUserLocationMarker(lat, lng, accuracy) {
   `;
 
   userLocationMarker.bindPopup(popupContent, {
-    className: "custom-leaflet-popup",
+    className: "custom-teduh-popup",
     offset: [0, -10],
     closeButton: false,
   });
 }
 
-// Validasi Geofence: Memastikan Titik Berada di Daratan Pulau Bali & Nusa Penida
 function isWithinBali(lat, lng) {
-  // 1. Batas luar maksimal Bali & Nusa Penida
   if (lat < -8.92 || lat > -8.05 || lng < 114.4 || lng > 115.75) {
     return false;
   }
-  // 2. Nusa Penida, Nusa Lembongan, Nusa Ceningan
   if (lat >= -8.85 && lat <= -8.65 && lng >= 115.42 && lng <= 115.65) {
     return true;
   }
 
-  // 3. Poligon Daratan Utama Pulau Bali
   const baliPolygon = [
-    [-8.1, 114.43], // Gilimanuk Utara
-    [-8.05, 114.7], // Celukan Bawang / Buleleng Barat
-    [-8.07, 115.1], // Singaraja
-    [-8.12, 115.35], // Tejakula
-    [-8.25, 115.6], // Tulamben
-    [-8.35, 115.72], // Amed / Ujung Timur
-    [-8.48, 115.68], // Karangasem Timur
-    [-8.55, 115.54], // Candidasa
-    [-8.58, 115.44], // Padangbai
-    [-8.6, 115.35], // Lebih / Gianyar Pesisir
-    [-8.68, 115.28], // Sanur Pesisir
-    [-8.75, 115.25], // Serangan / Pelabuhan Benoa
-    [-8.8, 115.24], // Tanjung Benoa
-    [-8.85, 115.23], // Nusa Dua
-    [-8.88, 115.18], // Ungasan Selatan
-    [-8.85, 115.08], // Uluwatu / Pecatu
-    [-8.78, 115.15], // Jimbaran Barat
-    [-8.72, 115.15], // Kuta
-    [-8.64, 115.12], // Canggu
-    [-8.58, 115.08], // Tanah Lot
-    [-8.5, 114.95], // Tabanan Selatan
-    [-8.42, 114.75], // Pekutatan / Jembrana
-    [-8.38, 114.58], // Negara
-    [-8.25, 114.43], // Gilimanuk Selatan
-    [-8.15, 114.42], // Gilimanuk Barat
+    [-8.1, 114.43], 
+    [-8.05, 114.7], 
+    [-8.07, 115.1], 
+    [-8.12, 115.35], 
+    [-8.25, 115.6], 
+    [-8.35, 115.72], 
+    [-8.48, 115.68], 
+    [-8.55, 115.54], 
+    [-8.58, 115.44], 
+    [-8.6, 115.35], 
+    [-8.68, 115.28], 
+    [-8.75, 115.25], 
+    [-8.8, 115.24], 
+    [-8.85, 115.23], 
+    [-8.88, 115.18], 
+    [-8.85, 115.08], 
+    [-8.78, 115.15], 
+    [-8.72, 115.15], 
+    [-8.64, 115.12], 
+    [-8.58, 115.08], 
+    [-8.5, 114.95], 
+    [-8.42, 114.75], 
+    [-8.38, 114.58], 
+    [-8.25, 114.43], 
+    [-8.15, 114.42], 
   ];
 
   let inside = false;
@@ -452,15 +1688,116 @@ function isWithinBali(lat, lng) {
   return inside;
 }
 
-// Helper kosong untuk kompatibilitas jika dipanggil modul lain
 function renderPresetMarkers() {
   presetMarkers.forEach((m) => mapInstance.removeLayer(m));
   presetMarkers = [];
+
+  if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.zones) return;
+
+  TEDUH_DATA.zones.forEach((zone) => {
+    const isHot = zone.isHotspot !== false;
+    const dotColor = isHot ? "#BA4E2A" : "#1A382B";
+    const tempText = zone.surfaceTemp || "36.5°C";
+
+    const markerHtml = `
+      <div class="custom-spatial-marker group" data-zone-id="${zone.id}" title="${formatZoneTitle(zone.name)}">
+        <div class="marker-pulse-ring" style="background: ${isHot ? "rgba(186, 78, 42, 0.4)" : "rgba(26, 56, 43, 0.35)"};"></div>
+        <div class="marker-inner-circle" style="box-shadow: 0 3px 12px rgba(14, 17, 22, 0.25);">
+          <div class="marker-core-dot ${isHot ? "hot" : "cool"}" style="background-color: ${dotColor};"></div>
+        </div>
+        <div class="marker-hover-label">${formatZoneTitle(zone.name)} • ${tempText}</div>
+      </div>
+    `;
+
+    const customIcon = L.divIcon({
+      className: "teduh-zone-marker-wrapper",
+      html: markerHtml,
+      iconAnchor: [14, 14],
+    });
+
+    const marker = L.marker([zone.lat, zone.lng], {
+      icon: customIcon,
+      zIndexOffset: 350,
+    }).addTo(mapInstance);
+
+    marker._teduhZoneId = zone.id;
+
+    const locationLabel = zone.village
+      ? `${zone.village}, ${zone.city || "Denpasar"}`
+      : zone.district
+        ? `${zone.district}, ${zone.city || "Denpasar"}`
+        : zone.address || zone.city || "Denpasar";
+    const shortAqiStatus = zone.aqiStatus
+      ? zone.aqiStatus.split("&")[0].split("/")[0].trim()
+      : "Berdebu";
+
+    const popupContent = `
+      <div class="map-popup-card" data-zone-id="${zone.id}" onclick="handleMapPopupCardClick(event, '${zone.id}')" style="cursor: pointer;">
+        <div class="map-popup-header">
+          <span class="map-popup-badge ${isHot ? "hot" : "cool"}">${zone.surfaceTemp}</span>
+          <span class="map-popup-location">${locationLabel}</span>
+        </div>
+        <h4 class="map-popup-title">${zone.name}</h4>
+        <div class="map-popup-grid">
+          <div class="map-popup-mini-stat">
+            <span>Kondisi Udara</span>
+            <strong>${shortAqiStatus}</strong>
+          </div>
+          <div class="map-popup-mini-stat">
+            <span>Penghijauan</span>
+            <strong>${zone.canopyCover}</strong>
+          </div>
+          <div class="map-popup-mini-stat">
+            <span>Suhu Udara</span>
+            <strong>${zone.airTemp || "33.5°C"}</strong>
+          </div>
+          <div class="map-popup-mini-stat">
+            <span>Tingkat Panas</span>
+            <strong>${zone.heatLevel || (isHot ? "Sangat Panas" : "Sejuk")}</strong>
+          </div>
+        </div>
+        <div class="map-popup-cta-btn" aria-hidden="true">
+          <span class="map-popup-cta-text">Ketuk untuk Analisa Lengkap</span>
+          <span class="map-popup-cta-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </div>
+    `;
+
+    marker.bindPopup(popupContent, {
+      offset: [0, -14],
+      closeButton: false,
+      className: "custom-teduh-popup",
+      autoPan: true,
+    });
+
+    bindHoverPopup(marker);
+
+    marker.on("click", (e) => {
+      L.DomEvent.stopPropagation(e);
+      if (currentDrawerStage === 2 && activeZone) {
+        dismissNearbyFriendsNotice();
+        if (mapInstance) mapInstance.closePopup();
+        return;
+      }
+      const isMobile = window.innerWidth <= 860;
+      selectZone(zone, false, null, !isMobile);
+    });
+
+    presetMarkers.push(marker);
+  });
 }
 
-// Penanganan Klik Bebas Pengguna di Peta Satelit
 function handleMapFreeClick(lat, lng) {
-  // Cegah analisis jika titik berada di luar daratan pemantauan
+  if (currentDrawerStage === 2 && activeZone) {
+    dismissNearbyFriendsNotice();
+    if (mapInstance) {
+      mapInstance.closePopup();
+    }
+    return;
+  }
+
   if (!isWithinBali(lat, lng)) {
     showToast(
       "Titik berada di luar wilayah pemantauan. Silakan klik area daratan pemukiman.",
@@ -468,7 +1805,6 @@ function handleMapFreeClick(lat, lng) {
     return;
   }
 
-  // Hitung data mikroklimat dinamis berdasarkan koordinat klik
   const simulatedZone = TEDUH_DATA.generateDynamicAnalysis(lat, lng);
   const isMobile = window.innerWidth <= 860;
   selectZone(simulatedZone, true, null, !isMobile);
@@ -477,7 +1813,6 @@ function handleMapFreeClick(lat, lng) {
 let activeCitizenMission = null;
 let selectedCitizenMissionMarker = null;
 
-// Helper Deteksi Apakah Suatu Kawasan / Titik Koordinat Memiliki Misi Aktif Saya yang Belum Selesai
 function getUserActiveMissionForZone(zone) {
   if (typeof localStorage === "undefined" || !zone) return null;
   try {
@@ -486,7 +1821,6 @@ function getUserActiveMissionForZone(zone) {
     const saved = JSON.parse(savedStr);
     if (!saved || saved.isCompleted) return null;
 
-    // 1. Pencocokan Langsung ID Kawasan / ID Misi
     if (saved.zoneId && (saved.zoneId === zone.id || saved.id === zone.id)) {
       return saved;
     }
@@ -494,7 +1828,6 @@ function getUserActiveMissionForZone(zone) {
       return saved;
     }
 
-    // 2. Pencocokan Berdasarkan Nama Kawasan (Case-Insensitive)
     if (saved.zoneName && zone.name) {
       const sName = saved.zoneName.toLowerCase().trim();
       const zName = zone.name.toLowerCase().trim();
@@ -503,7 +1836,6 @@ function getUserActiveMissionForZone(zone) {
       }
     }
 
-    // 3. Pencocokan Kedekatan Geografis (Radius ~350 meter)
     if (
       saved.lat != null &&
       saved.lng != null &&
@@ -520,7 +1852,6 @@ function getUserActiveMissionForZone(zone) {
   return null;
 }
 
-// Helper Format Judul Kawasan: Ringkas, Lugas, Tanpa Rincian Kurung yang Berlebihan
 function formatZoneTitle(name) {
   if (!name) return "Kawasan Pilihan";
   let clean = name.replace(/\s*\([^)]*\)/g, "").trim();
@@ -528,7 +1859,6 @@ function formatZoneTitle(name) {
   return clean;
 }
 
-// Helper Format Lokasi Singkat Penggagas Warga
 function formatShortLocation(loc) {
   if (!loc) return "Denpasar";
   const parts = loc
@@ -541,7 +1871,6 @@ function formatShortLocation(loc) {
   return loc;
 }
 
-// Memilih Zona, Memunculkan Pin Aktif, Popup Kustom, dan Membuka Drawer Analisis
 function selectZone(
   zone,
   isDynamic = false,
@@ -550,13 +1879,11 @@ function selectZone(
 ) {
   if (!zone || !mapInstance) return;
 
-  // Periksa apakah ini kawasan yang sudah memiliki Misi Aktif Saya
   const activeMissionObj = !citizenMission
     ? getUserActiveMissionForZone(zone)
     : null;
   const isUserActiveZone = !!activeMissionObj;
 
-  // Jika ini adalah zona misi aktif saya, pastikan data nama & koordinat selaras dengan misi
   if (isUserActiveZone && activeMissionObj) {
     zone = {
       ...zone,
@@ -572,7 +1899,6 @@ function selectZone(
   const drawer = document.getElementById("spatialDrawer");
   const isDrawerOpen = drawer && drawer.classList.contains("is-open");
 
-  // Jika kawasan / misi ini sudah aktif dan drawer terbuka, diamkan saja (jangan ulangi pemindaian atau reset)
   const isSameCitizenMission =
     citizenMission &&
     activeCitizenMission &&
@@ -615,21 +1941,14 @@ function selectZone(
   activeZone = zone;
   activeCitizenMission = citizenMission;
 
-  // Batalkan proses loading atau animasi GSAP sebelumnya jika masih aktif
   if (activeAnalysisTimeout) {
     clearTimeout(activeAnalysisTimeout);
     activeAnalysisTimeout = null;
   }
-  if (activeGsapTimeline) {
-    activeGsapTimeline.kill();
-    activeGsapTimeline = null;
-  }
 
-  // Bersihkan titik teman jika ada dari aksi sebelumnya
   clearCommunityFriends();
   dismissNearbyFriendsNotice();
 
-  // Hapus lingkaran simulasi atau lingkaran misi sebelumnya jika berpindah zona
   if (activeSimulationCircle) {
     mapInstance.removeLayer(activeSimulationCircle);
     activeSimulationCircle = null;
@@ -639,19 +1958,11 @@ function selectZone(
     activeMissionCircle = null;
   }
 
-  // Pusatkan peta ke lokasi zona terpilih dengan transisi halus
-  mapInstance.flyTo([zone.lat, zone.lng], 16, {
-    duration: 1.1,
-    easeLinearity: 0.25,
-  });
-
-  // Hapus Active Pin Marker sebelumnya jika ada
   if (activeMarker) {
     mapInstance.removeLayer(activeMarker);
     activeMarker = null;
   }
 
-  // Titik point pin lokasi yang dipilih (Sunbaked Terracotta untuk terik / Deep Laurel Pine untuk sejuk)
   if (!citizenMission && !isUserActiveZone) {
     selectedCitizenMissionMarker = null;
     const isHot = zone.isHotspot;
@@ -675,7 +1986,6 @@ function selectZone(
       mapInstance,
     );
 
-    // Pasang Leaflet Popup Kustom di Titik Terpilih
     const locationLabel = zone.village
       ? `${zone.village}, ${zone.city || "Denpasar"}`
       : zone.district
@@ -718,49 +2028,45 @@ function selectZone(
       </div>
     `;
 
-    // Tutup popup lama jika ada yang terbuka di peta
     mapInstance.closePopup();
 
     activeMarker.bindPopup(popupContent, {
       offset: [0, -12],
       closeButton: false,
-      className: "custom-leaflet-popup",
+      className: "custom-teduh-popup",
       autoPan: true,
       autoPanPaddingTopLeft: [20, 75],
       autoPanPaddingBottomRight: [20, 75],
     });
 
-    // Hubungkan klik pin: jika popup sudah terbuka di mobile, klik lagi membuka drawer
+    activeMarker.openPopup();
+
     activeMarker.on("click", (e) => {
       L.DomEvent.stopPropagation(e);
       const isMobile = window.innerWidth <= 860;
       if (isMobile) {
-        if (activeMarker.isPopupOpen()) {
-          openZoneDrawerFromPopup(zone.id);
-        } else {
-          activeMarker.openPopup();
-        }
+        activeMarker.openPopup();
       } else {
         openDrawer();
       }
     });
   } else if (isUserActiveZone) {
     selectedCitizenMissionMarker = null;
-    if (userActiveMissionMarker) {
+    if (userActiveMissionMarker && !userActiveMissionMarker.isPopupOpen()) {
       userActiveMissionMarker.openPopup();
     }
   } else {
-    // Jika memilih misi warga, pastikan popup pada pin misi warga tetap aktif dan terbuka
     const targetMarker = citizenMissionMarkers.find(
       (m) => m._teduhMissionId === citizenMission.id,
     );
     if (targetMarker) {
       selectedCitizenMissionMarker = targetMarker;
-      targetMarker.openPopup();
+      if (!targetMarker.isPopupOpen()) {
+        targetMarker.openPopup();
+      }
     }
   }
 
-  // Siapkan Header (Profil Penggagas Misi Warga vs Zona Wilayah Standar)
   const citizenBadge = document.getElementById("drawerCitizenProfileBadge");
   const standardTitleGroup = document.getElementById(
     "drawerStandardTitleGroup",
@@ -783,8 +2089,8 @@ function selectZone(
               (f) => f.name === citizenMission.authorName,
             )?.avatarImg
           : null) ||
-        "assets/avatars/dewi-lestari.jpg";
-      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(citizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='assets/avatars/dewi-lestari.jpg'">`;
+        "../assets/avatars/dewi-lestari.jpg";
+      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(citizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">`;
     }
     if (authorNameEl) {
       authorNameEl.textContent = citizenMission.authorName || "Penggagas Warga";
@@ -804,7 +2110,6 @@ function selectZone(
     if (nameEl) nameEl.textContent = formatZoneTitle(zone.name);
   }
 
-  // Pengaturan Tampilan Drawer
   const drawerHeader = document.getElementById("drawerHeader");
   const drawerBody = document.getElementById("drawerBody");
   const loadingEl = document.getElementById("drawerLoadingState");
@@ -815,94 +2120,78 @@ function selectZone(
   const shouldOpenNow =
     shouldOpenDrawer !== null ? shouldOpenDrawer : !isMobile;
 
+  populateDrawer(zone);
+
+  if (drawerHeader) {
+    drawerHeader.style.display = "flex";
+    drawerHeader.classList.remove("hidden");
+  }
+  if (drawerBody) {
+    drawerBody.style.display = "flex";
+    drawerBody.classList.remove("hidden");
+  }
+  if (stageAnalysis) stageAnalysis.classList.remove("hidden");
+  if (stageActions) stageActions.classList.add("hidden");
+
   if (shouldOpenNow) {
-    // Tampilkan State Loading Bersih & Sembunyikan Header dan Konten Drawer Dulu
-    if (drawerHeader) {
-      drawerHeader.style.display = "none";
-      drawerHeader.classList.add("hidden");
-    }
-    if (drawerBody) {
-      drawerBody.style.display = "none";
-      drawerBody.classList.add("hidden");
-    }
-    if (stageAnalysis) stageAnalysis.classList.add("hidden");
-    if (stageActions) stageActions.classList.add("hidden");
-
     if (loadingEl) {
+      loadingEl.classList.remove("is-fading-out", "hidden");
       loadingEl.style.display = "flex";
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          loadingEl,
-          { opacity: 0, y: 14, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power2.out" },
-        );
-      }
+      loadingEl.style.opacity = "1";
     }
 
-    // Buka Drawer Analisis secara otomatis (Khusus Desktop atau jika pengguna mengetuk pop-up card)
     openDrawer();
 
-    // Jalankan Jeda Loading Pemindaian Sederhana (~900ms) Sebelum Menampilkan Data
     activeAnalysisTimeout = setTimeout(() => {
-      if (loadingEl) loadingEl.style.display = "none";
-      if (drawerHeader) {
-        drawerHeader.style.display = "flex";
-        drawerHeader.classList.remove("hidden");
+      if (loadingEl) {
+        loadingEl.classList.add("is-fading-out");
+        setTimeout(() => {
+          loadingEl.style.display = "none";
+          loadingEl.classList.remove("is-fading-out");
+        }, 280);
       }
-      if (drawerBody) {
-        drawerBody.style.display = "flex";
-        drawerBody.classList.remove("hidden");
-      }
-      if (stageAnalysis) stageAnalysis.classList.remove("hidden");
 
-      // Pada desktop, buka popup pada pin setelah pemindaian selesai
+      animateAnalysis(zone);
+
       if (!isMobile) {
         if (isUserActiveZone && userActiveMissionMarker) {
-          userActiveMissionMarker.openPopup();
+          if (!userActiveMissionMarker.isPopupOpen()) {
+            userActiveMissionMarker.openPopup();
+          }
         } else if (activeMarker) {
-          activeMarker.openPopup();
+          if (!activeMarker.isPopupOpen()) {
+            activeMarker.openPopup();
+          }
         }
       }
-
-      // Isi data lengkap ke Drawer Analisis
-      populateDrawer(zone);
-
-      // Jalankan Animasi Pengungkapan Data dengan GSAP
-      animateAnalysisWithGSAP(zone);
-    }, 900);
+    }, 700);
   } else {
-    // Di Mobile: JANGAN langsung buka drawer! Tampilkan pop-up di titik lokasinya lebih dulu
-    if (loadingEl) loadingEl.style.display = "none";
-    if (drawerHeader) {
-      drawerHeader.style.display = "flex";
-      drawerHeader.classList.remove("hidden");
+    if (loadingEl) {
+      loadingEl.style.display = "none";
+      loadingEl.classList.remove("is-fading-out");
     }
-    if (drawerBody) {
-      drawerBody.style.display = "flex";
-      drawerBody.classList.remove("hidden");
-    }
-    if (stageAnalysis) stageAnalysis.classList.remove("hidden");
 
-    // Langsung persiapkan data drawer di background tanpa jeda
-    populateDrawer(zone);
-
-    // Buka popup pada titik lokasi yang baru dipilih
     setTimeout(() => {
       if (isUserActiveZone && userActiveMissionMarker) {
-        userActiveMissionMarker.openPopup();
+        if (!userActiveMissionMarker.isPopupOpen()) {
+          userActiveMissionMarker.openPopup();
+        }
       } else if (activeMarker) {
-        activeMarker.openPopup();
+        if (!activeMarker.isPopupOpen()) {
+          activeMarker.openPopup();
+        }
       } else if (citizenMission) {
         const targetMarker = citizenMissionMarkers.find(
           (m) => m._teduhMissionId === citizenMission.id,
         );
-        if (targetMarker) targetMarker.openPopup();
+        if (targetMarker && !targetMarker.isPopupOpen()) {
+          targetMarker.openPopup();
+        }
       }
-    }, 180);
+    }, 100);
   }
 }
 
-// Buka Drawer Analisis dari Ketukan pada Pop-up Titik Lokasi (Transisi Halus Geser Keluar & Naik)
 function openZoneDrawerFromPopup(
   zoneId = null,
   missionId = null,
@@ -910,7 +2199,7 @@ function openZoneDrawerFromPopup(
 ) {
   const isMobile = window.innerWidth <= 860;
   if (isMobile) {
-    const openPopupEl = document.querySelector(".custom-leaflet-popup");
+    const openPopupEl = document.querySelector(".custom-teduh-popup, .teduh-popup");
     if (openPopupEl) {
       openPopupEl.classList.add("is-sliding-out");
     }
@@ -931,11 +2220,11 @@ function openZoneDrawerFromPopup(
           selectZone(found, false, null, true);
         } else {
           openDrawer();
-          if (activeZone) animateAnalysisWithGSAP(activeZone);
+          if (activeZone) animateAnalysis(activeZone);
         }
       } else {
         openDrawer();
-        if (activeZone) animateAnalysisWithGSAP(activeZone);
+        if (activeZone) animateAnalysis(activeZone);
       }
     }, 140);
   } else {
@@ -959,14 +2248,7 @@ function handleMapPopupCardClick(
   openZoneDrawerFromPopup(zoneId, missionId, customCallback);
 }
 
-// Animasi Pengungkapan Hasil Analisis Menggunakan GSAP
-function animateAnalysisWithGSAP(zone) {
-  if (typeof gsap === "undefined") return;
-
-  if (activeGsapTimeline) {
-    activeGsapTimeline.kill();
-  }
-
+function animateAnalysis(zone) {
   const tempNum = parseFloat(zone.surfaceTemp) || 35.0;
   const pinPercent = Math.min(
     Math.max(((tempNum - 24.0) / (42.0 - 24.0)) * 100, 4),
@@ -977,134 +2259,77 @@ function animateAnalysisWithGSAP(zone) {
     label: "Minim Pohon",
   };
 
-  activeGsapTimeline = gsap.timeline({
-    defaults: { ease: "power2.out" },
+  const startVal = Math.max(20.0, tempNum - 10.0);
+  const surfaceEl = document.getElementById("metricSurfaceTemp");
+  if (surfaceEl) {
+    const startTime = performance.now();
+    const duration = 750;
+    function countTemp(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const current = startVal + (tempNum - startVal) * ease;
+      surfaceEl.textContent = `${current.toFixed(1)}°C`;
+      if (p < 1) requestAnimationFrame(countTemp);
+      else surfaceEl.textContent = `${tempNum.toFixed(1)}°C`;
+    }
+    requestAnimationFrame(countTemp);
+  }
+
+  const $pin = $("#spectrumPin");
+  $pin.css({
+    transition: "none",
+    left: "0%",
+    transform: "scale(0.85)",
+  });
+  requestAnimationFrame(() => {
+    $pin.css({
+      transition: "left 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+      left: `${pinPercent}%`,
+      transform: "scale(1)",
+    });
   });
 
-  // 0. Header Nama Kawasan & Tombol Tutup Meluncur Halus
-  activeGsapTimeline.fromTo(
-    "#drawerHeader",
-    { opacity: 0, y: -12, scale: 0.98 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" },
-    0,
-  );
-
-  // 1. Counter Nilai Suhu Permukaan Live Count-Up
-  const startVal = Math.max(20.0, tempNum - 10.0);
-  const tempObj = { val: startVal };
-  const surfaceEl = document.getElementById("metricSurfaceTemp");
-  activeGsapTimeline.to(
-    tempObj,
-    {
-      val: tempNum,
-      duration: 0.9,
-      ease: "power2.out",
-      onUpdate: () => {
-        if (surfaceEl) surfaceEl.textContent = `${tempObj.val.toFixed(1)}°C`;
-      },
-    },
-    0,
-  );
-
-  // 2. Jarum Spektrum Termal Meluncur Halus dengan Overshoot
-  activeGsapTimeline.fromTo(
-    "#spectrumPin",
-    { left: "0%", scale: 0.8 },
-    { left: `${pinPercent}%`, scale: 1, duration: 0.9, ease: "back.out(1.3)" },
-    0,
-  );
-
-  // 3. Diagram Donut SVG Spin & Elastic Scale Pop
-  activeGsapTimeline.fromTo(
-    "#donutSvgChart",
-    {
-      scale: 0.82,
-      opacity: 0,
-      rotation: -35,
-      transformOrigin: "center center",
-    },
-    { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(1.5)" },
-    0.08,
-  );
-
-  const scoreObj = { val: 0 };
-  const centerScoreEl = document.getElementById("donutCenterScore");
-  activeGsapTimeline.to(
-    scoreObj,
-    {
-      val: dominant.percentage,
-      duration: 0.75,
-      ease: "power1.out",
-      onUpdate: () => {
-        if (centerScoreEl)
-          centerScoreEl.textContent = `${Math.round(scoreObj.val)}%`;
-      },
-    },
-    0.1,
-  );
-
-  // 4. Daftar Faktor Pemicu (Legend Item) Muncul Berurutan (Stagger)
-  activeGsapTimeline.fromTo(
-    ".legend-item",
-    { opacity: 0, x: -14, scale: 0.95 },
-    {
+  const $donut = $("#donutSvgChart");
+  $donut.css({
+    transition: "none",
+    transform: "rotate(-25deg) scale(0.95)",
+    opacity: 0.85,
+  });
+  requestAnimationFrame(() => {
+    $donut.css({
+      transition: "all 0.75s cubic-bezier(0.34, 1.25, 0.64, 1)",
+      transform: "rotate(0deg) scale(1)",
       opacity: 1,
-      x: 0,
-      scale: 1,
-      stagger: 0.06,
-      duration: 0.4,
-      ease: "back.out(1.2)",
-    },
-    0.18,
-  );
+    });
+  });
 
-  // 5. Narasi Dampak Lapangan & Kartu Rekomendasi Bibit
-  activeGsapTimeline.fromTo(
-    ".narrative-box",
-    { opacity: 0, y: 14, scale: 0.98 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "power2.out" },
-    0.28,
-  );
-
-  activeGsapTimeline.fromTo(
-    ".drawer-tree-card",
-    { opacity: 0, y: 16, scale: 0.97 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.3)" },
-    0.35,
-  );
-
-  activeGsapTimeline.fromTo(
-    "#treeImage",
-    { scale: 1.08, opacity: 0.8 },
-    { scale: 1, opacity: 1, duration: 0.6, ease: "power2.out" },
-    0.38,
-  );
-
-  activeGsapTimeline.fromTo(
-    ".drawer-actions-group",
-    { opacity: 0, y: 12 },
-    { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
-    0.44,
-  );
+  const centerScoreEl = document.getElementById("donutCenterScore");
+  if (centerScoreEl) {
+    const target = dominant.percentage || 40;
+    const startTime = performance.now();
+    const duration = 700;
+    function countScore(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - p, 3);
+      centerScoreEl.textContent = `${Math.round(target * ease)}%`;
+      if (p < 1) requestAnimationFrame(countScore);
+      else centerScoreEl.textContent = `${target}%`;
+    }
+    requestAnimationFrame(countScore);
+  }
 }
 
-// Mengisi Konten Panel Drawer Analisis
 function populateDrawer(zone) {
-  // Selalu reset ke Stage 1 (Diagnosa Kawasan) saat membuka kawasan
-  switchDrawerStage(1);
+  switchDrawerStage(1, false);
 
-  // Reset checklist langkah aksi
   completedActionSteps.clear();
   updateActionChecklistUI();
 
-  // Reset simulator pohon
   activeTreeSimCount = 1;
   updateTreeSimUI();
 
-  // Reset fokus faktor
   activeFactorIndex = null;
 
-  // Deteksi apakah kawasan ini memiliki Misi Aktif Saya
   let isUserActiveMission = false;
   let isMissionExpired = false;
   let userActiveMissionDate = "";
@@ -1150,8 +2375,8 @@ function populateDrawer(zone) {
               (f) => f.name === activeCitizenMission.authorName,
             )?.avatarImg
           : null) ||
-        "assets/avatars/dewi-lestari.jpg";
-      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(activeCitizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='assets/avatars/dewi-lestari.jpg'">`;
+        "../assets/avatars/dewi-lestari.jpg";
+      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(activeCitizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">`;
     }
     if (authorNameEl) {
       authorNameEl.textContent =
@@ -1187,7 +2412,6 @@ function populateDrawer(zone) {
     if (nameEl) nameEl.textContent = formatZoneTitle(zone.name);
   }
 
-  // 1. Spektrum Suhu Termal (Hijau Dingin -> Terracotta Panas)
   const surfaceEl = document.getElementById("metricSurfaceTemp");
   if (surfaceEl) surfaceEl.textContent = zone.surfaceTemp;
 
@@ -1206,10 +2430,8 @@ function populateDrawer(zone) {
     currentLabelEl.textContent = `${zone.surfaceTemp} ${zone.heatLevel || "Terik"}`;
   }
 
-  // 2. Diagram Donut Faktor Pemicu Utama Panas & Polusi Interaktif
   renderDonutChartAndLegend(zone);
 
-  // 3. Diagnosa Masalah Lapangan
   const diagEl = document.getElementById("zoneDiagnosisText");
   if (diagEl) diagEl.textContent = zone.problemDiagnosis;
   const diagBadge = document.getElementById("narrativeFactorBadge");
@@ -1217,7 +2439,6 @@ function populateDrawer(zone) {
   const diagTitle = document.getElementById("narrativeTitleLabel");
   if (diagTitle) diagTitle.textContent = "Dampak ke Pemukiman:";
 
-  // 4. Rekomendasi Pohon Minimalis Bergambar
   const tree = zone.recommendedTree;
   if (tree) {
     const treeImgEl = document.getElementById("treeImage");
@@ -1227,7 +2448,7 @@ function populateDrawer(zone) {
     const safetyBadge = document.getElementById("treeSafetyBadge");
 
     if (treeImgEl) {
-      treeImgEl.src = tree.image || "assets/trees/pohon-tanjung.jpg";
+      treeImgEl.src = tree.image || "../assets/trees/pohon-tanjung.jpg";
       treeImgEl.alt = tree.name;
     }
     if (treeNameEl) treeNameEl.textContent = tree.name;
@@ -1240,7 +2461,6 @@ function populateDrawer(zone) {
         : "Aman Pipa & Fondasi";
   }
 
-  // 4.1 Kelola Tampilan Jadwal Tanam di Bawah Card Pohon
   const treeScheduleBox = document.getElementById("drawerTreeScheduleBox");
   const treeScheduleDateEl = document.getElementById("drawerTreeScheduleDate");
 
@@ -1271,7 +2491,6 @@ function populateDrawer(zone) {
     }
   }
 
-  // 5. Rencana Langkah Aksi (Stage 2 - Panduan Praktis 1 Kali Tanam)
   const actionPlan = zone.actionPlan || {
     now: {
       title: "Tentukan Titik Tanam Aman",
@@ -1287,7 +2506,6 @@ function populateDrawer(zone) {
     },
   };
 
-  // Isi data langkah di Stage 2
   const step1TitleEl = document.getElementById("step1Title");
   const step1DescEl = document.getElementById("step1Desc");
   const step2TitleEl = document.getElementById("step2Title");
@@ -1308,7 +2526,6 @@ function populateDrawer(zone) {
   if (step3DescEl && actionPlan.longTerm)
     step3DescEl.textContent = actionPlan.longTerm.desc;
 
-  // Isi data langkah di Stage 1 khusus Misi Aktif Saya
   const activeStepsCard = document.getElementById(
     "drawerActiveMissionStepsSection",
   );
@@ -1342,13 +2559,11 @@ function populateDrawer(zone) {
     }
   }
 
-  // Reset status kolaborator misi jika membuka zona biasa
   if (!isUserActiveMission) {
     selectedMissionFriends = [];
     renderSelectedMissionFriendsChips();
   }
 
-  // Misi Penanaman Pohon Aksi Warga (Stage 2)
   const missionTitleEl = document.getElementById("missionActionTitle");
   const missionTreeEl = document.getElementById("missionTreeName");
   const missionTargetEl = document.getElementById("missionCoolingTarget");
@@ -1384,10 +2599,8 @@ function populateDrawer(zone) {
     }
   }
 
-  // Render Daftar Warga yang Bergabung (Khusus Aksi Warga)
   renderDrawerVolunteers(activeCitizenMission);
 
-  // Render Daftar Warga yang Diajak (Khusus Misi Aktif Saya)
   const myCollabSection = document.getElementById("drawerMyCollabSection");
   const myCollabList = document.getElementById("drawerMyCollabList");
   const myCollabBadge = document.getElementById("drawerMyCollabCountBadge");
@@ -1413,10 +2626,10 @@ function populateDrawer(zone) {
             c.avatarImg ||
             (friendObj
               ? friendObj.avatarImg
-              : "assets/avatars/dewi-lestari.jpg");
+              : "../assets/avatars/dewi-lestari.jpg");
           return `
           <div class="drawer-volunteer-item">
-            <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(c.name)}" class="w-full h-full object-cover rounded-full" onerror="this.src='assets/avatars/dewi-lestari.jpg'"></div>
+            <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(c.name)}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
             <div class="drawer-volunteer-info">
               <span class="drawer-volunteer-name">${escapeHtml(c.name)}</span>
             </div>
@@ -1430,7 +2643,6 @@ function populateDrawer(zone) {
     }
   }
 
-  // Kelola Tombol Aksi di Bagian Bawah Stage 1 (Misi Aktif Saya vs Misi Warga vs Zona Standar)
   const userActiveActionsWrap = document.getElementById(
     "drawerUserActiveMissionActions",
   );
@@ -1453,7 +2665,6 @@ function populateDrawer(zone) {
   const btnViewZoneActions = document.getElementById("btnViewZoneActions");
 
   if (isUserActiveMission) {
-    // Mode Misi Aktif Saya: Langsung tampilkan aksi bagikan/selesaikan misi & atur ulang jadwal
     if (userActiveActionsWrap) userActiveActionsWrap.classList.remove("hidden");
     if (btnActiveGoCommunity) {
       const encodedZone = encodeURIComponent(zone.name);
@@ -1471,7 +2682,6 @@ function populateDrawer(zone) {
     if (joinedActionsWrap) joinedActionsWrap.classList.add("hidden");
     if (btnViewZoneActions) btnViewZoneActions.classList.add("hidden");
   } else if (activeCitizenMission) {
-    // Mode Misi Warga
     if (userActiveActionsWrap) userActiveActionsWrap.classList.add("hidden");
     if (btnViewZoneActions) btnViewZoneActions.classList.add("hidden");
     const isJoined = activeCitizenMission.isJoined;
@@ -1502,7 +2712,6 @@ function populateDrawer(zone) {
       if (joinedActionsWrap) joinedActionsWrap.classList.add("hidden");
     }
   } else {
-    // Mode Zona Standar (Belum Diambil)
     if (userActiveActionsWrap) userActiveActionsWrap.classList.add("hidden");
     if (btnJoinDrawer) btnJoinDrawer.classList.add("hidden");
     if (joinedActionsWrap) joinedActionsWrap.classList.add("hidden");
@@ -1510,7 +2719,6 @@ function populateDrawer(zone) {
   }
 }
 
-// Render Kartu Daftar Warga yang Bergabung pada Drawer Stage 1
 function renderDrawerVolunteers(mission) {
   const section = document.getElementById("drawerVolunteersSection");
   const listEl = document.getElementById("drawerVolunteersList");
@@ -1535,14 +2743,14 @@ function renderDrawerVolunteers(mission) {
           (friendObj
             ? friendObj.avatarImg
             : v.isSelf
-              ? "assets/avatars/john-doe.jpg"
-              : "assets/avatars/dewi-lestari.jpg");
+              ? "../assets/avatars/john-doe.jpg"
+              : "../assets/avatars/dewi-lestari.jpg");
         const nameText = escapeHtml(v.name || "Warga");
         const isSelfClass = v.isSelf ? "is-self" : "";
 
         return `
         <div class="drawer-volunteer-item ${isSelfClass}">
-          <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${nameText}" class="w-full h-full object-cover rounded-full" onerror="this.src='assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${nameText}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
           <div class="drawer-volunteer-info">
             <span class="drawer-volunteer-name">${nameText}</span>
           </div>
@@ -1558,7 +2766,6 @@ function renderDrawerVolunteers(mission) {
   }
 }
 
-// Render Diagram Donut & Legend Faktor Pemicu Interaktif
 function renderDonutChartAndLegend(zone) {
   const segmentsGroup = document.getElementById("donutSegmentsGroup");
   const legendList = document.getElementById("donutLegendList");
@@ -1606,7 +2813,6 @@ function renderDonutChartAndLegend(zone) {
   }
 }
 
-// Fokus & Eksplorasi Interaktif Faktor Donut Pemicu Panas
 function focusDonutFactor(idx) {
   if (!activeZone) return;
   const factors = activeZone.primaryFactors || [
@@ -1616,7 +2822,6 @@ function focusDonutFactor(idx) {
     { label: "Asap Pembakaran Sampah", percentage: 10, color: "#BA4E2A" },
   ];
 
-  // Toggle off jika mengklik kembali faktor yang sedang aktif
   if (activeFactorIndex === idx) {
     activeFactorIndex = null;
     const dominant = activeZone.dominantFactor || {
@@ -1626,25 +2831,25 @@ function focusDonutFactor(idx) {
     const centerScore = document.getElementById("donutCenterScore");
     const centerLabel = document.getElementById("donutCenterLabel");
 
-    if (typeof gsap !== "undefined" && centerScore) {
-      const currentVal =
-        parseInt(centerScore.textContent) || dominant.percentage;
-      const counter = { val: currentVal };
-      gsap.to(counter, {
-        val: dominant.percentage,
-        duration: 0.4,
-        ease: "power2.out",
-        onUpdate: () => {
-          centerScore.textContent = `${Math.round(counter.val)}%`;
-        },
-      });
-      gsap.fromTo(
-        centerScore,
-        { scale: 1.15 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
-    } else {
-      if (centerScore) centerScore.textContent = `${dominant.percentage}%`;
+    if (centerScore) {
+      const targetVal = dominant.percentage;
+      let cur = parseInt(centerScore.textContent) || targetVal;
+      const step = () => {
+        cur += (targetVal - cur) * 0.2;
+        if (Math.abs(targetVal - cur) < 0.5) {
+          centerScore.textContent = `${targetVal}%`;
+        } else {
+          centerScore.textContent = `${Math.round(cur)}%`;
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+
+      centerScore.style.transform = "scale(1.12)";
+      centerScore.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        centerScore.style.transform = "scale(1)";
+      }, 250);
     }
     if (centerLabel) centerLabel.textContent = dominant.label;
 
@@ -1659,13 +2864,13 @@ function focusDonutFactor(idx) {
     const diagEl = document.getElementById("zoneDiagnosisText");
     if (diagEl) {
       diagEl.textContent = activeZone.problemDiagnosis;
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          diagEl,
-          { opacity: 0.4, y: 4 },
-          { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-        );
-      }
+      diagEl.style.opacity = "0.4";
+      diagEl.style.transform = "translateY(4px)";
+      diagEl.style.transition = "opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+      requestAnimationFrame(() => {
+        diagEl.style.opacity = "1";
+        diagEl.style.transform = "translateY(0)";
+      });
     }
     const diagBadge = document.getElementById("narrativeFactorBadge");
     if (diagBadge) diagBadge.classList.add("hidden");
@@ -1678,28 +2883,28 @@ function focusDonutFactor(idx) {
   const factor = factors[idx];
   if (!factor) return;
 
-  // Sorot segmen grafik dan perbarui angka di tengah dengan GSAP Count
   const centerScore = document.getElementById("donutCenterScore");
   const centerLabel = document.getElementById("donutCenterLabel");
 
-  if (typeof gsap !== "undefined" && centerScore) {
-    const currentVal = parseInt(centerScore.textContent) || 0;
-    const counter = { val: currentVal };
-    gsap.to(counter, {
-      val: factor.percentage,
-      duration: 0.45,
-      ease: "power2.out",
-      onUpdate: () => {
-        centerScore.textContent = `${Math.round(counter.val)}%`;
-      },
-    });
-    gsap.fromTo(
-      centerScore,
-      { scale: 1.25 },
-      { scale: 1, duration: 0.4, ease: "back.out(2)" },
-    );
-  } else if (centerScore) {
-    centerScore.textContent = `${factor.percentage}%`;
+  if (centerScore) {
+    const targetVal = factor.percentage;
+    let cur = parseInt(centerScore.textContent) || 0;
+    const step = () => {
+      cur += (targetVal - cur) * 0.2;
+      if (Math.abs(targetVal - cur) < 0.5) {
+        centerScore.textContent = `${targetVal}%`;
+      } else {
+        centerScore.textContent = `${Math.round(cur)}%`;
+        requestAnimationFrame(step);
+      }
+    };
+    requestAnimationFrame(step);
+
+    centerScore.style.transform = "scale(1.2)";
+    centerScore.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+    setTimeout(() => {
+      centerScore.style.transform = "scale(1)";
+    }, 250);
   }
 
   if (centerLabel) {
@@ -1707,24 +2912,24 @@ function focusDonutFactor(idx) {
       factor.label.length > 14
         ? factor.label.slice(0, 14) + "..."
         : factor.label;
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        centerLabel,
-        { opacity: 0.5, y: -2 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-      );
-    }
+    centerLabel.style.opacity = "0.5";
+    centerLabel.style.transform = "translateY(-2px)";
+    centerLabel.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+    requestAnimationFrame(() => {
+      centerLabel.style.opacity = "1";
+      centerLabel.style.transform = "translateY(0)";
+    });
   }
 
   document.querySelectorAll(".legend-item").forEach((el, i) => {
     const isActive = i === idx;
     el.classList.toggle("is-active", isActive);
-    if (isActive && typeof gsap !== "undefined") {
-      gsap.fromTo(
-        el,
-        { scale: 0.95 },
-        { scale: 1, duration: 0.35, ease: "back.out(2)" },
-      );
+    if (isActive) {
+      el.style.transform = "scale(0.96)";
+      el.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+      setTimeout(() => {
+        el.style.transform = "scale(1)";
+      }, 250);
     }
   });
 
@@ -1738,7 +2943,6 @@ function focusDonutFactor(idx) {
     }
   });
 
-  // Teks diagnosa spesifik berdasarkan faktor
   const factorInsights = {
     0: "Minimnya naungan pohon membuat radiasi panas matahari terperangkap pada semen dan aspal, meningkatkan suhu pekarangan hingga di atas batas nyaman warga.",
     1: "Konsentrasi kendaraan bermotor menyumbang akumulasi panas knalpot dan partikel debu mikro yang memperburuk kenyamanan bernapas di koridor ini.",
@@ -1749,33 +2953,32 @@ function focusDonutFactor(idx) {
   const diagEl = document.getElementById("zoneDiagnosisText");
   if (diagEl) {
     diagEl.textContent = factorInsights[idx] || activeZone.problemDiagnosis;
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        diagEl,
-        { opacity: 0.3, y: 6 },
-        { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
-      );
-    }
+    diagEl.style.opacity = "0.4";
+    diagEl.style.transform = "translateY(5px)";
+    diagEl.style.transition = "opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+    requestAnimationFrame(() => {
+      diagEl.style.opacity = "1";
+      diagEl.style.transform = "translateY(0)";
+    });
   }
 
   const diagBadge = document.getElementById("narrativeFactorBadge");
   if (diagBadge) {
     diagBadge.textContent = `${factor.percentage}% ${factor.label}`;
     diagBadge.classList.remove("hidden");
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        diagBadge,
-        { scale: 0.7, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" },
-      );
-    }
+    diagBadge.style.transform = "scale(0.8)";
+    diagBadge.style.opacity = "0";
+    diagBadge.style.transition = "opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+    requestAnimationFrame(() => {
+      diagBadge.style.transform = "scale(1)";
+      diagBadge.style.opacity = "1";
+    });
   }
 
   const diagTitle = document.getElementById("narrativeTitleLabel");
   if (diagTitle) diagTitle.textContent = "Diagnosa Faktor Pemicu:";
 }
 
-// Salin Koordinat Kawasan ke Clipboard
 function copyZoneCoords() {
   if (!activeZone) return;
   const coordsText = `${activeZone.lat.toFixed(6)}, ${activeZone.lng.toFixed(6)}`;
@@ -1802,8 +3005,8 @@ function copyZoneCoords() {
   }
 }
 
-// Beralih Antar Tahap Drawer (1: Diagnosa Kawasan, 2: Rencana Aksi Solusi Tanam)
-function switchDrawerStage(stageNum) {
+function switchDrawerStage(stageNum, animate = true) {
+  currentDrawerStage = stageNum;
   const stageAnalysis = document.getElementById("drawerStageAnalysis");
   const stageActions = document.getElementById("drawerStageActions");
   const tab1 = document.getElementById("tabStage1");
@@ -1824,51 +3027,21 @@ function switchDrawerStage(stageNum) {
     const drawerBody = document.querySelector(".drawer-body");
     if (drawerBody) drawerBody.scrollTop = 0;
 
-    // Animasi GSAP Masuk ke Tahap Solusi Tanam (Stage 2)
-    if (typeof gsap !== "undefined") {
-      const stage2Tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
-      // 1. Hero Card Misi Relawan (Fade + Slide Up Lembut)
-      stage2Tl.fromTo(
-        "#drawerStageActions .volunteer-hero-card",
-        { opacity: 0, y: 16, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.38 },
-      );
-
-      // 2. Panduan Praktis Penanaman (Kartu Langkah)
-      stage2Tl.fromTo(
-        "#drawerStageActions .planting-steps-card",
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.35 },
-        "-=0.22",
-      );
-
-      // 3. Langkah-langkah Tanam 1, 2, 3 (Stagger)
-      stage2Tl.fromTo(
-        "#drawerStageActions .planting-step-row",
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, stagger: 0.07, duration: 0.3 },
-        "-=0.2",
-      );
-
-      // 4. Kartu Ajak Teman Gotong Royong
-      stage2Tl.fromTo(
-        "#drawerStageActions .volunteer-collab-card",
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.35 },
-        "-=0.18",
-      );
-
-      // 5. Tombol Aksi Utama
-      stage2Tl.fromTo(
-        "#drawerStageActions .drawer-actions-group",
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.3 },
-        "-=0.18",
-      );
+    if (animate) {
+      $("#drawerStageActions .volunteer-hero-card, #drawerStageActions .planting-steps-card, #drawerStageActions .volunteer-collab-card, #drawerStageActions .drawer-actions-group")
+        .css({ opacity: 0, transform: "translateY(12px)" })
+        .each(function (i) {
+          const el = this;
+          setTimeout(() => {
+            $(el).css({
+              opacity: 1,
+              transform: "translateY(0)",
+              transition: "opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+            });
+          }, i * 60);
+        });
     }
 
-    // Tampilkan titik teman & warga terdekat serta notifikasi samping saat masuk ke tahap solusi tanam
     if (activeZone) {
       renderNearbyFriendsForZone(activeZone);
       showNearbyFriendsNotice();
@@ -1900,35 +3073,23 @@ function switchDrawerStage(stageNum) {
     const drawerBody = document.querySelector(".drawer-body");
     if (drawerBody) drawerBody.scrollTop = 0;
 
-    // Animasi GSAP Kembali ke Tahap Kondisi Lahan (Stage 1)
-    if (typeof gsap !== "undefined") {
-      const stage1Tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-
-      stage1Tl.fromTo(
-        "#drawerStageAnalysis .drawer-analysis-card",
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.35 },
-      );
-
-      stage1Tl.fromTo(
-        "#drawerStageAnalysis .drawer-tree-card",
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.35 },
-        "-=0.2",
-      );
-
-      stage1Tl.fromTo(
-        "#drawerStageAnalysis .drawer-actions-group",
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.3 },
-        "-=0.18",
-      );
+    if (animate) {
+      $("#drawerStageAnalysis .drawer-analysis-card, #drawerStageAnalysis .drawer-tree-card, #drawerStageAnalysis .drawer-actions-group")
+        .css({ opacity: 0, transform: "translateY(10px)" })
+        .each(function (i) {
+          const el = this;
+          setTimeout(() => {
+            $(el).css({
+              opacity: 1,
+              transform: "translateY(0)",
+              transition: "opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+            });
+          }, i * 50);
+        });
     }
 
-    // Tutup notifikasi melayang samping
     dismissNearbyFriendsNotice();
 
-    // Bersihkan kembali titik teman dan radius misi agar peta kembali bersih
     clearCommunityFriends();
     if (activeMissionCircle) {
       mapInstance.removeLayer(activeMissionCircle);
@@ -1937,7 +3098,6 @@ function switchDrawerStage(stageNum) {
   }
 }
 
-// Beralih ke Stage 2 Langsung dari Tombol Pop-up Marker Peta
 function handlePopupMissionAction() {
   if (!activeZone) return;
   openDrawer();
@@ -1947,23 +3107,19 @@ function handlePopupMissionAction() {
   }
 }
 
-// Beralih ke Stage 2 (Alias untuk tombol aksi)
 function showZoneActions() {
   switchDrawerStage(2);
 }
 
-// Kembali ke Stage 1 (Alias untuk kompatibilitas)
 function backToAnalysis() {
   switchDrawerStage(1);
 }
 
-// Pemilih Jumlah Pohon Simulasi Interaktif (1 Pohon vs 2 Pohon)
 function setTreeSimulationCount(count) {
   activeTreeSimCount = count;
   updateTreeSimUI();
 }
 
-// Pembaruan UI Simulasi Kesejukan
 function updateTreeSimUI() {
   if (!activeZone) return;
 
@@ -2014,12 +3170,10 @@ function updateTreeSimUI() {
         sim.summary ||
         "Beban panas dinding berkurang, hemat konsumsi listrik AC s.d 28%.";
 
-    // Radius lingkaran visual 40m di peta
     if (activeMissionCircle && mapInstance) {
       activeMissionCircle.setRadius(40);
     }
   } else {
-    // 2 Pohon: Proyeksi Kesejukan Maksimal
     const currTempNum = parseFloat(activeZone.surfaceTemp) || 38.8;
     const enhancedTarget = (currTempNum - 6.5).toFixed(1) + "°C";
     if (targetTempEl) targetTempEl.textContent = enhancedTarget;
@@ -2035,14 +3189,12 @@ function updateTreeSimUI() {
       impactSummaryEl.textContent =
         "Kombinasi 2 kanopi peneduh memotong radiasi panas hingga 6.5°C dan menciptakan mikroklimat pemukiman yang sejuk.";
 
-    // Radius lingkaran visual 65m di peta
     if (activeMissionCircle && mapInstance) {
       activeMissionCircle.setRadius(65);
     }
   }
 }
 
-// Checklist Langkah Aksi Interaktif
 function toggleActionStep(stepNum) {
   if (completedActionSteps.has(stepNum)) {
     completedActionSteps.delete(stepNum);
@@ -2077,7 +3229,6 @@ function updateActionChecklistUI() {
   }
 }
 
-// Buka/Tutup/Expand Drawer di Mobile melalui Drag Handle
 function toggleDrawerMobile() {
   const drawer = document.getElementById("spatialDrawer");
   if (!drawer) return;
@@ -2090,7 +3241,6 @@ function toggleDrawerMobile() {
   }
 }
 
-// Pengelolaan Modal Konfirmasi Ambil Misi Tanam (Yakin / Tidak)
 function openMissionConfirmModal() {
   if (!activeZone) return;
   const modal = document.getElementById("missionConfirmModal");
@@ -2106,7 +3256,6 @@ function openMissionConfirmModal() {
   if (zoneNameEl) zoneNameEl.textContent = activeZone.name;
   if (treeNameEl) treeNameEl.textContent = tree ? tree.name : "Pohon Tanjung";
 
-  // Periksa apakah ini atur ulang jadwal misi yang sudah diambil
   let existingMission = getUserActiveMissionForZone(activeZone);
 
   if (existingMission) {
@@ -2140,7 +3289,6 @@ function openMissionConfirmModal() {
     }
   }
 
-  // Tentukan minimal tanggal adalah hari ini
   const today = new Date();
   const yyyy = today.getFullYear();
   const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -2156,7 +3304,6 @@ function openMissionConfirmModal() {
     ) {
       dateInput.value = existingMission.scheduledDate;
     } else {
-      // Default: 2 hari ke depan agar realistis untuk persiapan warga
       const defaultDate = new Date(today);
       defaultDate.setDate(defaultDate.getDate() + 2);
       const tmY = defaultDate.getFullYear();
@@ -2172,12 +3319,14 @@ function openMissionConfirmModal() {
     modal.classList.add("is-open");
 
     const modalCard = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && modalCard) {
-      gsap.fromTo(
-        modalCard,
-        { scale: 0.92, opacity: 0, y: 14 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" },
-      );
+    if (modalCard) {
+      modalCard.style.transform = "scale(0.92) translateY(14px)";
+      modalCard.style.opacity = "0";
+      modalCard.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        modalCard.style.transform = "scale(1) translateY(0)";
+        modalCard.style.opacity = "1";
+      });
     }
   }
 }
@@ -2186,18 +3335,17 @@ function closeMissionConfirmModal() {
   const modal = document.getElementById("missionConfirmModal");
   if (modal) {
     const modalCard = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && modalCard) {
-      gsap.to(modalCard, {
-        scale: 0.93,
-        opacity: 0,
-        y: 10,
-        duration: 0.22,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-open");
-          modal.classList.add("hidden");
-        },
-      });
+    if (modalCard) {
+      modalCard.style.transform = "scale(0.93) translateY(10px)";
+      modalCard.style.opacity = "0";
+      modalCard.style.transition = "transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+      setTimeout(() => {
+        modal.classList.remove("is-open");
+        modal.classList.add("hidden");
+        modalCard.style.transform = "";
+        modalCard.style.opacity = "";
+        modalCard.style.transition = "";
+      }, 220);
     } else {
       modal.classList.remove("is-open");
       modal.classList.add("hidden");
@@ -2216,13 +3364,11 @@ function confirmTakeZoneMission() {
   takeZoneMission(selectedDate);
 }
 
-// Menjalankan Aksi Ambil Misi Penanaman
 function takeZoneMission(scheduledDate) {
   if (!activeZone) return;
 
   const validDate = scheduledDate || new Date().toISOString().split("T")[0];
 
-  // Gambar lingkaran radius penanaman aman pada peta
   if (activeMissionCircle) {
     mapInstance.removeLayer(activeMissionCircle);
   }
@@ -2246,7 +3392,6 @@ function takeZoneMission(scheduledDate) {
       ? TEDUH_DATA.formatDateIndo(validDate)
       : validDate;
 
-  // Cek apakah ini aksi atur ulang jadwal
   let isReschedule = false;
   let existingCollabs = [];
   const existingActiveMission = getUserActiveMissionForZone(activeZone);
@@ -2255,7 +3400,6 @@ function takeZoneMission(scheduledDate) {
     existingCollabs = existingActiveMission.collaborators || [];
   }
 
-  // Simpan data misi aktif ke localStorage
   if (typeof localStorage !== "undefined") {
     const collabs =
       selectedMissionFriends.length > 0
@@ -2284,16 +3428,13 @@ function takeZoneMission(scheduledDate) {
     );
   }
 
-  // Tampilkan pin penanda misi aktif saya di peta
   renderUserActiveMissionPin();
 
-  // Segera perbarui tampilan drawer agar beralih ke mode Misi Aktif Saya
   populateDrawer(activeZone);
 
   if (isReschedule) {
     showToast(`Jadwal aksi tanam berhasil diatur ke ${formattedDate}`);
   } else {
-    // Buka Modal Konfirmasi Sukses untuk pertama kali ambil misi
     const modal = document.getElementById("missionSuccessModal");
     const modalZoneEl = document.getElementById("modalSuccessZoneName");
     const modalTreeEl = document.getElementById("modalSuccessTreeName");
@@ -2311,41 +3452,40 @@ function takeZoneMission(scheduledDate) {
       modal.classList.add("is-open");
 
       const modalCard = modal.querySelector(".mission-modal-card");
-      if (typeof gsap !== "undefined" && modalCard) {
-        gsap.fromTo(
-          modalCard,
-          { scale: 0.9, opacity: 0, y: 16 },
-          { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" },
-        );
+      if (modalCard) {
+        modalCard.style.transform = "scale(0.9) translateY(16px)";
+        modalCard.style.opacity = "0";
+        modalCard.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease";
+        requestAnimationFrame(() => {
+          modalCard.style.transform = "scale(1) translateY(0)";
+          modalCard.style.opacity = "1";
+        });
       }
     }
   }
 }
 
-// Menutup Modal Konfirmasi Sukses Ambil Misi
 function closeMissionSuccessModal() {
   const modal = document.getElementById("missionSuccessModal");
   if (modal) {
     const modalCard = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && modalCard) {
-      gsap.to(modalCard, {
-        scale: 0.92,
-        opacity: 0,
-        y: 10,
-        duration: 0.22,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-open");
-          modal.classList.add("hidden");
-        },
-      });
+    if (modalCard) {
+      modalCard.style.transform = "scale(0.92) translateY(10px)";
+      modalCard.style.opacity = "0";
+      modalCard.style.transition = "transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+      setTimeout(() => {
+        modal.classList.remove("is-open");
+        modal.classList.add("hidden");
+        modalCard.style.transform = "";
+        modalCard.style.opacity = "";
+        modalCard.style.transition = "";
+      }, 220);
     } else {
       modal.classList.remove("is-open");
       modal.classList.add("hidden");
     }
   }
 
-  // Tampilkan kembali lokasi yang sudah diambil misinya di peta dan buka panel analisisnya
   if (activeZone) {
     populateDrawer(activeZone);
     openDrawer();
@@ -2357,7 +3497,6 @@ function closeMissionSuccessModal() {
   }
 }
 
-// Aksesibilitas Keyboard: Tutup Modal dengan tombol ESC
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     const joinConfirmModal = document.getElementById(
@@ -2385,9 +3524,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Menggambar Lapisan Citra Radiasi Termal Organik (Atmospheric Soft Thermal Halo)
 function renderPollutionLayers() {
-  // Bersihkan layer lama jika ada
   macroThermalLayers.forEach((layer) => mapInstance.removeLayer(layer));
   macroHitAreas.forEach((layer) => mapInstance.removeLayer(layer));
   pollutionPolygonLayers.forEach((layer) => mapInstance.removeLayer(layer));
@@ -2399,10 +3536,8 @@ function renderPollutionLayers() {
   if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.pollutionZones) return;
 
   TEDUH_DATA.pollutionZones.forEach((pZone) => {
-    // 1. Render Macro Atmospheric Soft Thermal Halo (Warm Solar Amber -> Sunbaked Terracotta Gradient Blur)
     if (pZone.thermalNodes && pZone.thermalNodes.length > 0) {
       pZone.thermalNodes.forEach((node) => {
-        // Lapisan 1: Outer Ambient Halo (Solar Amber Lembut)
         const outerAura = L.circle([node.lat, node.lng], {
           radius: node.radius * 1.45,
           stroke: false,
@@ -2415,7 +3550,6 @@ function renderPollutionLayers() {
         macroThermalLayers.push(outerAura);
         pollutionPolygonLayers.push(outerAura);
 
-        // Lapisan 2: Mid Dispersion Halo (Terracotta Hangat)
         const midAura = L.circle([node.lat, node.lng], {
           radius: node.radius * 0.9,
           stroke: false,
@@ -2428,7 +3562,6 @@ function renderPollutionLayers() {
         macroThermalLayers.push(midAura);
         pollutionPolygonLayers.push(midAura);
 
-        // Lapisan 3: Epicenter Core Radiance (Terracotta Inti)
         const coreNode = L.circle([node.lat, node.lng], {
           radius: node.radius * 0.45,
           stroke: false,
@@ -2443,7 +3576,6 @@ function renderPollutionLayers() {
       });
     }
 
-    // 2. Lapisan Interaksi Macro Polygon (Area Deteksi Klik Kawasan)
     const hitArea = L.polygon(pZone.coordinates, {
       stroke: false,
       weight: 0,
@@ -2453,42 +3585,13 @@ function renderPollutionLayers() {
       className: "thermal-click-target",
     }).addTo(mapInstance);
 
-    const tooltipContent = `
-      <div class="hotspot-tooltip-body">
-        <strong style="color: #BA4E2A; font-size: 12px; display: block; margin-bottom: 2px;">${pZone.name}</strong>
-        <div>
-          <span style="color: #6C7470; font-size: 11px;">${pZone.aqiLabel}</span> • <strong style="color: #0E1116; font-size: 11px;">Suhu ${pZone.surfaceTemp}</strong>
-        </div>
-      </div>
-    `;
-    hitArea.bindTooltip(tooltipContent, {
-      sticky: true,
-      opacity: 1,
-      className: "teduh-rounded-tooltip",
-      offset: [10, 10],
-    });
-
-    hitArea.on("tooltipopen", (e) => {
-      if (e.tooltip && e.tooltip.getElement()) {
-        const el = e.tooltip.getElement();
-        el.classList.remove("is-closing");
-        requestAnimationFrame(() => {
-          el.classList.add("is-opening");
-        });
-      }
-    });
-
-    hitArea.on("mouseout", function () {
-      const tooltip = this.getTooltip();
-      if (tooltip && tooltip.getElement()) {
-        const el = tooltip.getElement();
-        el.classList.remove("is-opening");
-        el.classList.add("is-closing");
-      }
-    });
-
     hitArea.on("click", (e) => {
       L.DomEvent.stopPropagation(e);
+      if (currentDrawerStage === 2 && activeZone) {
+        dismissNearbyFriendsNotice();
+        if (mapInstance) mapInstance.closePopup();
+        return;
+      }
       const targetZone = TEDUH_DATA.zones.find((z) => z.id === pZone.zoneId);
       if (targetZone) {
         const isMobile = window.innerWidth <= 860;
@@ -2500,37 +3603,30 @@ function renderPollutionLayers() {
     pollutionPolygonLayers.push(hitArea);
   });
 
-  // Sinkronkan status opacity dengan level zoom awal
   updateThermalZoomState();
 }
 
-// Adaptasi Status Visual Radiasi Termal Berdasarkan Level Zoom Peta
 function updateThermalZoomState() {
   if (!mapInstance) return;
   const zoom = mapInstance.getZoom();
 
-  // Transisi halus antara zoom 14.0 (macro atmosfer kawasan) dan 16.0 (tampilan jernih citra satelit)
   let macroOpacityMult = 1.0;
 
   if (zoom <= 14.0) {
     macroOpacityMult = 1.0;
   } else if (zoom >= 16.0) {
-    // Di zoom dekat, halo atmosfer memudar ke 25% (hanya pendaran tipis) agar citra satelit jernih 100%
     macroOpacityMult = 0.25;
   } else {
-    // Eased smoothstep progression: 3t^2 - 2t^3
     const t = (zoom - 14.0) / 2.0;
     const smoothT = t * t * (3 - 2 * t);
     macroOpacityMult = 1.0 - smoothT * 0.75;
   }
 
-  // Pembaruan Lapisan Macro Halo
   macroThermalLayers.forEach((layer) => {
     const base = layer._baseOpacity || 0.2;
     layer.setStyle({ fillOpacity: base * macroOpacityMult });
   });
 
-  // Pembaruan Target Klik Macro (Saat zoom dekat, prioritaskan klik bebas peta pekarangan)
   macroHitAreas.forEach((layer) => {
     const pathEl = layer._path;
     if (pathEl) {
@@ -2545,13 +3641,11 @@ function updateThermalZoomState() {
   });
 }
 
-// Menghapus Titik Teman dari Peta
 function clearCommunityFriends() {
   friendMarkers.forEach((m) => mapInstance.removeLayer(m));
   friendMarkers = [];
 }
 
-// Menampilkan Titik Warga Terdekat Khusus Saat Masuk ke Tahap Rencana Aksi Gotong Royong
 function renderNearbyFriendsForZone(zone) {
   clearCommunityFriends();
 
@@ -2562,7 +3656,6 @@ function renderNearbyFriendsForZone(zone) {
   )
     return;
 
-  // Hitung jarak dan tampilkan 3 warga terdekat di sekitar zona aksi
   const friendsWithDistance = TEDUH_DATA.friendsDirectory
     .filter((f) => f.lat && f.lng)
     .map((f) => {
@@ -2579,13 +3672,12 @@ function renderNearbyFriendsForZone(zone) {
       (f) => f.username === friend.username || f.name === friend.name,
     );
 
-    const avatarImgSrc = friend.avatarImg || "assets/avatars/dewi-lestari.jpg";
+    const avatarImgSrc = friend.avatarImg || "../assets/avatars/dewi-lestari.jpg";
 
-    // Pin Avatar Minimalis (Diameter 30px, foto warga tajam, aksen hijau pinus)
     const iconHtml = `
       <div class="community-map-pin contextual ${isInvited ? "is-invited" : ""}" title="${escapeHtml(friend.name)} • ${escapeHtml(friend.districtLocation)}">
         <div class="community-pin-avatar">
-          <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='assets/avatars/dewi-lestari.jpg'">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">
         </div>
       </div>
     `;
@@ -2603,7 +3695,6 @@ function renderNearbyFriendsForZone(zone) {
       riseOnHover: true,
     }).addTo(mapInstance);
 
-    // Tooltip Ringan saat Hover
     marker.bindTooltip(
       `<strong>${escapeHtml(friend.name)}</strong> • ${escapeHtml(friend.districtLocation)}`,
       {
@@ -2613,7 +3704,6 @@ function renderNearbyFriendsForZone(zone) {
       },
     );
 
-    // Popup Kartu Sederhana: Foto Warga, Nama, Lokasi Inti, dan Tombol Aksi In-Place
     const safeName = escapeHtml(friend.name).replace(/'/g, "\\'");
     const safeLoc = escapeHtml(friend.districtLocation).replace(/'/g, "\\'");
     const safeUser = escapeHtml(friend.username).replace(/'/g, "\\'");
@@ -2627,7 +3717,7 @@ function renderNearbyFriendsForZone(zone) {
       <div class="community-friend-popup">
         <div class="friend-popup-header">
           <div class="friend-popup-avatar">
-            <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='assets/avatars/dewi-lestari.jpg'">
+            <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">
           </div>
           <div class="friend-popup-info">
             <h4 class="friend-popup-name">${escapeHtml(friend.name)}</h4>
@@ -2646,8 +3736,20 @@ function renderNearbyFriendsForZone(zone) {
       </div>
     `;
 
+    marker._friendName = friend.name;
+    marker._friendUsername = friend.username;
+    marker.on("click", function (e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      dismissNearbyFriendsNotice();
+      if (marker.isPopupOpen && marker.isPopupOpen()) {
+        marker.closePopup();
+      } else {
+        marker.openPopup();
+      }
+    });
+
     marker.bindPopup(popupHtml, {
-      className: "community-leaflet-popup",
+      className: "community-teduh-popup",
       closeButton: false,
       maxWidth: 240,
     });
@@ -2656,7 +3758,6 @@ function renderNearbyFriendsForZone(zone) {
   });
 }
 
-// Menambah / Menghapus Kolaborator Misi Secara In-Place (Tanpa Pindah Halaman)
 function toggleMissionFriend(friendName, location, username = "") {
   const existingIdx = selectedMissionFriends.findIndex(
     (f) => (username && f.username === username) || f.name === friendName,
@@ -2682,7 +3783,7 @@ function toggleMissionFriend(friendName, location, username = "") {
           .toUpperCase() || "W";
     const avatarImg = friendData
       ? friendData.avatarImg
-      : "assets/avatars/dewi-lestari.jpg";
+      : "../assets/avatars/dewi-lestari.jpg";
 
     selectedMissionFriends.push({
       name: friendName,
@@ -2693,20 +3794,25 @@ function toggleMissionFriend(friendName, location, username = "") {
     });
   }
 
-  // Perbarui tampilan chips & badge di drawer
   renderSelectedMissionFriendsChips();
 
-  // Perbarui pin di peta
   if (activeZone) {
     renderNearbyFriendsForZone(activeZone);
+
+    const targetMarker = friendMarkers.find(
+      (m) =>
+        m._friendName === friendName ||
+        (username && m._friendUsername === username),
+    );
+    if (targetMarker) {
+      targetMarker.openPopup();
+    }
   }
 
-  // Perbarui list di modal pemilih teman jika sedang terbuka
   const searchInput = document.getElementById("friendsModalSearchInput");
   filterFriendsModalList(searchInput ? searchInput.value : "");
 }
 
-// Render Daftar Warga Terpilih di Drawer Stage 2 (Spacious, Clean & Modern)
 function renderSelectedMissionFriendsChips() {
   const container = document.getElementById("mapCollabChipsList");
   const rewardBadge = document.getElementById("missionRewardBadge");
@@ -2779,12 +3885,12 @@ function renderSelectedMissionFriendsChips() {
         : null;
     const avatarImgSrc =
       f.avatarImg ||
-      (friendObj ? friendObj.avatarImg : "assets/avatars/dewi-lestari.jpg");
+      (friendObj ? friendObj.avatarImg : "../assets/avatars/dewi-lestari.jpg");
 
     html += `
       <div class="invited-resident-card">
         <div class="invited-resident-left">
-          <div class="invited-resident-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(f.name)}" onerror="this.src='assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="invited-resident-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(f.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
           <div class="invited-resident-info">
             <div class="invited-resident-name">${escapeHtml(f.name)}</div>
             <div class="invited-resident-meta">
@@ -2804,7 +3910,6 @@ function renderSelectedMissionFriendsChips() {
   container.innerHTML = html;
 }
 
-// Pengelolaan Notifikasi Melayang Samping Drawer (Floating Contextual Side Notice)
 function showNearbyFriendsNotice() {
   const notice = document.getElementById("mapNearbyFriendsSideHint");
   if (!notice) return;
@@ -2823,7 +3928,6 @@ function dismissNearbyFriendsNotice() {
   }, 250);
 }
 
-// Pengelolaan Modal Pop-up Pemilih Warga Gotong Royong
 let currentModalFriendsList = [];
 
 function openFriendsPickerModal() {
@@ -2834,7 +3938,6 @@ function openFriendsPickerModal() {
 
   if (searchInput) searchInput.value = "";
 
-  // Ambil daftar teman dari TEDUH_DATA dan urutkan berdasarkan kedekatan dengan activeZone
   let friends =
     typeof TEDUH_DATA !== "undefined" && TEDUH_DATA.friendsDirectory
       ? [...TEDUH_DATA.friendsDirectory]
@@ -2859,12 +3962,14 @@ function openFriendsPickerModal() {
   modal.classList.add("is-open");
 
   const card = modal.querySelector(".friends-modal-card");
-  if (typeof gsap !== "undefined" && card) {
-    gsap.fromTo(
-      card,
-      { scale: 0.9, opacity: 0, y: 16 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" },
-    );
+  if (card) {
+    card.style.transform = "scale(0.9) translateY(16px)";
+    card.style.opacity = "0";
+    card.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease";
+    requestAnimationFrame(() => {
+      card.style.transform = "scale(1) translateY(0)";
+      card.style.opacity = "1";
+    });
   }
 }
 
@@ -2872,18 +3977,17 @@ function closeFriendsPickerModal() {
   const modal = document.getElementById("friendsPickerModal");
   if (!modal) return;
   const card = modal.querySelector(".friends-modal-card");
-  if (typeof gsap !== "undefined" && card) {
-    gsap.to(card, {
-      scale: 0.92,
-      opacity: 0,
-      y: 10,
-      duration: 0.2,
-      ease: "power2.in",
-      onComplete: () => {
-        modal.classList.remove("is-open");
-        modal.classList.add("hidden");
-      },
-    });
+  if (card) {
+    card.style.transform = "scale(0.92) translateY(10px)";
+    card.style.opacity = "0";
+    card.style.transition = "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+    setTimeout(() => {
+      modal.classList.remove("is-open");
+      modal.classList.add("hidden");
+      card.style.transform = "";
+      card.style.opacity = "";
+      card.style.transition = "";
+    }, 200);
   } else {
     modal.classList.remove("is-open");
     modal.classList.add("hidden");
@@ -2913,13 +4017,11 @@ function renderFriendsModalList(friendsList) {
 
   if (selectedCountEl) {
     selectedCountEl.textContent = `${count} Warga Dipilih`;
-    if (typeof gsap !== "undefined") {
-      gsap.fromTo(
-        selectedCountEl,
-        { scale: 1.2 },
-        { scale: 1, duration: 0.3, ease: "back.out(2)" },
-      );
-    }
+    selectedCountEl.style.transform = "scale(1.2)";
+    selectedCountEl.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+    setTimeout(() => {
+      selectedCountEl.style.transform = "scale(1)";
+    }, 250);
   }
 
   if (!container) return;
@@ -2947,12 +4049,12 @@ function renderFriendsModalList(friendsList) {
       );
 
       const avatarImgSrc =
-        friend.avatarImg || "assets/avatars/dewi-lestari.jpg";
+        friend.avatarImg || "../assets/avatars/dewi-lestari.jpg";
 
       return `
       <div class="friend-item-row ${isInvited ? "is-invited" : ""}">
         <div class="friend-item-left">
-          <div class="friend-item-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="friend-item-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
           <div class="friend-item-info">
             <span class="friend-item-name">${escapeHtml(friend.name)}</span>
             <span class="friend-item-sub">
@@ -2978,16 +4080,17 @@ function renderFriendsModalList(friendsList) {
     })
     .join("");
 
-  if (typeof gsap !== "undefined") {
-    gsap.fromTo(
-      container.querySelectorAll(".friend-item-row"),
-      { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, stagger: 0.03, duration: 0.25, ease: "power2.out" },
-    );
-  }
+  container.querySelectorAll(".friend-item-row").forEach((row, i) => {
+    row.style.opacity = "0";
+    row.style.transform = "translateY(8px)";
+    row.style.transition = "opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)";
+    setTimeout(() => {
+      row.style.opacity = "1";
+      row.style.transform = "translateY(0)";
+    }, i * 30);
+  });
 }
 
-// Menjalankan Simulasi Dampak Penanaman Peneduh
 function runThermalSimulation() {
   if (!activeZone) return;
 
@@ -2995,7 +4098,6 @@ function runThermalSimulation() {
   const simBtn = document.getElementById("runSimulationBtn");
   if (!sim || !simBtn) return;
 
-  // Efek Loading Halus
   simBtn.disabled = true;
   simBtn.innerHTML = `
     <svg style="animation: spin 1s linear infinite; margin-right: 8px;" width="16" height="16" fill="none" viewBox="0 0 24 24"><circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -3003,7 +4105,6 @@ function runThermalSimulation() {
   `;
 
   setTimeout(() => {
-    // 1. Tampilkan Lingkaran Kanopi Peneduh pada Peta
     if (activeSimulationCircle) {
       mapInstance.removeLayer(activeSimulationCircle);
     }
@@ -3016,7 +4117,6 @@ function runThermalSimulation() {
       weight: 2,
     }).addTo(mapInstance);
 
-    // Animasi Pulse Kanopi
     const canopyMarker = L.divIcon({
       className: "canopy-pulse-container",
       html: '<div class="canopy-pulse-ring"></div>',
@@ -3027,7 +4127,6 @@ function runThermalSimulation() {
       mapInstance,
     );
 
-    // 2. Perbarui Angka Suhu di Panel
     const surfaceEl = document.getElementById("metricSurfaceTemp");
     if (surfaceEl) {
       surfaceEl.textContent = sim.newSurfaceTemp;
@@ -3039,7 +4138,6 @@ function runThermalSimulation() {
       canopyEl.textContent = sim.newCanopy;
     }
 
-    // 3. Tampilkan Kotak Dampak Terukur
     const impactBox = document.getElementById("simulationImpactBox");
     if (impactBox) {
       impactBox.classList.remove("hidden");
@@ -3052,7 +4150,6 @@ function runThermalSimulation() {
       if (summaryEl) summaryEl.textContent = sim.summary;
     }
 
-    // Ubah status tombol
     simBtn.innerHTML = `
       <svg width="15" height="15" fill="none" stroke="#2E7D32" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
       <span>Simulasi Aktif: Suhu Turun ${sim.tempReduction}</span>
@@ -3060,7 +4157,6 @@ function runThermalSimulation() {
   }, 500);
 }
 
-// Helper Escape HTML untuk Keamanan Teks Input
 function escapeHtml(str) {
   if (!str) return "";
   return str.replace(
@@ -3076,7 +4172,6 @@ function escapeHtml(str) {
   );
 }
 
-// Helper Riwayat Pencarian Lokal (Google Maps Recents Pattern)
 function getRecentSearches() {
   if (typeof localStorage === "undefined") {
     return TEDUH_DATA.zones.slice(0, 3);
@@ -3117,83 +4212,112 @@ function saveRecentSearch(zoneId) {
   } catch (e) {}
 }
 
-// ==========================================================================
-// PENGELOLAAN MISI SPASIAL WARGA SEKITAR & MISI AKTIF PENGGUNA DI PETA
-// ==========================================================================
-
-// Helper Pengelolaan Hover Pop-up (Muncul saat hover, hilang saat lepas kursor, tetap buka saat kursor masuk ke popup & saat pin aktif)
-let mapPopupHoverTimeout = null;
+function isMarkerSelected(marker) {
+  if (!marker) return false;
+  if (typeof selectedCitizenMissionMarker !== "undefined" && selectedCitizenMissionMarker === marker) return true;
+  if (
+    typeof activeCitizenMission !== "undefined" &&
+    activeCitizenMission &&
+    marker._teduhMissionId &&
+    marker._teduhMissionId === activeCitizenMission.id
+  ) {
+    return true;
+  }
+  if (
+    typeof userActiveMissionMarker !== "undefined" &&
+    userActiveMissionMarker === marker &&
+    typeof activeZone !== "undefined" &&
+    activeZone &&
+    typeof getUserActiveMissionForZone === "function" &&
+    getUserActiveMissionForZone(activeZone) !== null
+  ) {
+    return true;
+  }
+  if (typeof activeMarker !== "undefined" && activeMarker === marker) return true;
+  return false;
+}
 
 function bindHoverPopup(marker) {
+  let hoverTimeout = null;
+  let isMouseOverPopup = false;
+  let isMouseOverMarker = false;
+
+  function isDesktopView() {
+    return (
+      window.innerWidth > 860 &&
+      (!window.matchMedia ||
+        window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+    );
+  }
+
   marker.on("mouseover", function () {
-    clearTimeout(mapPopupHoverTimeout);
-    marker.openPopup();
+    if (!isDesktopView()) return;
+    if (currentDrawerStage === 2 && activeZone) return;
+
+    isMouseOverMarker = true;
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+
+    if (!marker.isPopupOpen()) {
+      marker.openPopup();
+    }
   });
 
   marker.on("mouseout", function () {
-    // Jika marker ini adalah marker yang sedang dipilih/aktif dan drawer sedang terbuka, JANGAN tutup pop-up nya
-    const drawer = document.getElementById("spatialDrawer");
-    const isDrawerOpen = drawer && drawer.classList.contains("is-open");
-    if (
-      isDrawerOpen &&
-      (marker === selectedCitizenMissionMarker ||
-        (activeCitizenMission &&
-          marker._teduhMissionId === activeCitizenMission.id))
-    ) {
-      return;
-    }
+    if (!isDesktopView()) return;
+    isMouseOverMarker = false;
 
-    mapPopupHoverTimeout = setTimeout(() => {
-      const stillDrawerOpen = drawer && drawer.classList.contains("is-open");
-      if (
-        stillDrawerOpen &&
-        (marker === selectedCitizenMissionMarker ||
-          (activeCitizenMission &&
-            marker._teduhMissionId === activeCitizenMission.id))
-      ) {
-        return;
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    hoverTimeout = setTimeout(function () {
+      if (!isMouseOverMarker && !isMouseOverPopup) {
+        if (isMarkerSelected(marker)) return;
+
+        if (marker.isPopupOpen()) {
+          marker.closePopup();
+        }
       }
-      marker.closePopup();
-    }, 200);
+    }, 220);
+  });
+
+  marker.on("click", function () {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
   });
 
   marker.on("popupopen", function (e) {
     const popupEl = e.popup.getElement();
     if (popupEl) {
-      // Nonaktifkan perambatan event klik dan scroll ke peta Leaflet
       L.DomEvent.disableClickPropagation(popupEl);
       L.DomEvent.disableScrollPropagation(popupEl);
 
-      popupEl.addEventListener("mouseenter", () => {
-        clearTimeout(mapPopupHoverTimeout);
-      });
-      popupEl.addEventListener("mouseleave", () => {
-        const drawer = document.getElementById("spatialDrawer");
-        const isDrawerOpen = drawer && drawer.classList.contains("is-open");
-        if (
-          isDrawerOpen &&
-          (marker === selectedCitizenMissionMarker ||
-            (activeCitizenMission &&
-              marker._teduhMissionId === activeCitizenMission.id))
-        ) {
-          return;
-        }
-        mapPopupHoverTimeout = setTimeout(() => {
-          const stillDrawerOpen =
-            drawer && drawer.classList.contains("is-open");
-          if (
-            stillDrawerOpen &&
-            (marker === selectedCitizenMissionMarker ||
-              (activeCitizenMission &&
-                marker._teduhMissionId === activeCitizenMission.id))
-          ) {
-            return;
+      if (isDesktopView()) {
+        popupEl.onmouseenter = function () {
+          isMouseOverPopup = true;
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+            hoverTimeout = null;
           }
-          marker.closePopup();
-        }, 180);
-      });
+        };
 
-      // Pasang listener klik langsung pada kartu pop-up
+        popupEl.onmouseleave = function () {
+          isMouseOverPopup = false;
+          if (hoverTimeout) clearTimeout(hoverTimeout);
+          hoverTimeout = setTimeout(function () {
+            if (!isMouseOverMarker && !isMouseOverPopup) {
+              if (isMarkerSelected(marker)) return;
+
+              if (marker.isPopupOpen()) {
+                marker.closePopup();
+              }
+            }
+          }, 220);
+        };
+      }
+
       const card = popupEl.querySelector(".citizen-mission-popup-card");
       if (card && marker._teduhMissionId) {
         card.style.cursor = "pointer";
@@ -3202,25 +4326,26 @@ function bindHoverPopup(marker) {
             ev.stopPropagation();
             ev.preventDefault();
           }
-          selectCitizenMission(marker._teduhMissionId);
+          openZoneDrawerFromPopup(null, marker._teduhMissionId);
         };
       }
     }
   });
 
-  marker.on("click", function (e) {
-    L.DomEvent.stopPropagation(e);
-    clearTimeout(mapPopupHoverTimeout);
-    marker.openPopup();
+  marker.on("popupclose", function () {
+    isMouseOverPopup = false;
+    isMouseOverMarker = false;
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
   });
 }
 
-// Delegasi Event Klik Global (Capture Phase) untuk memastikan klik pada Pop-up Card selalu terpicu tanpa tertelan
 if (typeof document !== "undefined") {
   document.addEventListener(
     "click",
     function (e) {
-      // Abaikan jika klik berasal dari tautan atau tombol aksi eksplisit di dalam popup
       if (
         e.target &&
         e.target.closest &&
@@ -3275,7 +4400,6 @@ if (typeof document !== "undefined") {
   );
 }
 
-// Render Pin Misi Gotong Royong Warga Sekitar di Peta Satelit
 function renderCitizenMissions() {
   if (
     !mapInstance ||
@@ -3284,7 +4408,6 @@ function renderCitizenMissions() {
   )
     return;
 
-  // Bersihkan pin misi warga lama
   citizenMissionMarkers.forEach((m) => mapInstance.removeLayer(m));
   citizenMissionMarkers = [];
 
@@ -3298,7 +4421,6 @@ function renderCitizenMissions() {
     const safeMissionId = escapeHtml(mission.id).replace(/'/g, "\\'");
     const pinColor = isJoined ? "#5c8437" : "#BA4E2A";
 
-    // Pin Lokasi Standar Warga Lain (Terracotta untuk belum terdaftar / Hijau Botani untuk misi aktif kita) - Bebas Kliping
     const customIcon = L.divIcon({
       className: "citizen-location-pin-container",
       html: `
@@ -3321,7 +4443,6 @@ function renderCitizenMissions() {
     }).addTo(mapInstance);
     marker._teduhMissionId = mission.id;
 
-    // Markup Pop-up Preview Ringan (Klik card membuka panel analisis)
     const popupContent = `
       <div class="map-popup-card citizen-mission-popup-card" data-mission-id="${safeMissionId}" onclick="handleMapPopupCardClick(event, null, '${safeMissionId}')" style="cursor: pointer;">
         <div class="map-popup-header">
@@ -3351,24 +4472,25 @@ function renderCitizenMissions() {
     marker.bindPopup(popupContent, {
       offset: [0, -8],
       closeButton: false,
-      className: "custom-leaflet-popup",
+      className: "custom-teduh-popup",
       autoPan: true,
       autoPanPaddingTopLeft: [20, 75],
       autoPanPaddingBottomRight: [20, 75],
     });
 
-    // Pasang interaksi hover responsif
     bindHoverPopup(marker);
 
-    // Klik langsung pada marker: buka popup dulu di mobile, buka drawer di desktop
     marker.on("click", function (e) {
       L.DomEvent.stopPropagation(e);
+      if (currentDrawerStage === 2 && activeZone) {
+        dismissNearbyFriendsNotice();
+        if (mapInstance) mapInstance.closePopup();
+        return;
+      }
       const isMobile = window.innerWidth <= 860;
       if (isMobile) {
-        if (marker.isPopupOpen()) {
-          openZoneDrawerFromPopup(null, mission.id);
-        } else {
-          selectCitizenMission(mission.id, false);
+        selectCitizenMission(mission.id, false);
+        if (!marker.isPopupOpen()) {
           marker.openPopup();
         }
       } else {
@@ -3380,7 +4502,6 @@ function renderCitizenMissions() {
   });
 }
 
-// Buka Panel Analisis Samping untuk Misi Warga
 function selectCitizenMission(missionId, shouldOpenDrawer = null) {
   if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.getCitizenMissions)
     return;
@@ -3392,7 +4513,6 @@ function selectCitizenMission(missionId, shouldOpenDrawer = null) {
   const drawer = document.getElementById("spatialDrawer");
   const isDrawerOpen = drawer && drawer.classList.contains("is-open");
 
-  // Jika panel analisis sudah menampilkan misi ini dan sedang terbuka, diamkan saja
   if (
     isDrawerOpen &&
     activeCitizenMission &&
@@ -3430,7 +4550,6 @@ function selectCitizenMission(missionId, shouldOpenDrawer = null) {
   }
 }
 
-// Munculkan Pop-up Konfirmasi Sebelum Bergabung
 let pendingJoinMissionId = null;
 
 function promptJoinCitizenMission(missionId) {
@@ -3471,12 +4590,14 @@ function openJoinConfirmModal(missionId) {
     void modal.offsetWidth;
     modal.classList.add("is-open");
     const card = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && card) {
-      gsap.fromTo(
-        card,
-        { scale: 0.9, opacity: 0, y: 16 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" },
-      );
+    if (card) {
+      card.style.transform = "scale(0.9) translateY(16px)";
+      card.style.opacity = "0";
+      card.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        card.style.transform = "scale(1) translateY(0)";
+        card.style.opacity = "1";
+      });
     }
   }
 }
@@ -3485,18 +4606,17 @@ function closeJoinConfirmModal() {
   const modal = document.getElementById("joinCitizenMissionConfirmModal");
   if (modal) {
     const card = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && card) {
-      gsap.to(card, {
-        scale: 0.92,
-        opacity: 0,
-        y: 10,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-open");
-          modal.classList.add("hidden");
-        },
-      });
+    if (card) {
+      card.style.transform = "scale(0.92) translateY(10px)";
+      card.style.opacity = "0";
+      card.style.transition = "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+      setTimeout(() => {
+        modal.classList.remove("is-open");
+        modal.classList.add("hidden");
+        card.style.transform = "";
+        card.style.opacity = "";
+        card.style.transition = "";
+      }, 200);
     } else {
       modal.classList.remove("is-open");
       modal.classList.add("hidden");
@@ -3505,7 +4625,6 @@ function closeJoinConfirmModal() {
   pendingJoinMissionId = null;
 }
 
-// Eksekusi Bergabung dengan Misi Warga Setelah Konfirmasi
 function confirmJoinCitizenMission(missionId) {
   if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.joinCitizenMission)
     return;
@@ -3517,21 +4636,16 @@ function confirmJoinCitizenMission(missionId) {
     return;
   }
 
-  // Perbarui profil pengguna di navbar
   syncUserProfile();
 
-  // Tampilkan notifikasi toast sukses
   showToast(
     `Berhasil mendaftar tanam bersama ${result.mission.authorName}! +${result.bonusPoints} poin diperoleh.`,
   );
 
-  // Tutup dialog konfirmasi
   closeJoinConfirmModal();
 
-  // Perbarui pin di peta
   renderCitizenMissions();
 
-  // Jika panel drawer sedang membuka misi ini, perbarui status tombol dan daftar relawan di drawer
   if (activeCitizenMission && activeCitizenMission.id === missionId) {
     const freshMissions = TEDUH_DATA.getCitizenMissions();
     const fresh = freshMissions.find((m) => m.id === missionId);
@@ -3544,12 +4658,10 @@ function confirmJoinCitizenMission(missionId) {
   }
 }
 
-// Helper Bergabung Langsung (untuk fallback)
 function joinCitizenMission(missionId) {
   promptJoinCitizenMission(missionId);
 }
 
-// Dialog & Eksekusi Pembatalan Keikutsertaan Misi Warga
 let pendingLeaveMissionId = null;
 
 function promptLeaveCitizenMission(missionId) {
@@ -3590,12 +4702,14 @@ function openLeaveConfirmModal(missionId) {
     void modal.offsetWidth;
     modal.classList.add("is-open");
     const card = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && card) {
-      gsap.fromTo(
-        card,
-        { scale: 0.9, opacity: 0, y: 16 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.4)" },
-      );
+    if (card) {
+      card.style.transform = "scale(0.9) translateY(16px)";
+      card.style.opacity = "0";
+      card.style.transition = "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        card.style.transform = "scale(1) translateY(0)";
+        card.style.opacity = "1";
+      });
     }
   }
 }
@@ -3604,18 +4718,17 @@ function closeLeaveConfirmModal() {
   const modal = document.getElementById("leaveCitizenMissionConfirmModal");
   if (modal) {
     const card = modal.querySelector(".mission-modal-card");
-    if (typeof gsap !== "undefined" && card) {
-      gsap.to(card, {
-        scale: 0.92,
-        opacity: 0,
-        y: 10,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-open");
-          modal.classList.add("hidden");
-        },
-      });
+    if (card) {
+      card.style.transform = "scale(0.92) translateY(10px)";
+      card.style.opacity = "0";
+      card.style.transition = "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease";
+      setTimeout(() => {
+        modal.classList.remove("is-open");
+        modal.classList.add("hidden");
+        card.style.transform = "";
+        card.style.opacity = "";
+        card.style.transition = "";
+      }, 200);
     } else {
       modal.classList.remove("is-open");
       modal.classList.add("hidden");
@@ -3659,7 +4772,6 @@ function leaveCitizenMission(missionId) {
   promptLeaveCitizenMission(missionId);
 }
 
-// Render Titik Misi Aktif Pengguna dari localStorage
 function renderUserActiveMissionPin() {
   if (!mapInstance || typeof localStorage === "undefined") return;
 
@@ -3695,7 +4807,6 @@ function renderUserActiveMissionPin() {
 
     if (!mission.lat || !mission.lng) return;
 
-    // Lingkaran radius naungan misi aktif pengguna
     userActiveMissionCircle = L.circle([mission.lat, mission.lng], {
       color: "#5c8437",
       fillColor: "#5c8437",
@@ -3705,7 +4816,6 @@ function renderUserActiveMissionPin() {
       weight: 2,
     }).addTo(mapInstance);
 
-    // Custom DivIcon Pin Lokasi Misi Saya Standar (Hijau Aksi Botani #5c8437) - Bebas Kliping
     const myMissionIcon = L.divIcon({
       className: "user-active-location-pin-container",
       html: `
@@ -3732,7 +4842,6 @@ function renderUserActiveMissionPin() {
     const encodedTree = encodeURIComponent(treeName);
     const communityUrl = `community.html?action=complete-mission&zone=${encodedZone}&tree=${encodedTree}`;
 
-    // Cek status kedaluwarsa misi (Hangus jika hari ini > scheduledDate dan belum selesai)
     let isExpired = false;
     let formattedDate = "Segera";
     if (mission.scheduledDate) {
@@ -3772,15 +4881,15 @@ function renderUserActiveMissionPin() {
             <strong style="color: #1A382B;">Sedang Berjalan</strong>
           </div>
         </div>
-        <a href="${communityUrl}" onclick="event.stopPropagation();" class="map-popup-btn" style="color: #FFFFFF !important; text-decoration: none !important; text-align: center;">
-          <span style="color: #FFFFFF !important;">Ke Komunitas &amp; Bagikan Aksi</span>
-        </a>
         <div class="map-popup-cta-btn" aria-hidden="true">
           <span class="map-popup-cta-text">Ketuk untuk Analisa &amp; Jadwal</span>
           <span class="map-popup-cta-icon">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </span>
         </div>
+        <a href="${communityUrl}" onclick="event.stopPropagation();" class="map-popup-btn" style="color: #FFFFFF !important; text-decoration: none !important; text-align: center;">
+          <span style="color: #FFFFFF !important;">Bagikan di Komunitas</span>
+        </a>
       </div>
     `;
 
@@ -3790,20 +4899,22 @@ function renderUserActiveMissionPin() {
       autoPan: true,
       autoPanPaddingTopLeft: [20, 75],
       autoPanPaddingBottomRight: [20, 75],
-      className: "custom-leaflet-popup",
+      className: "custom-teduh-popup",
+      maxWidth: 240,
+      minWidth: 220,
     });
 
-    // Pasang interaksi klik dan hover responsif
     userActiveMissionMarker.on("click", function (e) {
       L.DomEvent.stopPropagation(e);
+      if (currentDrawerStage === 2 && activeZone) {
+        dismissNearbyFriendsNotice();
+        if (mapInstance) mapInstance.closePopup();
+        return;
+      }
       const isMobile = window.innerWidth <= 860;
       if (isMobile) {
-        if (userActiveMissionMarker.isPopupOpen()) {
-          openZoneDrawerFromPopup(mission.zoneId || null, null, function () {
-            selectUserActiveMission(true);
-          });
-        } else {
-          selectUserActiveMission(false);
+        selectUserActiveMission(false);
+        if (!userActiveMissionMarker.isPopupOpen()) {
           userActiveMissionMarker.openPopup();
         }
       } else {
@@ -3815,7 +4926,6 @@ function renderUserActiveMissionPin() {
   } catch (e) {}
 }
 
-// Membuka Kembali Panel Drawer Analisis untuk Titik Misi Aktif Saya
 function selectUserActiveMission(shouldOpenDrawer = null) {
   if (typeof localStorage === "undefined") return;
   const saved = localStorage.getItem("teduh_active_mission");
@@ -3887,7 +4997,6 @@ function selectUserActiveMission(shouldOpenDrawer = null) {
   } catch (e) {}
 }
 
-// Logika Autocomplete Pencarian Ala Google Maps dengan Riwayat Pencarian (Desktop & Mobile)
 function initSearchAutocomplete() {
   const searchPairs = [
     {
@@ -4019,7 +5128,6 @@ function initSearchAutocomplete() {
   });
 }
 
-// Buka & Tutup Drawer Analisis
 function openDrawer() {
   const drawer = document.getElementById("spatialDrawer");
   const backdrop = document.getElementById("drawerBackdrop");
@@ -4038,15 +5146,12 @@ function openDrawer() {
 }
 
 function closeDrawer() {
+  currentDrawerStage = 1;
   dismissNearbyFriendsNotice();
   document.body.classList.remove("drawer-open");
   if (activeAnalysisTimeout) {
     clearTimeout(activeAnalysisTimeout);
     activeAnalysisTimeout = null;
-  }
-  if (activeGsapTimeline) {
-    activeGsapTimeline.kill();
-    activeGsapTimeline = null;
   }
 
   const drawer = document.getElementById("spatialDrawer");
@@ -4062,7 +5167,6 @@ function closeDrawer() {
     backdrop.classList.remove("is-visible");
   }
 
-  // Kembalikan visibilitas header & body untuk pembukaan berikutnya
   const loadingEl = document.getElementById("drawerLoadingState");
   const drawerHeader = document.getElementById("drawerHeader");
   const drawerBody = document.getElementById("drawerBody");
@@ -4070,11 +5174,9 @@ function closeDrawer() {
   if (drawerHeader) drawerHeader.classList.remove("hidden");
   if (drawerBody) drawerBody.classList.remove("hidden");
 
-  // Tutup notifikasi melayang samping dan modal teman jika ada
   dismissNearbyFriendsNotice();
   closeFriendsPickerModal();
 
-  // Bersihkan titik teman & lingkaran simulasi
   clearCommunityFriends();
 
   if (activeMarker) {
@@ -4111,7 +5213,6 @@ function toggleDrawerMobile() {
   }
 }
 
-// Pasang Swipe Gestures Naik/Turun secara Real-time pada Drag Handle & Header Drawer di Mobile
 function initDrawerTouchGestures() {
   const drawer = document.getElementById("spatialDrawer");
   const backdrop = document.getElementById("drawerBackdrop");
@@ -4143,18 +5244,15 @@ function initDrawerTouchGestures() {
     const isExpanded = drawer.classList.contains("is-expanded");
 
     if (deltaY > 0) {
-      // Menggeser ke bawah (menutup atau mengecilkan drawer)
       drawer.style.transform = `translateY(${deltaY}px)`;
       if (backdrop) {
         const factor = Math.max(0, 1 - deltaY / 320);
         backdrop.style.opacity = factor.toString();
       }
     } else if (deltaY < 0) {
-      // Menggeser ke atas (memperluas drawer)
       if (!isExpanded) {
         drawer.style.transform = `translateY(${deltaY}px)`;
       } else {
-        // Efek elastis ketika sudah maksimal
         drawer.style.transform = `translateY(${deltaY * 0.25}px)`;
       }
     }
@@ -4176,21 +5274,15 @@ function initDrawerTouchGestures() {
     }
 
     if (!isExpanded) {
-      // Kondisi Drawer Default (72vh)
       if (velocity > 0.45 || deltaY > 80) {
-        // Cepat swipe ke bawah / ditarik lebih dari 80px -> Tutup
         closeDrawer();
       } else if (velocity < -0.35 || deltaY < -50) {
-        // Geser ke atas -> Perluas ke 92vh
         drawer.classList.add("is-expanded");
       }
     } else {
-      // Kondisi Drawer Expanded (92vh)
       if (velocity > 0.6 || deltaY > 200) {
-        // Cepat ditarik jauh ke bawah -> Tutup
         closeDrawer();
       } else if (velocity > 0.3 || deltaY > 60) {
-        // Ditarik sedang -> Kembalikan ke default 72vh
         drawer.classList.remove("is-expanded");
       }
     }
@@ -4207,7 +5299,6 @@ function initDrawerTouchGestures() {
   });
 }
 
-// Onboarding Hint Banner
 function initOnboarding() {
   const banner = document.getElementById("onboardingBanner");
   const dismissBtn = document.getElementById("dismissOnboardingBtn");
@@ -4224,7 +5315,6 @@ function initOnboarding() {
   });
 }
 
-// Sinkronisasi Profil Akun John Doe & Poin
 function syncUserProfile() {
   if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.getUserData) return;
   const user = TEDUH_DATA.getUserData();
@@ -4237,7 +5327,6 @@ function syncUserProfile() {
   }
 }
 
-// Periksa Parameter URL saat navigasi dari Beranda atau Misi
 function checkUrlParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   const zoneParam = urlParams.get("zone");
@@ -4259,7 +5348,6 @@ function checkUrlParameters() {
     }
   }
 
-  // Jika ada parameter analyze=true, otomatis fokuskan ke zona hotspot utama
   if (urlParams.get("analyze") === "true" && !zoneParam) {
     const firstHotspot = TEDUH_DATA.zones.find((z) => z.isHotspot);
     if (firstHotspot) {
@@ -4270,7 +5358,6 @@ function checkUrlParameters() {
   }
 }
 
-// Toast Notifikasi Sederhana & Ringan dengan GSAP
 let mapToastTimeout = null;
 function showToast(message) {
   let toast = document.getElementById("teduhToast");
@@ -4286,53 +5373,34 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("is-visible");
 
-  if (typeof gsap !== "undefined") {
-    gsap.fromTo(
-      toast,
-      { y: 24, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.8)" },
-    );
-  }
-
   mapToastTimeout = setTimeout(() => {
-    if (typeof gsap !== "undefined") {
-      gsap.to(toast, {
-        y: 16,
-        opacity: 0,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => {
-          toast.classList.remove("is-visible");
-        },
-      });
-    } else {
-      toast.classList.remove("is-visible");
-    }
+    toast.classList.remove("is-visible");
   }, 2500);
 }
 
-// Inisialisasi Mikro-Interaksi Lengkap Pada Seluruh Elemen Interaktif Konsol Peta
 function initMapConsoleInteractions() {
-  // 1. Interaksi Pill Status Bar Koordinat (Tactile Click Pop + Copy Coords)
+  function applyTactilePop(el, scale = 0.94, duration = 160) {
+    if (!el) return;
+    el.style.transition = `transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+    el.style.transform = `scale(${scale})`;
+    setTimeout(() => {
+      el.style.transform = "";
+    }, duration);
+  }
+
   const coordsPill = document.querySelector(".map-status-pill.coords");
   if (coordsPill) {
     coordsPill.style.cursor = "pointer";
     coordsPill.setAttribute("title", "Ketuk untuk menyalin koordinat kursor");
     coordsPill.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          coordsPill,
-          { scale: 0.92 },
-          { scale: 1, duration: 0.35, ease: "back.out(2)" },
-        );
-        const dot = coordsPill.querySelector(".map-brand-dot");
-        if (dot) {
-          gsap.fromTo(
-            dot,
-            { scale: 1.8 },
-            { scale: 1, duration: 0.4, ease: "back.out(2)" },
-          );
-        }
+      applyTactilePop(coordsPill, 0.92);
+      const dot = coordsPill.querySelector(".map-brand-dot");
+      if (dot) {
+        dot.style.transition = "transform 220ms cubic-bezier(0.16, 1, 0.3, 1)";
+        dot.style.transform = "scale(1.6)";
+        setTimeout(() => {
+          dot.style.transform = "";
+        }, 220);
       }
       const coordsText =
         document.getElementById("mapCoordinates")?.textContent ||
@@ -4352,102 +5420,75 @@ function initMapConsoleInteractions() {
     });
   }
 
-  // 3. Interaksi Tombol Tutup Drawer
   const closeDrawerBtn = document.getElementById("closeDrawerBtn");
   if (closeDrawerBtn) {
     closeDrawerBtn.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          closeDrawerBtn,
-          { scale: 0.85, rotation: 180 },
-          { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2)" },
-        );
-      }
+      closeDrawerBtn.style.transition = "transform 220ms cubic-bezier(0.16, 1, 0.3, 1)";
+      closeDrawerBtn.style.transform = "scale(0.85) rotate(90deg)";
+      setTimeout(() => {
+        closeDrawerBtn.style.transform = "";
+      }, 220);
     });
   }
 
-  // 4. Interaksi Drag Pill Drawer Mobile
   const dragPill = document.querySelector(".drawer-drag-pill");
   if (dragPill) {
     dragPill.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          dragPill,
-          { scaleY: 1.5, scaleX: 0.9 },
-          { scaleY: 1, scaleX: 1, duration: 0.35, ease: "back.out(2)" },
-        );
-      }
+      dragPill.style.transition = "transform 180ms cubic-bezier(0.16, 1, 0.3, 1)";
+      dragPill.style.transform = "scaleY(1.4) scaleX(0.92)";
+      setTimeout(() => {
+        dragPill.style.transform = "";
+      }, 180);
     });
   }
 
-  // 5. Interaksi Onboarding Close Button
   const dismissBtn = document.getElementById("dismissOnboardingBtn");
   if (dismissBtn) {
     dismissBtn.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        const banner = document.getElementById("onboardingBanner");
-        if (banner) {
-          gsap.to(banner, {
-            y: -18,
-            opacity: 0,
-            duration: 0.28,
-            ease: "power2.in",
-            onComplete: () => {
-              banner.classList.add("hidden");
-            },
-          });
-        }
+      const banner = document.getElementById("onboardingBanner");
+      if (banner) {
+        banner.style.transition = "transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease";
+        banner.style.transform = "translateY(-18px)";
+        banner.style.opacity = "0";
+        setTimeout(() => {
+          banner.classList.add("hidden");
+        }, 280);
       }
     });
   }
 
-  // 6. Interaksi Card Rekomendasi Pohon (Tactile Click Zoom)
   const treeCard = document.querySelector(".drawer-tree-card");
   if (treeCard) {
     treeCard.style.cursor = "pointer";
     treeCard.addEventListener("click", (e) => {
       if (e.target.closest("button, a")) return;
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          treeCard,
-          { scale: 0.97 },
-          { scale: 1, duration: 0.35, ease: "back.out(2)" },
-        );
-        const img = treeCard.querySelector("#treeImage");
-        if (img) {
-          gsap.fromTo(
-            img,
-            { scale: 1.08 },
-            { scale: 1, duration: 0.5, ease: "power2.out" },
-          );
-        }
+      applyTactilePop(treeCard, 0.97);
+      const img = treeCard.querySelector("#treeImage");
+      if (img) {
+        img.style.transition = "transform 350ms cubic-bezier(0.16, 1, 0.3, 1)";
+        img.style.transform = "scale(1.06)";
+        setTimeout(() => {
+          img.style.transform = "";
+        }, 350);
       }
     });
   }
 
-  // 7. Interaksi Baris Langkah Penanaman (Planting Step Rows)
   document.querySelectorAll(".planting-step-row").forEach((row) => {
     row.style.cursor = "pointer";
     row.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          row,
-          { scale: 0.97 },
-          { scale: 1, duration: 0.3, ease: "back.out(2)" },
-        );
-        const num = row.querySelector(".planting-step-num");
-        if (num) {
-          gsap.fromTo(
-            num,
-            { scale: 1.35, rotation: -8 },
-            { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2)" },
-          );
-        }
+      applyTactilePop(row, 0.97);
+      const num = row.querySelector(".planting-step-num");
+      if (num) {
+        num.style.transition = "transform 250ms cubic-bezier(0.16, 1, 0.3, 1)";
+        num.style.transform = "scale(1.25) rotate(-6deg)";
+        setTimeout(() => {
+          num.style.transform = "";
+        }, 250);
       }
     });
   });
 
-  // 8. Interaksi Tombol-Tombol Aksi Konsol
   const actionSelectors = [
     ".btn-primary-action",
     ".btn-secondary-action",
@@ -4467,61 +5508,44 @@ function initMapConsoleInteractions() {
 
   document.querySelectorAll(actionSelectors.join(", ")).forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          btn,
-          { scale: 0.94 },
-          { scale: 1, duration: 0.3, ease: "back.out(2)" },
-        );
-      }
+      applyTactilePop(btn, 0.94);
     });
   });
 
-  // 9. Interaksi Bottom Dock Item Mobile
   document.querySelectorAll(".map-dock-item").forEach((item) => {
     item.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        const icon = item.querySelector("svg");
-        if (icon) {
-          gsap.fromTo(
-            icon,
-            { scale: 1.3, y: -4 },
-            { scale: 1, y: 0, duration: 0.35, ease: "back.out(2)" },
-          );
-        }
+      const icon = item.querySelector("svg");
+      if (icon) {
+        icon.style.transition = "transform 220ms cubic-bezier(0.16, 1, 0.3, 1)";
+        icon.style.transform = "scale(1.25) translateY(-3px)";
+        setTimeout(() => {
+          icon.style.transform = "";
+        }, 220);
       }
     });
   });
 
-  // 10. Interaksi Dropdown Notifikasi & Profil Topbar
   const notifTriggers = document.querySelectorAll(".nav-notif-trigger");
   notifTriggers.forEach((t) => {
     t.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        const svg = t.querySelector("svg");
-        if (svg) {
-          gsap
-            .timeline()
-            .to(svg, { rotation: -12, duration: 0.1, ease: "power1.out" })
-            .to(svg, { rotation: 12, duration: 0.1, ease: "power1.inOut" })
-            .to(svg, { rotation: 0, duration: 0.15, ease: "power2.out" });
-        }
-        const popup = t
-          .closest(".nav-notif-wrapper")
-          ?.querySelector(".nav-notif-popup");
-        if (popup) {
-          gsap.fromTo(
-            popup,
-            { opacity: 0, y: 10, scale: 0.96 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "back.out(1.5)",
-            },
-          );
-        }
+      const svg = t.querySelector("svg");
+      if (svg) {
+        svg.style.transition = "transform 250ms cubic-bezier(0.16, 1, 0.3, 1)";
+        svg.style.transform = "rotate(-12deg)";
+        setTimeout(() => {
+          svg.style.transform = "rotate(12deg)";
+          setTimeout(() => {
+            svg.style.transform = "";
+          }, 120);
+        }, 120);
+      }
+      const popup = t
+        .closest(".nav-notif-wrapper")
+        ?.querySelector(".nav-notif-popup");
+      if (popup && popup.classList.contains("is-open")) {
+        popup.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease";
+        popup.style.opacity = "1";
+        popup.style.transform = "translateY(0) scale(1)";
       }
     });
   });
@@ -4529,37 +5553,22 @@ function initMapConsoleInteractions() {
   const profileTriggers = document.querySelectorAll(".nav-profile-trigger");
   profileTriggers.forEach((t) => {
     t.addEventListener("click", () => {
-      if (typeof gsap !== "undefined") {
-        const avatar = t.querySelector(".nav-profile-avatar");
-        if (avatar) {
-          gsap.fromTo(
-            avatar,
-            { scale: 1.15 },
-            { scale: 1, duration: 0.35, ease: "back.out(2)" },
-          );
-        }
-        const popup = t
-          .closest(".nav-profile-wrapper")
-          ?.querySelector(".nav-profile-popup");
-        if (popup) {
-          gsap.fromTo(
-            popup,
-            { opacity: 0, y: 10, scale: 0.96 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "back.out(1.5)",
-            },
-          );
-        }
+      const avatar = t.querySelector(".nav-profile-avatar");
+      if (avatar) {
+        applyTactilePop(avatar, 1.12);
+      }
+      const popup = t
+        .closest(".nav-profile-wrapper")
+        ?.querySelector(".nav-profile-popup");
+      if (popup && popup.classList.contains("is-open")) {
+        popup.style.transition = "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease";
+        popup.style.opacity = "1";
+        popup.style.transform = "translateY(0) scale(1)";
       }
     });
   });
 }
 
-// Ekspor Fungsi Global untuk Handler HTML
 window.selectZone = selectZone;
 window.openDrawer = openDrawer;
 window.closeDrawer = closeDrawer;

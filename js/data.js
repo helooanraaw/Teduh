@@ -4,21 +4,14 @@
  * Deskripsi: Basis Data Spasial Titik Panas, Rekomendasi Pohon Peneduh, Komunitas & Hadiah
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual, Tajuk Pohon & Foto Warga (assets/*):
+ *    - Dihasilkan orisinal menggunakan Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Mesin Spasial & Peta: Google Hybrid Satellite Tile Server & CartoDB OSM.
+ * 4. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
-
 const TEDUH_DATA = {
   zones: [
     {
@@ -822,14 +815,14 @@ const TEDUH_DATA = {
     },
     {
       id: "zone-jimbaran",
-      name: "Jl. Kampus Unud, Jimbaran",
-      address: "Jl. Kampus Unud No. 12",
+      name: "Jl. Kampus Bukit Jimbaran",
+      address: "Jl. Kampus Bukit Jimbaran No. 12",
       village: "Jimbaran",
       district: "Kec. Kuta Selatan",
       city: "Kabupaten Badung",
       province: "Bali",
       fullAddress:
-        "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
+        "Jl. Kampus Bukit Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
       category: "Gang Sempit Permukiman",
       lat: -8.798,
       lng: 115.163,
@@ -3867,7 +3860,7 @@ const TEDUH_DATA = {
     },
     {
       id: "poly-zone-jimbaran",
-      name: "Jl. Kampus Unud, Jimbaran",
+      name: "Jl. Kampus Bukit Jimbaran",
       zoneId: "zone-jimbaran",
       type: "hotspot",
       city: "Kabupaten Badung",
@@ -4926,9 +4919,9 @@ const TEDUH_DATA = {
     {
       id: "mission-zone-jimbaran",
       zoneId: "zone-jimbaran",
-      title: "Aksi Tanam: Jl. Kampus Unud, Jimbaran",
+      title: "Aksi Tanam: Jl. Kampus Bukit Jimbaran",
       location:
-        "Jl. Kampus Unud, Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
+        "Jl. Kampus Bukit Jimbaran, Kec. Kuta Selatan, Kabupaten Badung",
       targetTemp: "37.0°C",
       rewardPoints: 250,
       requiredVolunteers: 3,
@@ -5748,3 +5741,26 @@ if (typeof window !== "undefined") {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = TEDUH_DATA;
 }
+
+(function () {
+  if (typeof window === "undefined" || !window.location) return;
+  var isSubPage = window.location.pathname.indexOf("/pages/") !== -1 ||
+    (document.querySelector && !!document.querySelector("script[src^='../js/']"));
+  if (!isSubPage) return;
+
+  function fixObjectPaths(obj) {
+    if (!obj || typeof obj !== "object") return;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var val = obj[key];
+        if (typeof val === "string" && val.indexOf("assets/") === 0) {
+          obj[key] = "../" + val;
+        } else if (typeof val === "object") {
+          fixObjectPaths(val);
+        }
+      }
+    }
+  }
+
+  fixObjectPaths(TEDUH_DATA);
+})();

@@ -4,16 +4,12 @@
  * Deskripsi: Gaya Utilitas Pendukung Antarmuka Platform Teduh
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Tipografi & Ikonografi:
- *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
- *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
- * 2. Visual Media & Fotografi (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
- * 3. Identitas Visual & Grafis Orisinal:
- *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Tipografi: Google Fonts Plus Jakarta Sans (SIL OFL 1.1).
+ * 2. Identitas Visual: Logo via Canva, Maskot Teduh Bot orisinal, Foto via Generative AI (Banana AI).
  * ==========================================================================
  */
+
 
 :root {
   --color-pine: #1a382b;
@@ -82,19 +78,19 @@ body {
   border: 1px solid var(--color-dark-border);
 }
 
-.leaflet-container {
+.teduh-map-container {
   background-color: #0e1116 !important;
   font-family: "Plus Jakarta Sans", sans-serif !important;
 }
 
-.leaflet-control-zoom {
+.teduh-control-zoom {
   border: 1px solid var(--color-dark-border) !important;
   border-radius: 12px !important;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
 }
 
-.leaflet-control-zoom a {
+.teduh-control-zoom a {
   background-color: var(--color-dark-panel) !important;
   color: #f4f4f5 !important;
   border-bottom: 1px solid var(--color-dark-border) !important;
@@ -104,12 +100,12 @@ body {
   transition: background-color 0.15s ease;
 }
 
-.leaflet-control-zoom a:hover {
+.teduh-control-zoom a:hover {
   background-color: #23262d !important;
   color: #ffffff !important;
 }
 
-.leaflet-control-attribution {
+.teduh-control-attribution {
   background: rgba(14, 17, 22, 0.85) !important;
   color: #8e929b !important;
   font-size: 10px !important;
@@ -120,7 +116,7 @@ body {
   border-top: 1px solid var(--color-dark-border);
 }
 
-.leaflet-control-attribution a {
+.teduh-control-attribution a {
   color: #c5c8d0 !important;
   text-decoration: underline;
 }

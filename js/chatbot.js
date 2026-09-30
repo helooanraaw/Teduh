@@ -4,21 +4,14 @@
  * Deskripsi: Asisten Cerdas Konsultasi Pohon Peneduh, Cuaca Mikro & Edukasi Lingkungan
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual & Maskot Bot (assets/*):
+ *    - Ilustrasi maskot interaktif Teduh Bot dibuat orisinal oleh tim pengembang.
+ *    - Avatar profil dihasilkan menggunakan Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Pustaka Eksternal: jQuery 3.7.1 CDN (OpenJS Foundation / MIT License).
  * ==========================================================================
  */
-
 (function () {
   "use strict";
 
@@ -297,9 +290,6 @@
 
     if (!fab || !windowEl || !chatBody) return;
 
-    windowEl.setAttribute("data-lenis-prevent", "true");
-    chatBody.setAttribute("data-lenis-prevent", "true");
-
     chatBody.addEventListener(
       "wheel",
       function (e) {
@@ -500,12 +490,12 @@
           windowEl.classList.remove("active");
           windowEl.classList.remove("closing");
           closeTimeout = null;
-        }, 250);
+        }, 320);
 
         clearTimeout(tooltipTimer);
         tooltipTimer = setTimeout(function () {
           showNextTooltip();
-        }, 4000);
+        }, 2400);
       }
     }
 
@@ -750,23 +740,48 @@
     }
 
     var TOOLTIP_MESSAGES = [
+      "Ada yang bisa saya bantu? 😊",
       "Tanyakan Teduh Bot! 😉",
-      "Halo! Ada yang bisa saya bantu? 😊",
       "Tanya seputar pohon & suhu di sini! 🌿",
-      "Butuh rekomendasi pohon teduh? 🌳",
+      "Butuh rekomendasi pohon peneduh? 🌳",
     ];
     var currentTooltipIndex = 0;
-    var tooltipTimer = null;
+    var tooltipHideTimeout = null;
 
-    function hideTooltip() {
+    function hideTooltip(immediate) {
       if (!tooltip) return;
-      tooltip.classList.remove("visible");
+      if (!tooltip.classList.contains("visible") && !tooltip.classList.contains("is-hiding")) return;
+
+      if (tooltipHideTimeout) {
+        clearTimeout(tooltipHideTimeout);
+        tooltipHideTimeout = null;
+      }
+
+      if (immediate) {
+        tooltip.classList.remove("visible");
+        tooltip.classList.remove("is-hiding");
+        return;
+      }
+
+      tooltip.classList.add("is-hiding");
+      tooltipHideTimeout = setTimeout(function () {
+        tooltip.classList.remove("visible");
+        tooltip.classList.remove("is-hiding");
+        tooltipHideTimeout = null;
+      }, 280);
     }
 
     function showNextTooltip() {
       if (!tooltip || isOpen) return;
+      if (tooltipHideTimeout) {
+        clearTimeout(tooltipHideTimeout);
+        tooltipHideTimeout = null;
+      }
       currentTooltipIndex = (currentTooltipIndex + 1) % TOOLTIP_MESSAGES.length;
       tooltip.textContent = TOOLTIP_MESSAGES[currentTooltipIndex];
+      tooltip.classList.remove("is-hiding");
+      tooltip.classList.remove("visible");
+      void tooltip.offsetWidth; 
       tooltip.classList.add("visible");
 
       clearTimeout(tooltipTimer);
@@ -774,27 +789,34 @@
         hideTooltip();
         tooltipTimer = setTimeout(function () {
           showNextTooltip();
-        }, 6500);
-      }, 5500);
+        }, 1800);
+      }, 3200);
     }
 
     tooltipTimer = setTimeout(function () {
       if (!isOpen && tooltip) {
+        if (tooltipHideTimeout) {
+          clearTimeout(tooltipHideTimeout);
+          tooltipHideTimeout = null;
+        }
         tooltip.textContent = TOOLTIP_MESSAGES[0];
+        tooltip.classList.remove("is-hiding");
+        tooltip.classList.remove("visible");
+        void tooltip.offsetWidth; 
         tooltip.classList.add("visible");
         tooltipTimer = setTimeout(function () {
           hideTooltip();
           tooltipTimer = setTimeout(function () {
             showNextTooltip();
-          }, 6500);
-        }, 5500);
+          }, 1800);
+        }, 3200);
       }
-    }, 1800);
+    }, 1200);
 
     if (tooltip) {
       tooltip.addEventListener("click", function (e) {
         e.stopPropagation();
-        hideTooltip();
+        hideTooltip(true);
         clearTimeout(tooltipTimer);
         toggleChat(true);
       });

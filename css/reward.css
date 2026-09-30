@@ -4,16 +4,12 @@
  * Deskripsi: Gaya Tampilan Peringkat Kesejukan Warga, Diagram Podium & Katalog Hadiah
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Tipografi & Ikonografi:
- *    - Google Fonts: Plus Jakarta Sans (SIL Open Font License 1.1).
- *    - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
- * 2. Visual Media & Fotografi (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free for Commercial Use).
- * 3. Identitas Visual & Grafis Orisinal:
- *    - Logo Teduh, Maskot Teduh Bot, & Aset Grafis (Hak Cipta Orisinal Tim Pengembang Teduh).
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Tipografi: Google Fonts Plus Jakarta Sans (SIL OFL 1.1).
+ * 2. Identitas Visual: Logo via Canva, Maskot Teduh Bot orisinal, Foto via Generative AI (Banana AI).
  * ==========================================================================
  */
+
 
 body {
   background-color: #fdfdfc;
@@ -185,7 +181,7 @@ body {
   padding: 12px 22px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13.5px;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
   transition: all var(--transition-fast, 0.2s ease);
   white-space: nowrap;
@@ -229,7 +225,7 @@ body {
 .rw-tab-btn.is-active {
   background: #ffffff;
   color: var(--color-primary, #1a382b);
-  font-weight: 700;
+  font-weight: 600;
   box-shadow: none;
 }
 
@@ -372,7 +368,6 @@ body {
   overflow: hidden;
 }
 
-/* Watermark rank numeral inside pedestal base */
 .rw-podium-bar::before {
   content: "";
   position: absolute;
@@ -409,7 +404,6 @@ body {
   color: rgba(255, 255, 255, 0.12);
 }
 
-/* Subtly illuminated top chamfer / rim */
 .rw-podium-bar::after {
   content: "";
   position: absolute;
@@ -426,7 +420,6 @@ body {
   pointer-events: none;
 }
 
-/* Rank 1 Pillar */
 .rw-podium-bar.bar-1 {
   height: 255px;
   background: linear-gradient(180deg, #1f4534 0%, #163628 50%, #0e241b 100%);
@@ -436,7 +429,6 @@ body {
     0 12px 28px -4px rgba(26, 56, 43, 0.28);
 }
 
-/* Rank 2 Pillar */
 .rw-podium-bar.bar-2 {
   height: 195px;
   background: linear-gradient(180deg, #273e35 0%, #1c2e27 55%, #12201b 100%);
@@ -446,7 +438,6 @@ body {
     0 10px 22px -4px rgba(14, 17, 22, 0.18);
 }
 
-/* Rank 3 Pillar */
 .rw-podium-bar.bar-3 {
   height: 155px;
   background: linear-gradient(180deg, #2f3732 0%, #202723 55%, #151a17 100%);
@@ -690,11 +681,17 @@ body {
   height: 100%;
   min-height: 360px;
   box-sizing: border-box;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
+  will-change: transform, box-shadow;
 }
 
 .rw-voucher-bento-hero:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -6px rgba(26, 56, 43, 0.09);
+  border-color: rgba(92, 132, 55, 0.28);
 }
 
 .rw-bento-hero-img-wrap {
@@ -711,11 +708,11 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .rw-voucher-bento-hero:hover .rw-bento-hero-img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .rw-bento-hero-img-wrap::after {
@@ -809,7 +806,7 @@ body {
   padding: 10px 26px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13.5px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all var(--transition-fast, 0.2s ease);
@@ -819,6 +816,10 @@ body {
 .rw-btn-claim-hero:hover {
   background: var(--color-btn-primary-hover, #6ea842);
   transform: translateY(-1px);
+}
+
+.rw-btn-claim-hero:active {
+  transform: scale(0.95);
 }
 
 .rw-vouchers-bento-stack {
@@ -874,11 +875,17 @@ body {
   position: relative;
   height: 160px;
   box-sizing: border-box;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
+  will-change: transform, box-shadow;
 }
 
 .rw-voucher-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -4px rgba(26, 56, 43, 0.08);
+  border-color: rgba(92, 132, 55, 0.28);
 }
 
 .rw-voucher-img-wrap {
@@ -895,11 +902,11 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .rw-voucher-card:hover .rw-voucher-img {
-  transform: scale(1.04);
+  transform: scale(1.05);
 }
 
 .rw-voucher-img-wrap::after {
@@ -991,7 +998,7 @@ body {
   padding: 8px 22px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all var(--transition-fast, 0.2s ease);
@@ -1002,6 +1009,10 @@ body {
 .rw-btn-claim-voucher:hover {
   background: var(--color-btn-primary-hover, #6ea842);
   transform: translateY(-1px);
+}
+
+.rw-btn-claim-voucher:active {
+  transform: scale(0.95);
 }
 
 .rw-voucher-card.is-more-card {
@@ -1060,7 +1071,8 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(14, 17, 22, 0.6);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -1068,7 +1080,7 @@ body {
   padding: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .rw-modal-backdrop.is-visible {
@@ -1101,12 +1113,17 @@ body {
     0 4px 16px rgba(92, 132, 55, 0.1);
   border: 1px solid rgba(92, 132, 55, 0.2);
   overflow: hidden;
-  transform: translateY(20px);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.93) translateY(24px);
+  opacity: 0;
+  transition:
+    transform 0.38s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 
 .rw-modal-backdrop.is-visible .rw-modal-card {
-  transform: translateY(0);
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 
 .rw-modal-icon {
@@ -1123,6 +1140,25 @@ body {
   align-items: center;
   justify-content: center;
   margin-top: 2px;
+}
+
+.rw-modal-backdrop.is-visible .rw-modal-icon {
+  animation: rw-modal-icon-bloom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes rw-modal-icon-bloom {
+  0% {
+    transform: scale(0.35) rotate(-15deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.16) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 .rw-confirm-icon {
@@ -1189,6 +1225,22 @@ body {
   font-weight: 700;
 }
 
+.rw-modal-backdrop.is-visible .rw-confirm-cost {
+  animation: rw-cost-pulse 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+
+@keyframes rw-cost-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .rw-confirm-remaining {
   color: #5c8437;
   font-weight: 700;
@@ -1227,6 +1279,10 @@ body {
   color: #0e1116;
 }
 
+.rw-modal-btn-cancel:active {
+  transform: scale(0.96);
+}
+
 .rw-modal-btn-confirm {
   width: 100%;
   background: #5c8437;
@@ -1234,7 +1290,7 @@ body {
   padding: 12px 16px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(92, 132, 55, 0.25);
@@ -1248,7 +1304,7 @@ body {
 }
 
 .rw-modal-btn-confirm:active {
-  transform: translateY(0);
+  transform: scale(0.96);
 }
 
 .rw-modal-code-box {
@@ -1258,6 +1314,21 @@ body {
   padding: 12px 20px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.rw-modal-backdrop.is-visible .rw-modal-code-box {
+  animation: rw-code-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+@keyframes rw-code-pop {
+  0% {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .rw-modal-code {
@@ -1275,7 +1346,7 @@ body {
   padding: 12px 20px;
   border-radius: var(--radius-full, 9999px);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(92, 132, 55, 0.25);
@@ -1289,29 +1360,36 @@ body {
 }
 
 .rw-modal-btn-close:active {
-  transform: translateY(0);
+  transform: scale(0.96);
 }
 
 #rwToast {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(24px);
-  background: #0e1116;
+  transform: translateX(-50%) translateY(16px);
+  background: rgba(14, 17, 22, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #ffffff;
-  padding: 9px 20px;
+  padding: 6px 14px;
   border-radius: 9999px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
+  line-height: 1.35;
   letter-spacing: 0.01em;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  max-width: min(340px, calc(100vw - 32px));
+  text-align: center;
+  box-sizing: border-box;
   z-index: 2100;
   opacity: 0;
   pointer-events: none;
+  white-space: normal;
   transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.25s ease;
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.22s ease;
 }
 
 #rwToast.is-visible {
@@ -1847,5 +1925,25 @@ body {
 
   .rw-badge-you {
     display: none;
+  }
+}
+
+.rw-voucher-bento-hero.rw-anim-enter,
+.rw-voucher-card.rw-anim-enter,
+.rw-vouchers-section-header.rw-anim-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: rw-card-cascade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes rw-card-cascade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

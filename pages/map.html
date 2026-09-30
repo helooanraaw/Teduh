@@ -4,28 +4,24 @@
   Deskripsi: Konsol Peta Interaktif, Analisis Titik Panas & Rekomendasi Pohon Peneduh
 
   ==========================================================================
-  SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
-  1. Fotografi & Dokumentasi Lapangan (Seluruh aset memiliki Open License / Bebas Hak Cipta Komersial):
-     - Potret Avatar Warga & Profil (assets/avatars/*): Unsplash & Pexels (Open License / Free for Commercial Use).
-     - Direktori Pohon & Botani Peneduh (assets/trees/*): Wikimedia Commons & Open Flora Archive (Creative Commons CC BY-SA 4.0).
-     - Dokumentasi Aksi Pekarangan (assets/feed/*): Unsplash & Freepik (Open License with Free Commercial Rights).
-     - Katalog Reward & Voucher Ekologis (assets/vouchers/*): Freepik & Unsplash (Open License).
-     - Lanskap Perkotaan & Kanopi Hijau (assets/landing/*): Unsplash (Open License / Free to Use).
-  2. Ilustrasi & Identitas Visual Orisinal:
-     - Maskot Interaktif Teduh Bot (assets/bot/*): Ilustrasi Digital Orisinal Tim Pengembang Teduh.
-     - Logo & Brandmark Teduh (assets/logo/*): Desain Vektor Orisinal Tim Pengembang Teduh.
-     - Logo Institusi & Mitra Ekologis (assets/mitra/*): Aset Vektor Resmi Domain Publik / Mitra Terkait.
-  3. Peta Spasial & Citra Satelit:
-     - Citra Satelit Google Hybrid: Google Maps / Earth Tile Server.
-     - CartoDB Dark Matter & Voyager: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
-  4. Tipografi, Ikonografi & Pustaka Eksternal:
-     - Google Fonts Plus Jakarta Sans: Tokyo Type Directors Club & Tokotype (SIL Open Font License 1.1).
-     - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
-     - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
-     - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
-     - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+  SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+  1. Aset Visual, Fotografi & Ilustrasi Botani (assets/*):
+     - Seluruh foto avatar warga, tajuk pohon peneduh, dan dokumentasi pekarangan
+       dibuat orisinal menggunakan Generative AI (AI Image Generator / Banana AI).
+  2. Logo, Brandmark & Maskot:
+     - Logo & Identitas Brand Teduh: Didesain mandiri menggunakan Canva oleh tim pengembang.
+     - Maskot Interaktif Teduh Bot: Ilustrasi karakter digital orisinal pengembang.
+  3. Mesin Peta Spasial & Citra Satelit:
+     - Mesin Peta: Native Spatial Canvas Engine (Pure JavaScript & jQuery).
+     - Tile Citra Satelit: Google Hybrid Satellite Map Tile Server.
+     - Tile Peta Gelap: CartoDB Dark Matter (OpenStreetMap Contributors).
+  4. Pustaka Eksternal & Tipografi:
+     - Tipografi: Google Fonts Plus Jakarta Sans (SIL Open Font License 1.1).
+     - Ikonografi: Lucide Icons (MIT License).
+     - JavaScript Library: jQuery 3.7.1 CDN (OpenJS Foundation / MIT License).
   ==========================================================================
 -->
+
 
 <!doctype html>
 <html lang="id">
@@ -45,28 +41,21 @@
       rel="stylesheet"
     />
 
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
-    />
-
-    <link rel="icon" type="image/svg+xml" href="assets/logo/teduh-cloud.svg" />
-    <link rel="stylesheet" href="css/global.css" />
-    <link rel="stylesheet" href="css/map.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/logo/teduh-cloud.svg" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/map.css" />
   </head>
   <body>
     <div class="map-viewport">
       <header class="map-desktop-topbar" aria-label="Navigasi Konsol Peta">
         <div class="map-desktop-topbar-left">
           <a
-            href="index.html"
+            href="../index.html"
             class="map-brand-link"
             aria-label="Beranda Teduh"
           >
             <img
-              src="assets/logo/teduh-logo.svg"
+              src="../assets/logo/teduh-logo.svg"
               alt="Teduh"
               class="map-brand-logo-desktop"
             />
@@ -112,7 +101,7 @@
 
         <div class="map-desktop-topbar-right">
           <nav class="map-desktop-nav" aria-label="Menu Utama">
-            <a href="index.html" class="map-nav-link">Beranda</a>
+            <a href="../index.html" class="map-nav-link">Beranda</a>
             <a
               href="map.html"
               class="map-nav-link is-active"
@@ -174,7 +163,7 @@
             >
               <div class="nav-profile-avatar">
                 <img
-                  src="assets/avatars/john-doe.jpg"
+                  src="../assets/avatars/john-doe.jpg"
                   alt="Avatar John Doe"
                   onerror="
                     this.style.display = 'none';
@@ -203,7 +192,7 @@
               <div class="nav-popup-header">
                 <div class="nav-popup-avatar">
                   <img
-                    src="assets/avatars/john-doe.jpg"
+                    src="../assets/avatars/john-doe.jpg"
                     alt="Avatar John Doe"
                     onerror="
                       this.style.display = 'none';
@@ -283,7 +272,7 @@
       >
         <div class="map-mobile-search-inner">
           <a
-            href="index.html"
+            href="../index.html"
             class="map-mobile-back-btn"
             title="Kembali ke Beranda"
             aria-label="Kembali ke Beranda"
@@ -306,12 +295,12 @@
           </a>
 
           <a
-            href="index.html"
+            href="../index.html"
             class="map-mobile-brand-link"
             aria-label="Teduh Beranda"
           >
             <img
-              src="assets/logo/teduh-only.svg"
+              src="../assets/logo/teduh-only.svg"
               alt="Teduh"
               class="map-mobile-brand-logo"
             />
@@ -400,7 +389,7 @@
               >
                 <div class="nav-profile-avatar map-mobile-avatar">
                   <img
-                    src="assets/avatars/john-doe.jpg"
+                    src="../assets/avatars/john-doe.jpg"
                     alt="Avatar John Doe"
                     onerror="
                       this.style.display = 'none';
@@ -429,7 +418,7 @@
                 <div class="nav-popup-header">
                   <div class="nav-popup-avatar">
                     <img
-                      src="assets/avatars/john-doe.jpg"
+                      src="../assets/avatars/john-doe.jpg"
                       alt="Avatar John Doe"
                       onerror="
                         this.style.display = 'none';
@@ -591,7 +580,7 @@
       </div>
 
       <nav class="map-mobile-bottom-dock" aria-label="Navigasi Utama Ponsel">
-        <a href="index.html" class="map-dock-item" title="Beranda">
+        <a href="../index.html" class="map-dock-item" title="Beranda">
           <svg
             width="15"
             height="15"
@@ -727,7 +716,7 @@
                 id="drawerHeaderAvatar"
               >
                 <img
-                  src="assets/avatars/dewi-lestari.jpg"
+                  src="../assets/avatars/dewi-lestari.jpg"
                   alt="Dewi Lestari"
                   class="w-full h-full object-cover rounded-full"
                 />
@@ -875,7 +864,7 @@
               <div class="tree-img-wrap">
                 <img
                   id="treeImage"
-                  src="assets/trees/pohon-tanjung.jpg"
+                  src="../assets/trees/pohon-tanjung.jpg"
                   alt="Foto Bibit Pohon Peneduh"
                 />
               </div>
@@ -2058,16 +2047,10 @@
       </div>
     </div>
 
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-    <script src="js/data.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/map.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/map.js"></script>
   </body>
 </html>

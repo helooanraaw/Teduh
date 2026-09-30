@@ -4,53 +4,29 @@
  * Deskripsi: Pengendali Peringkat Kesejukan Warga, Animasi Podium & Sistem Tukar Hadiah
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual (assets/*): Dihasilkan via Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
-
 document.addEventListener("DOMContentLoaded", () => {
   syncRewardPageData();
-  initRewardGSAPAnimations();
+  initRewardEntranceAnimations();
   initMobileNav();
 });
 
-let podiumTimeline = null;
-
-/**
- * Animasi Diagram Podium Juara 1-3 & Perhitungan Angka Poin Real-time
- */
 function animatePodiumDiagram() {
-  if (typeof gsap === "undefined") return;
-
   const bar1 = document.querySelector(".rw-podium-col.col-1 .rw-podium-bar");
   const bar2 = document.querySelector(".rw-podium-col.col-2 .rw-podium-bar");
   const bar3 = document.querySelector(".rw-podium-col.col-3 .rw-podium-bar");
 
-  const avatar1 = document.querySelector(
-    ".rw-podium-col.col-1 .rw-podium-avatar-wrap",
-  );
-  const avatar2 = document.querySelector(
-    ".rw-podium-col.col-2 .rw-podium-avatar-wrap",
-  );
-  const avatar3 = document.querySelector(
-    ".rw-podium-col.col-3 .rw-podium-avatar-wrap",
-  );
+  const avatar1 = document.querySelector(".rw-podium-col.col-1 .rw-podium-avatar-wrap");
+  const avatar2 = document.querySelector(".rw-podium-col.col-2 .rw-podium-avatar-wrap");
+  const avatar3 = document.querySelector(".rw-podium-col.col-3 .rw-podium-avatar-wrap");
 
   const crown = document.querySelector(".rw-podium-crown");
-  const metaTexts = document.querySelectorAll(
-    ".rw-podium-user-name, .rw-podium-loc",
-  );
+  const metaTexts = document.querySelectorAll(".rw-podium-user-name, .rw-podium-loc");
 
   const badge1 = document.getElementById("rwPodiumPoints1");
   const badge2 = document.getElementById("rwPodiumPoints2");
@@ -58,253 +34,200 @@ function animatePodiumDiagram() {
 
   if (!bar1 || !bar2 || !bar3) return;
 
-  if (podiumTimeline) {
-    podiumTimeline.kill();
-  }
-
-  // Set initial states
-  gsap.set([bar1, bar2, bar3], {
-    transformOrigin: "bottom center",
-    scaleY: 0,
-    opacity: 0,
+  [bar1, bar2, bar3].forEach((b) => {
+    b.style.transform = "scaleY(0)";
+    b.style.transformOrigin = "bottom center";
+    b.style.opacity = "0";
   });
 
-  gsap.set([avatar1, avatar2, avatar3], {
-    scale: 0,
-    y: 35,
-    opacity: 0,
-    transformOrigin: "center center",
+  [avatar1, avatar2, avatar3].forEach((a) => {
+    if (a) {
+      a.style.transform = "scale(0) translateY(20px)";
+      a.style.opacity = "0";
+    }
   });
 
   if (crown) {
-    gsap.set(crown, {
-      scale: 0,
-      y: -30,
-      rotation: -18,
-      opacity: 0,
-      transformOrigin: "center bottom",
+    crown.style.transform = "scale(0) translateY(-20px) rotate(-15deg)";
+    crown.style.opacity = "0";
+  }
+
+  metaTexts.forEach((m) => {
+    m.style.opacity = "0";
+    m.style.transform = "translateY(8px)";
+  });
+
+  [badge1, badge2, badge3].forEach((bg) => {
+    if (bg) {
+      bg.style.opacity = "0";
+      bg.style.transform = "scale(0.8)";
+    }
+  });
+
+  setTimeout(() => {
+    bar2.style.transition = "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease";
+    bar2.style.transform = "scaleY(1)";
+    bar2.style.opacity = "1";
+  }, 100);
+
+  setTimeout(() => {
+    bar3.style.transition = "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease";
+    bar3.style.transform = "scaleY(1)";
+    bar3.style.opacity = "1";
+  }, 200);
+
+  setTimeout(() => {
+    bar1.style.transition = "transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease";
+    bar1.style.transform = "scaleY(1)";
+    bar1.style.opacity = "1";
+  }, 320);
+
+  setTimeout(() => {
+    if (avatar2) {
+      avatar2.style.transition = "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+      avatar2.style.transform = "scale(1) translateY(0)";
+      avatar2.style.opacity = "1";
+    }
+  }, 500);
+
+  setTimeout(() => {
+    if (avatar3) {
+      avatar3.style.transition = "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+      avatar3.style.transform = "scale(1) translateY(0)";
+      avatar3.style.opacity = "1";
+    }
+  }, 600);
+
+  setTimeout(() => {
+    if (avatar1) {
+      avatar1.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+      avatar1.style.transform = "scale(1) translateY(0)";
+      avatar1.style.opacity = "1";
+    }
+  }, 700);
+
+  setTimeout(() => {
+    if (crown) {
+      crown.style.transition = "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+      crown.style.transform = "scale(1) translateY(0) rotate(0deg)";
+      crown.style.opacity = "1";
+    }
+    metaTexts.forEach((m) => {
+      m.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      m.style.opacity = "1";
+      m.style.transform = "translateY(0)";
     });
-  }
+    [badge1, badge2, badge3].forEach((bg) => {
+      if (bg) {
+        bg.style.transition = "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+        bg.style.opacity = "1";
+        bg.style.transform = "scale(1)";
+      }
+    });
+  }, 900);
 
-  gsap.set(metaTexts, { opacity: 0, y: 10 });
-  gsap.set([badge1, badge2, badge3], {
-    opacity: 0,
-    scale: 0.75,
-    transformOrigin: "center center",
-  });
-
-  if (badge1) badge1.textContent = "0 Poin";
-  if (badge2) badge2.textContent = "0 Poin";
-  if (badge3) badge3.textContent = "0 Poin";
-
-  podiumTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-  // 1. Bar 2 (Peringkat 2) & Bar 3 (Peringkat 3) naik terlebih dahulu
-  podiumTimeline.to(
-    bar2,
-    { scaleY: 1, opacity: 1, duration: 0.75, ease: "power2.out" },
-    0.05,
-  );
-  podiumTimeline.to(
-    bar3,
-    { scaleY: 1, opacity: 1, duration: 0.7, ease: "power2.out" },
-    0.15,
-  );
-
-  // 2. Bar 1 (Peringkat 1) naik paling tinggi dengan efek spring halus
-  podiumTimeline.to(
-    bar1,
-    { scaleY: 1, opacity: 1, duration: 0.95, ease: "back.out(1.2)" },
-    0.25,
-  );
-
-  // 3. Avatar melompat muncul di atas bar masing-masing
-  podiumTimeline.to(
-    avatar2,
-    { scale: 1, y: 0, opacity: 1, duration: 0.55, ease: "back.out(1.5)" },
-    0.45,
-  );
-  podiumTimeline.to(
-    avatar3,
-    { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.5)" },
-    0.55,
-  );
-  podiumTimeline.to(
-    avatar1,
-    { scale: 1, y: 0, opacity: 1, duration: 0.65, ease: "back.out(1.7)" },
-    0.65,
-  );
-
-  // 4. Mahkota jatuh tepat di atas kepala Juara 1
-  if (crown) {
-    podiumTimeline.to(
-      crown,
-      {
-        scale: 1,
-        y: 0,
-        rotation: 0,
-        opacity: 1,
-        duration: 0.55,
-        ease: "back.out(2.2)",
-      },
-      0.95,
-    );
-  }
-
-  // 5. Teks nama & lokasi warga muncul di dalam diagram
-  podiumTimeline.to(
-    metaTexts,
-    {
-      opacity: 1,
-      y: 0,
-      stagger: 0.04,
-      duration: 0.35,
-      ease: "power2.out",
-    },
-    0.85,
-  );
-
-  // 6. Kapsul poin muncul & angka poin berhitung naik (Count Up Animation)
-  podiumTimeline.to(
-    [badge1, badge2, badge3],
-    {
-      opacity: 1,
-      scale: 1,
-      stagger: 0.08,
-      duration: 0.45,
-      ease: "back.out(1.4)",
-    },
-    1.0,
-  );
-
-  // Objek counter untuk angka poin
-  const p1 = { val: 0 };
-  const p2 = { val: 0 };
-  const p3 = { val: 0 };
-
-  gsap.to(p1, {
-    val: 1450,
-    duration: 1.25,
-    ease: "power2.out",
-    delay: 1.05,
-    onUpdate: () => {
-      if (badge1)
-        badge1.textContent = `${Math.round(p1.val).toLocaleString("id-ID")} Poin`;
-    },
-  });
-
-  gsap.to(p2, {
-    val: 1220,
-    duration: 1.15,
-    ease: "power2.out",
-    delay: 1.05,
-    onUpdate: () => {
-      if (badge2)
-        badge2.textContent = `${Math.round(p2.val).toLocaleString("id-ID")} Poin`;
-    },
-  });
-
-  gsap.to(p3, {
-    val: 980,
-    duration: 1.05,
-    ease: "power2.out",
-    delay: 1.05,
-    onUpdate: () => {
-      if (badge3)
-        badge3.textContent = `${Math.round(p3.val).toLocaleString("id-ID")} Poin`;
-    },
-  });
+  animateBadgeNumber(badge1, 1420);
+  animateBadgeNumber(badge2, 1180);
+  animateBadgeNumber(badge3, 960);
 }
 
-/**
- * Animasi Keseluruhan Halaman Peringkat & Hadiah saat Pertama Dimuat
- */
-function initRewardGSAPAnimations() {
-  if (typeof gsap === "undefined") return;
+function animateBadgeNumber(el, targetVal) {
+  if (!el) return;
+  const startTime = performance.now();
+  const duration = 1200;
+  function count(now) {
+    const p = Math.min(1, (now - startTime) / duration);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = `${Math.round(targetVal * ease).toLocaleString("id-ID")} Poin`;
+    if (p < 1) requestAnimationFrame(count);
+    else el.textContent = `${targetVal.toLocaleString("id-ID")} Poin`;
+  }
+  setTimeout(() => requestAnimationFrame(count), 400);
+}
 
+function initRewardEntranceAnimations() {
   const user =
     typeof TEDUH_DATA !== "undefined" && TEDUH_DATA.getUserData
       ? TEDUH_DATA.getUserData()
       : { points: 850 };
 
   const targetPoints = user.points || 850;
-  const pointsCounter = { val: 0 };
   const displayPoints = document.getElementById("rwUserPointsDisplay");
   const tablePoints = document.getElementById("rwTableUserPoints");
 
-  // 1. Header & User Card Intro
-  gsap.fromTo(
-    ".rw-header-section",
-    { opacity: 0, y: 16 },
-    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-  );
+  const progFill = document.querySelector(".rw-user-progress-fill");
+  if (progFill) {
+    progFill.style.width = "0%";
+    setTimeout(() => {
+      progFill.style.transition = "width 1.2s cubic-bezier(0.16, 1, 0.3, 1)";
+      progFill.style.width = "70%";
+    }, 200);
+  }
 
-  gsap.fromTo(
-    ".rw-user-card",
-    { opacity: 0, y: 24, scale: 0.98 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.65,
-      ease: "power3.out",
-      delay: 0.1,
-    },
-  );
+  if (displayPoints || tablePoints) {
+    const startTime = performance.now();
+    const duration = 1100;
+    function countPoints(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const current = `${Math.round(targetPoints * ease).toLocaleString("id-ID")} Poin`;
+      if (displayPoints) displayPoints.textContent = current;
+      if (tablePoints) tablePoints.textContent = current;
+      if (p < 1) requestAnimationFrame(countPoints);
+      else {
+        if (displayPoints) displayPoints.textContent = `${targetPoints.toLocaleString("id-ID")} Poin`;
+        if (tablePoints) tablePoints.textContent = `${targetPoints.toLocaleString("id-ID")} Poin`;
+      }
+    }
+    setTimeout(() => requestAnimationFrame(countPoints), 200);
+  }
 
-  // 2. User Card Progress Bar & Points Counter
-  gsap.fromTo(
-    ".rw-user-progress-fill",
-    { width: "0%" },
-    { width: "70%", duration: 1.2, ease: "power2.out", delay: 0.3 },
-  );
-
-  gsap.to(pointsCounter, {
-    val: targetPoints,
-    duration: 1.25,
-    ease: "power2.out",
-    delay: 0.25,
-    onUpdate: () => {
-      const current = Math.round(pointsCounter.val).toLocaleString("id-ID");
-      if (displayPoints) displayPoints.textContent = `${current} Poin`;
-      if (tablePoints) tablePoints.textContent = `${current} Poin`;
-    },
-  });
-
-  // 3. Tabs Nav Intro
-  gsap.fromTo(
-    ".rw-tabs-nav",
-    { opacity: 0, y: 12 },
-    { opacity: 1, y: 0, duration: 0.45, ease: "power2.out", delay: 0.2 },
-  );
-
-  // 4. Jalankan Animasi Diagram Podium Juara
-  animatePodiumDiagram();
-
-  // 5. Tabel Peringkat Cascade Stagger
-  gsap.fromTo(
-    ".rw-table-card",
-    { opacity: 0, y: 24 },
-    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.4 },
-  );
-
-  gsap.fromTo(
-    ".rw-table-row",
-    { opacity: 0, x: -16 },
-    {
-      opacity: 1,
-      x: 0,
-      stagger: 0.05,
-      duration: 0.45,
-      ease: "power2.out",
-      delay: 0.5,
-    },
-  );
+  if (window.location.hash === "#vouchers") {
+    switchRewardTab("vouchers");
+  } else {
+    animatePodiumDiagram();
+  }
 }
 
-/**
- * Navigasi Tab (Peringkat Warga <-> Katalog Voucher) dengan Transisi Mulus GSAP
- */
+function animateVoucherCatalog() {
+  const hero = document.querySelector(".rw-voucher-bento-hero");
+  const stackCards = document.querySelectorAll(
+    ".rw-vouchers-bento-stack .rw-voucher-card",
+  );
+  const sectionHeader = document.querySelector(".rw-vouchers-section-header");
+  const gridCards = document.querySelectorAll(
+    ".rw-vouchers-grid .rw-voucher-card",
+  );
+
+  if (hero) {
+    hero.classList.remove("rw-anim-enter");
+    hero.style.animationDelay = "0.04s";
+    void hero.offsetWidth;
+    hero.classList.add("rw-anim-enter");
+  }
+
+  stackCards.forEach((card, i) => {
+    card.classList.remove("rw-anim-enter");
+    card.style.animationDelay = `${0.1 + i * 0.08}s`;
+    void card.offsetWidth;
+    card.classList.add("rw-anim-enter");
+  });
+
+  if (sectionHeader) {
+    sectionHeader.classList.remove("rw-anim-enter");
+    sectionHeader.style.animationDelay = "0.22s";
+    void sectionHeader.offsetWidth;
+    sectionHeader.classList.add("rw-anim-enter");
+  }
+
+  gridCards.forEach((card, i) => {
+    card.classList.remove("rw-anim-enter");
+    card.style.animationDelay = `${0.26 + i * 0.05}s`;
+    void card.offsetWidth;
+    card.classList.add("rw-anim-enter");
+  });
+}
+
 function switchRewardTab(tabName) {
   const btnLeaderboard = document.getElementById("tabLeaderboardBtn");
   const btnVouchers = document.getElementById("tabVouchersBtn");
@@ -322,27 +245,8 @@ function switchRewardTab(tabName) {
     }
     if (contentLeaderboard) {
       contentLeaderboard.classList.add("is-active");
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          contentLeaderboard,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
-        );
-        // Jalankan ulang animasi diagram podium dan tabel baris
-        animatePodiumDiagram();
-        gsap.fromTo(
-          ".rw-table-row",
-          { opacity: 0, x: -14 },
-          {
-            opacity: 1,
-            x: 0,
-            stagger: 0.04,
-            duration: 0.4,
-            ease: "power2.out",
-            delay: 0.3,
-          },
-        );
-      }
+      $(contentLeaderboard).hide().fadeIn(250);
+      animatePodiumDiagram();
     }
     if (contentVouchers) contentVouchers.classList.remove("is-active");
   } else if (tabName === "vouchers") {
@@ -356,55 +260,9 @@ function switchRewardTab(tabName) {
     }
     if (contentVouchers) {
       contentVouchers.classList.add("is-active");
-      if (typeof gsap !== "undefined") {
-        gsap.fromTo(
-          contentVouchers,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
-        );
-
-        // Animasi Bento Hero Card
-        gsap.fromTo(
-          ".rw-voucher-bento-hero",
-          { opacity: 0, y: 22, scale: 0.97 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "power3.out",
-            delay: 0.05,
-          },
-        );
-
-        // Animasi Stack Bento Card
-        gsap.fromTo(
-          ".rw-voucher-card.is-bento-stacked",
-          { opacity: 0, x: 20 },
-          {
-            opacity: 1,
-            x: 0,
-            stagger: 0.08,
-            duration: 0.45,
-            ease: "power2.out",
-            delay: 0.1,
-          },
-        );
-
-        // Animasi Grid Voucher Regular
-        gsap.fromTo(
-          ".rw-vouchers-grid .rw-voucher-card",
-          { opacity: 0, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.06,
-            duration: 0.45,
-            ease: "power2.out",
-            delay: 0.2,
-          },
-        );
-      }
+      $(contentVouchers).hide().fadeIn(250, () => {
+        animateVoucherCatalog();
+      });
     }
     if (contentLeaderboard) contentLeaderboard.classList.remove("is-active");
   }
@@ -412,9 +270,6 @@ function switchRewardTab(tabName) {
 
 let pendingRewardToRedeem = null;
 
-/**
- * Membuka Dialog Modal Konfirmasi Penukaran Hadiah
- */
 function claimRewardVoucher(voucherTitle, cost, prefix) {
   const user =
     typeof TEDUH_DATA !== "undefined" && TEDUH_DATA.getUserData
@@ -432,9 +287,6 @@ function claimRewardVoucher(voucherTitle, cost, prefix) {
   pendingRewardToRedeem = { voucherTitle, cost, prefix };
 
   const confirmModal = document.getElementById("rwConfirmModalBackdrop");
-  const confirmCard = confirmModal
-    ? confirmModal.querySelector(".rw-modal-card")
-    : null;
   const itemNameEl = document.getElementById("rwConfirmItemName");
   const pointsEl = document.getElementById("rwConfirmPoints");
   const curPointsEl = document.getElementById("rwConfirmCurrentPoints");
@@ -443,28 +295,15 @@ function claimRewardVoucher(voucherTitle, cost, prefix) {
 
   if (itemNameEl) itemNameEl.textContent = voucherTitle;
   if (pointsEl) pointsEl.textContent = `${cost.toLocaleString("id-ID")} Poin`;
-  if (curPointsEl)
-    curPointsEl.textContent = `${currentPoints.toLocaleString("id-ID")} Poin`;
-  if (costPointsEl)
-    costPointsEl.textContent = `-${cost.toLocaleString("id-ID")} Poin`;
-  if (remPointsEl)
-    remPointsEl.textContent = `${(currentPoints - cost).toLocaleString("id-ID")} Poin`;
+  if (curPointsEl) curPointsEl.textContent = `${currentPoints.toLocaleString("id-ID")} Poin`;
+  if (costPointsEl) costPointsEl.textContent = `-${cost.toLocaleString("id-ID")} Poin`;
+  if (remPointsEl) remPointsEl.textContent = `${(currentPoints - cost).toLocaleString("id-ID")} Poin`;
 
   if (confirmModal) {
     confirmModal.classList.add("is-visible");
-    if (typeof gsap !== "undefined" && confirmCard) {
-      gsap.fromTo(
-        confirmCard,
-        { scale: 0.88, opacity: 0, y: 24 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.5)" },
-      );
-    }
   }
 }
 
-/**
- * Menutup Modal Konfirmasi Penukaran Hadiah
- */
 function closeRewardConfirmModal(e) {
   if (
     e &&
@@ -475,83 +314,45 @@ function closeRewardConfirmModal(e) {
     return;
   }
   const modal = document.getElementById("rwConfirmModalBackdrop");
-  const modalCard = modal ? modal.querySelector(".rw-modal-card") : null;
   if (modal) {
-    if (typeof gsap !== "undefined" && modalCard) {
-      gsap.to(modalCard, {
-        scale: 0.92,
-        opacity: 0,
-        y: 12,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-visible");
-          pendingRewardToRedeem = null;
-        },
-      });
-    } else {
-      modal.classList.remove("is-visible");
-      pendingRewardToRedeem = null;
-    }
+    modal.classList.remove("is-visible");
+    pendingRewardToRedeem = null;
   }
 }
 
-/**
- * Eksekusi Penukaran Hadiah setelah Konfirmasi "Ya, Tukar Sekarang"
- */
 function executeRewardRedeem() {
   if (!pendingRewardToRedeem) return;
   const { voucherTitle, cost, prefix } = pendingRewardToRedeem;
 
-  // Kurangi poin pengguna di state data
   if (typeof TEDUH_DATA !== "undefined" && TEDUH_DATA.updateUserPoints) {
     TEDUH_DATA.updateUserPoints(-cost);
   }
 
-  // Tutup modal konfirmasi
   const confirmModal = document.getElementById("rwConfirmModalBackdrop");
   if (confirmModal) confirmModal.classList.remove("is-visible");
 
-  // Sinkronisasi data poin di seluruh tampilan
   syncRewardPageData();
 
-  // Buka modal hasil klaim voucher sukses
   const randomNum = Math.floor(1000 + Math.random() * 9000);
   const voucherCode = `${prefix}-${randomNum}`;
 
   const successModal = document.getElementById("rwModalBackdrop");
-  const successCard = successModal
-    ? successModal.querySelector(".rw-modal-card")
-    : null;
   const modalTitle = document.getElementById("rwModalTitle");
   const modalDesc = document.getElementById("rwModalDesc");
   const modalCode = document.getElementById("rwModalVoucherCode");
 
   if (modalTitle) modalTitle.textContent = `${voucherTitle} Berhasil Diklaim!`;
-  if (modalDesc)
-    modalDesc.textContent = `Tunjukkan kode voucher berikut kepada petugas posko mitra saat pengambilan bibit atau penukaran benefit.`;
+  if (modalDesc) modalDesc.textContent = `Tunjukkan kode voucher berikut kepada petugas posko mitra saat pengambilan bibit atau penukaran benefit.`;
   if (modalCode) modalCode.textContent = voucherCode;
 
   if (successModal) {
     successModal.classList.add("is-visible");
-    if (typeof gsap !== "undefined" && successCard) {
-      gsap.fromTo(
-        successCard,
-        { scale: 0.88, opacity: 0, y: 24 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.5)" },
-      );
-    }
   }
 
-  showRwToast(
-    `Berhasil menukarkan ${cost.toLocaleString("id-ID")} poin untuk ${voucherTitle}!`,
-  );
+  showRwToast(`Berhasil menukarkan ${cost.toLocaleString("id-ID")} poin untuk ${voucherTitle}!`);
   pendingRewardToRedeem = null;
 }
 
-/**
- * Menutup Modal Voucher Sukses
- */
 function closeRewardModal(e) {
   if (
     e &&
@@ -562,28 +363,11 @@ function closeRewardModal(e) {
     return;
   }
   const modal = document.getElementById("rwModalBackdrop");
-  const modalCard = modal ? modal.querySelector(".rw-modal-card") : null;
   if (modal) {
-    if (typeof gsap !== "undefined" && modalCard) {
-      gsap.to(modalCard, {
-        scale: 0.92,
-        opacity: 0,
-        y: 12,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          modal.classList.remove("is-visible");
-        },
-      });
-    } else {
-      modal.classList.remove("is-visible");
-    }
+    modal.classList.remove("is-visible");
   }
 }
 
-/**
- * Sinkronisasi Data Poin Pengguna
- */
 function syncRewardPageData() {
   if (typeof TEDUH_DATA === "undefined" || !TEDUH_DATA.getUserData) return;
   const user = TEDUH_DATA.getUserData();
@@ -605,9 +389,6 @@ function syncRewardPageData() {
   });
 }
 
-/**
- * Toast Notifikasi
- */
 let rwToastTimeout = null;
 function showRwToast(msg) {
   const toast = document.getElementById("rwToast");
@@ -620,9 +401,6 @@ function showRwToast(msg) {
   }, 2500);
 }
 
-/**
- * Navigasi Menu Mobile Drawer
- */
 function initMobileNav() {
   const hamburger = document.getElementById("navbarHamburger");
   const overlay = document.getElementById("mobileNavOverlay");
@@ -654,8 +432,8 @@ function initMobileNav() {
   });
 }
 
-// Global exports
 window.switchRewardTab = switchRewardTab;
+window.animateVoucherCatalog = animateVoucherCatalog;
 window.claimRewardVoucher = claimRewardVoucher;
 window.closeRewardConfirmModal = closeRewardConfirmModal;
 window.executeRewardRedeem = executeRewardRedeem;

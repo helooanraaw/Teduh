@@ -4,21 +4,12 @@
  * Deskripsi: Pengendali Navigasi Global, Drawer Responsif, Notifikasi & Menu Profil
  *
  * ==========================================================================
- * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
- * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
- *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
- * 2. Layanan Peta & Citra Satelit:
- *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
- *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
- * 3. Media Fotografi & Dokumentasi Lapangan (assets/*):
- *    - Unsplash, Pexels, Wikimedia Commons, Freepik (Open License / CC BY-SA 4.0 / Free Commercial Rights).
- * 4. Identitas Grafis & Ilustrasi Digital:
- *    - Aset Vektor Orisinal & Maskot Tim Pengembang Teduh.
+ * SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+ * 1. Aset Visual (assets/*): Dihasilkan via Generative AI (Banana AI).
+ * 2. Desain Logo: Dibuat mandiri via Canva oleh tim pengembang.
+ * 3. Pustaka Eksternal: jQuery 3.7.1 CDN (MIT License).
  * ==========================================================================
  */
-
 document.addEventListener("DOMContentLoaded", () => {
   initMobileNavigation();
   initSmoothScroll();
@@ -76,54 +67,7 @@ function initMobileNavigation() {
   }
 }
 
-let teduhLenis = null;
-
 function initSmoothScroll() {
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  if (prefersReducedMotion) return;
-
-  // Lewati inisialisasi pada peta interaktif fullscreen (map.html) agar kontrol gestur peta bebas
-  const isMapPage =
-    !!document.getElementById("map") &&
-    (window.location.pathname.includes("map.html") ||
-      document.body.classList.contains("map-page"));
-
-  if (typeof Lenis !== "undefined" && !isMapPage) {
-    teduhLenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential out untuk transisi scroll yang lembut dan alami
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.25,
-      infinite: false,
-    });
-
-    // Sinkronisasi frame rate dengan GSAP ScrollTrigger
-    if (typeof ScrollTrigger !== "undefined") {
-      teduhLenis.on("scroll", ScrollTrigger.update);
-
-      if (typeof gsap !== "undefined" && gsap.ticker) {
-        gsap.ticker.add((time) => {
-          teduhLenis.raf(time * 1000);
-        });
-        gsap.ticker.lagSmoothing(0);
-      }
-    } else {
-      function raf(time) {
-        teduhLenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    }
-
-    window.teduhLenis = teduhLenis;
-  }
-
-  // Smooth scroll handler untuk semua tautan internal anchor (#section)
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       const targetId = this.getAttribute("href");
@@ -132,14 +76,10 @@ function initSmoothScroll() {
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
         e.preventDefault();
-        if (teduhLenis) {
-          teduhLenis.scrollTo(targetEl, { offset: -60, duration: 1.15 });
-        } else {
-          targetEl.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
+        targetEl.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }
     });
   });

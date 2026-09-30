@@ -4,28 +4,21 @@
   Deskripsi: Halaman Utama (Landing Page), Visualisasi Termal & Panduan Bibit Pohon Peneduh
 
   ==========================================================================
-  SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
-  1. Fotografi & Dokumentasi Lapangan (Seluruh aset memiliki Open License / Bebas Hak Cipta Komersial):
-     - Potret Avatar Warga & Profil (assets/avatars/*): Unsplash & Pexels (Open License / Free for Commercial Use).
-     - Direktori Pohon & Botani Peneduh (assets/trees/*): Wikimedia Commons & Open Flora Archive (Creative Commons CC BY-SA 4.0).
-     - Dokumentasi Aksi Pekarangan (assets/feed/*): Unsplash & Freepik (Open License with Free Commercial Rights).
-     - Katalog Reward & Voucher Ekologis (assets/vouchers/*): Freepik & Unsplash (Open License).
-     - Lanskap Perkotaan & Kanopi Hijau (assets/landing/*): Unsplash (Open License / Free to Use).
-  2. Ilustrasi & Identitas Visual Orisinal:
-     - Maskot Interaktif Teduh Bot (assets/bot/*): Ilustrasi Digital Orisinal Tim Pengembang Teduh.
-     - Logo & Brandmark Teduh (assets/logo/*): Desain Vektor Orisinal Tim Pengembang Teduh.
-     - Logo Institusi & Mitra Ekologis (assets/mitra/*): Aset Vektor Resmi Domain Publik / Mitra Terkait.
-  3. Peta Spasial & Citra Satelit:
-     - Citra Satelit Google Hybrid: Google Maps / Earth Tile Server.
-     - CartoDB Dark Matter & Voyager: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
-  4. Tipografi, Ikonografi & Pustaka Eksternal:
-     - Google Fonts Plus Jakarta Sans: Tokyo Type Directors Club & Tokotype (SIL Open Font License 1.1).
-     - Lucide & Feather Icons: Lucide Project Contributors (ISC / MIT License).
-     - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
-     - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
-     - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
+  SUMBER KARYA & ATRIBUSI MEDIA / ASET:
+  1. Aset Visual, Fotografi & Ilustrasi Botani (assets/*):
+     - Seluruh potret avatar warga, direktori tajuk pohon, dokumentasi aksi pekarangan,
+       katalog reward/voucher, dan lanskap lingkungan dibuat orisinal menggunakan Generative AI (AI Image Generator / Banana AI).
+  2. Logo, Brandmark & Maskot:
+     - Logo & Identitas Brand Teduh: Didesain mandiri menggunakan Canva oleh tim pengembang.
+     - Maskot Interaktif Teduh Bot: Ilustrasi karakter digital orisinal pengembang.
+  3. Pustaka Eksternal, Tipografi & Peta:
+     - Tipografi: Google Fonts Plus Jakarta Sans (SIL Open Font License 1.1).
+     - Ikonografi: Lucide Icons (MIT License).
+     - JavaScript Library: jQuery 3.7.1 CDN (OpenJS Foundation / MIT License).
+     - Framework Gaya: Tailwind CSS CDN.
   ==========================================================================
 -->
+
 
 <!doctype html>
 <html lang="id">
@@ -63,9 +56,9 @@
 
         <div class="navbar-links">
           <a href="index.html" class="navbar-link active">Beranda</a>
-          <a href="map.html" class="navbar-link">Konsol Peta</a>
-          <a href="community.html" class="navbar-link">Komunitas</a>
-          <a href="reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
+          <a href="pages/map.html" class="navbar-link">Konsol Peta</a>
+          <a href="pages/community.html" class="navbar-link">Komunitas</a>
+          <a href="pages/reward.html" class="navbar-link">Peringkat &amp; Hadiah</a>
         </div>
 
         <div class="navbar-actions">
@@ -175,7 +168,7 @@
               </div>
 
               <div class="nav-popup-menu">
-                <a href="profile.html" class="nav-popup-item" role="menuitem">
+                <a href="pages/profile.html" class="nav-popup-item" role="menuitem">
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
@@ -300,7 +293,7 @@
             </svg>
             <span>Beranda</span>
           </a>
-          <a href="map.html" class="mobile-nav-link">
+          <a href="pages/map.html" class="mobile-nav-link">
             <svg
               width="18"
               height="18"
@@ -319,7 +312,7 @@
             </svg>
             <span>Konsol Peta</span>
           </a>
-          <a href="community.html" class="mobile-nav-link">
+          <a href="pages/community.html" class="mobile-nav-link">
             <svg
               width="18"
               height="18"
@@ -337,7 +330,7 @@
             </svg>
             <span>Komunitas</span>
           </a>
-          <a href="reward.html" class="mobile-nav-link">
+          <a href="pages/reward.html" class="mobile-nav-link">
             <svg
               width="18"
               height="18"
@@ -360,7 +353,7 @@
 
       <div class="mobile-nav-footer">
         <a
-          href="profile.html"
+          href="pages/profile.html"
           class="mobile-nav-profile"
           aria-label="Buka Profil John Doe"
         >
@@ -446,7 +439,7 @@
               </p>
 
               <div class="hero-action-row">
-                <a href="map.html" class="btn-hero-black">
+                <a href="pages/map.html" class="btn-hero-black">
                   <span>Cek Suhu Sekarang</span>
                   <svg
                     width="15"
@@ -626,7 +619,7 @@
                 </div>
 
                 <div class="about-action-wrap">
-                  <a href="map.html" class="btn-black">
+                  <a href="pages/map.html" class="btn-black">
                     <span>Cek Suhu di Peta</span>
                     <svg
                       width="15"
@@ -833,6 +826,13 @@
                     alt="Aksi Penanaman Pohon Peneduh Ramah Lingkungan"
                     class="feature-img-1to1"
                   />
+                  <img
+                    id="featureImageNext"
+                    src="assets/landing/feature-1.jpg"
+                    alt="Aksi Penanaman Pohon Peneduh Ramah Lingkungan"
+                    class="feature-img-1to1 feature-img-overlay"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             </div>
@@ -855,7 +855,7 @@
                         penghijauan.
                       </p>
                       <div class="acc-bottom">
-                        <a href="map.html" class="btn-link">
+                        <a href="pages/map.html" class="btn-link">
                           <span>Buka Peta</span>
                           <svg
                             width="14"
@@ -888,7 +888,7 @@
                         fondasi rumah dan tidak merusak saluran pipa got.
                       </p>
                       <div class="acc-bottom">
-                        <a href="map.html" class="btn-link">
+                        <a href="pages/map.html" class="btn-link">
                           <span>Lihat Rekomendasi</span>
                           <svg
                             width="14"
@@ -921,7 +921,7 @@
                         setelah pepohonan mulai tumbuh menaungi kawasan.
                       </p>
                       <div class="acc-bottom">
-                        <a href="map.html" class="btn-link">
+                        <a href="pages/map.html" class="btn-link">
                           <span>Coba Simulasi Suhu</span>
                           <svg
                             width="14"
@@ -954,8 +954,40 @@
                         dinding rumah dan kabel jalanan agar pohon tumbuh rapi.
                       </p>
                       <div class="acc-bottom">
-                        <a href="map.html" class="btn-link">
+                        <a href="pages/map.html" class="btn-link">
                           <span>Cek Panduan Tanam</span>
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="acc-item" data-img="assets/feed/feed-gotong-royong.jpg">
+                  <div class="acc-header">
+                    <h3>5. Ajak Warga Aksi Tanam & Dapatkan Poin</h3>
+                    <div class="acc-toggle" aria-hidden="true"></div>
+                  </div>
+                  <div class="acc-content">
+                    <div class="acc-inner">
+                      <p>
+                        Ajak tetangga gotong royong menanam pohon bersama di gang atau perumahan, lalu tukarkan poin keaktifan dengan berbagai voucher mitra dan bibit gratis.
+                      </p>
+                      <div class="acc-bottom">
+                        <a href="pages/community.html" class="btn-link">
+                          <span>Ajak Warga Menanam</span>
                           <svg
                             width="14"
                             height="14"
@@ -1378,7 +1410,7 @@
                 lebih sejuk, asri, dan nyaman.
               </p>
               <div class="hp-actions">
-                <a href="map.html" class="btn-black">
+                <a href="pages/map.html" class="btn-black">
                   <span>Buka Peta Sekarang</span>
                   <svg
                     width="15"
@@ -1521,10 +1553,10 @@
             <div class="footer-nav-group">
               <h5>Layanan</h5>
               <ul>
-                <li><a href="map.html">Konsol Peta Suhu</a></li>
-                <li><a href="reward.html">Peringkat &amp; Hadiah</a></li>
-                <li><a href="map.html">Simulasi Kesejukan</a></li>
-                <li><a href="reward.html">Katalog Bibit Pohon</a></li>
+                <li><a href="pages/map.html">Konsol Peta Suhu</a></li>
+                <li><a href="pages/reward.html">Peringkat &amp; Hadiah</a></li>
+                <li><a href="pages/map.html">Simulasi Kesejukan</a></li>
+                <li><a href="pages/reward.html">Katalog Bibit Pohon</a></li>
               </ul>
             </div>
 
@@ -1532,8 +1564,8 @@
               <h5>Dukungan</h5>
               <ul>
                 <li><a href="index.html#faq">Pusat Bantuan</a></li>
-                <li><a href="community.html">Komunitas Warga</a></li>
-                <li><a href="reward.html">Klaim Bibit Gratis</a></li>
+                <li><a href="pages/community.html">Komunitas Warga</a></li>
+                <li><a href="pages/reward.html">Klaim Bibit Gratis</a></li>
                 <li><a href="index.html#faq">Ketentuan Layanan</a></li>
               </ul>
             </div>
@@ -1616,7 +1648,7 @@
 
     <div class="td-chatbot-wrapper">
       <div id="tdChatTooltip" class="td-chatbot-tooltip" role="status">
-        Tanyakan Teduh Bot! 😉
+        Ada yang bisa saya bantu? 😊
       </div>
 
       <button
@@ -1689,7 +1721,7 @@
           </button>
         </div>
 
-        <div id="tdChatBody" class="td-chat-body" data-lenis-prevent>
+        <div id="tdChatBody" class="td-chat-body">
           <div class="td-msg-row bot">
             <div class="td-msg-avatar bot-avatar" aria-hidden="true">
               <img src="assets/bot/teduh-bot.png" alt="Teduh Bot" />
@@ -1770,11 +1802,7 @@
           </form>
         </div>
       </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
