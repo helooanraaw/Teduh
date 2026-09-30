@@ -1037,6 +1037,8 @@ function formatPostContent(text) {
   formatted = formatted.replace(/#([\w\u00C0-\u024F]+)/g, (match) => {
     return `<span class="km-inline-tag" data-tag="${match}" onclick="filterByTag('${match}')" onmouseenter="showTagHoverCard(event, '${match}')" onmouseleave="hideHoverCard()">${match}</span>`;
   });
+
+  formatted = formatted.replace(/\n/g, "<br>");
   return formatted;
 }
 
