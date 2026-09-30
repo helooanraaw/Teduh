@@ -981,6 +981,13 @@
 .testimonial__portrait[data-testimonial-slot="previous"] {
   left: 0%;
   width: 28%;
+  transform: scale(0.92) rotateY(-10deg) translateZ(-20px);
+  filter: grayscale(0.18) brightness(0.85);
+  opacity: 0.75;
+}
+
+.testimonial__portrait[data-testimonial-slot="previous"] img {
+  transform: scale(1.08) translateX(-6%);
 }
 
 .testimonial__portrait[data-testimonial-slot="active"] {
@@ -990,11 +997,24 @@
   border: none;
   box-shadow: none;
   z-index: 2;
+  transform: scale(1) rotateY(0deg) translateZ(0);
+  filter: brightness(1) contrast(1);
+}
+
+.testimonial__portrait[data-testimonial-slot="active"] img {
+  transform: scale(1) translateX(0);
 }
 
 .testimonial__portrait[data-testimonial-slot="next"] {
   left: 72%;
   width: 28%;
+  transform: scale(0.92) rotateY(10deg) translateZ(-20px);
+  filter: grayscale(0.18) brightness(0.85);
+  opacity: 0.75;
+}
+
+.testimonial__portrait[data-testimonial-slot="next"] img {
+  transform: scale(1.08) translateX(6%);
 }
 
 .testimonial__portrait[data-testimonial-slot="hidden-before"],
@@ -1003,9 +1023,12 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: scale(0.85) translateZ(-40px);
+  filter: grayscale(0.3) brightness(0.7);
   transition:
     left 420ms cubic-bezier(0.22, 1, 0.36, 1),
     width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity 260ms ease,
     visibility 0s linear 420ms;
 }

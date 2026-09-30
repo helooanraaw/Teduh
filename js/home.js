@@ -253,6 +253,41 @@ function initTestimonialGallery() {
       nameEl.textContent = activeItem.dataset.name;
       roleEl.textContent = activeItem.dataset.role;
       activeIndex = active;
+
+      if (hasGSAP) {
+        gsap.set(activeItem, {
+          scale: 1,
+          rotateY: 0,
+          z: 0,
+          filter: "brightness(1) contrast(1)",
+          opacity: 1,
+        });
+        const activeImg = activeItem.querySelector("img");
+        if (activeImg) {
+          gsap.set(activeImg, { scale: 1, xPercent: 0, rotate: 0 });
+        }
+
+        items.forEach((item, i) => {
+          if (i === active) return;
+          const img = item.querySelector("img");
+          const isPrev = i === previous;
+          const isNxt = i === next;
+          gsap.set(item, {
+            scale: 0.92,
+            rotateY: isPrev ? -10 : isNxt ? 10 : 0,
+            z: -20,
+            filter: "grayscale(0.18) brightness(0.85)",
+            opacity: isPrev || isNxt ? 0.75 : 0,
+          });
+          if (img) {
+            gsap.set(img, {
+              scale: 1.08,
+              xPercent: isPrev ? -6 : isNxt ? 6 : 0,
+              rotate: 0,
+            });
+          }
+        });
+      }
       return;
     }
 
