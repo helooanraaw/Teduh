@@ -3,8 +3,6 @@ docs/
 AGENTS.md
 PRD.md
 *.pdf
-*.docx
-MockupWebDesignTeduh.png
 NutriNesia/
 nut-lens-master/
 .superpowers/
@@ -18,4 +16,3 @@ screenshot.png
 .vscode/
 .DS_Store
 Thumbs.db
-scratch/

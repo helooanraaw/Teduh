@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initComposerAutocomplete();
   checkMissionUrlParams();
   initCommunityGSAPAnimations();
+  initThreadCardClickNavigation();
+  initPhotoLightboxListeners();
 });
 
 function initCommunityGSAPAnimations() {
@@ -2455,3 +2457,171 @@ window.formatHashtags = formatHashtags;
 window.showTagHoverCard = showTagHoverCard;
 window.showMentionHoverCard = showMentionHoverCard;
 window.hideHoverCard = hideHoverCard;
+
+/* ==========================================================================
+   8. PHOTO LIGHTBOX ENGINE & THREAD CARD NAVIGATION
+   ========================================================================== */
+let activeLightboxPhotos = [];
+let currentLightboxIndex = 0;
+
+function openPhotoLightbox(triggerEl, e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  const modal = document.getElementById("kmPhotoLightboxModal");
+  const lightboxImg = document.getElementById("kmLightboxImage");
+  if (!modal || !lightboxImg) return;
+
+  // Cari semua foto dalam kartu atau galeri yang sama
+  const container = triggerEl.closest(".km-photo-grid, .km-detail-photos, .km-thread-body, .km-detail-hero-content");
+  let photoElements = [];
+  if (container) {
+    photoElements = Array.from(container.querySelectorAll("img"));
+  } else {
+    photoElements = [triggerEl.querySelector("img") || triggerEl];
+  }
+
+  activeLightboxPhotos = photoElements
+    .map((img) => img.getAttribute("src"))
+    .filter(Boolean);
+
+  const currentImg = triggerEl.querySelector("img") || triggerEl;
+  const currentSrc = currentImg
+    ? currentImg.getAttribute("src")
+    : activeLightboxPhotos[0];
+
+  currentLightboxIndex = activeLightboxPhotos.indexOf(currentSrc);
+  if (currentLightboxIndex < 0) currentLightboxIndex = 0;
+
+  updateLightboxView();
+
+  modal.style.display = "flex";
+  void modal.offsetWidth; // Force reflow
+  modal.classList.add("is-active");
+  document.body.style.overflow = "hidden";
+}
+
+function updateLightboxView() {
+  const lightboxImg = document.getElementById("kmLightboxImage");
+  const counterEl = document.getElementById("kmLightboxCounter");
+  const prevBtn = document.getElementById("kmLightboxPrevBtn");
+  const nextBtn = document.getElementById("kmLightboxNextBtn");
+
+  if (!lightboxImg || !activeLightboxPhotos.length) return;
+
+  const total = activeLightboxPhotos.length;
+  const currentSrc = activeLightboxPhotos[currentLightboxIndex];
+
+  lightboxImg.classList.add("is-sliding");
+  setTimeout(() => {
+    lightboxImg.src = currentSrc;
+    lightboxImg.classList.remove("is-sliding");
+  }, 80);
+
+  if (counterEl) {
+    counterEl.textContent = `${currentLightboxIndex + 1} / ${total}`;
+  }
+
+  if (prevBtn) {
+    prevBtn.style.display = total > 1 ? "flex" : "none";
+  }
+  if (nextBtn) {
+    nextBtn.style.display = total > 1 ? "flex" : "none";
+  }
+}
+
+function prevLightboxPhoto(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (activeLightboxPhotos.length <= 1) return;
+  currentLightboxIndex =
+    (currentLightboxIndex - 1 + activeLightboxPhotos.length) %
+    activeLightboxPhotos.length;
+  updateLightboxView();
+}
+
+function nextLightboxPhoto(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (activeLightboxPhotos.length <= 1) return;
+  currentLightboxIndex =
+    (currentLightboxIndex + 1) % activeLightboxPhotos.length;
+  updateLightboxView();
+}
+
+function closePhotoLightbox(e) {
+  if (
+    e &&
+    e.target &&
+    e.target.closest(".km-lightbox-wrapper") &&
+    !e.target.closest(".km-lightbox-close")
+  ) {
+    return;
+  }
+  const modal = document.getElementById("kmPhotoLightboxModal");
+  if (!modal) return;
+
+  modal.classList.remove("is-active");
+  document.body.style.overflow = "";
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 220);
+}
+
+function initPhotoLightboxListeners() {
+  document.addEventListener("keydown", (e) => {
+    const modal = document.getElementById("kmPhotoLightboxModal");
+    if (!modal || modal.style.display === "none" || !modal.classList.contains("is-active")) return;
+
+    if (e.key === "Escape") {
+      closePhotoLightbox();
+    } else if (e.key === "ArrowLeft") {
+      prevLightboxPhoto(e);
+    } else if (e.key === "ArrowRight") {
+      nextLightboxPhoto(e);
+    }
+  });
+}
+
+function initThreadCardClickNavigation() {
+  const feedContainer = document.getElementById("kmFeedContainer");
+  if (!feedContainer) return;
+
+  feedContainer.addEventListener("click", (e) => {
+    // Abaikan jika klik elemen interaktif di dalam kartu
+    if (
+      e.target.closest("button") ||
+      e.target.closest("a") ||
+      e.target.closest("input") ||
+      e.target.closest("textarea") ||
+      e.target.closest(".km-inline-tag") ||
+      e.target.closest(".km-photo-item") ||
+      e.target.closest(".km-composer-backdrop") ||
+      e.target.closest(".km-inline-comment-row") ||
+      e.target.closest(".km-nested-reply-box") ||
+      e.target.closest(".km-tag-hover-card")
+    ) {
+      return;
+    }
+
+    const card = e.target.closest(".km-thread-card");
+    if (!card) return;
+
+    const threadId = card.id || "thread-1";
+    window.location.href = `community-detail.html?id=${encodeURIComponent(threadId)}`;
+  });
+}
+
+// Global Lightbox & Navigation Exports
+window.openPhotoLightbox = openPhotoLightbox;
+window.closePhotoLightbox = closePhotoLightbox;
+window.prevLightboxPhoto = prevLightboxPhoto;
+window.nextLightboxPhoto = nextLightboxPhoto;
+window.initPhotoLightboxListeners = initPhotoLightboxListeners;
+window.initThreadCardClickNavigation = initThreadCardClickNavigation;

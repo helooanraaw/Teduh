@@ -9,6 +9,8 @@
  * 2. Identitas Visual: Logo via Canva, Maskot Teduh Bot orisinal, Foto via Generative AI (Banana AI).
  * ==========================================================================
  */
+
+
 :root {
   --color-pine: #1a382b;
   --color-pine-hover: #142c22;
@@ -27,7 +29,7 @@
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
