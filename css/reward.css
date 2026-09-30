@@ -375,6 +375,7 @@
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  border: none;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -395,31 +396,22 @@
 .rw-podium-bar.bar-1 {
   height: 220px;
   background: #142e23;
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  border-top: 3.5px solid #f59e0b;
-  box-shadow:
-    inset 0 1px 0 rgba(245, 158, 11, 0.4),
-    0 10px 24px -4px rgba(20, 46, 35, 0.22);
+  border: none;
+  box-shadow: 0 10px 24px -4px rgba(20, 46, 35, 0.22);
 }
 
 .rw-podium-bar.bar-2 {
   height: 168px;
   background: #1c362b;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  border-top: 3.5px solid #94a3b8;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 6px 18px -4px rgba(28, 54, 43, 0.16);
+  border: none;
+  box-shadow: 0 6px 18px -4px rgba(28, 54, 43, 0.16);
 }
 
 .rw-podium-bar.bar-3 {
   height: 132px;
   background: #24372e;
-  border: 1px solid rgba(186, 78, 42, 0.35);
-  border-top: 3.5px solid #ba4e2a;
-  box-shadow:
-    inset 0 1px 0 rgba(186, 78, 42, 0.35),
-    0 6px 16px -4px rgba(36, 55, 46, 0.14);
+  border: none;
+  box-shadow: 0 6px 16px -4px rgba(36, 55, 46, 0.14);
 }
 
 .rw-podium-user-name {
