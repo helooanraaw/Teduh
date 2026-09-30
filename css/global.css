@@ -283,27 +283,52 @@ button {
   position: sticky;
   top: 16px;
   z-index: 1000;
-  width: calc(100% - 48px);
-  max-width: var(--container-max);
+  width: calc(100% - 32px);
+  max-width: var(--container-max-wide, 1340px);
   border-radius: var(--radius-full);
   margin: 16px auto 0 auto;
-  background: rgba(238, 234, 218, 0.88);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid #ddd8c4;
-  box-shadow:
-    0 4px 20px rgba(26, 56, 43, 0.06),
-    0 1px 3px rgba(14, 17, 22, 0.03);
-  transition: all var(--transition-base);
+  background: rgba(238, 234, 218, 0.78);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(26, 56, 43, 0.05);
+  transition:
+    max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-inner {
   height: auto;
-  min-height: 60px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 24px;
+  padding: 10px 32px;
+  transition:
+    padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    min-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar.navbar-scrolled {
+  width: calc(100% - 48px);
+  max-width: var(--container-max, 1180px);
+  background: rgba(235, 230, 212, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: none !important;
+  box-shadow: 0 8px 30px rgba(14, 17, 22, 0.08);
+}
+
+.navbar.navbar-scrolled .navbar-inner {
+  padding: 7px 22px;
+  min-height: 56px;
+}
+
+.navbar.navbar-scrolled .navbar-links {
+  gap: 26px;
 }
 
 .navbar-brand {
@@ -331,13 +356,22 @@ button {
 
 @media (max-width: 639px) {
   .navbar {
-    width: calc(100% - 24px);
+    width: calc(100% - 16px);
     margin: 10px auto 0 auto;
     top: 10px;
+    border: none !important;
   }
   .navbar-inner {
+    padding: 8px 16px;
+    min-height: 54px;
+  }
+  .navbar.navbar-scrolled {
+    width: calc(100% - 24px);
+    border: none !important;
+  }
+  .navbar.navbar-scrolled .navbar-inner {
     padding: 6px 14px;
-    min-height: 52px;
+    min-height: 50px;
   }
   .navbar-brand-logo {
     display: none !important;
@@ -350,7 +384,8 @@ button {
 .navbar-links {
   display: none;
   align-items: center;
-  gap: 28px;
+  gap: 36px;
+  transition: gap 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (min-width: 860px) {

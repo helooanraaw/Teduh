@@ -376,15 +376,11 @@ function initResponsiveNavbarScroll() {
   const hero = document.querySelector(".hero");
 
   const updateNavbarState = () => {
-    if (window.innerWidth >= 1024) {
-      navbar.classList.remove("navbar-transparent", "navbar-scrolled");
-      return;
-    }
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
 
     if (!hero) {
-      if (window.scrollY > 40) {
+      if (scrollY > 30) {
         navbar.classList.add("navbar-scrolled");
-        navbar.classList.remove("navbar-transparent");
       } else {
         navbar.classList.remove("navbar-scrolled");
       }
@@ -392,15 +388,18 @@ function initResponsiveNavbarScroll() {
     }
 
     const heroRect = hero.getBoundingClientRect();
+    const triggerThreshold = 140;
 
-    const triggerThreshold = 120;
-
-    if (heroRect.bottom <= triggerThreshold) {
+    if (heroRect.bottom <= triggerThreshold || scrollY > 50) {
       navbar.classList.add("navbar-scrolled");
       navbar.classList.remove("navbar-transparent");
     } else {
-      navbar.classList.add("navbar-transparent");
       navbar.classList.remove("navbar-scrolled");
+      if (window.innerWidth < 1024) {
+        navbar.classList.add("navbar-transparent");
+      } else {
+        navbar.classList.remove("navbar-transparent");
+      }
     }
   };
 
