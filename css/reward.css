@@ -777,11 +777,15 @@
 .rw-bento-hero-points {
   font-size: 14px;
   font-weight: 700;
-  color: var(--color-primary, #1a382b);
-  background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
+  color: #925f05;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.22);
   padding: 6px 14px;
   border-radius: var(--radius-full, 9999px);
   letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rw-btn-claim-hero {
@@ -954,12 +958,16 @@
 .rw-voucher-points-tag {
   font-size: 13px;
   font-weight: 700;
-  color: var(--color-primary, #1a382b);
-  background: var(--color-primary-container, rgba(221, 217, 177, 0.5));
+  color: #925f05;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.22);
   padding: 4px 12px;
   border-radius: var(--radius-full, 9999px);
   white-space: nowrap;
   letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rw-btn-claim-voucher {
