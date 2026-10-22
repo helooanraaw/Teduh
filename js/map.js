@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TEDUH DIGITAL PLATFORM
  * Berkas: js/map.js
  * Deskripsi: Mesin Spasial Peta Satelit Hybrid, Geolokasi, Analisis Titik Tanam & Misi Gotong Royong
@@ -2089,8 +2089,8 @@ function selectZone(
               (f) => f.name === citizenMission.authorName,
             )?.avatarImg
           : null) ||
-        "../assets/avatars/dewi-lestari.jpg";
-      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(citizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">`;
+        "../assets/avatars/dewi-lestari.webp";
+      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(citizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.webp'">`;
     }
     if (authorNameEl) {
       authorNameEl.textContent = citizenMission.authorName || "Penggagas Warga";
@@ -2375,8 +2375,8 @@ function populateDrawer(zone) {
               (f) => f.name === activeCitizenMission.authorName,
             )?.avatarImg
           : null) ||
-        "../assets/avatars/dewi-lestari.jpg";
-      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(activeCitizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">`;
+        "../assets/avatars/dewi-lestari.webp";
+      avatarEl.innerHTML = `<img src="${avatarImgSrc}" alt="${escapeHtml(activeCitizenMission.authorName || "Penggagas")}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.webp'">`;
     }
     if (authorNameEl) {
       authorNameEl.textContent =
@@ -2448,7 +2448,7 @@ function populateDrawer(zone) {
     const safetyBadge = document.getElementById("treeSafetyBadge");
 
     if (treeImgEl) {
-      treeImgEl.src = tree.image || "../assets/trees/pohon-tanjung.jpg";
+      treeImgEl.src = tree.image || "../assets/trees/pohon-tanjung.webp";
       treeImgEl.alt = tree.name;
     }
     if (treeNameEl) treeNameEl.textContent = tree.name;
@@ -2626,10 +2626,10 @@ function populateDrawer(zone) {
             c.avatarImg ||
             (friendObj
               ? friendObj.avatarImg
-              : "../assets/avatars/dewi-lestari.jpg");
+              : "../assets/avatars/dewi-lestari.webp");
           return `
           <div class="drawer-volunteer-item">
-            <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(c.name)}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
+            <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(c.name)}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.webp'"></div>
             <div class="drawer-volunteer-info">
               <span class="drawer-volunteer-name">${escapeHtml(c.name)}</span>
             </div>
@@ -2743,14 +2743,14 @@ function renderDrawerVolunteers(mission) {
           (friendObj
             ? friendObj.avatarImg
             : v.isSelf
-              ? "../assets/avatars/john-doe.jpg"
-              : "../assets/avatars/dewi-lestari.jpg");
+              ? "../assets/avatars/john-doe.webp"
+              : "../assets/avatars/dewi-lestari.webp");
         const nameText = escapeHtml(v.name || "Warga");
         const isSelfClass = v.isSelf ? "is-self" : "";
 
         return `
         <div class="drawer-volunteer-item ${isSelfClass}">
-          <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${nameText}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="drawer-volunteer-avatar"><img src="${avatarImgSrc}" alt="${nameText}" class="w-full h-full object-cover rounded-full" onerror="this.src='../assets/avatars/dewi-lestari.webp'"></div>
           <div class="drawer-volunteer-info">
             <span class="drawer-volunteer-name">${nameText}</span>
           </div>
@@ -3672,12 +3672,12 @@ function renderNearbyFriendsForZone(zone) {
       (f) => f.username === friend.username || f.name === friend.name,
     );
 
-    const avatarImgSrc = friend.avatarImg || "../assets/avatars/dewi-lestari.jpg";
+    const avatarImgSrc = friend.avatarImg || "../assets/avatars/dewi-lestari.webp";
 
     const iconHtml = `
       <div class="community-map-pin contextual ${isInvited ? "is-invited" : ""}" title="${escapeHtml(friend.name)} • ${escapeHtml(friend.districtLocation)}">
         <div class="community-pin-avatar">
-          <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.webp'">
         </div>
       </div>
     `;
@@ -3717,7 +3717,7 @@ function renderNearbyFriendsForZone(zone) {
       <div class="community-friend-popup">
         <div class="friend-popup-header">
           <div class="friend-popup-avatar">
-            <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'">
+            <img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.webp'">
           </div>
           <div class="friend-popup-info">
             <h4 class="friend-popup-name">${escapeHtml(friend.name)}</h4>
@@ -3783,7 +3783,7 @@ function toggleMissionFriend(friendName, location, username = "") {
           .toUpperCase() || "W";
     const avatarImg = friendData
       ? friendData.avatarImg
-      : "../assets/avatars/dewi-lestari.jpg";
+      : "../assets/avatars/dewi-lestari.webp";
 
     selectedMissionFriends.push({
       name: friendName,
@@ -3885,12 +3885,12 @@ function renderSelectedMissionFriendsChips() {
         : null;
     const avatarImgSrc =
       f.avatarImg ||
-      (friendObj ? friendObj.avatarImg : "../assets/avatars/dewi-lestari.jpg");
+      (friendObj ? friendObj.avatarImg : "../assets/avatars/dewi-lestari.webp");
 
     html += `
       <div class="invited-resident-card">
         <div class="invited-resident-left">
-          <div class="invited-resident-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(f.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="invited-resident-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(f.name)}" onerror="this.src='../assets/avatars/dewi-lestari.webp'"></div>
           <div class="invited-resident-info">
             <div class="invited-resident-name">${escapeHtml(f.name)}</div>
             <div class="invited-resident-meta">
@@ -4049,12 +4049,12 @@ function renderFriendsModalList(friendsList) {
       );
 
       const avatarImgSrc =
-        friend.avatarImg || "../assets/avatars/dewi-lestari.jpg";
+        friend.avatarImg || "../assets/avatars/dewi-lestari.webp";
 
       return `
       <div class="friend-item-row ${isInvited ? "is-invited" : ""}">
         <div class="friend-item-left">
-          <div class="friend-item-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.jpg'"></div>
+          <div class="friend-item-avatar"><img src="${avatarImgSrc}" alt="${escapeHtml(friend.name)}" onerror="this.src='../assets/avatars/dewi-lestari.webp'"></div>
           <div class="friend-item-info">
             <span class="friend-item-name">${escapeHtml(friend.name)}</span>
             <span class="friend-item-sub">

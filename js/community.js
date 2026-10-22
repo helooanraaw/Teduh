@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TEDUH DIGITAL PLATFORM
  * Berkas: js/community.js
  * Deskripsi: Pengendali Linimasa Komunitas, Composer Unggah Foto, Diskusi & Thread Detail
@@ -408,25 +408,25 @@ const AUTOCOMPLETE_MENTIONS = [
     mention: "@Mas Bima",
     name: "Mas Bima",
     handle: "@mas_bima",
-    avatar: "assets/avatars/gede-surya.jpg",
+    avatar: "assets/avatars/gede-surya.webp",
   },
   {
     mention: "@Ibu Desak",
     name: "Ibu Desak",
     handle: "@ibu_desak",
-    avatar: "assets/avatars/ibu-desak.jpg",
+    avatar: "assets/avatars/ibu-desak.webp",
   },
   {
     mention: "@dr. Made Ary",
     name: "dr. Made Ary",
     handle: "@made_ary",
-    avatar: "assets/avatars/dr-made-ary.jpg",
+    avatar: "assets/avatars/dr-made-ary.webp",
   },
   {
     mention: "@Pak Wayan",
     name: "Pak Wayan",
     handle: "@wayan_gede",
-    avatar: "assets/avatars/pak-wayan.jpg",
+    avatar: "assets/avatars/pak-wayan.webp",
   },
   {
     mention: "@Komunitas Teduh",
@@ -438,7 +438,7 @@ const AUTOCOMPLETE_MENTIONS = [
     mention: "@Kakak Putri",
     name: "Kakak Putri",
     handle: "@putri_lestari",
-    avatar: "assets/avatars/kakak-putri.jpg",
+    avatar: "assets/avatars/kakak-putri.webp",
   },
 ];
 
@@ -876,25 +876,25 @@ const MENTION_DIRECTORY = {
     name: "Mas Bima",
     handle: "@mas_bima",
     count: "24 postingan",
-    avatar: "assets/avatars/gede-surya.jpg",
+    avatar: "assets/avatars/gede-surya.webp",
   },
   "@Ibu Desak": {
     name: "Ibu Desak",
     handle: "@ibu_desak",
     count: "18 postingan",
-    avatar: "assets/avatars/ibu-desak.jpg",
+    avatar: "assets/avatars/ibu-desak.webp",
   },
   "@dr. Made Ary": {
     name: "dr. Made Ary",
     handle: "@made_ary",
     count: "42 postingan",
-    avatar: "assets/avatars/dr-made-ary.jpg",
+    avatar: "assets/avatars/dr-made-ary.webp",
   },
   "@Pak Wayan": {
     name: "Pak Wayan",
     handle: "@wayan_gede",
     count: "15 postingan",
-    avatar: "assets/avatars/pak-wayan.jpg",
+    avatar: "assets/avatars/pak-wayan.webp",
   },
   "@Komunitas Teduh": {
     name: "Komunitas Teduh",
@@ -906,13 +906,13 @@ const MENTION_DIRECTORY = {
     name: "Kakak Putri",
     handle: "@putri_lestari",
     count: "12 postingan",
-    avatar: "assets/avatars/kakak-putri.jpg",
+    avatar: "assets/avatars/kakak-putri.webp",
   },
   "@John Doe": {
     name: "John Doe",
     handle: "@johndoe",
     count: "Akun Anda",
-    avatar: "assets/avatars/john-doe.jpg",
+    avatar: "assets/avatars/john-doe.webp",
   },
 };
 
@@ -956,7 +956,7 @@ function showMentionHoverCard(event, mention) {
     name: cleanKey.replace("@", ""),
     handle: cleanKey.toLowerCase().replace(/\s+/g, "_"),
     count: "Warga Komunitas",
-    avatar: "assets/avatars/john-doe.jpg",
+    avatar: "assets/avatars/john-doe.webp",
   };
 
   let card = document.getElementById("kmFloatingHoverCard");
@@ -1357,16 +1357,16 @@ function checkMissionUrlParams() {
 
     selectComposerLocation(district);
 
-    let photoPath = "assets/trees/pohon-tanjung.jpg";
+    let photoPath = "assets/trees/pohon-tanjung.webp";
     const lowerTree = treeName.toLowerCase();
     if (lowerTree.includes("kiara")) {
-      photoPath = "assets/trees/pohon-kiara-payung.jpg";
+      photoPath = "assets/trees/pohon-kiara-payung.webp";
     } else if (lowerTree.includes("ketapang")) {
-      photoPath = "assets/trees/ketapang-kencana.jpg";
+      photoPath = "assets/trees/ketapang-kencana.webp";
     } else if (lowerTree.includes("tabebuia")) {
-      photoPath = "assets/trees/tabebuia-pink.jpg";
+      photoPath = "assets/trees/tabebuia-pink.webp";
     } else {
-      photoPath = "assets/trees/pohon-tanjung.jpg";
+      photoPath = "assets/trees/pohon-tanjung.webp";
     }
 
     attachedPhotos = [
@@ -1468,7 +1468,7 @@ function submitNewPost() {
   newCard.innerHTML = `
     <div class="km-thread-header">
       <div class="km-thread-author-wrap">
-        <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-thread-avatar">
+        <img src="assets/avatars/john-doe.webp" alt="John Doe" class="km-thread-avatar">
         <div class="km-thread-meta">
           <div class="km-author-title-row">
             <span class="km-thread-author-name">John Doe</span>
@@ -1661,7 +1661,7 @@ function submitInlineComment(threadId) {
   branch.id = `branch-${branchId}`;
   branch.innerHTML = `
     <div class="km-comment-node">
-      <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
+      <img src="assets/avatars/john-doe.webp" alt="John Doe" class="km-comment-avatar">
       <div class="km-comment-content">
         <div class="km-comment-header">
           <span class="km-comment-author">John Doe</span>
@@ -1678,7 +1678,7 @@ function submitInlineComment(threadId) {
     <!-- Sub-Branch Replies -->
     <div class="km-comment-replies" id="replies-${branchId}">
       <div class="km-reply-composer-box" id="reply-box-${branchId}" style="display: none;">
-        <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
+        <img src="assets/avatars/john-doe.webp" alt="Avatar Anda" class="km-reply-user-avatar">
         <div class="km-reply-composer-content">
           <div class="km-reply-composer-header">
             <span class="km-replying-to-label">Membalas <strong id="reply-target-${branchId}">@John Doe</strong></span>
@@ -1763,7 +1763,7 @@ function submitNestedReply(threadId, branchId) {
   const replyNode = document.createElement("div");
   replyNode.className = "km-comment-node is-reply";
   replyNode.innerHTML = `
-    <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
+    <img src="assets/avatars/john-doe.webp" alt="John Doe" class="km-comment-avatar">
     <div class="km-comment-content">
       <div class="km-comment-header">
         <span class="km-comment-author">John Doe</span>
@@ -1895,7 +1895,7 @@ function initMobileNav() {
 const MOCK_DETAIL_THREADS = {
   "thread-1": {
     authorName: "Gede Surya",
-    authorAvatar: "assets/avatars/gede-surya.jpg",
+    authorAvatar: "assets/avatars/gede-surya.webp",
     authorLevel: "Perintis Teduh",
     authorHandle: "@gede_surya",
     location: "Renon, Denpasar Selatan",
@@ -1907,9 +1907,9 @@ const MOCK_DETAIL_THREADS = {
       <p>Sebelum ditanam, suhu pantulan semen teras rumah saat tengah hari bisa menyentuh 38.8°C dan hawa panasnya bertahan sampai jam 8 malam. Setelah 2 minggu proses adaptasi bibit ini, naungan awal mulai menahan radiasi langsung. Tanah humus subak Denpasar sangat cocok untuk mempercepat penguatan akar tunggang bibit muda. <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span> <span class="km-inline-tag" data-tag="#DenpasarAdem" onclick="filterByTag('#DenpasarAdem')" onmouseenter="showTagHoverCard(event, '#DenpasarAdem')" onmouseleave="hideHoverCard()">#DenpasarAdem</span></p>
     `,
     photos: [
-      "assets/feed/feed-ubud-garden.jpg",
-      "assets/feed/feed-gatsu-roadside.jpg",
-      "assets/feed/feed-gotong-royong.jpg",
+      "assets/feed/feed-ubud-garden.webp",
+      "assets/feed/feed-gatsu-roadside.webp",
+      "assets/feed/feed-gotong-royong.webp",
     ],
     tags: ["#AksiTanam", "#DenpasarAdem"],
     likes: 24,
@@ -1929,13 +1929,13 @@ const MOCK_DETAIL_THREADS = {
       {
         id: "detail-c-1",
         author: "Ibu Desak",
-        avatar: "assets/avatars/ibu-desak.jpg",
+        avatar: "assets/avatars/ibu-desak.webp",
         time: "1 jam lalu",
         text: "Bagus sekali Gede Surya. Ditanam dari bibit ukuran berapa meter kemarin? Akarnya langsung tunggang ke bawah ya?",
         replies: [
           {
             author: "Gede Surya (Penulis)",
-            avatar: "assets/avatars/gede-surya.jpg",
+            avatar: "assets/avatars/gede-surya.webp",
             time: "45 menit lalu",
             text: "Pakai bibit 1.5 meter Bu. Langsung disiram air cucian beras dan tanah humus subak, cepat kokoh akarnya.",
           },
@@ -1945,7 +1945,7 @@ const MOCK_DETAIL_THREADS = {
   },
   "thread-2": {
     authorName: "Ibu Desak",
-    authorAvatar: "assets/avatars/ibu-desak.jpg",
+    authorAvatar: "assets/avatars/ibu-desak.webp",
     authorLevel: "Penanam Aktif",
     authorHandle: "@desak_sesetan",
     location: "Sesetan, Denpasar Selatan",
@@ -1957,8 +1957,8 @@ const MOCK_DETAIL_THREADS = {
       <p>Suhu permukaan teras yang semula 37.5°C turun menjadi 31.2°C saat diukur menggunakan termometer inframerah jam 2 siang kemarin. <span class="km-inline-tag" data-tag="#PekaranganSemen" onclick="filterByTag('#PekaranganSemen')" onmouseenter="showTagHoverCard(event, '#PekaranganSemen')" onmouseleave="hideHoverCard()">#PekaranganSemen</span> <span class="km-inline-tag" data-tag="#DenpasarAdem" onclick="filterByTag('#DenpasarAdem')" onmouseenter="showTagHoverCard(event, '#DenpasarAdem')" onmouseleave="hideHoverCard()">#DenpasarAdem</span></p>
     `,
     photos: [
-      "assets/feed/feed-sesetan-gang.jpg",
-      "assets/feed/feed-teuku-umar.jpg",
+      "assets/feed/feed-sesetan-gang.webp",
+      "assets/feed/feed-teuku-umar.webp",
     ],
     tags: ["#PekaranganSemen", "#DenpasarAdem"],
     likes: 19,
@@ -1978,13 +1978,13 @@ const MOCK_DETAIL_THREADS = {
       {
         id: "detail-c-2",
         author: "Pak Wayan",
-        avatar: "assets/avatars/pak-wayan.jpg",
+        avatar: "assets/avatars/pak-wayan.webp",
         time: "3 jam lalu",
         text: "Setuju Bu Desak! Daunnya juga mudah disapu tiap pagi, tidak bikin becek got.",
         replies: [
           {
             author: "Ibu Desak (Penulis)",
-            avatar: "assets/avatars/ibu-desak.jpg",
+            avatar: "assets/avatars/ibu-desak.webp",
             time: "2 jam lalu",
             text: "Betul Pak Wayan, guguran daunnya kecil-kecil jadi langsung masuk ke kompos biopori.",
           },
@@ -1994,7 +1994,7 @@ const MOCK_DETAIL_THREADS = {
   },
   "thread-3": {
     authorName: "dr. Made Ary",
-    authorAvatar: "assets/avatars/dr-made-ary.jpg",
+    authorAvatar: "assets/avatars/dr-made-ary.webp",
     authorLevel: "Ahli Sanitasi & Pohon",
     authorHandle: "@dr_ary_denpasar",
     location: "Gatot Subroto Barat",
@@ -2006,9 +2006,9 @@ const MOCK_DETAIL_THREADS = {
       <p>Dengan teknik ini, fondasi tembok dan pipa sanitasi rumah tetap utuh 100% aman hingga belasan tahun ke depan. <span class="km-inline-tag" data-tag="#AmanFondasi" onclick="filterByTag('#AmanFondasi')" onmouseenter="showTagHoverCard(event, '#AmanFondasi')" onmouseleave="hideHoverCard()">#AmanFondasi</span> <span class="km-inline-tag" data-tag="#AksiTanam" onclick="filterByTag('#AksiTanam')" onmouseenter="showTagHoverCard(event, '#AksiTanam')" onmouseleave="hideHoverCard()">#AksiTanam</span></p>
     `,
     photos: [
-      "assets/feed/feed-biopori-action.jpg",
-      "assets/feed/feed-gotong-royong.jpg",
-      "assets/feed/feed-sesetan-gang.jpg",
+      "assets/feed/feed-biopori-action.webp",
+      "assets/feed/feed-gotong-royong.webp",
+      "assets/feed/feed-sesetan-gang.webp",
     ],
     tags: ["#TabebuiaPink", "#EdukasiBiopori"],
     likes: 42,
@@ -2028,13 +2028,13 @@ const MOCK_DETAIL_THREADS = {
       {
         id: "detail-c-3",
         author: "John Doe",
-        avatar: "assets/avatars/john-doe.jpg",
+        avatar: "assets/avatars/john-doe.webp",
         time: "12 jam lalu",
         text: "Terima kasih infonya Dokter, sangat berguna untuk warga yang pekarangannya full semen.",
         replies: [
           {
             author: "dr. Made Ary (Penulis)",
-            avatar: "assets/avatars/dr-made-ary.jpg",
+            avatar: "assets/avatars/dr-made-ary.webp",
             time: "10 jam lalu",
             text: "Sama-sama Mas John. Kuncinya jangan pernah tanam beringin di dekat dinding teras ya.",
           },
@@ -2180,7 +2180,7 @@ function renderDetailCommentsTree(commentsList) {
           ${repliesHtml}
 
           <div class="km-reply-composer-box" id="reply-box-${c.id}" style="display: none;">
-            <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
+            <img src="assets/avatars/john-doe.webp" alt="Avatar Anda" class="km-reply-user-avatar">
             <div class="km-reply-composer-content">
               <div class="km-reply-composer-header">
                 <span class="km-replying-to-label">Membalas <strong id="reply-target-${c.id}">@${escapeHtml(c.author)}</strong></span>
@@ -2298,7 +2298,7 @@ function submitDetailComment() {
   branch.id = `branch-${branchId}`;
   branch.innerHTML = `
     <div class="km-comment-node">
-      <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
+      <img src="assets/avatars/john-doe.webp" alt="John Doe" class="km-comment-avatar">
       <div class="km-comment-content">
         <div class="km-comment-header">
           <span class="km-comment-author">John Doe</span>
@@ -2314,7 +2314,7 @@ function submitDetailComment() {
 
     <div class="km-comment-replies" id="replies-${branchId}">
       <div class="km-reply-composer-box" id="reply-box-${branchId}" style="display: none;">
-        <img src="assets/avatars/john-doe.jpg" alt="Avatar Anda" class="km-reply-user-avatar">
+        <img src="assets/avatars/john-doe.webp" alt="Avatar Anda" class="km-reply-user-avatar">
         <div class="km-reply-composer-content">
           <div class="km-reply-composer-header">
             <span class="km-replying-to-label">Membalas <strong id="reply-target-${branchId}">@John Doe</strong></span>
@@ -2375,7 +2375,7 @@ function submitDetailNestedReply(branchId) {
   const replyNode = document.createElement("div");
   replyNode.className = "km-comment-node is-reply";
   replyNode.innerHTML = `
-    <img src="assets/avatars/john-doe.jpg" alt="John Doe" class="km-comment-avatar">
+    <img src="assets/avatars/john-doe.webp" alt="John Doe" class="km-comment-avatar">
     <div class="km-comment-content">
       <div class="km-comment-header">
         <span class="km-comment-author">John Doe</span>

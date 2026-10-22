@@ -562,7 +562,7 @@
       avatar.className = "td-msg-avatar user-avatar";
       avatar.setAttribute("aria-hidden", "true");
       avatar.innerHTML =
-        '<img src="assets/avatars/john-doe.jpg" alt="Foto Profil Pengguna">';
+        '<img src="assets/avatars/john-doe.webp" alt="Foto Profil Pengguna">';
 
       row.appendChild(content);
       row.appendChild(avatar);
@@ -747,6 +747,7 @@
     ];
     var currentTooltipIndex = 0;
     var tooltipHideTimeout = null;
+    var tooltipTimer = null;
 
     function hideTooltip(immediate) {
       if (!tooltip) return;
@@ -826,7 +827,7 @@
     initialChips.forEach(function (btn) {
       btn.addEventListener("click", function () {
         var topicId = btn.getAttribute("data-topic-id");
-        var topicText = btn.textContent;
+        var topicText = (btn.textContent || "").trim();
         handleTopicClick(topicId, topicText);
       });
     });

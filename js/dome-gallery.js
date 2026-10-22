@@ -1,4 +1,4 @@
-/**
+﻿/**
  * TEDUH DIGITAL PLATFORM
  * Berkas: js/dome-gallery.js
  * Deskripsi: Galeri Interaktif Kubah Foto Dokumentasi Lingkungan & Kanopi
@@ -19,31 +19,31 @@ function initMitra3DDome() {
   if (!container || !sphere) return;
 
   const partners = [
-    { file: "assets/mitra/bca-logo.png", type: "wide", name: "BCA" },
-    { file: "assets/mitra/bmkg-logo.png", type: "square", name: "BMKG" },
-    { file: "assets/mitra/gojek-logo.png", type: "wide", name: "Gojek" },
+    { file: "assets/mitra/bca-logo.webp", type: "wide", name: "BCA" },
+    { file: "assets/mitra/bmkg-logo.webp", type: "square", name: "BMKG" },
+    { file: "assets/mitra/gojek-logo.webp", type: "wide", name: "Gojek" },
     {
-      file: "assets/mitra/lingkungan-logo.png",
+      file: "assets/mitra/lingkungan-logo.webp",
       type: "square",
       name: "Kementerian Lingkungan Hidup",
     },
-    { file: "assets/mitra/dana-logo.png", type: "wide", name: "DANA" },
-    { file: "assets/mitra/aws-logo.png", type: "square", name: "AWS" },
-    { file: "assets/mitra/bni-logo.png", type: "wide", name: "BNI" },
-    { file: "assets/mitra/kominfo-logo.png", type: "square", name: "Kominfo" },
-    { file: "assets/mitra/gopay-logo.png", type: "wide", name: "GoPay" },
+    { file: "assets/mitra/dana-logo.webp", type: "wide", name: "DANA" },
+    { file: "assets/mitra/aws-logo.webp", type: "square", name: "AWS" },
+    { file: "assets/mitra/bni-logo.webp", type: "wide", name: "BNI" },
+    { file: "assets/mitra/kominfo-logo.webp", type: "square", name: "Kominfo" },
+    { file: "assets/mitra/gopay-logo.webp", type: "wide", name: "GoPay" },
     {
-      file: "assets/mitra/pupuk-logo.png",
+      file: "assets/mitra/pupuk-logo.webp",
       type: "square",
       name: "Pupuk Indonesia",
     },
-    { file: "assets/mitra/komdigi-logo.png", type: "wide", name: "Komdigi" },
+    { file: "assets/mitra/komdigi-logo.webp", type: "wide", name: "Komdigi" },
     {
-      file: "assets/mitra/kehutanan-logo.png",
+      file: "assets/mitra/kehutanan-logo.webp",
       type: "wide",
       name: "Kementerian Kehutanan",
     },
-    { file: "assets/mitra/pln-logo.png", type: "wide", name: "PLN" },
+    { file: "assets/mitra/pln-logo.webp", type: "wide", name: "PLN" },
   ];
 
   const segments = 36;
