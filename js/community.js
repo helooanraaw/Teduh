@@ -6,9 +6,8 @@
  * ==========================================================================
  * SUMBER KARYA & ATRIBUSI MEDIA / ASET VISUAL (OPEN LICENSE):
  * 1. Pustaka & Framework Eksternal:
- *    - GSAP & ScrollTrigger: GreenSock (Standard Web Animation License).
+ *    - ScrollTrigger: GreenSock (Standard Web Animation License).
  *    - Lenis Smooth Scroll: Studio Freight / Darkroom Engineering (MIT License).
- *    - Leaflet.js: Vladimir Agafonkin (BSD-2-Clause License).
  * 2. Layanan Peta & Citra Satelit:
  *    - Google Hybrid Satellite Map Tile Server (Google Maps / Earth Engine).
  *    - CartoDB Dark Matter & Voyager Tiles: CartoDB & Kontributor OpenStreetMap (CC BY 3.0 / ODbL).
